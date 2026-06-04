@@ -833,7 +833,7 @@ function renderNow(list) {
   }
   box.innerHTML = `
     <section class="group">
-      <h2 class="section-title">Сейчас <span class="section-badge">${list.length}</span></h2>
+      <h2 class="section-title">В процессе</h2>
       <div class="grid-now">${list.map((e, i) => nowCard(e, i)).join("")}</div>
     </section>`;
 }
@@ -917,16 +917,16 @@ function renderFavorites(fav) {
   const staff  = fav.staff?.nodes || [];
 
   let html = "";
-  if (animes.length) html += favMediaSection("🎬 Любимые аниме", animes);
-  if (mangas.length) html += favMediaSection("📚 Любимая манга", mangas);
-  if (chars.length)  html += favPersonSection("👤 Любимые персонажи", chars);
-  if (staff.length)  html += favPersonSection("🎌 Сейю / Режиссёры", staff);
+  if (animes.length) html += favMediaSection("Любимые аниме", animes);
+  if (mangas.length) html += favMediaSection("Любимая манга", mangas);
+  if (chars.length)  html += favPersonSection("Любимые персонажи", chars);
+  if (staff.length)  html += favPersonSection("Сейю / Режиссёры", staff);
   box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
 }
 
 function favMediaSection(heading, items) {
   return `<section class="group">
-    <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
+    <h2 class="section-title">${heading}</h2>
     <div class="grid-now">
       ${items.map((item, i) => {
         const img = coverUrl(item.coverImage);
@@ -951,7 +951,7 @@ function favMediaSection(heading, items) {
 
 function favPersonSection(heading, items) {
   return `<section class="group">
-    <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
+    <h2 class="section-title">${heading}</h2>
     <div class="grid-chars">
       ${items.map((item, i) => {
         const img  = item.image?.large || item.image?.medium || PH_SQ;
@@ -989,7 +989,7 @@ function renderReviews(reviews) {
   const box = document.getElementById("tab-reviews");
   box.innerHTML = `
     <section class="group">
-      <h2 class="section-title">✍ Отзывы <span class="section-badge">${reviews.length}</span></h2>
+      <h2 class="section-title">Отзывы</h2>
       <div class="reviews-grid">
         ${reviews.map((r, i) => reviewCard(r, i)).join("")}
       </div>
