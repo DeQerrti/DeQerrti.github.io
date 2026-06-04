@@ -773,9 +773,9 @@ function mediaTitle(t) {
   return t?.userPreferred || t?.romaji || t?.english || "—";
 }
 function entryTypeTag(entry) {
-  if (entry.media.type === "ANIME") return ["anime","ANIME"];
-  if (NOVEL_FORMATS.includes(entry.media.format)) return ["novel","РАНОБЭ"];
-  return ["manga","МАНГА"];
+  if (entry.media.type === "ANIME") return ["anime","Аниме"];
+  if (NOVEL_FORMATS.includes(entry.media.format)) return ["novel","Ранобе"];
+  return ["manga","Манга"];
 }
 
 // ══════════════════════════════════════════════════
