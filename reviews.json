@@ -1,24 +1,13 @@
 [
   {
     "id": 1,
-    "title": "Houseki no Kuni",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98442-KSbOUYIzEUwA.jpg",
-    "type": "anime",
-    "score": 10,
-    "source": "telegraph",
-    "url": "https://telegra.ph/",
-    "preview": "Один из немногих тайтлов, который я пересмотрю ещё не раз. CGI здесь не костыль, а художественное решение — холодная, хрустальная эстетика работает именно потому, что персонажи буквально сделаны из камня. История о памяти, идентичности и том, что значит быть живым.",
-    "date": "2024-11-15"
-  },
-  {
-    "id": 2,
-    "title": "Vinland Saga S2",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx136430-qEDPGMYGSCaD.jpg",
-    "type": "anime",
-    "score": 9,
-    "source": "bluesky",
-    "url": "https://bsky.app/",
-    "preview": "Вторй сезон — полная противоположность первому по темпу, и именно это делает его лучше. Фермерская арка поначалу кажется скучной, но это намеренно. Асклад наконец получил то развитие, которое заслуживал.",
-    "date": "2024-12-03"
+    "title": "Страна самоцветов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85164-jtE6zLDVvtm3.jpg",
+    "type": "manga",
+    "score": null,
+    "source": "teletype",
+    "url": "https://teletype.in/@tknovas/LandoftheLustrous",
+    "preview": "Харуко Итикава под маской уютного мира скрывает экзистенциальный ужас, который редко встретишь даже в самых мрачных хоррорах. Это не линейное приключение, а постепенное погружение в экзистенциальный распад, где каждый шаг вперёд означает потерю части прошлого.",
+    "date": "2026-04-06"
   }
 ]
