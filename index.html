@@ -266,12 +266,12 @@ section.group { margin-bottom: 3.5rem; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 14px;
-  overflow: hidden;
   text-decoration: none;
   color: inherit;
   transition: border-color .22s, transform .22s, box-shadow .22s;
   position: relative;
   animation: fadeUp .35s ease both;
+  overflow: visible;
 }
 .review-card:hover {
   border-color: rgba(102,252,241,.3);
@@ -283,11 +283,11 @@ section.group { margin-bottom: 3.5rem; }
 .review-top {
   display: flex;
   gap: .85rem;
-  padding: 1rem;
+  padding: .75rem .85rem;
   flex: 1;
 }
 .review-cover {
-  width: 64px;
+  width: 90px;
   flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -353,11 +353,14 @@ section.group { margin-bottom: 3.5rem; }
 
 /* Теги */
 .review-tags {
-  padding: .6rem 1rem;
+  padding: .45rem .85rem;
   display: flex;
   flex-wrap: wrap;
   gap: .35rem;
   border-top: 1px solid var(--border);
+  overflow: visible;
+  position: relative;
+  z-index: 2;
 }
 .rtag {
   font-size: .62rem;
@@ -390,7 +393,7 @@ section.group { margin-bottom: 3.5rem; }
   border-radius: 6px;
   border: 1px solid var(--border);
   white-space: nowrap;
-  z-index: 20;
+  z-index: 9999;
   pointer-events: none;
   box-shadow: 0 4px 16px rgba(0,0,0,.5);
 }
@@ -410,7 +413,7 @@ section.group { margin-bottom: 3.5rem; }
   display: flex;
   align-items: center;
   gap: .6rem;
-  padding: .6rem 1rem;
+  padding: .45rem .85rem;
   border-top: 1px solid var(--border);
 }
 .grade-square {
