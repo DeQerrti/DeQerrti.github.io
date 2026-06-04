@@ -1010,12 +1010,9 @@ function reviewCard(r, i) {
       }).join("")}</div>`
     : "";
 
-  // Вайфу/Кайф
-  const extras = [];
-  if (r.waifu) extras.push(`Вайфу: <span>${r.waifu}</span>`);
-  if (r.kai)   extras.push(`Кайф: <span>${r.kai}</span>`);
-  const waifuHtml = extras.length
-    ? `<div class="review-waifu">${extras.join(" · ")}</div>`
+  // Фавориты
+  const waifuHtml = r.favorites
+    ? `<div class="review-waifu">Фавориты: <span>${r.favorites}</span></div>`
     : "";
 
   // Формат и дата
