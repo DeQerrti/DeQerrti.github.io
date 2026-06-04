@@ -9,20 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-/* ─── ПЕРЕМЕННЫЕ ─────────────────────────────── */
 :root {
     --bg:        #080a0f;
     --surface:   #0f1219;
     --border:    #1a2030;
-    --border-hi: #66fcf1;
     --accent:    #66fcf1;
-    --accent2:   #c678dd;
     --text:      #c8cdd8;
     --text-dim:  #4a5568;
     --text-hi:   #ffffff;
 }
 
-/* ─── СБРОС И БАЗА ───────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -30,18 +26,14 @@ body {
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
-    /* тонкая зернистость фона */
     background-image:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,252,241,.06) 0%, transparent 60%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,252,241,.06) 0%, transparent 60%);
 }
 
-/* ─── ШАПКА ──────────────────────────────────── */
 header {
     text-align: center;
     padding: 3rem 1rem 2rem;
     border-bottom: 1px solid var(--border);
-    position: relative;
 }
 
 .logo {
@@ -51,7 +43,6 @@ header {
     color: var(--accent);
     letter-spacing: -0.02em;
     line-height: 1;
-    /* свечение */
     text-shadow: 0 0 40px rgba(102,252,241,.35);
 }
 
@@ -63,7 +54,6 @@ header {
     text-transform: uppercase;
 }
 
-/* ─── НАВИГАЦИЯ ──────────────────────────────── */
 nav {
     display: flex;
     justify-content: center;
@@ -89,11 +79,9 @@ nav {
     transition: color .2s, border-color .2s;
     white-space: nowrap;
 }
-
 .tab-btn:hover  { color: var(--text); }
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-/* ─── КОНТЕНТ ────────────────────────────────── */
 main {
     max-width: 1280px;
     margin: 0 auto;
@@ -102,10 +90,7 @@ main {
 
 .tab-content.hidden { display: none; }
 
-/* ─── СЕКЦИЯ ─────────────────────────────────── */
-section.group {
-    margin-bottom: 3rem;
-}
+section.group { margin-bottom: 3rem; }
 
 .section-title {
     font-family: 'Syne', sans-serif;
@@ -117,7 +102,6 @@ section.group {
     align-items: center;
     gap: .6rem;
 }
-
 .section-title::after {
     content: '';
     flex: 1;
@@ -137,13 +121,11 @@ section.group {
     letter-spacing: .06em;
 }
 
-/* ─── СЕТКА КАРТОЧЕК ─────────────────────────── */
 .grid-cards {
     display: grid;
     gap: .85rem;
     grid-template-columns: repeat(2, 1fr);
 }
-
 @media (min-width: 480px)  { .grid-cards { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 720px)  { .grid-cards { grid-template-columns: repeat(4, 1fr); } }
 @media (min-width: 1024px) { .grid-cards { grid-template-columns: repeat(5, 1fr); } }
@@ -158,7 +140,6 @@ section.group {
 @media (min-width: 720px)  { .grid-chars { grid-template-columns: repeat(5, 1fr); } }
 @media (min-width: 1024px) { .grid-chars { grid-template-columns: repeat(7, 1fr); } }
 
-/* ─── КАРТОЧКА ───────────────────────────────── */
 .card {
     display: block;
     background: var(--surface);
@@ -169,21 +150,18 @@ section.group {
     transition: border-color .2s, transform .2s, box-shadow .2s;
     position: relative;
 }
-
 .card:hover {
     border-color: var(--accent);
     transform: translateY(-3px);
     box-shadow: 0 8px 30px rgba(102,252,241,.08);
 }
 
-/* полоска прогресса сверху карточки */
 .card-progress-bar {
     position: absolute;
     top: 0; left: 0;
     height: 2px;
     background: var(--accent);
     z-index: 2;
-    transition: width .4s ease;
 }
 
 .card img {
@@ -193,21 +171,15 @@ section.group {
     display: block;
     background: var(--border);
 }
+.card-char img { aspect-ratio: 1/1; }
 
-.card-char img {
-    aspect-ratio: 1/1;
-}
-
-.card-body {
-    padding: .6rem .7rem .7rem;
-}
+.card-body { padding: .6rem .7rem .7rem; }
 
 .card-title {
     font-size: .8rem;
     font-weight: 500;
     color: var(--text-hi);
     line-height: 1.3;
-    /* максимум 2 строки */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -223,13 +195,8 @@ section.group {
     align-items: center;
 }
 
-.card-score {
-    color: #f0c040;
-    font-weight: 600;
-    font-size: .78rem;
-}
+.card-score { color: #f0c040; font-weight: 600; font-size: .78rem; }
 
-/* ─── СОСТОЯНИЯ ──────────────────────────────── */
 .state-box {
     text-align: center;
     padding: 4rem 2rem;
@@ -245,40 +212,30 @@ section.group {
     animation: spin .8s linear infinite;
     margin: 0 auto 1rem;
 }
-
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .error-icon { font-size: 2rem; margin-bottom: .75rem; }
 
-/* ─── ПОЯВЛЕНИЕ КАРТОЧЕК ─────────────────────── */
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
 }
-
-.card {
-    animation: fadeUp .3s ease both;
-}
+.card { animation: fadeUp .3s ease both; }
 </style>
 </head>
-
 <body>
 
-<!-- ══════════ ШАПКА ══════════ -->
 <header>
     <div class="logo">DeQerrti</div>
     <div class="subtitle">Личный трекер · Shikimori</div>
 </header>
 
-<!-- ══════════ НАВИГАЦИЯ ══════════ -->
 <nav>
     <button class="tab-btn active" onclick="switchTab('tab-tracker', this)">🏠 Трекер</button>
     <button class="tab-btn"        onclick="switchTab('tab-favorites', this)">⭐ Фавориты</button>
 </nav>
 
-<!-- ══════════ КОНТЕНТ ══════════ -->
 <main>
-
     <div id="tab-tracker" class="tab-content">
         <div class="state-box">
             <div class="spinner"></div>
@@ -289,149 +246,95 @@ section.group {
     <div id="tab-favorites" class="tab-content hidden">
         <div class="state-box">
             <div class="spinner"></div>
-            Загружаем фаворитов…
+            Загружаем фавориты…
         </div>
     </div>
-
 </main>
 
-
 <script>
-// ════════════════════════════════════════════════
-//  КОНФИГ
-// ════════════════════════════════════════════════
 const USERNAME = "Qerrti";
 const API      = "https://shikimori.one/api";
+const SHIKI    = "https://shikimori.one";
 
-const cache = {
-    tracker:   null,
-    favorites: null
-};
+const cache = { tracker: null, favorites: null };
 
-// ════════════════════════════════════════════════
-//  ВКЛАДКИ
-// ════════════════════════════════════════════════
+// ── ВКЛАДКИ ──────────────────────────────────────
 function switchTab(tabId, btn) {
     document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
     document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
-
     document.getElementById(tabId).classList.remove("hidden");
     btn.classList.add("active");
-
     if (tabId === "tab-favorites") loadFavorites();
 }
 
-// ════════════════════════════════════════════════
-//  УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ДЛЯ КАРТИНОК
-//  Shikimori возвращает разные структуры:
-//  - anime_rates (REST): { anime: { poster: { mainUrl } } }  ← новый формат
-//  - anime_rates (REST): { anime: { image: { original } } }  ← старый формат
-//  - favourites:         { image: "/path..." }               ← строка
-// ════════════════════════════════════════════════
-function buildImageUrl(imageData, posterData, square = false) {
-    const placeholder = square
+// ── КАРТИНКИ ─────────────────────────────────────
+// image может быть строкой (фавориты) или объектом {original, preview, ...} (animes API)
+function buildImageUrl(image, square = false) {
+    const ph = square
         ? "https://placehold.co/300x300/0f1219/4a5568?text=?"
         : "https://placehold.co/300x420/0f1219/4a5568?text=?";
 
-    const shiki = "https://shikimori.one";
-
-    // 1. poster.mainUrl — самый новый формат REST API (полный URL)
-    if (posterData?.mainUrl) {
-        return posterData.mainUrl.startsWith("http")
-            ? posterData.mainUrl
-            : `${shiki}${posterData.mainUrl}`;
+    // строка — формат /favourites
+    if (typeof image === "string") {
+        if (!image || image.includes("missing")) return ph;
+        return image.startsWith("http") ? image : `${SHIKI}${image}`;
     }
 
-    // 2. image — строка (структура /favourites)
-    if (typeof imageData === "string") {
-        if (!imageData || imageData.includes("missing")) return placeholder;
-        return imageData.startsWith("http") ? imageData : `${shiki}${imageData}`;
+    // объект — формат /animes (здесь original реальный)
+    if (image && typeof image === "object") {
+        const path = image.original || image.preview || image.x96 || image.x48;
+        if (!path || path.includes("missing")) return ph;
+        return path.startsWith("http") ? path : `${SHIKI}${path}`;
     }
 
-    // 3. image — объект (старый REST формат)
-    if (imageData && typeof imageData === "object") {
-        // Берём original, игнорируем preview/x96/x48 — они мыльные
-        const path = imageData.original;
-        if (!path || path.includes("missing")) return placeholder;
-        return path.startsWith("http") ? path : `${shiki}${path}`;
-    }
-
-    return placeholder;
+    return ph;
 }
 
-// ════════════════════════════════════════════════
-//  ЗАПРОС К API
-// ════════════════════════════════════════════════
+// ── HTTP ─────────────────────────────────────────
 async function apiFetch(url) {
     const res = await fetch(url, {
-        headers: { "User-Agent": "DeQerrti Personal Hub (github)" }
+        headers: { "User-Agent": "DeQerrti/1.0 (github)" }
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status} — ${url}`);
     return res.json();
 }
 
-// GraphQL запрос — возвращает ПОЛНЫЕ данные включая poster с mainUrl
-async function graphqlFetch(query, variables = {}) {
-    const res = await fetch("https://shikimori.one/api/graphql", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "User-Agent": "DeQerrti Personal Hub (github)"
-        },
-        body: JSON.stringify({ query, variables })
-    });
-    if (!res.ok) throw new Error(`GraphQL HTTP ${res.status}`);
-    const json = await res.json();
-    if (json.errors) throw new Error(json.errors[0].message);
-    return json.data;
-}
-
-// ════════════════════════════════════════════════
-//  ТРЕКЕР — через GraphQL (даёт poster.mainUrl)
-// ════════════════════════════════════════════════
+// ── ТРЕКЕР ───────────────────────────────────────
 async function loadTracker() {
     const box = document.getElementById("tab-tracker");
-
-    if (cache.tracker) {
-        renderTracker(cache.tracker);
-        return;
-    }
+    if (cache.tracker) { renderTracker(cache.tracker); return; }
 
     try {
-        // GraphQL возвращает poster.mainUrl — качественная обложка гарантирована
-        const query = `
-            query($page: Int!) {
-                userRates(userId: "${USERNAME}", targetType: Anime, page: $page, limit: 50) {
-                    status
-                    score
-                    episodes
-                    anime {
-                        id
-                        name
-                        russian
-                        url
-                        episodes
-                        poster { mainUrl }
-                    }
-                }
+        // 1. Список оценок пользователя (содержит status, episodes, score, anime.id)
+        const rates = await apiFetch(`${API}/users/${USERNAME}/anime_rates?limit=500`);
+
+        // 2. Собираем уникальные ID
+        const ids = [...new Set(rates.map(r => r.anime?.id).filter(Boolean))];
+
+        // 3. Загружаем полные данные по аниме через /api/animes?ids=...
+        //    Этот эндпоинт возвращает реальные обложки (не missing)
+        const animeMap = {};
+        const BATCH = 50;
+
+        for (let i = 0; i < ids.length; i += BATCH) {
+            const chunk = ids.slice(i, i + BATCH);
+            try {
+                const animes = await apiFetch(`${API}/animes?ids=${chunk.join(",")}&limit=50`);
+                for (const a of animes) animeMap[a.id] = a;
+            } catch (e) {
+                console.warn("Batch failed:", e.message);
             }
-        `;
-
-        // Подгружаем все страницы (у Shikimori GraphQL лимит 50 за раз)
-        let allRates = [];
-        let page = 1;
-
-        while (true) {
-            const data = await graphqlFetch(query, { page });
-            const rates = data.userRates || [];
-            allRates = allRates.concat(rates);
-            if (rates.length < 50) break;
-            page++;
-            // защита от бесконечного цикла
-            if (page > 20) break;
+            // пауза чтобы не словить rate limit (5 req/sec у Shikimori)
+            if (i + BATCH < ids.length) await sleep(250);
         }
 
-        // Группируем по статусу
+        // 4. Подменяем anime в каждой записи на полный объект с обложкой
+        for (const entry of rates) {
+            const id = entry.anime?.id;
+            if (id && animeMap[id]) entry.anime = animeMap[id];
+        }
+
+        // 5. Группируем
         const grouped = {
             watching:  { label: "Сейчас смотрю", icon: "▶️",  items: [] },
             planned:   { label: "Запланировано",  icon: "📋", items: [] },
@@ -440,60 +343,29 @@ async function loadTracker() {
             dropped:   { label: "Брошено",        icon: "🗑️",  items: [] },
         };
 
-        for (const entry of allRates) {
-            const s = entry.status?.toLowerCase();
-            if (grouped[s]) grouped[s].items.push(entry);
+        for (const entry of rates) {
+            if (grouped[entry.status]) grouped[entry.status].items.push(entry);
         }
 
         cache.tracker = grouped;
         renderTracker(grouped);
 
     } catch (err) {
-        // GraphQL не сработал — фолбек на REST API
-        console.warn("GraphQL failed, falling back to REST:", err.message);
-        loadTrackerREST();
+        box.innerHTML = `<div class="state-box">
+            <div class="error-icon">⚠️</div>
+            Ошибка загрузки: ${err.message}
+        </div>`;
     }
 }
 
-// Фолбек: REST API (может не иметь poster, но хоть что-то)
-async function loadTrackerREST() {
-    const box = document.getElementById("tab-tracker");
-    try {
-        const data = await apiFetch(`${API}/users/${USERNAME}/anime_rates?limit=500`);
-
-        const grouped = {
-            watching:  { label: "Сейчас смотрю", icon: "▶️",  items: [] },
-            planned:   { label: "Запланировано",  icon: "📋", items: [] },
-            completed: { label: "Просмотрено",    icon: "✅", items: [] },
-            on_hold:   { label: "Отложено",       icon: "⏸️",  items: [] },
-            dropped:   { label: "Брошено",        icon: "🗑️",  items: [] },
-        };
-
-        for (const entry of data) {
-            const s = entry.status;
-            if (grouped[s]) grouped[s].items.push(entry);
-        }
-
-        cache.tracker = grouped;
-        renderTracker(grouped);
-
-    } catch (err) {
-        box.innerHTML = `
-            <div class="state-box">
-                <div class="error-icon">⚠️</div>
-                Не удалось загрузить данные.<br>
-                <small style="color:#4a5568">${err.message}</small>
-            </div>`;
-    }
-}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function renderTracker(grouped) {
     const box = document.getElementById("tab-tracker");
     let html = "";
 
-    for (const [, group] of Object.entries(grouped)) {
+    for (const group of Object.values(grouped)) {
         if (!group.items.length) continue;
-
         html += `
         <section class="group">
             <h2 class="section-title">
@@ -501,43 +373,29 @@ function renderTracker(grouped) {
                 <span class="section-badge">${group.items.length}</span>
             </h2>
             <div class="grid-cards">
-                ${group.items.map((entry, i) => animeCard(entry, i)).join("")}
+                ${group.items.map((e, i) => animeCard(e, i)).join("")}
             </div>
         </section>`;
     }
 
-    if (!html) {
-        html = `<div class="state-box">Список пустой</div>`;
-    }
-
-    box.innerHTML = html;
+    box.innerHTML = html || `<div class="state-box">Список пустой</div>`;
 }
 
 function animeCard(entry, index) {
-    const anime   = entry.anime;
-    // poster.mainUrl — GraphQL, image — REST фолбек
-    const imgSrc  = buildImageUrl(anime?.image, anime?.poster);
-    const title   = anime?.russian || anime?.name || "—";
-    const epDone  = entry.episodes ?? 0;
-    const epTotal = anime?.episodes || 0;
-    const score   = entry.score > 0 ? entry.score : null;
-
+    const anime    = entry.anime;
+    const imgSrc   = buildImageUrl(anime?.image);
+    const title    = anime?.russian || anime?.name || "—";
+    const epDone   = entry.episodes ?? 0;
+    const epTotal  = anime?.episodes || 0;
+    const score    = entry.score > 0 ? entry.score : null;
     const progress = epTotal > 0 ? Math.min((epDone / epTotal) * 100, 100) : 0;
 
     return `
-    <a href="https://shikimori.one${anime?.url || ''}"
-       target="_blank"
-       rel="noopener"
-       class="card"
-       style="animation-delay: ${Math.min(index * 30, 400)}ms">
-
+    <a href="${SHIKI}${anime?.url || ''}" target="_blank" rel="noopener"
+       class="card" style="animation-delay:${Math.min(index*30,400)}ms">
         ${progress > 0 ? `<div class="card-progress-bar" style="width:${progress}%"></div>` : ""}
-
-        <img src="${imgSrc}"
-             alt="${title}"
-             loading="lazy"
+        <img src="${imgSrc}" alt="${title}" loading="lazy"
              onerror="this.src='https://placehold.co/300x420/0f1219/4a5568?text=?'">
-
         <div class="card-body">
             <div class="card-title">${title}</div>
             <div class="card-meta">
@@ -545,33 +403,23 @@ function animeCard(entry, index) {
                 ${score ? `<span class="card-score">★ ${score}</span>` : ""}
             </div>
         </div>
-
     </a>`;
 }
 
-// ════════════════════════════════════════════════
-//  ФАВОРИТЫ
-// ════════════════════════════════════════════════
+// ── ФАВОРИТЫ ─────────────────────────────────────
 async function loadFavorites() {
     const box = document.getElementById("tab-favorites");
-
-    if (cache.favorites) {
-        renderFavorites(cache.favorites);
-        return;
-    }
+    if (cache.favorites) { renderFavorites(cache.favorites); return; }
 
     try {
         const data = await apiFetch(`${API}/users/${USERNAME}/favourites`);
         cache.favorites = data;
         renderFavorites(data);
-
     } catch (err) {
-        box.innerHTML = `
-            <div class="state-box">
-                <div class="error-icon">⚠️</div>
-                Не удалось загрузить фавориты.<br>
-                <small style="color:#4a5568">${err.message}</small>
-            </div>`;
+        box.innerHTML = `<div class="state-box">
+            <div class="error-icon">⚠️</div>
+            Ошибка загрузки: ${err.message}
+        </div>`;
     }
 }
 
@@ -581,127 +429,52 @@ function renderFavorites(data) {
     const mangas     = data.mangas     || [];
     const characters = data.characters || [];
     const people     = data.people     || [];
-
     let html = "";
 
-    // ── Любимые аниме ──
-    if (animes.length) {
-        html += `
-        <section class="group">
-            <h2 class="section-title">
-                🎬 Любимые аниме
-                <span class="section-badge">${animes.length}</span>
-            </h2>
-            <div class="grid-cards">
-                ${animes.map((a, i) => favAnimeCard(a, i)).join("")}
-            </div>
-        </section>`;
-    }
+    if (animes.length) html += favSection("🎬 Любимые аниме", animes, false);
+    if (mangas.length) html += favSection("📚 Любимые манга", mangas, false);
+    if (characters.length) html += favSection("👤 Любимые персонажи", characters, true);
+    if (people.length) html += favSection("🎌 Сейю / Режиссёры", people, true);
 
-    // ── Любимые манга ──
-    if (mangas.length) {
-        html += `
-        <section class="group">
-            <h2 class="section-title">
-                📚 Любимые манга
-                <span class="section-badge">${mangas.length}</span>
-            </h2>
-            <div class="grid-cards">
-                ${mangas.map((m, i) => favAnimeCard(m, i)).join("")}
-            </div>
-        </section>`;
-    }
-
-    // ── Любимые персонажи ──
-    if (characters.length) {
-        html += `
-        <section class="group">
-            <h2 class="section-title">
-                👤 Любимые персонажи
-                <span class="section-badge">${characters.length}</span>
-            </h2>
-            <div class="grid-chars">
-                ${characters.map((c, i) => favCharCard(c, i)).join("")}
-            </div>
-        </section>`;
-    }
-
-    // ── Любимые люди ──
-    if (people.length) {
-        html += `
-        <section class="group">
-            <h2 class="section-title">
-                🎌 Любимые сейю / режиссёры
-                <span class="section-badge">${people.length}</span>
-            </h2>
-            <div class="grid-chars">
-                ${people.map((p, i) => favCharCard(p, i)).join("")}
-            </div>
-        </section>`;
-    }
-
-    if (!html) {
-        html = `<div class="state-box">Фавориты не найдены</div>`;
-    }
-
-    box.innerHTML = html;
+    box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
 }
 
-// Карточка аниме/манги в фаворитах
-// image здесь — строка вида "/system/animes/original/..."
-function favAnimeCard(item, index) {
-    const imgSrc = buildImageUrl(item.image, null);
+function favSection(title, items, square) {
+    const gridClass = square ? "grid-chars" : "grid-cards";
+    return `
+    <section class="group">
+        <h2 class="section-title">
+            ${title}
+            <span class="section-badge">${items.length}</span>
+        </h2>
+        <div class="${gridClass}">
+            ${items.map((item, i) => favCard(item, i, square)).join("")}
+        </div>
+    </section>`;
+}
+
+function favCard(item, index, square) {
+    // У фаворитов image — это строка вида "/system/animes/original/12345.jpg"
+    const imgSrc = buildImageUrl(item.image, square);
     const title  = item.russian || item.name || "—";
+    const ph     = square
+        ? "https://placehold.co/300x300/0f1219/4a5568?text=?"
+        : "https://placehold.co/300x420/0f1219/4a5568?text=?";
 
     return `
-    <a href="https://shikimori.one${item.url || ''}"
-       target="_blank"
-       rel="noopener"
-       class="card"
-       style="animation-delay: ${Math.min(index * 30, 400)}ms">
-
-        <img src="${imgSrc}"
-             alt="${title}"
-             loading="lazy"
-             onerror="this.src='https://placehold.co/300x420/0f1219/4a5568?text=?'">
-
+    <a href="${SHIKI}${item.url || ''}" target="_blank" rel="noopener"
+       class="card${square ? ' card-char' : ''}"
+       style="animation-delay:${Math.min(index*30,400)}ms">
+        <img src="${imgSrc}" alt="${title}" loading="lazy"
+             onerror="this.src='${ph}'">
         <div class="card-body">
             <div class="card-title">${title}</div>
         </div>
-
     </a>`;
 }
 
-// Карточка персонажа / человека в фаворитах
-function favCharCard(item, index) {
-    const imgSrc = buildImageUrl(item.image, null, true);
-    const title  = item.russian || item.name || "—";
-
-    return `
-    <a href="https://shikimori.one${item.url || ''}"
-       target="_blank"
-       rel="noopener"
-       class="card card-char"
-       style="animation-delay: ${Math.min(index * 30, 400)}ms">
-
-        <img src="${imgSrc}"
-             alt="${title}"
-             loading="lazy"
-             onerror="this.src='https://placehold.co/300x300/0f1219/4a5568?text=?'">
-
-        <div class="card-body">
-            <div class="card-title">${title}</div>
-        </div>
-
-    </a>`;
-}
-
-// ════════════════════════════════════════════════
-//  СТАРТ
-// ════════════════════════════════════════════════
+// ── СТАРТ ─────────────────────────────────────────
 loadTracker();
-
 </script>
-
 </body>
 </html>
