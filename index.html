@@ -78,6 +78,10 @@ const API = "https://shikimori.one/api";
 const cache = {
     tracker: null,
     favorites: null
+    async function getFullAnime(id) {
+    const res = await fetch(`https://shikimori.one/api/animes/${id}`);
+    return await res.json();
+}
 };
 
 function switchTab(tabId, btn) {
@@ -92,7 +96,44 @@ function switchTab(tabId, btn) {
     btn.classList.add("active");
 
     if (tabId === "tab-favorites") {
-        loadFavorites();
+        async function loadTracker() {
+
+    if (cache.tracker) {
+        renderTracker(cache.tracker);
+        return;
+    }
+
+    const data = await api(
+        `${API}/users/${USERNAME}/anime_rates?limit=200`
+    );
+
+    const enriched = await Promise.all(
+        data.map(async (entry) => {
+            const full = await getFullAnime(entry.anime.id);
+
+            return {
+                ...entry,
+                anime: full
+            };
+        })
+    );
+
+    const grouped = {
+        watching: [],
+        planned: [],
+        completed: [],
+        dropped: []
+    };
+
+    for (const entry of enriched) {
+        if (grouped[entry.status]) {
+            grouped[entry.status].push(entry);
+        }
+    }
+
+    cache.tracker = grouped;
+    renderTracker(grouped);
+}
     }
 }
 
