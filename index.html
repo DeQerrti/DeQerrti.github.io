@@ -288,7 +288,7 @@ section.group { margin-bottom: 3.5rem; }
   flex: 1;
 }
 .review-cover {
-  width: 130px;
+  width: 150px;
   flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -312,7 +312,7 @@ section.group { margin-bottom: 3.5rem; }
 }
 .review-title {
   font-family: 'Syne', sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   font-weight: 700;
   color: var(--text-hi);
   line-height: 1.25;
@@ -346,10 +346,6 @@ section.group { margin-bottom: 3.5rem; }
   font-size: .82rem;
   color: var(--text);
   line-height: 1.65;
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* Теги */
@@ -1061,7 +1057,7 @@ function reviewCard(r, i) {
         <div class="review-meta-row">
           ${r.format ? `<span class="review-format">${r.format}</span>` : ""}
           ${r.year   ? `<span class="review-date">${r.year}</span>` : ""}
-          ${dateStr  ? `<span class="review-date" style="margin-left:auto">${dateStr}</span>` : ""}
+          ${dateStr  ? `<span class="review-date" style="margin-left:auto">Прочитано: ${dateStr}</span>` : ""}
         </div>
         ${waifuHtml}
         <div class="review-preview">${r.preview || ""}</div>
