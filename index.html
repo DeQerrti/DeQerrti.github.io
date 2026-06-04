@@ -22,6 +22,15 @@
   --yellow: #f0c040;
   --orange: #ed8936;
   --red: #fc6b68;
+
+  /* Шкала послевкусия */
+  --grade-brown:  #8B6914;
+  --grade-red:    #c0392b;
+  --grade-white:  #6b7280;
+  --grade-yellow: #d4a017;
+  --grade-green:  #2d8a4e;
+  --grade-blue:   #2563a8;
+  --grade-purple: #7c3aed;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -206,7 +215,7 @@ section.group { margin-bottom: 3.5rem; }
 .tag-manga  { background: rgba(240,192, 64,.15); color: var(--yellow);  border: 1px solid rgba(240,192, 64,.25); }
 .tag-novel  { background: rgba( 72,187,120,.15); color: var(--green);   border: 1px solid rgba( 72,187,120,.25); }
 
-/* PROGRESS (серии/главы) */
+/* PROGRESS */
 .progress-line {
   font-size: .7rem;
   color: var(--accent);
@@ -233,45 +242,57 @@ section.group { margin-bottom: 3.5rem; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ANIMATIONS */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .card { animation: fadeUp .3s ease both; }
 
-/* ══ REVIEWS ══════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════
+   REVIEWS — новая система
+══════════════════════════════════════════════════ */
 .reviews-grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
   grid-template-columns: 1fr;
 }
 @media (min-width: 700px)  { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1100px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
 
+/* Карточка отзыва */
 .review-card {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1rem;
+  border-radius: 14px;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
   transition: border-color .22s, transform .22s, box-shadow .22s;
-  align-items: flex-start;
+  position: relative;
+  animation: fadeUp .35s ease both;
 }
 .review-card:hover {
-  border-color: rgba(102,252,241,.35);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(102,252,241,.07);
+  border-color: rgba(102,252,241,.3);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.4);
+}
+
+/* Верхняя часть: обложка + инфо */
+.review-top {
+  display: flex;
+  gap: .85rem;
+  padding: 1rem;
+  flex: 1;
 }
 .review-cover {
-  width: 62px;
+  width: 64px;
   flex-shrink: 0;
-  border-radius: 7px;
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border);
+  align-self: flex-start;
 }
 .review-cover img {
   width: 100%;
@@ -280,57 +301,155 @@ section.group { margin-bottom: 3.5rem; }
   display: block;
 }
 .review-body { flex: 1; min-width: 0; }
+
 .review-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: .5rem;
-  margin-bottom: .45rem;
+  margin-bottom: .3rem;
 }
 .review-title {
   font-family: 'Syne', sans-serif;
-  font-size: .9rem;
+  font-size: .92rem;
   font-weight: 700;
   color: var(--text-hi);
   line-height: 1.25;
 }
-.review-score {
-  font-size: .85rem;
-  font-weight: 700;
-  color: var(--yellow);
-  white-space: nowrap;
-  flex-shrink: 0;
+.review-meta-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .55rem;
+  flex-wrap: wrap;
 }
+.review-format {
+  font-size: .65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.review-date {
+  font-size: .65rem;
+  color: var(--text-dim);
+}
+.review-waifu {
+  font-size: .7rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: .5rem;
+}
+.review-waifu span { color: var(--accent); font-style: normal; }
+
 .review-preview {
   font-size: .78rem;
   color: var(--text);
-  line-height: 1.55;
+  line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.review-footer {
-  margin-top: .6rem;
+
+/* Теги */
+.review-tags {
+  padding: .6rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  border-top: 1px solid var(--border);
+}
+.rtag {
+  font-size: .62rem;
+  padding: .2rem .5rem;
+  border-radius: 5px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  position: relative;
+  cursor: default;
+}
+/* Категории тегов по цвету */
+.rtag-visual  { background: rgba(69,183,209,.12);  color: #45b7d1; border: 1px solid rgba(69,183,209,.25); }
+.rtag-plot    { background: rgba(240,192, 64,.1);  color: #d4a500; border: 1px solid rgba(240,192,64,.22); }
+.rtag-chars   { background: rgba(72,187,120,.1);   color: #48bb78; border: 1px solid rgba(72,187,120,.22); }
+.rtag-special { background: rgba(237,137, 54,.1);  color: #ed8936; border: 1px solid rgba(237,137,54,.22); }
+
+/* Тултип на теге */
+.rtag[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a2030;
+  color: var(--text);
+  font-size: .68rem;
+  font-weight: 400;
+  padding: .35rem .6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  z-index: 20;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,.5);
+}
+.rtag[data-tip]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 1px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--border);
+  z-index: 21;
+}
+
+/* Нижняя полоса — оценка по шкале послевкусия */
+.review-grade-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  font-size: .68rem;
-  color: var(--text-dim);
+  gap: .6rem;
+  padding: .6rem 1rem;
+  border-top: 1px solid var(--border);
 }
-.review-source {
+.grade-square {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.grade-name {
+  font-family: 'Syne', sans-serif;
+  font-size: .75rem;
+  font-weight: 700;
+  flex: 1;
+}
+.grade-desc {
+  font-size: .65rem;
+  color: var(--text-dim);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.review-source-link {
+  font-size: .65rem;
+  color: var(--text-dim);
   display: flex;
   align-items: center;
   gap: .3rem;
+  padding: .2rem .45rem;
   background: rgba(255,255,255,.04);
   border: 1px solid var(--border);
   border-radius: 5px;
-  padding: .18rem .45rem;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .review-source-dot {
   width: 5px; height: 5px;
   border-radius: 50%;
-  background: var(--accent);
+  flex-shrink: 0;
 }
 
 /* ══ TIMELINE ══════════════════════════════════════════ */
@@ -418,10 +537,7 @@ section.group { margin-bottom: 3.5rem; }
   background: var(--border);
   border: 1px solid var(--text-dim);
 }
-.tl-entry:hover {
-  border-color: rgba(102,252,241,.3);
-  background: var(--surface2);
-}
+.tl-entry:hover { border-color: rgba(102,252,241,.3); background: var(--surface2); }
 .tl-entry:hover::before {
   background: var(--accent);
   border-color: var(--accent);
@@ -459,11 +575,7 @@ section.group { margin-bottom: 3.5rem; }
   gap: .4rem;
   align-items: center;
 }
-.tl-date-range {
-  display: flex;
-  align-items: center;
-  gap: .35rem;
-}
+.tl-date-range { display: flex; align-items: center; gap: .35rem; }
 .tl-arrow { color: var(--text-dim); font-size: .65rem; }
 .tl-ongoing { color: var(--accent); font-size: .7rem; }
 .tl-dur {
@@ -474,7 +586,6 @@ section.group { margin-bottom: 3.5rem; }
   font-size: .65rem;
   color: var(--text-dim);
 }
-
 .tl-type-tag {
   font-size: .6rem;
   font-weight: 600;
@@ -492,7 +603,6 @@ section.group { margin-bottom: 3.5rem; }
   min-width: 2.2rem;
   text-align: right;
 }
-
 .tl-empty {
   text-align: center;
   padding: 3rem;
@@ -533,6 +643,105 @@ const MANGA_FORMATS = ["MANGA","ONE_SHOT","MANHWA","MANHUA","DOUJIN"];
 
 const cache = {};
 
+// ══════════════════════════════════════════════════
+// ШКАЛА ПОСЛЕВКУСИЯ
+// ══════════════════════════════════════════════════
+const GRADES = {
+  razocharo: {
+    color: "#8B6914",
+    square: "🟫",
+    name: "Разочарование",
+    desc: "Хороший старт, перечеркнутый бездарным финалом"
+  },
+  brak: {
+    color: "#c0392b",
+    square: "🟥",
+    name: "Брак",
+    desc: "Технически или сценарно несостоятельно"
+  },
+  fon: {
+    color: "#6b7280",
+    square: "⬜",
+    name: "Фоновый шум",
+    desc: "Стерильно и вторично"
+  },
+  attrakcion: {
+    color: "#d4a017",
+    square: "🟨",
+    name: "Аттракцион",
+    desc: "Ярко, бодро, на один вечер"
+  },
+  vyskazyvanie: {
+    color: "#2d8a4e",
+    square: "🟩",
+    name: "Высказывание",
+    desc: "Достойная работа с посылом"
+  },
+  etalon: {
+    color: "#2563a8",
+    square: "🟦",
+    name: "Эталон",
+    desc: "Почти безупречное исполнение"
+  },
+  rezonans: {
+    color: "#7c3aed",
+    square: "🟪",
+    name: "Резонанс",
+    desc: "Личный фаворит. То, что откликнулось"
+  }
+};
+
+// ══════════════════════════════════════════════════
+// ТЕГИ
+// ══════════════════════════════════════════════════
+const TAGS_MAP = {
+  // Визуал
+  "Топ рисовка":       { cat: "visual",  tip: "Эстетическое наслаждение, детализация на высоте" },
+  "Специфичный стиль": { cat: "visual",  tip: "Авторский почерк, к которому нужно привыкнуть" },
+  "Слабая картинка":   { cat: "visual",  tip: "Бюджетно, криво или слишком упрощённо" },
+  // Сюжет
+  "Затягивает сразу":  { cat: "plot",    tip: "Бодрый старт, невозможно оторваться" },
+  "Долгая раскачка":   { cat: "plot",    tip: "Нужно перетерпеть начало, чтобы стало интересно" },
+  "Сюжетные дыры":     { cat: "plot",    tip: "Много логических нестыковок" },
+  "Рояли в кустах":    { cat: "plot",    tip: "Внезапные спасения и нелепые совпадения" },
+  "Стеклище":          { cat: "plot",    tip: "Автор беспощаден к героям и твоим нервам" },
+  "Чеховские ружья":   { cat: "plot",    tip: "Детали из первых глав выстреливают спустя 100 выпусков" },
+  "Слитый финал":      { cat: "plot",    tip: "Концовка портит всё" },
+  // Персонажи
+  "Живые герои":       { cat: "chars",   tip: "Персонажи с душой, которым веришь и сопереживаешь" },
+  "Картонные чары":    { cat: "chars",   tip: "Пустые герои-функции без внятной мотивации" },
+  "Крутой протагонист":{ cat: "chars",   tip: "Главный герой тащит на себе весь тайтл" },
+  "Оригинальный сеттинг":{ cat: "chars", tip: "Необычный мир, который интересно изучать" },
+  "Дырявый сеттинг":   { cat: "chars",   tip: "Декорации без внятного лора и истории" },
+  "Топ антагонист":    { cat: "chars",   tip: "Злодей интереснее или харизматичнее героев" },
+  "Слабый ГГ":         { cat: "chars",   tip: "Главный герой скучный, глупый или раздражающий" },
+  // Особенности
+  "Без кринжа":        { cat: "special", tip: "Выдержанный тон, без неловкого пафоса" },
+  "Много кринжа":      { cat: "special", tip: "Неловкие моменты, пафос или странный юмор" },
+  "Жесть":             { cat: "special", tip: "Много насилия, крови или безумных поворотов" },
+  "Философия":         { cat: "special", tip: "Размышления о смысле бытия и прочего" },
+  "Чистый кайф":       { cat: "special", tip: "Читается легко, идеально для расслабления" },
+  "Серая мораль":      { cat: "special", tip: "Нет чёткого деления на добро и зло" },
+  "Хорни вайб":        { cat: "special", tip: "Много фансервиса, акцент на сексуальности" },
+};
+
+const TAG_CAT_CLASS = {
+  visual:  "rtag-visual",
+  plot:    "rtag-plot",
+  chars:   "rtag-chars",
+  special: "rtag-special",
+};
+
+const SOURCE_LABELS = {
+  telegraph: "Telegraph",
+  teletype:  "Teletype",
+  bluesky:   "Bluesky",
+  other:     "Ссылка"
+};
+
+// ══════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════
 async function gql(query, variables = {}) {
   const res = await fetch(AL, {
     method: "POST",
@@ -570,7 +779,7 @@ function entryTypeTag(entry) {
 }
 
 // ══════════════════════════════════════════════════
-// NOW — текущие аниме + манга + ранобэ
+// NOW
 // ══════════════════════════════════════════════════
 const NOW_QUERY = `
 query($name: String) {
@@ -604,7 +813,6 @@ async function loadNow() {
       ...(data.anime?.mediaList || []),
       ...(data.manga?.mediaList || [])
     ];
-    // Sort: anime first, then manga, then novel
     all.sort((a, b) => {
       const order = e => e.media.type === "ANIME" ? 0 : NOVEL_FORMATS.includes(e.media.format) ? 2 : 1;
       return order(a) - order(b);
@@ -626,9 +834,7 @@ function renderNow(list) {
   box.innerHTML = `
     <section class="group">
       <h2 class="section-title">Сейчас <span class="section-badge">${list.length}</span></h2>
-      <div class="grid-now">
-        ${list.map((e, i) => nowCard(e, i)).join("")}
-      </div>
+      <div class="grid-now">${list.map((e, i) => nowCard(e, i)).join("")}</div>
     </section>`;
 }
 
@@ -761,7 +967,7 @@ function favPersonSection(heading, items) {
 }
 
 // ══════════════════════════════════════════════════
-// REVIEWS — читаем reviews.json из репозитория
+// REVIEWS
 // ══════════════════════════════════════════════════
 async function loadReviews() {
   if (cache.reviews) { renderReviews(cache.reviews); return; }
@@ -769,7 +975,6 @@ async function loadReviews() {
     const res = await fetch("reviews.json");
     if (!res.ok) throw new Error("reviews.json не найден");
     const data = await res.json();
-    // Sort by date desc
     data.sort((a, b) => new Date(b.date) - new Date(a.date));
     cache.reviews = data;
     renderReviews(data);
@@ -779,8 +984,6 @@ async function loadReviews() {
       Отзывов пока нет.<br><span style="font-size:.8rem;margin-top:.5rem;display:block">Добавь записи в <code>reviews.json</code></span></div>`;
   }
 }
-
-const SOURCE_LABELS = { telegraph: "Telegraph", bluesky: "Bluesky", other: "Ссылка" };
 
 function renderReviews(reviews) {
   const box = document.getElementById("tab-reviews");
@@ -794,37 +997,78 @@ function renderReviews(reviews) {
 }
 
 function reviewCard(r, i) {
+  const grade = GRADES[r.grade] || null;
+
+  // Теги
+  const tags = (r.tags || []);
+  const tagsHtml = tags.length
+    ? `<div class="review-tags">${tags.map(tag => {
+        const info = TAGS_MAP[tag];
+        const cls  = info ? TAG_CAT_CLASS[info.cat] : "rtag-special";
+        const tip  = info ? info.tip : "";
+        return `<span class="rtag ${cls}" data-tip="${tip}">${tag}</span>`;
+      }).join("")}</div>`
+    : "";
+
+  // Вайфу/Кайф
+  const extras = [];
+  if (r.waifu) extras.push(`Вайфу: <span>${r.waifu}</span>`);
+  if (r.kai)   extras.push(`Кайф: <span>${r.kai}</span>`);
+  const waifuHtml = extras.length
+    ? `<div class="review-waifu">${extras.join(" · ")}</div>`
+    : "";
+
+  // Формат и дата
   const typeColors = { anime: "var(--accent)", manga: "var(--yellow)", novel: "var(--green)" };
   const typeColor  = typeColors[r.type] || "var(--text-dim)";
-  const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Ссылка";
-  const dateStr = r.date
+  const dateStr    = r.date
     ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
+    : "";
+  const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Ссылка";
+
+  // Нижняя полоса оценки
+  const gradeHtml = grade
+    ? `<div class="review-grade-bar">
+        <div class="grade-square" style="background:${grade.color};box-shadow:0 0 8px ${grade.color}55"></div>
+        <div>
+          <div class="grade-name" style="color:${grade.color}">${grade.name}</div>
+          <div class="grade-desc">${grade.desc}</div>
+        </div>
+      </div>`
     : "";
 
   return `<a href="${r.url}" target="_blank" rel="noopener" class="review-card"
-    style="animation-delay:${Math.min(i*40,600)}ms">
-    <div class="review-cover">
-      <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    </div>
-    <div class="review-body">
-      <div class="review-header">
-        <div class="review-title">${r.title}</div>
-        ${r.score ? `<div class="review-score">★ ${r.score}</div>` : ""}
+    style="animation-delay:${Math.min(i*40,600)}ms;border-top: 2px solid ${grade ? grade.color + "55" : "var(--border)"}">
+    <div class="review-top">
+      <div class="review-cover">
+        <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
       </div>
-      <div class="review-preview">${r.preview || ""}</div>
-      <div class="review-footer">
-        <span>${dateStr}</span>
-        <div class="review-source">
-          <span class="review-source-dot" style="background:${typeColor}"></span>
-          ${sourceLabel}
+      <div class="review-body">
+        <div class="review-header">
+          <div class="review-title">${r.title}</div>
         </div>
+        <div class="review-meta-row">
+          ${r.format ? `<span class="review-format">${r.format}</span>` : ""}
+          ${r.year   ? `<span class="review-date">${r.year}</span>` : ""}
+          ${dateStr  ? `<span class="review-date" style="margin-left:auto">${dateStr}</span>` : ""}
+        </div>
+        ${waifuHtml}
+        <div class="review-preview">${r.preview || ""}</div>
+      </div>
+    </div>
+    ${tagsHtml}
+    ${gradeHtml}
+    <div style="padding:.5rem 1rem .65rem;display:flex;align-items:center;justify-content:flex-end;border-top:1px solid var(--border)">
+      <div class="review-source-link">
+        <span class="review-source-dot" style="background:${typeColor}"></span>
+        ${sourceLabel}
       </div>
     </div>
   </a>`;
 }
 
 // ══════════════════════════════════════════════════
-// TIMELINE — история просмотра по датам AniList
+// TIMELINE
 // ══════════════════════════════════════════════════
 const TL_QUERY = `
 query($name: String, $page: Int) {
@@ -834,7 +1078,7 @@ query($name: String, $page: Int) {
       status
       score(format: POINT_10)
       progress
-      startedAt  { year month day }
+      startedAt   { year month day }
       completedAt { year month day }
       media {
         id siteUrl type format
@@ -865,7 +1109,6 @@ async function loadTimeline() {
   if (cache.timeline) { renderTimeline(cache.timeline, tlFilter); return; }
   try {
     const all = await fetchAllTimeline();
-    // Filter: only entries with at least startedAt date
     const valid = all.filter(e => e.startedAt?.year);
     cache.timeline = valid;
     renderTimeline(valid, "ALL");
@@ -886,10 +1129,10 @@ function renderTimeline(list, filter) {
   const box = document.getElementById("tab-timeline");
   box.innerHTML = `
     <div class="timeline-controls">
-      <button class="tl-filter-btn ${filter==="ALL"?"active":""}"    onclick="switchTlFilter('ALL',this)">Всё</button>
-      <button class="tl-filter-btn ${filter==="ANIME"?"active":""}"  onclick="switchTlFilter('ANIME',this)">Аниме</button>
-      <button class="tl-filter-btn ${filter==="MANGA"?"active":""}"  onclick="switchTlFilter('MANGA',this)">Манга</button>
-      <button class="tl-filter-btn ${filter==="NOVEL"?"active":""}"  onclick="switchTlFilter('NOVEL',this)">Ранобэ</button>
+      <button class="tl-filter-btn ${filter==="ALL"?"active":""}"   onclick="switchTlFilter('ALL',this)">Всё</button>
+      <button class="tl-filter-btn ${filter==="ANIME"?"active":""}" onclick="switchTlFilter('ANIME',this)">Аниме</button>
+      <button class="tl-filter-btn ${filter==="MANGA"?"active":""}" onclick="switchTlFilter('MANGA',this)">Манга</button>
+      <button class="tl-filter-btn ${filter==="NOVEL"?"active":""}" onclick="switchTlFilter('NOVEL',this)">Ранобэ</button>
     </div>
     <div id="tl-list"></div>`;
   renderTimelineList(list, filter);
@@ -906,7 +1149,6 @@ function renderTimelineList(list, filter) {
     return;
   }
 
-  // Group by year (of startedAt or completedAt)
   const byYear = {};
   for (const e of filtered) {
     const y = e.completedAt?.year || e.startedAt?.year;
@@ -918,18 +1160,15 @@ function renderTimelineList(list, filter) {
   let html = "";
   for (const year of years) {
     html += `<div class="tl-year-label">${year}</div>
-    <div class="timeline">
-      ${byYear[year].map(e => tlEntry(e)).join("")}
-    </div>`;
+    <div class="timeline">${byYear[year].map(e => tlEntry(e)).join("")}</div>`;
   }
-
   document.getElementById("tl-list").innerHTML = html;
 }
 
 function fmtDate(d) {
   if (!d?.year) return null;
   if (!d.month) return `${d.year}`;
-  if (!d.day) return new Date(d.year, d.month - 1).toLocaleDateString("ru-RU", { month: "short", year: "numeric" });
+  if (!d.day)   return new Date(d.year, d.month - 1).toLocaleDateString("ru-RU", { month: "short", year: "numeric" });
   return new Date(d.year, d.month - 1, d.day).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
 }
 
@@ -938,8 +1177,8 @@ function daysBetween(a, b) {
   const d1 = new Date(a.year, (a.month||1) - 1, a.day||1);
   const d2 = new Date(b.year, (b.month||1) - 1, b.day||1);
   const diff = Math.round((d2 - d1) / 86400000);
-  if (diff < 1) return null;
-  if (diff < 31) return `${diff} дн.`;
+  if (diff < 1)   return null;
+  if (diff < 31)  return `${diff} дн.`;
   if (diff < 365) return `${Math.round(diff/30)} мес.`;
   return `${(diff/365).toFixed(1)} г.`;
 }
@@ -959,7 +1198,7 @@ function tlEntry(entry) {
   const datesHtml = `<div class="tl-date-range">
     ${start ? `<span>${start}</span>` : ""}
     ${(start && (end || ongoing)) ? `<span class="tl-arrow">→</span>` : ""}
-    ${end   ? `<span>${end}</span>` : ongoing ? `<span class="tl-ongoing">сейчас</span>` : ""}
+    ${end ? `<span>${end}</span>` : ongoing ? `<span class="tl-ongoing">сейчас</span>` : ""}
     ${duration ? `<span class="tl-dur">${duration}</span>` : ""}
   </div>`;
 
