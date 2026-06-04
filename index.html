@@ -323,34 +323,37 @@ function switchTab(tabId, btn) {
 
 // ════════════════════════════════════════════════
 //  УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ДЛЯ КАРТИНОК
-//  Работает и когда image — строка (фавориты),
-//  и когда image — объект (anime_rates)
+//  Shikimori возвращает разные структуры:
+//  - anime_rates (REST): { anime: { poster: { mainUrl } } }  ← новый формат
+//  - anime_rates (REST): { anime: { image: { original } } }  ← старый формат
+//  - favourites:         { image: "/path..." }               ← строка
 // ════════════════════════════════════════════════
-function buildImageUrl(imageData, square = false) {
+function buildImageUrl(imageData, posterData, square = false) {
     const placeholder = square
         ? "https://placehold.co/300x300/0f1219/4a5568?text=?"
         : "https://placehold.co/300x420/0f1219/4a5568?text=?";
 
-    // image — строка (структура фаворитов)
-    if (typeof imageData === "string") {
-        if (!imageData || imageData.includes("missing")) return placeholder;
-        return imageData.startsWith("http")
-            ? imageData
-            : `https://shikimori.one${imageData}`;
+    const shiki = "https://shikimori.one";
+
+    // 1. poster.mainUrl — самый новый формат REST API (полный URL)
+    if (posterData?.mainUrl) {
+        return posterData.mainUrl.startsWith("http")
+            ? posterData.mainUrl
+            : `${shiki}${posterData.mainUrl}`;
     }
 
-    // image — объект (структура anime_rates)
+    // 2. image — строка (структура /favourites)
+    if (typeof imageData === "string") {
+        if (!imageData || imageData.includes("missing")) return placeholder;
+        return imageData.startsWith("http") ? imageData : `${shiki}${imageData}`;
+    }
+
+    // 3. image — объект (старый REST формат)
     if (imageData && typeof imageData === "object") {
-        const path = imageData.original
-            || imageData.preview
-            || imageData.x96
-            || imageData.x48;
-
+        // Берём original, игнорируем preview/x96/x48 — они мыльные
+        const path = imageData.original;
         if (!path || path.includes("missing")) return placeholder;
-
-        return path.startsWith("http")
-            ? path
-            : `https://shikimori.one${path}`;
+        return path.startsWith("http") ? path : `${shiki}${path}`;
     }
 
     return placeholder;
@@ -361,17 +364,30 @@ function buildImageUrl(imageData, square = false) {
 // ════════════════════════════════════════════════
 async function apiFetch(url) {
     const res = await fetch(url, {
-        headers: {
-            // Shikimori требует User-Agent, иначе может вернуть 429
-            "User-Agent": "DeQerrti Personal Hub (github)"
-        }
+        headers: { "User-Agent": "DeQerrti Personal Hub (github)" }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
 }
 
+// GraphQL запрос — возвращает ПОЛНЫЕ данные включая poster с mainUrl
+async function graphqlFetch(query, variables = {}) {
+    const res = await fetch("https://shikimori.one/api/graphql", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "User-Agent": "DeQerrti Personal Hub (github)"
+        },
+        body: JSON.stringify({ query, variables })
+    });
+    if (!res.ok) throw new Error(`GraphQL HTTP ${res.status}`);
+    const json = await res.json();
+    if (json.errors) throw new Error(json.errors[0].message);
+    return json.data;
+}
+
 // ════════════════════════════════════════════════
-//  ТРЕКЕР
+//  ТРЕКЕР — через GraphQL (даёт poster.mainUrl)
 // ════════════════════════════════════════════════
 async function loadTracker() {
     const box = document.getElementById("tab-tracker");
@@ -382,21 +398,80 @@ async function loadTracker() {
     }
 
     try {
-        const data = await apiFetch(`${API}/users/${USERNAME}/anime_rates?limit=500&order=name`);
+        // GraphQL возвращает poster.mainUrl — качественная обложка гарантирована
+        const query = `
+            query($page: Int!) {
+                userRates(userId: "${USERNAME}", targetType: Anime, page: $page, limit: 50) {
+                    status
+                    score
+                    episodes
+                    anime {
+                        id
+                        name
+                        russian
+                        url
+                        episodes
+                        poster { mainUrl }
+                    }
+                }
+            }
+        `;
+
+        // Подгружаем все страницы (у Shikimori GraphQL лимит 50 за раз)
+        let allRates = [];
+        let page = 1;
+
+        while (true) {
+            const data = await graphqlFetch(query, { page });
+            const rates = data.userRates || [];
+            allRates = allRates.concat(rates);
+            if (rates.length < 50) break;
+            page++;
+            // защита от бесконечного цикла
+            if (page > 20) break;
+        }
 
         // Группируем по статусу
         const grouped = {
-            watching:  { label: "Сейчас смотрю",  icon: "▶️", items: [] },
-            planned:   { label: "Запланировано",   icon: "📋", items: [] },
-            completed: { label: "Просмотрено",     icon: "✅", items: [] },
-            on_hold:   { label: "Отложено",        icon: "⏸️", items: [] },
-            dropped:   { label: "Брошено",         icon: "🗑️", items: [] },
+            watching:  { label: "Сейчас смотрю", icon: "▶️",  items: [] },
+            planned:   { label: "Запланировано",  icon: "📋", items: [] },
+            completed: { label: "Просмотрено",    icon: "✅", items: [] },
+            on_hold:   { label: "Отложено",       icon: "⏸️",  items: [] },
+            dropped:   { label: "Брошено",        icon: "🗑️",  items: [] },
+        };
+
+        for (const entry of allRates) {
+            const s = entry.status?.toLowerCase();
+            if (grouped[s]) grouped[s].items.push(entry);
+        }
+
+        cache.tracker = grouped;
+        renderTracker(grouped);
+
+    } catch (err) {
+        // GraphQL не сработал — фолбек на REST API
+        console.warn("GraphQL failed, falling back to REST:", err.message);
+        loadTrackerREST();
+    }
+}
+
+// Фолбек: REST API (может не иметь poster, но хоть что-то)
+async function loadTrackerREST() {
+    const box = document.getElementById("tab-tracker");
+    try {
+        const data = await apiFetch(`${API}/users/${USERNAME}/anime_rates?limit=500`);
+
+        const grouped = {
+            watching:  { label: "Сейчас смотрю", icon: "▶️",  items: [] },
+            planned:   { label: "Запланировано",  icon: "📋", items: [] },
+            completed: { label: "Просмотрено",    icon: "✅", items: [] },
+            on_hold:   { label: "Отложено",       icon: "⏸️",  items: [] },
+            dropped:   { label: "Брошено",        icon: "🗑️",  items: [] },
         };
 
         for (const entry of data) {
-            if (grouped[entry.status]) {
-                grouped[entry.status].items.push(entry);
-            }
+            const s = entry.status;
+            if (grouped[s]) grouped[s].items.push(entry);
         }
 
         cache.tracker = grouped;
@@ -440,13 +515,13 @@ function renderTracker(grouped) {
 
 function animeCard(entry, index) {
     const anime   = entry.anime;
-    const imgSrc  = buildImageUrl(anime?.image);
+    // poster.mainUrl — GraphQL, image — REST фолбек
+    const imgSrc  = buildImageUrl(anime?.image, anime?.poster);
     const title   = anime?.russian || anime?.name || "—";
     const epDone  = entry.episodes ?? 0;
     const epTotal = anime?.episodes || 0;
     const score   = entry.score > 0 ? entry.score : null;
 
-    // прогресс в % для полоски сверху
     const progress = epTotal > 0 ? Math.min((epDone / epTotal) * 100, 100) : 0;
 
     return `
@@ -573,9 +648,9 @@ function renderFavorites(data) {
 }
 
 // Карточка аниме/манги в фаворитах
-// У фаворитов image — это СТРОКА, не объект
+// image здесь — строка вида "/system/animes/original/..."
 function favAnimeCard(item, index) {
-    const imgSrc = buildImageUrl(item.image);          // строка
+    const imgSrc = buildImageUrl(item.image, null);
     const title  = item.russian || item.name || "—";
 
     return `
@@ -599,8 +674,7 @@ function favAnimeCard(item, index) {
 
 // Карточка персонажа / человека в фаворитах
 function favCharCard(item, index) {
-    // У персонажей image тоже может быть строкой или объектом — buildImageUrl справится
-    const imgSrc = buildImageUrl(item.image, true);
+    const imgSrc = buildImageUrl(item.image, null, true);
     const title  = item.russian || item.name || "—";
 
     return `
