@@ -256,7 +256,8 @@ section.group { margin-bottom: 3.5rem; }
   gap: 1.5rem;
   grid-template-columns: 1fr;
 }
-@media (min-width: 800px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 700px)  { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1050px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
 
 /* Карточка отзыва */
 .review-card {
@@ -1025,16 +1026,26 @@ function reviewCard(r, i) {
     : "";
   const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Ссылка";
 
-  // Нижняя полоса оценки
+  // Нижняя полоса оценки + источник в одной строке
   const gradeHtml = grade
     ? `<div class="review-grade-bar">
         <div class="grade-square" style="background:${grade.color};box-shadow:0 0 8px ${grade.color}55"></div>
-        <div>
+        <div style="flex:1">
           <div class="grade-name" style="color:${grade.color}">${grade.name}</div>
           <div class="grade-desc">${grade.desc}</div>
         </div>
+        <div class="review-source-link">
+          <span class="review-source-dot" style="background:${typeColor}"></span>
+          ${sourceLabel}
+        </div>
       </div>`
-    : "";
+    : `<div class="review-grade-bar">
+        <div style="flex:1"></div>
+        <div class="review-source-link">
+          <span class="review-source-dot" style="background:${typeColor}"></span>
+          ${sourceLabel}
+        </div>
+      </div>`;
 
   return `<a href="${r.url}" target="_blank" rel="noopener" class="review-card"
     style="animation-delay:${Math.min(i*40,600)}ms;border-top: 2px solid ${grade ? grade.color + "55" : "var(--border)"}">
@@ -1057,12 +1068,6 @@ function reviewCard(r, i) {
     </div>
     ${tagsHtml}
     ${gradeHtml}
-    <div style="padding:.5rem 1rem .65rem;display:flex;align-items:center;justify-content:flex-end;border-top:1px solid var(--border)">
-      <div class="review-source-link">
-        <span class="review-source-dot" style="background:${typeColor}"></span>
-        ${sourceLabel}
-      </div>
-    </div>
   </a>`;
 }
 
