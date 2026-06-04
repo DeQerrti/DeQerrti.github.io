@@ -1,535 +1,260 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DeQerrti — Личный Хаб</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-:root {
-    --bg:       #080a0f;
-    --surface:  #0f1219;
-    --border:   #1a2030;
-    --accent:   #66fcf1;
-    --text:     #c8cdd8;
-    --text-dim: #4a5568;
-    --text-hi:  #ffffff;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,252,241,.06) 0%, transparent 60%);
-}
-
-header {
-    text-align: center;
-    padding: 3rem 1rem 2rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(2.5rem, 7vw, 4rem);
-    color: var(--accent);
-    letter-spacing: -0.02em;
-    line-height: 1;
-    text-shadow: 0 0 40px rgba(102,252,241,.35);
-}
-
-.subtitle {
-    margin-top: .5rem;
-    font-size: .85rem;
-    color: var(--text-dim);
-    letter-spacing: .15em;
-    text-transform: uppercase;
-}
-
-nav {
-    display: flex;
-    justify-content: center;
-    gap: .25rem;
-    padding: 0 1rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(8,10,15,.8);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(12px);
-}
-
-.tab-btn {
-    font-family: 'DM Sans', sans-serif;
-    font-size: .9rem;
-    color: var(--text-dim);
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 1rem .9rem;
-    cursor: pointer;
-    transition: color .2s, border-color .2s;
-    white-space: nowrap;
-}
-.tab-btn:hover  { color: var(--text); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-main {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem 1rem 4rem;
-}
-
-.tab-content.hidden { display: none; }
-
-section.group { margin-bottom: 3rem; }
-
-.section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-hi);
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-}
-.section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-}
-
-.section-badge {
-    font-family: 'DM Sans', sans-serif;
-    font-size: .7rem;
-    font-weight: 500;
-    color: var(--accent);
-    background: rgba(102,252,241,.08);
-    border: 1px solid rgba(102,252,241,.2);
-    padding: .15rem .5rem;
-    border-radius: 999px;
-}
-
-.grid-cards {
-    display: grid;
-    gap: .85rem;
-    grid-template-columns: repeat(2, 1fr);
-}
-@media (min-width: 480px)  { .grid-cards { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 720px)  { .grid-cards { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 1024px) { .grid-cards { grid-template-columns: repeat(5, 1fr); } }
-@media (min-width: 1280px) { .grid-cards { grid-template-columns: repeat(6, 1fr); } }
-
-.grid-chars {
-    display: grid;
-    gap: .85rem;
-    grid-template-columns: repeat(3, 1fr);
-}
-@media (min-width: 480px)  { .grid-chars { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 720px)  { .grid-chars { grid-template-columns: repeat(5, 1fr); } }
-@media (min-width: 1024px) { .grid-chars { grid-template-columns: repeat(7, 1fr); } }
-
-.card {
-    display: block;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    text-decoration: none;
-    transition: border-color .2s, transform .2s, box-shadow .2s;
-    position: relative;
-}
-.card:hover {
-    border-color: var(--accent);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(102,252,241,.08);
-}
-
-.card-progress-bar {
-    position: absolute;
-    top: 0; left: 0;
-    height: 2px;
-    background: var(--accent);
-    z-index: 2;
-}
-
-.card img {
-    width: 100%;
-    aspect-ratio: 2/3;
-    object-fit: cover;
-    display: block;
-    background: var(--border);
-}
-.card-char img { aspect-ratio: 1/1; }
-
-.card-body { padding: .6rem .7rem .7rem; }
-
-.card-title {
-    font-size: .8rem;
-    font-weight: 500;
-    color: var(--text-hi);
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.card-meta {
-    margin-top: .35rem;
-    font-size: .72rem;
-    color: var(--text-dim);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card-score { color: #f0c040; font-weight: 600; font-size: .78rem; }
-
-.state-box {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-dim);
-    font-size: .9rem;
-}
-
-.spinner {
-    width: 36px; height: 36px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin .8s linear infinite;
-    margin: 0 auto 1rem;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.error-icon { font-size: 2rem; margin-bottom: .75rem; }
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-.card { animation: fadeUp .3s ease both; }
-</style>
-</head>
-<body>
-
-<header>
-    <div class="logo">DeQerrti</div>
-    <div class="subtitle">Личный трекер · Shikimori</div>
-</header>
-
-<nav>
-    <button class="tab-btn active" onclick="switchTab('tab-tracker', this)">🏠 Трекер</button>
-    <button class="tab-btn"        onclick="switchTab('tab-favorites', this)">⭐ Фавориты</button>
-</nav>
-
-<main>
-    <div id="tab-tracker" class="tab-content">
-        <div class="state-box"><div class="spinner"></div>Загружаем аниме-лист…</div>
-    </div>
-    <div id="tab-favorites" class="tab-content hidden">
-        <div class="state-box"><div class="spinner"></div>Загружаем фавориты…</div>
-    </div>
-</main>
-
 <script>
 const USERNAME = "Qerrti";
 const SHIKI    = "https://shikimori.one";
 const API      = `${SHIKI}/api`;
 const ANILIST  = "https://graphql.anilist.co";
-const PH_TALL  = "https://placehold.co/300x420/0f1219/4a5568?text=?";
-const PH_SQ    = "https://placehold.co/300x300/0f1219/4a5568?text=?";
+
+const PH_TALL = "https://placehold.co/300x420/0f1219/4a5568?text=?";
+const PH_SQ   = "https://placehold.co/300x300/0f1219/4a5568?text=?";
 
 const cache = { tracker: null, favorites: null };
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-// ── ВКЛАДКИ ──────────────────────────────────────
-function switchTab(tabId, btn) {
-    document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
-    document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
-    document.getElementById(tabId).classList.remove("hidden");
-    btn.classList.add("active");
-    if (tabId === "tab-favorites") loadFavorites();
-}
-
-// ── SHIKIMORI REST ────────────────────────────────
+// ── FETCH ───────────────────────────────
 async function shikiFetch(url) {
-    const res = await fetch(url, { headers: { "User-Agent": "DeQerrti/1.0 (github)" } });
-    if (!res.ok) throw new Error(`Shiki HTTP ${res.status}`);
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.status);
     return res.json();
 }
 
-// ── ANILIST — обложки по MAL ID ───────────────────
-// type: "ANIME" или "MANGA" (манга, ранобэ, книги)
-async function fetchAniListCovers(malIds, type = "ANIME") {
-    if (!malIds.length) return {};
+// ── ANILIST COVER (ANIME + MANGA) ───────
+async function fetchAniListCovers(ids, type = "ANIME") {
+    if (!ids.length) return {};
 
     const query = `
-    query($ids: [Int], $type: MediaType) {
+    query ($ids: [Int], $type: MediaType) {
         Page(perPage: 50) {
             media(idMal_in: $ids, type: $type) {
                 idMal
-                coverImage { extraLarge large }
+                coverImage { large }
             }
         }
     }`;
 
-    try {
-        const res = await fetch(ANILIST, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ query, variables: { ids: malIds, type } })
-        });
-        if (!res.ok) return {};
-        const json = await res.json();
-        const map = {};
-        for (const item of json?.data?.Page?.media || []) {
-            if (item.idMal) {
-                map[item.idMal] = item.coverImage?.extraLarge || item.coverImage?.large || null;
-            }
-        }
-        return map;
-    } catch (e) {
-        console.warn(`AniList ${type} fetch failed:`, e.message);
-        return {};
-    }
-}
+    const res = await fetch(ANILIST, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, variables: { ids, type } })
+    });
 
-// Загружает обложки пачками, возвращает map {id → url}
-async function batchAniListCovers(ids, type = "ANIME") {
+    const json = await res.json();
     const map = {};
-    const BATCH = 50;
-    for (let i = 0; i < ids.length; i += BATCH) {
-        const chunk = ids.slice(i, i + BATCH);
-        const covers = await fetchAniListCovers(chunk, type);
-        Object.assign(map, covers);
-        if (i + BATCH < ids.length) await sleep(300);
+
+    for (const m of json?.data?.Page?.media || []) {
+        map[m.idMal] = m.coverImage?.large || null;
     }
+
     return map;
 }
 
-// ── ОБЛОЖКА С SHIKIMORI (для манги/персонажей/людей) ──
-function shikiImageUrl(image, square = false) {
-    const ph = square ? PH_SQ : PH_TALL;
-    if (typeof image === "string") {
-        if (!image || image.includes("missing")) return ph;
-        return image.startsWith("http") ? image : `${SHIKI}${image}`;
+// ── ANILIST CHARACTERS BY NAME ─────────
+async function fetchAniListCharacters(names) {
+    const map = {};
+
+    const query = `
+    query ($search: String) {
+        Page(perPage: 1) {
+            characters(search: $search) {
+                image { large }
+            }
+        }
+    }`;
+
+    for (const name of names) {
+        try {
+            const res = await fetch(ANILIST, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    query,
+                    variables: { search: name }
+                })
+            });
+
+            const json = await res.json();
+            const c = json?.data?.Page?.characters?.[0];
+
+            if (c?.image?.large) {
+                map[name] = c.image.large;
+            }
+
+        } catch {}
     }
-    if (image && typeof image === "object") {
-        const path = image.original || image.preview;
-        if (!path || path.includes("missing")) return ph;
-        return path.startsWith("http") ? path : `${SHIKI}${path}`;
-    }
-    return ph;
+
+    return map;
 }
 
-// ════════════════════════════════════════════════
-//  ТРЕКЕР
-// ════════════════════════════════════════════════
+// ── IMAGE FALLBACK ───────────────────────
+function imgFallback(img, square = false) {
+    const ph = square ? PH_SQ : PH_TALL;
+
+    if (!img) return ph;
+
+    const raw =
+        img.original ||
+        img.preview ||
+        img.x96 ||
+        img.x48;
+
+    if (!raw || raw.includes("missing")) return ph;
+
+    return raw.startsWith("http")
+        ? raw
+        : `${SHIKI}${raw}`;
+}
+
+// ── TRACKER ─────────────────────────────
 async function loadTracker() {
-    const box = document.getElementById("tab-tracker");
-    if (cache.tracker) { renderTracker(cache.tracker); return; }
+    if (cache.tracker) return renderTracker(cache.tracker);
 
-    try {
-        // 1. Список аниме пользователя
-        const rates = await shikiFetch(`${API}/users/${USERNAME}/anime_rates?limit=500`);
+    const rates = await shikiFetch(`${API}/users/${USERNAME}/anime_rates?limit=500`);
 
-        // 2. Все MAL ID → обложки с AniList
-        const malIds = [...new Set(rates.map(r => r.anime?.id).filter(Boolean))];
-        const coverMap = await batchAniListCovers(malIds, "ANIME");
+    const ids = [...new Set(rates.map(r => r.anime?.id).filter(Boolean))];
+    const covers = await fetchAniListCovers(ids, "ANIME");
 
-        // 3. Группируем
-        const grouped = {
-            watching:  { label: "Сейчас смотрю", icon: "▶️",  items: [] },
-            planned:   { label: "Запланировано",  icon: "📋", items: [] },
-            completed: { label: "Просмотрено",    icon: "✅", items: [] },
-            on_hold:   { label: "Отложено",       icon: "⏸️",  items: [] },
-            dropped:   { label: "Брошено",        icon: "🗑️",  items: [] },
-        };
+    const grouped = {
+        watching: [],
+        planned: [],
+        completed: [],
+        dropped: []
+    };
 
-        for (const entry of rates) {
-            if (!grouped[entry.status]) continue;
-            if (entry.anime?.id) entry.anime._cover = coverMap[entry.anime.id] || null;
-            grouped[entry.status].items.push(entry);
+    for (const r of rates) {
+        if (r.anime?.id) {
+            r.anime._cover = covers[r.anime.id] || null;
         }
-
-        cache.tracker = grouped;
-        renderTracker(grouped);
-
-    } catch (err) {
-        document.getElementById("tab-tracker").innerHTML = `
-            <div class="state-box"><div class="error-icon">⚠️</div>Ошибка: ${err.message}</div>`;
+        if (grouped[r.status]) grouped[r.status].push(r);
     }
+
+    cache.tracker = grouped;
+    renderTracker(grouped);
 }
 
 function renderTracker(grouped) {
     const box = document.getElementById("tab-tracker");
-    let html = "";
-    for (const group of Object.values(grouped)) {
-        if (!group.items.length) continue;
-        html += `
+
+    const titles = {
+        watching: "Смотрю",
+        planned: "Запланировано",
+        completed: "Просмотрено",
+        dropped: "Брошено"
+    };
+
+    box.innerHTML = Object.entries(grouped).map(([k, arr]) => {
+        if (!arr.length) return "";
+
+        return `
         <section class="group">
-            <h2 class="section-title">${group.icon} ${group.label}
-                <span class="section-badge">${group.items.length}</span>
-            </h2>
+            <h2 class="section-title">${titles[k]} <span class="section-badge">${arr.length}</span></h2>
+
             <div class="grid-cards">
-                ${group.items.map((e, i) => animeCard(e, i)).join("")}
+                ${arr.map((e,i) => `
+                    <a class="card" href="${SHIKI}${e.anime.url}" target="_blank">
+                        <img src="${e.anime._cover || imgFallback(e.anime.image)}">
+                        <div class="card-body">
+                            <div class="card-title">${e.anime.russian || e.anime.name}</div>
+                        </div>
+                    </a>
+                `).join("")}
             </div>
         </section>`;
-    }
-    box.innerHTML = html || `<div class="state-box">Список пустой</div>`;
+    }).join("");
 }
 
-function animeCard(entry, index) {
-    const anime    = entry.anime;
-    const imgSrc   = anime?._cover || PH_TALL;
-    const title    = anime?.russian || anime?.name || "—";
-    const epDone   = entry.episodes ?? 0;
-    const epTotal  = anime?.episodes || 0;
-    const score    = entry.score > 0 ? entry.score : null;
-    const progress = epTotal > 0 ? Math.min((epDone / epTotal) * 100, 100) : 0;
-
-    return `
-    <a href="${SHIKI}${anime?.url || ''}" target="_blank" rel="noopener"
-       class="card" style="animation-delay:${Math.min(index*30,400)}ms">
-        ${progress > 0 ? `<div class="card-progress-bar" style="width:${progress}%"></div>` : ""}
-        <img src="${imgSrc}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
-        <div class="card-body">
-            <div class="card-title">${title}</div>
-            <div class="card-meta">
-                <span>${epDone} / ${epTotal || "?"}</span>
-                ${score ? `<span class="card-score">★ ${score}</span>` : ""}
-            </div>
-        </div>
-    </a>`;
-}
-
-// ════════════════════════════════════════════════
-//  ФАВОРИТЫ
-// ════════════════════════════════════════════════
+// ── FAVORITES ───────────────────────────
 async function loadFavorites() {
-    const box = document.getElementById("tab-favorites");
-    if (cache.favorites) { renderFavorites(cache.favorites); return; }
+    if (cache.favorites) return renderFavorites(cache.favorites);
 
-    try {
-        const data = await shikiFetch(`${API}/users/${USERNAME}/favourites`);
+    const data = await shikiFetch(`${API}/users/${USERNAME}/favourites`);
 
-        // Аниме — обложки с AniList (ANIME)
-        const animes = data.animes || [];
-        if (animes.length) {
-            const ids = animes.map(a => a.id).filter(Boolean);
-            const covers = await batchAniListCovers(ids, "ANIME");
-            for (const a of animes) {
-                a._cover = covers[a.id] || null;
-            }
-        }
+    // ANIME / MANGA covers
+    const animeIds = (data.animes || []).map(a => a.id).filter(Boolean);
+    const animeCovers = await fetchAniListCovers(animeIds, "ANIME");
 
-        // Манга + ранобэ — обложки с AniList (MANGA)
-        const mangas = data.mangas || [];
-        const ranobe = data.ranobe || [];
-        const allManga = [...mangas, ...ranobe];
-        if (allManga.length) {
-            const ids = allManga.map(m => m.id).filter(Boolean);
-            const covers = await batchAniListCovers(ids, "MANGA");
-            for (const m of allManga) {
-                // Если AniList нашёл — берём оттуда, иначе с Shikimori
-                m._cover = covers[m.id] || null;
-            }
-        }
+    const mangaIds = (data.mangas || []).map(m => m.id).filter(Boolean);
+    const mangaCovers = await fetchAniListCovers(mangaIds, "MANGA");
 
-        cache.favorites = { ...data, ranobe };
-        renderFavorites(cache.favorites);
+    for (const a of (data.animes || [])) a._cover = animeCovers[a.id] || null;
+    for (const m of (data.mangas || [])) m._cover = mangaCovers[m.id] || null;
 
-    } catch (err) {
-        box.innerHTML = `
-            <div class="state-box"><div class="error-icon">⚠️</div>Ошибка: ${err.message}</div>`;
+    // CHARACTERS (AniList + fallback)
+    const chars = data.characters || [];
+    const names = chars.map(c => c.name || c.russian).filter(Boolean);
+
+    const charCovers = await fetchAniListCharacters(names);
+
+    for (const c of chars) {
+        const key = c.name || c.russian;
+        c._cover = charCovers[key] || null;
     }
+
+    cache.favorites = data;
+    renderFavorites(data);
 }
 
 function renderFavorites(data) {
     const box = document.getElementById("tab-favorites");
 
-    const animes     = data.animes     || [];
-    const mangas     = data.mangas     || [];
-    const ranobe     = data.ranobe     || [];
-    const characters = data.characters || [];
-    const people     = data.people     || [];
+    const animes = data.animes || [];
+    const mangas = data.mangas || [];
+    const chars  = data.characters || [];
 
-    // Shikimori также возвращает seyu (сейю) в people
-    // Игр у Shikimori нет — пропускаем этот раздел если пусто
+    box.innerHTML = `
+        <section class="group">
+            <h2 class="section-title">Аниме <span class="section-badge">${animes.length}</span></h2>
+            <div class="grid-cards">
+                ${animes.map(a => `
+                    <a class="card" href="${SHIKI}${a.url}" target="_blank">
+                        <img src="${a._cover || imgFallback(a.image)}">
+                        <div class="card-body">
+                            <div class="card-title">${a.russian || a.name}</div>
+                        </div>
+                    </a>
+                `).join("")}
+            </div>
+        </section>
 
-    let html = "";
+        <section class="group">
+            <h2 class="section-title">Манга <span class="section-badge">${mangas.length}</span></h2>
+            <div class="grid-cards">
+                ${mangas.map(m => `
+                    <a class="card" href="${SHIKI}${m.url}" target="_blank">
+                        <img src="${m._cover || imgFallback(m.image)}">
+                        <div class="card-body">
+                            <div class="card-title">${m.russian || m.name}</div>
+                        </div>
+                    </a>
+                `).join("")}
+            </div>
+        </section>
 
-    if (animes.length)
-        html += favSection("🎬 Любимые аниме",       animes,     false, "anilist");
-
-    if (mangas.length)
-        html += favSection("📚 Любимая манга",       mangas,     false, "anilist");
-
-    if (ranobe.length)
-        html += favSection("📖 Любимое ранобэ",      ranobe,     false, "anilist");
-
-    if (characters.length)
-        html += favSection("👤 Любимые персонажи",   characters, true,  "shiki");
-
-    if (people.length)
-        html += favSection("🎌 Сейю / Режиссёры",   people,     true,  "shiki");
-
-    box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
+        <section class="group">
+            <h2 class="section-title">Персонажи <span class="section-badge">${chars.length}</span></h2>
+            <div class="grid-chars">
+                ${chars.map(c => `
+                    <a class="card" href="${SHIKI}${c.url}" target="_blank">
+                        <img src="${c._cover || imgFallback(c.image, true)}">
+                        <div class="card-body">
+                            <div class="card-title">${c.russian || c.name}</div>
+                        </div>
+                    </a>
+                `).join("")}
+            </div>
+        </section>
+    `;
 }
 
-// coverSource: "anilist" — берём _cover, "shiki" — берём image
-function favSection(title, items, square, coverSource) {
-    const gridClass = square ? "grid-chars" : "grid-cards";
-    return `
-    <section class="group">
-        <h2 class="section-title">${title}
-            <span class="section-badge">${items.length}</span>
-        </h2>
-        <div class="${gridClass}">
-            ${items.map((item, i) => favCard(item, i, square, coverSource)).join("")}
-        </div>
-    </section>`;
+// ── TABS ────────────────────────────────
+function switchTab(id, btn) {
+    document.querySelectorAll(".tab-content").forEach(e => e.classList.add("hidden"));
+    document.querySelectorAll(".tab-btn").forEach(e => e.classList.remove("active"));
+    document.getElementById(id).classList.remove("hidden");
+    btn.classList.add("active");
+
+    if (id === "tab-tracker") loadTracker();
+    if (id === "tab-favorites") loadFavorites();
 }
 
-function favCard(item, index, square, coverSource) {
-    const ph = square ? PH_SQ : PH_TALL;
-    let imgSrc;
-
-    if (coverSource === "anilist") {
-        // AniList обложка (для аниме и манги)
-        imgSrc = item._cover || shikiImageUrl(item.image, square) || ph;
-    } else {
-        // Shikimori обложка (для персонажей, людей)
-        imgSrc = shikiImageUrl(item.image, square);
-    }
-
-    const title = item.russian || item.name || "—";
-
-    return `
-    <a href="${SHIKI}${item.url || ''}" target="_blank" rel="noopener"
-       class="card${square ? ' card-char' : ''}"
-       style="animation-delay:${Math.min(index*30,400)}ms">
-        <img src="${imgSrc}" alt="${title}" loading="lazy" onerror="this.src='${ph}'">
-        <div class="card-body">
-            <div class="card-title">${title}</div>
-        </div>
-    </a>`;
-}
-
-// ── СТАРТ ─────────────────────────────────────────
+// старт
 loadTracker();
 </script>
 </body>
-</html>
