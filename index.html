@@ -18,33 +18,25 @@
   --text: #c8cdd8;
   --text-dim: #4a5568;
   --text-hi: #ffffff;
+  --green: #48bb78;
+  --yellow: #f0c040;
+  --orange: #ed8936;
+  --red: #fc6b68;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,252,241,.07) 0%, transparent 60%);
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,252,241,.07) 0%, transparent 60%);
 }
 
-/* ── HEADER ── */
+/* HEADER */
 header {
   text-align: center;
   padding: 3rem 1rem 2rem;
   border-bottom: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-header::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 50% 120%, rgba(102,252,241,.04) 0%, transparent 70%);
-  pointer-events: none;
 }
 .logo {
   font-family: 'Syne', sans-serif;
@@ -57,20 +49,20 @@ header::before {
 }
 .subtitle {
   margin-top: .5rem;
-  font-size: .8rem;
+  font-size: .78rem;
   color: var(--text-dim);
   letter-spacing: .18em;
   text-transform: uppercase;
 }
 
-/* ── NAV ── */
+/* NAV */
 nav {
   display: flex;
   justify-content: center;
   gap: .15rem;
   padding: 0 1rem;
   border-bottom: 1px solid var(--border);
-  background: rgba(8,10,15,.85);
+  background: rgba(8,10,15,.88);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -86,7 +78,7 @@ nav::-webkit-scrollbar { display: none; }
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 1rem .85rem;
+  padding: 1rem .9rem;
   cursor: pointer;
   transition: color .2s, border-color .2s;
   white-space: nowrap;
@@ -95,16 +87,15 @@ nav::-webkit-scrollbar { display: none; }
 .tab-btn:hover { color: var(--text); }
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-/* ── MAIN ── */
+/* MAIN */
 main {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 2rem 1rem 5rem;
+  padding: 2.5rem 1rem 6rem;
 }
 .tab-content.hidden { display: none; }
-
-/* ── SECTION ── */
 section.group { margin-bottom: 3.5rem; }
+
 .section-title {
   font-family: 'Syne', sans-serif;
   font-size: 1.05rem;
@@ -119,10 +110,9 @@ section.group { margin-bottom: 3.5rem; }
   content: '';
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+  background: linear-gradient(90deg, var(--border), transparent);
 }
 .section-badge {
-  font-family: 'DM Sans', sans-serif;
   font-size: .68rem;
   font-weight: 500;
   color: var(--accent);
@@ -132,16 +122,17 @@ section.group { margin-bottom: 3.5rem; }
   border-radius: 999px;
 }
 
-/* ── GRIDS ── */
-.grid-cards {
+/* GRIDS */
+.grid-now {
   display: grid;
   gap: .85rem;
   grid-template-columns: repeat(2, 1fr);
 }
-@media (min-width: 480px)  { .grid-cards { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 720px)  { .grid-cards { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 1024px) { .grid-cards { grid-template-columns: repeat(5, 1fr); } }
-@media (min-width: 1280px) { .grid-cards { grid-template-columns: repeat(6, 1fr); } }
+@media (min-width: 480px)  { .grid-now { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 700px)  { .grid-now { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 900px)  { .grid-now { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 1100px) { .grid-now { grid-template-columns: repeat(6, 1fr); } }
+@media (min-width: 1300px) { .grid-now { grid-template-columns: repeat(7, 1fr); } }
 
 .grid-chars {
   display: grid;
@@ -152,7 +143,7 @@ section.group { margin-bottom: 3.5rem; }
 @media (min-width: 720px)  { .grid-chars { grid-template-columns: repeat(6, 1fr); } }
 @media (min-width: 1024px) { .grid-chars { grid-template-columns: repeat(8, 1fr); } }
 
-/* ── CARDS ── */
+/* CARD */
 .card {
   display: block;
   background: var(--surface);
@@ -164,17 +155,9 @@ section.group { margin-bottom: 3.5rem; }
   position: relative;
 }
 .card:hover {
-  border-color: rgba(102,252,241,.45);
+  border-color: rgba(102,252,241,.4);
   transform: translateY(-4px);
-  box-shadow: 0 12px 35px rgba(102,252,241,.09);
-}
-.card-progress-bar {
-  position: absolute;
-  top: 0; left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  z-index: 2;
-  border-radius: 0 2px 0 0;
+  box-shadow: 0 12px 35px rgba(102,252,241,.08);
 }
 .card img {
   width: 100%;
@@ -184,8 +167,7 @@ section.group { margin-bottom: 3.5rem; }
   background: var(--border);
 }
 .card-char img { aspect-ratio: 1/1; }
-
-.card-body { padding: .6rem .65rem .7rem; }
+.card-body { padding: .55rem .65rem .65rem; }
 .card-title {
   font-size: .78rem;
   font-weight: 500;
@@ -197,42 +179,44 @@ section.group { margin-bottom: 3.5rem; }
   overflow: hidden;
 }
 .card-meta {
-  margin-top: .35rem;
+  margin-top: .3rem;
   font-size: .7rem;
   color: var(--text-dim);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: .3rem;
 }
-.card-score { color: #f0c040; font-weight: 600; font-size: .76rem; }
+.card-score { color: var(--yellow); font-weight: 600; font-size: .75rem; }
 
-/* ── FORMAT TAG ── */
-.card-format {
-  font-size: .62rem;
-  padding: .1rem .38rem;
-  border-radius: 4px;
-  background: rgba(255,255,255,.05);
-  color: var(--text-dim);
-  border: 1px solid var(--border);
+/* TYPE TAG */
+.type-tag {
+  position: absolute;
+  top: 6px; right: 6px;
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  letter-spacing: .04em;
+  padding: .18rem .45rem;
+  border-radius: 5px;
+  backdrop-filter: blur(8px);
+  z-index: 3;
+}
+.tag-anime  { background: rgba(102,252,241,.18); color: var(--accent);  border: 1px solid rgba(102,252,241,.3); }
+.tag-manga  { background: rgba(240,192, 64,.15); color: var(--yellow);  border: 1px solid rgba(240,192, 64,.25); }
+.tag-novel  { background: rgba( 72,187,120,.15); color: var(--green);   border: 1px solid rgba( 72,187,120,.25); }
+
+/* PROGRESS (серии/главы) */
+.progress-line {
+  font-size: .7rem;
+  color: var(--accent);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ── STATUS COLOURS ── */
-.status-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 4px;
-  flex-shrink: 0;
-}
-.dot-watching  { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-.dot-completed { background: #48bb78; }
-.dot-planned   { background: #718096; }
-.dot-paused    { background: #ed8936; }
-.dot-dropped   { background: #fc6b68; }
-
-/* ── STATES ── */
+/* STATES */
 .state-box {
   text-align: center;
   padding: 5rem 2rem;
@@ -249,41 +233,115 @@ section.group { margin-bottom: 3.5rem; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── STATS BAR (трекер) ── */
-.stats-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .5rem;
-  margin-bottom: 2rem;
-}
-.stat-pill {
-  display: flex;
-  align-items: center;
-  gap: .45rem;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: .55rem .9rem;
-  font-size: .82rem;
-  color: var(--text);
-}
-.stat-pill strong { color: var(--text-hi); font-size: .95rem; }
-
-/* ── ANIMATIONS ── */
+/* ANIMATIONS */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .card { animation: fadeUp .3s ease both; }
 
-/* ── MANGA TABS ── */
-.sub-tabs {
-  display: flex;
-  gap: .35rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
+/* ══ REVIEWS ══════════════════════════════════════════ */
+.reviews-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
 }
-.sub-tab-btn {
+@media (min-width: 700px)  { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.review-card {
+  display: flex;
+  gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .22s, transform .22s, box-shadow .22s;
+  align-items: flex-start;
+}
+.review-card:hover {
+  border-color: rgba(102,252,241,.35);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102,252,241,.07);
+}
+.review-cover {
+  width: 62px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.review-cover img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+}
+.review-body { flex: 1; min-width: 0; }
+.review-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .5rem;
+  margin-bottom: .45rem;
+}
+.review-title {
+  font-family: 'Syne', sans-serif;
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  line-height: 1.25;
+}
+.review-score {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--yellow);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.review-preview {
+  font-size: .78rem;
+  color: var(--text);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.review-footer {
+  margin-top: .6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .68rem;
+  color: var(--text-dim);
+}
+.review-source {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .18rem .45rem;
+}
+.review-source-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ══ TIMELINE ══════════════════════════════════════════ */
+.timeline-controls {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.tl-filter-btn {
   font-size: .8rem;
   padding: .35rem .85rem;
   border-radius: 6px;
@@ -294,11 +352,152 @@ section.group { margin-bottom: 3.5rem; }
   transition: all .18s;
   font-family: 'DM Sans', sans-serif;
 }
-.sub-tab-btn:hover { color: var(--text); border-color: #2a3448; }
-.sub-tab-btn.active {
+.tl-filter-btn:hover { color: var(--text); border-color: #2a3448; }
+.tl-filter-btn.active {
   background: rgba(102,252,241,.08);
   border-color: rgba(102,252,241,.3);
   color: var(--accent);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 1.6rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 6px; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%);
+}
+
+.tl-year-label {
+  font-family: 'Syne', sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 2rem 0 .75rem -1.6rem;
+  padding-left: 1.6rem;
+  position: relative;
+}
+.tl-year-label::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--bg);
+  box-shadow: 0 0 10px rgba(102,252,241,.3);
+}
+
+.tl-entry {
+  position: relative;
+  display: flex;
+  gap: .85rem;
+  margin-bottom: .75rem;
+  padding: .75rem .85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s, background .2s;
+  align-items: center;
+}
+.tl-entry::before {
+  content: '';
+  position: absolute;
+  left: -1.28rem; top: 50%;
+  transform: translateY(-50%);
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 1px solid var(--text-dim);
+}
+.tl-entry:hover {
+  border-color: rgba(102,252,241,.3);
+  background: var(--surface2);
+}
+.tl-entry:hover::before {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 6px rgba(102,252,241,.5);
+}
+
+.tl-thumb {
+  width: 42px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.tl-thumb img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+}
+.tl-info { flex: 1; min-width: 0; }
+.tl-name {
+  font-size: .84rem;
+  font-weight: 500;
+  color: var(--text-hi);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: .25rem;
+}
+.tl-dates {
+  font-size: .7rem;
+  color: var(--text-dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  align-items: center;
+}
+.tl-date-range {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.tl-arrow { color: var(--text-dim); font-size: .65rem; }
+.tl-ongoing { color: var(--accent); font-size: .7rem; }
+.tl-dur {
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .1rem .4rem;
+  font-size: .65rem;
+  color: var(--text-dim);
+}
+
+.tl-type-tag {
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .15rem .4rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.tl-score {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--yellow);
+  flex-shrink: 0;
+  min-width: 2.2rem;
+  text-align: right;
+}
+
+.tl-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-dim);
+  font-size: .88rem;
 }
 </style>
 </head>
@@ -310,54 +509,32 @@ section.group { margin-bottom: 3.5rem; }
 </header>
 
 <nav>
-  <button class="tab-btn active" onclick="switchTab('tab-anime', this)">▶ Аниме</button>
-  <button class="tab-btn" onclick="switchTab('tab-manga', this)">📖 Манга</button>
+  <button class="tab-btn active" onclick="switchTab('tab-now', this)">▶ Сейчас</button>
   <button class="tab-btn" onclick="switchTab('tab-favorites', this)">⭐ Фавориты</button>
+  <button class="tab-btn" onclick="switchTab('tab-reviews', this)">✍ Отзывы</button>
+  <button class="tab-btn" onclick="switchTab('tab-timeline', this)">📅 Хронология</button>
 </nav>
 
 <main>
-  <div id="tab-anime"     class="tab-content"><div class="state-box"><div class="spinner"></div>Загружаем аниме…</div></div>
-  <div id="tab-manga"     class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем мангу…</div></div>
+  <div id="tab-now"       class="tab-content"><div class="state-box"><div class="spinner"></div>Загружаем…</div></div>
   <div id="tab-favorites" class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем фавориты…</div></div>
+  <div id="tab-reviews"   class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем отзывы…</div></div>
+  <div id="tab-timeline"  class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем хронологию…</div></div>
 </main>
 
 <script>
 const USERNAME = "KtNovas";
-const ANILIST  = "https://graphql.anilist.co";
-
+const AL = "https://graphql.anilist.co";
 const PH_TALL = "https://placehold.co/300x420/0f1219/4a5568?text=?";
 const PH_SQ   = "https://placehold.co/300x300/0f1219/4a5568?text=?";
 
-const FORMAT_LABELS = {
-  TV:"TV", TV_SHORT:"TV Short", MOVIE:"Фильм", SPECIAL:"Спешл",
-  OVA:"OVA", ONA:"ONA", MUSIC:"Music",
-  MANGA:"Манга", NOVEL:"Ранобэ", ONE_SHOT:"Ваншот",
-  MANHWA:"Манхва", MANHUA:"Маньхуа"
-};
-
-const STATUS_MAP = {
-  CURRENT:   { label: "Смотрю",      icon: "▶", dot: "watching"  },
-  COMPLETED: { label: "Просмотрено", icon: "✓", dot: "completed" },
-  PLANNING:  { label: "Запланировано",icon:"◷", dot: "planned"   },
-  PAUSED:    { label: "Отложено",    icon: "⏸", dot: "paused"    },
-  DROPPED:   { label: "Брошено",     icon: "✕", dot: "dropped"   },
-  REPEATING: { label: "Пересматриваю",icon:"↺", dot: "watching"  },
-};
-
-const STATUS_MAP_MANGA = {
-  CURRENT:   { label: "Читаю",        icon: "▶", dot: "watching"  },
-  COMPLETED: { label: "Прочитано",    icon: "✓", dot: "completed" },
-  PLANNING:  { label: "Запланировано",icon:"◷", dot: "planned"   },
-  PAUSED:    { label: "Отложено",     icon: "⏸", dot: "paused"    },
-  DROPPED:   { label: "Брошено",      icon: "✕", dot: "dropped"   },
-  REPEATING: { label: "Перечитываю",  icon: "↺", dot: "watching"  },
-};
+const NOVEL_FORMATS = ["NOVEL","LIGHT_NOVEL"];
+const MANGA_FORMATS = ["MANGA","ONE_SHOT","MANHWA","MANHUA","DOUJIN"];
 
 const cache = {};
 
-// ── GQL HELPER ──────────────────────────────────────
 async function gql(query, variables = {}) {
-  const res = await fetch(ANILIST, {
+  const res = await fetch(AL, {
     method: "POST",
     headers: { "Content-Type": "application/json", "Accept": "application/json" },
     body: JSON.stringify({ query, variables })
@@ -368,349 +545,195 @@ async function gql(query, variables = {}) {
   return json.data;
 }
 
-// ── TABS ────────────────────────────────────────────
 function switchTab(tabId, btn) {
   document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
   document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
   document.getElementById(tabId).classList.remove("hidden");
   btn.classList.add("active");
-  if (tabId === "tab-anime")     loadAnime();
-  if (tabId === "tab-manga")     loadManga();
+  if (tabId === "tab-now")       loadNow();
   if (tabId === "tab-favorites") loadFavorites();
+  if (tabId === "tab-reviews")   loadReviews();
+  if (tabId === "tab-timeline")  loadTimeline();
 }
 
-// ── COVER URL ────────────────────────────────────────
-function cover(img, square = false) {
-  if (!img) return square ? PH_SQ : PH_TALL;
-  return img.extraLarge || img.large || img.medium || (square ? PH_SQ : PH_TALL);
+function coverUrl(img, sq = false) {
+  if (!img) return sq ? PH_SQ : PH_TALL;
+  return img.extraLarge || img.large || img.medium || (sq ? PH_SQ : PH_TALL);
+}
+function mediaTitle(t) {
+  return t?.userPreferred || t?.romaji || t?.english || "—";
+}
+function entryTypeTag(entry) {
+  if (entry.media.type === "ANIME") return ["anime","ANIME"];
+  if (NOVEL_FORMATS.includes(entry.media.format)) return ["novel","РАНОБЭ"];
+  return ["manga","МАНГА"];
 }
 
-// ── TITLE ────────────────────────────────────────────
-function title(t) {
-  return t?.russian || t?.userPreferred || t?.romaji || t?.english || "—";
-}
-
-// ═══════════════════════════════════════════════════
-// ANIME LIST
-// ═══════════════════════════════════════════════════
-const ANIME_QUERY = `
-query($name: String, $page: Int) {
-  Page(page: $page, perPage: 50) {
-    pageInfo { hasNextPage }
-    mediaList(userName: $name, type: ANIME, sort: UPDATED_TIME_DESC) {
-      status progress score(format: POINT_10)
-      media {
-        id siteUrl
-        title { romaji english userPreferred }
+// ══════════════════════════════════════════════════
+// NOW — текущие аниме + манга + ранобэ
+// ══════════════════════════════════════════════════
+const NOW_QUERY = `
+query($name: String) {
+  anime: Page(perPage: 50) {
+    mediaList(userName: $name, type: ANIME, status: CURRENT, sort: UPDATED_TIME_DESC) {
+      progress score(format: POINT_10)
+      media { id siteUrl type format
+        title { userPreferred romaji }
         coverImage { extraLarge large }
-        episodes format
-        averageScore
+        episodes
+      }
+    }
+  }
+  manga: Page(perPage: 50) {
+    mediaList(userName: $name, type: MANGA, status: CURRENT, sort: UPDATED_TIME_DESC) {
+      progress score(format: POINT_10)
+      media { id siteUrl type format
+        title { userPreferred romaji }
+        coverImage { extraLarge large }
+        chapters volumes
       }
     }
   }
 }`;
 
-async function fetchAllAnime() {
-  const all = [];
-  let page = 1;
-  while (true) {
-    const data = await gql(ANIME_QUERY, { name: USERNAME, page });
-    const p = data.Page;
-    all.push(...p.mediaList);
-    if (!p.pageInfo.hasNextPage) break;
-    page++;
-  }
-  return all;
-}
-
-async function loadAnime() {
-  if (cache.anime) { renderAnime(cache.anime); return; }
+async function loadNow() {
+  if (cache.now) { renderNow(cache.now); return; }
   try {
-    const list = await fetchAllAnime();
-    cache.anime = list;
-    renderAnime(list);
+    const data = await gql(NOW_QUERY, { name: USERNAME });
+    const all = [
+      ...(data.anime?.mediaList || []),
+      ...(data.manga?.mediaList || [])
+    ];
+    // Sort: anime first, then manga, then novel
+    all.sort((a, b) => {
+      const order = e => e.media.type === "ANIME" ? 0 : NOVEL_FORMATS.includes(e.media.format) ? 2 : 1;
+      return order(a) - order(b);
+    });
+    cache.now = all;
+    renderNow(all);
   } catch (err) {
-    document.getElementById("tab-anime").innerHTML =
+    document.getElementById("tab-now").innerHTML =
       `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}</div>`;
   }
 }
 
-function renderAnime(list) {
-  const box = document.getElementById("tab-anime");
-
-  // Stats
-  const counts = {};
-  for (const e of list) counts[e.status] = (counts[e.status] || 0) + 1;
-
-  const statsHTML = `<div class="stats-bar">
-    ${Object.entries(counts).map(([s, n]) => {
-      const m = STATUS_MAP[s] || { label: s, dot: "planned" };
-      return `<div class="stat-pill"><span class="status-dot dot-${m.dot}"></span><strong>${n}</strong> ${m.label}</div>`;
-    }).join("")}
-    <div class="stat-pill">📊 <strong>${list.length}</strong> всего</div>
-  </div>`;
-
-  // Group by status in preferred order
-  const ORDER = ["CURRENT","REPEATING","PAUSED","PLANNING","COMPLETED","DROPPED"];
-  const groups = {};
-  for (const e of list) {
-    if (!groups[e.status]) groups[e.status] = [];
-    groups[e.status].push(e);
+function renderNow(list) {
+  const box = document.getElementById("tab-now");
+  if (!list.length) {
+    box.innerHTML = `<div class="state-box">Сейчас ничего не смотришь и не читаешь</div>`;
+    return;
   }
-
-  let html = statsHTML;
-  for (const status of ORDER) {
-    if (!groups[status]?.length) continue;
-    const m = STATUS_MAP[status] || { label: status, icon: "•", dot: "planned" };
-    html += `<section class="group">
-      <h2 class="section-title">
-        ${m.icon} ${m.label}
-        <span class="section-badge">${groups[status].length}</span>
-      </h2>
-      <div class="grid-cards">
-        ${groups[status].map((e, i) => animeCard(e, i)).join("")}
+  box.innerHTML = `
+    <section class="group">
+      <h2 class="section-title">Сейчас <span class="section-badge">${list.length}</span></h2>
+      <div class="grid-now">
+        ${list.map((e, i) => nowCard(e, i)).join("")}
       </div>
     </section>`;
-  }
-
-  box.innerHTML = html || `<div class="state-box">Список пустой</div>`;
 }
 
-function animeCard(entry, index) {
-  const m  = entry.media;
-  const img = cover(m.coverImage);
-  const t  = m.title?.userPreferred || m.title?.romaji || "—";
-  const epDone  = entry.progress ?? 0;
-  const epTotal = m.episodes || 0;
-  const score   = entry.score > 0 ? entry.score : null;
-  const progress = epTotal > 0 ? Math.min((epDone / epTotal) * 100, 100) : 0;
-  const fmt = FORMAT_LABELS[m.format] || m.format || "";
+function nowCard(entry, index) {
+  const m   = entry.media;
+  const img = coverUrl(m.coverImage);
+  const t   = mediaTitle(m.title);
+  const [tagClass, tagLabel] = entryTypeTag(entry);
+  const done  = entry.progress ?? 0;
+  const total = m.type === "ANIME" ? (m.episodes || 0) : (m.chapters || 0);
+  const unit  = m.type === "ANIME" ? "эп." : "гл.";
 
   return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card"
-    style="animation-delay:${Math.min(index*25,500)}ms">
-    ${progress > 0 ? `<div class="card-progress-bar" style="width:${progress}%"></div>` : ""}
+    style="animation-delay:${Math.min(index * 30, 600)}ms">
+    <span class="type-tag tag-${tagClass}">${tagLabel}</span>
     <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
       <div class="card-title">${t}</div>
       <div class="card-meta">
-        <span>${epDone}${epTotal ? " / " + epTotal : ""}</span>
-        ${score ? `<span class="card-score">★ ${score}</span>` : fmt ? `<span class="card-format">${fmt}</span>` : ""}
+        <span class="progress-line">${done}${total ? " / " + total : ""} ${unit}</span>
       </div>
     </div>
   </a>`;
 }
 
-// ═══════════════════════════════════════════════════
-// MANGA LIST
-// ═══════════════════════════════════════════════════
-const MANGA_QUERY = `
-query($name: String, $page: Int) {
-  Page(page: $page, perPage: 50) {
-    pageInfo { hasNextPage }
-    mediaList(userName: $name, type: MANGA, sort: UPDATED_TIME_DESC) {
-      status progress score(format: POINT_10)
-      media {
-        id siteUrl
-        title { romaji english userPreferred }
-        coverImage { extraLarge large }
-        chapters format
-      }
-    }
-  }
-}`;
-
-async function fetchAllManga() {
-  const all = [];
-  let page = 1;
-  while (true) {
-    const data = await gql(MANGA_QUERY, { name: USERNAME, page });
-    const p = data.Page;
-    all.push(...p.mediaList);
-    if (!p.pageInfo.hasNextPage) break;
-    page++;
-  }
-  return all;
-}
-
-async function loadManga() {
-  if (cache.manga) { renderManga(cache.manga, activeMangaFilter); return; }
-  try {
-    const list = await fetchAllManga();
-    cache.manga = list;
-    renderManga(list, "ALL");
-  } catch (err) {
-    document.getElementById("tab-manga").innerHTML =
-      `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}</div>`;
-  }
-}
-
-let activeMangaFilter = "ALL";
-const MANGA_FORMAT_GROUPS = {
-  ALL:    { label: "Всё",     formats: null },
-  MANGA:  { label: "Манга",   formats: ["MANGA","ONE_SHOT"] },
-  NOVEL:  { label: "Ранобэ",  formats: ["NOVEL","LIGHT_NOVEL"] },
-  OTHER:  { label: "Другое",  formats: ["MANHWA","MANHUA","DOUJIN"] },
-};
-
-function switchMangaFilter(key, btn) {
-  activeMangaFilter = key;
-  document.querySelectorAll(".sub-tab-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  if (cache.manga) renderMangaContent(cache.manga, key);
-}
-
-function renderManga(list, filter = "ALL") {
-  activeMangaFilter = filter;
-  const box = document.getElementById("tab-manga");
-
-  const subTabs = `<div class="sub-tabs">
-    ${Object.entries(MANGA_FORMAT_GROUPS).map(([k, g]) =>
-      `<button class="sub-tab-btn${k === filter ? " active" : ""}" onclick="switchMangaFilter('${k}', this)">${g.label}</button>`
-    ).join("")}
-  </div>`;
-
-  box.innerHTML = subTabs + `<div id="manga-content"></div>`;
-  renderMangaContent(list, filter);
-}
-
-function renderMangaContent(list, filter) {
-  const group = MANGA_FORMAT_GROUPS[filter];
-  const filtered = group.formats
-    ? list.filter(e => group.formats.includes(e.media.format))
-    : list;
-
-  const ORDER = ["CURRENT","REPEATING","PAUSED","PLANNING","COMPLETED","DROPPED"];
-  const groups = {};
-  for (const e of filtered) {
-    if (!groups[e.status]) groups[e.status] = [];
-    groups[e.status].push(e);
-  }
-
-  let html = "";
-  for (const status of ORDER) {
-    if (!groups[status]?.length) continue;
-    const m = STATUS_MAP_MANGA[status] || { label: status, icon: "•", dot: "planned" };
-    html += `<section class="group">
-      <h2 class="section-title">
-        ${m.icon} ${m.label}
-        <span class="section-badge">${groups[status].length}</span>
-      </h2>
-      <div class="grid-cards">
-        ${groups[status].map((e, i) => mangaCard(e, i)).join("")}
-      </div>
-    </section>`;
-  }
-
-  document.getElementById("manga-content").innerHTML =
-    html || `<div class="state-box">Список пустой</div>`;
-}
-
-function mangaCard(entry, index) {
-  const m  = entry.media;
-  const img = cover(m.coverImage);
-  const t  = m.title?.userPreferred || m.title?.romaji || "—";
-  const chDone  = entry.progress ?? 0;
-  const chTotal = m.chapters || 0;
-  const score   = entry.score > 0 ? entry.score : null;
-  const fmt = FORMAT_LABELS[m.format] || "";
-
-  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card"
-    style="animation-delay:${Math.min(index*25,500)}ms">
-    <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    <div class="card-body">
-      <div class="card-title">${t}</div>
-      <div class="card-meta">
-        <span>${chDone}${chTotal ? " / " + chTotal : ""} гл.</span>
-        ${score ? `<span class="card-score">★ ${score}</span>` : fmt ? `<span class="card-format">${fmt}</span>` : ""}
-      </div>
-    </div>
-  </a>`;
-}
-
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 // FAVORITES
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
 const FAV_QUERY = `
 query($name: String) {
   User(name: $name) {
     favourites {
-      anime(perPage: 50) {
-        nodes {
-          id siteUrl
-          title { romaji english userPreferred }
-          coverImage { extraLarge large }
-          format averageScore
-        }
-      }
-      manga(perPage: 50) {
-        nodes {
-          id siteUrl
-          title { romaji english userPreferred }
-          coverImage { extraLarge large }
-          format averageScore
-        }
-      }
-      characters(perPage: 50) {
-        nodes {
-          id siteUrl
-          name { full }
-          image { large medium }
-        }
-      }
-      staff(perPage: 50) {
-        nodes {
-          id siteUrl
-          name { full }
-          image { large medium }
-        }
-      }
+      anime(perPage: 50) { nodes {
+        id siteUrl format averageScore
+        title { userPreferred romaji }
+        coverImage { extraLarge large }
+      }}
+      manga(perPage: 50) { nodes {
+        id siteUrl format averageScore
+        title { userPreferred romaji }
+        coverImage { extraLarge large }
+      }}
+      characters(perPage: 50) { nodes {
+        id siteUrl
+        name { full }
+        image { large medium }
+      }}
+      staff(perPage: 50) { nodes {
+        id siteUrl
+        name { full }
+        image { large medium }
+      }}
     }
   }
 }`;
 
 async function loadFavorites() {
-  if (cache.favorites) { renderFavorites(cache.favorites); return; }
+  if (cache.fav) { renderFavorites(cache.fav); return; }
   try {
     const data = await gql(FAV_QUERY, { name: USERNAME });
-    cache.favorites = data.User.favourites;
-    renderFavorites(cache.favorites);
+    cache.fav = data.User.favourites;
+    renderFavorites(cache.fav);
   } catch (err) {
     document.getElementById("tab-favorites").innerHTML =
       `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}</div>`;
   }
 }
 
+const FORMAT_LABELS = {
+  TV:"TV", TV_SHORT:"TV Short", MOVIE:"Фильм", SPECIAL:"Спешл",
+  OVA:"OVA", ONA:"ONA", MANGA:"Манга", NOVEL:"Ранобэ", ONE_SHOT:"Ваншот",
+  MANHWA:"Манхва", MANHUA:"Маньхуа"
+};
+
 function renderFavorites(fav) {
   const box = document.getElementById("tab-favorites");
-  const animes  = fav.anime?.nodes      || [];
-  const mangas  = fav.manga?.nodes      || [];
-  const chars   = fav.characters?.nodes || [];
-  const staff   = fav.staff?.nodes      || [];
+  const animes = fav.anime?.nodes || [];
+  const mangas = fav.manga?.nodes || [];
+  const chars  = fav.characters?.nodes || [];
+  const staff  = fav.staff?.nodes || [];
 
   let html = "";
-  if (animes.length)  html += favSection("🎬 Любимые аниме",       animes, false);
-  if (mangas.length)  html += favSection("📚 Любимая манга",        mangas, false);
-  if (chars.length)   html += favCharSection("👤 Любимые персонажи", chars);
-  if (staff.length)   html += favCharSection("🎌 Сейю / Режиссёры",  staff);
+  if (animes.length) html += favMediaSection("🎬 Любимые аниме", animes);
+  if (mangas.length) html += favMediaSection("📚 Любимая манга", mangas);
+  if (chars.length)  html += favPersonSection("👤 Любимые персонажи", chars);
+  if (staff.length)  html += favPersonSection("🎌 Сейю / Режиссёры", staff);
   box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
 }
 
-function favSection(heading, items, square) {
+function favMediaSection(heading, items) {
   return `<section class="group">
     <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
-    <div class="grid-cards">
+    <div class="grid-now">
       ${items.map((item, i) => {
-        const img = cover(item.coverImage, square);
-        const t = item.title?.userPreferred || item.title?.romaji || "—";
+        const img = coverUrl(item.coverImage);
+        const t   = mediaTitle(item.title);
         const fmt = FORMAT_LABELS[item.format] || "";
-        const score = item.averageScore ? Math.round(item.averageScore / 10) : null;
+        const score = item.averageScore ? (item.averageScore / 10).toFixed(1) : null;
         return `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card"
           style="animation-delay:${Math.min(i*25,500)}ms">
           <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
           <div class="card-body">
             <div class="card-title">${t}</div>
             <div class="card-meta">
-              ${fmt ? `<span class="card-format">${fmt}</span>` : "<span></span>"}
+              <span style="color:var(--text-dim);font-size:.65rem">${fmt}</span>
               ${score ? `<span class="card-score">★ ${score}</span>` : ""}
             </div>
           </div>
@@ -720,27 +743,239 @@ function favSection(heading, items, square) {
   </section>`;
 }
 
-function favCharSection(heading, items) {
+function favPersonSection(heading, items) {
   return `<section class="group">
     <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
     <div class="grid-chars">
       ${items.map((item, i) => {
-        const img = item.image?.large || item.image?.medium || PH_SQ;
+        const img  = item.image?.large || item.image?.medium || PH_SQ;
         const name = item.name?.full || "—";
         return `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card card-char"
           style="animation-delay:${Math.min(i*25,500)}ms">
           <img src="${img}" alt="${name}" loading="lazy" onerror="this.src='${PH_SQ}'">
-          <div class="card-body">
-            <div class="card-title">${name}</div>
-          </div>
+          <div class="card-body"><div class="card-title">${name}</div></div>
         </a>`;
       }).join("")}
     </div>
   </section>`;
 }
 
+// ══════════════════════════════════════════════════
+// REVIEWS — читаем reviews.json из репозитория
+// ══════════════════════════════════════════════════
+async function loadReviews() {
+  if (cache.reviews) { renderReviews(cache.reviews); return; }
+  try {
+    const res = await fetch("reviews.json");
+    if (!res.ok) throw new Error("reviews.json не найден");
+    const data = await res.json();
+    // Sort by date desc
+    data.sort((a, b) => new Date(b.date) - new Date(a.date));
+    cache.reviews = data;
+    renderReviews(data);
+  } catch (err) {
+    document.getElementById("tab-reviews").innerHTML =
+      `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">📝</div>
+      Отзывов пока нет.<br><span style="font-size:.8rem;margin-top:.5rem;display:block">Добавь записи в <code>reviews.json</code></span></div>`;
+  }
+}
+
+const SOURCE_LABELS = { telegraph: "Telegraph", bluesky: "Bluesky", other: "Ссылка" };
+
+function renderReviews(reviews) {
+  const box = document.getElementById("tab-reviews");
+  box.innerHTML = `
+    <section class="group">
+      <h2 class="section-title">✍ Отзывы <span class="section-badge">${reviews.length}</span></h2>
+      <div class="reviews-grid">
+        ${reviews.map((r, i) => reviewCard(r, i)).join("")}
+      </div>
+    </section>`;
+}
+
+function reviewCard(r, i) {
+  const typeColors = { anime: "var(--accent)", manga: "var(--yellow)", novel: "var(--green)" };
+  const typeColor  = typeColors[r.type] || "var(--text-dim)";
+  const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Ссылка";
+  const dateStr = r.date
+    ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
+    : "";
+
+  return `<a href="${r.url}" target="_blank" rel="noopener" class="review-card"
+    style="animation-delay:${Math.min(i*40,600)}ms">
+    <div class="review-cover">
+      <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    </div>
+    <div class="review-body">
+      <div class="review-header">
+        <div class="review-title">${r.title}</div>
+        ${r.score ? `<div class="review-score">★ ${r.score}</div>` : ""}
+      </div>
+      <div class="review-preview">${r.preview || ""}</div>
+      <div class="review-footer">
+        <span>${dateStr}</span>
+        <div class="review-source">
+          <span class="review-source-dot" style="background:${typeColor}"></span>
+          ${sourceLabel}
+        </div>
+      </div>
+    </div>
+  </a>`;
+}
+
+// ══════════════════════════════════════════════════
+// TIMELINE — история просмотра по датам AniList
+// ══════════════════════════════════════════════════
+const TL_QUERY = `
+query($name: String, $page: Int) {
+  Page(page: $page, perPage: 50) {
+    pageInfo { hasNextPage }
+    mediaList(userName: $name, sort: FINISHED_ON_DESC, status_in: [COMPLETED, CURRENT, DROPPED]) {
+      status
+      score(format: POINT_10)
+      progress
+      startedAt  { year month day }
+      completedAt { year month day }
+      media {
+        id siteUrl type format
+        title { userPreferred romaji }
+        coverImage { large medium }
+        episodes chapters
+      }
+    }
+  }
+}`;
+
+async function fetchAllTimeline() {
+  const all = [];
+  let page = 1;
+  while (true) {
+    const data = await gql(TL_QUERY, { name: USERNAME, page });
+    const p = data.Page;
+    all.push(...p.mediaList);
+    if (!p.pageInfo.hasNextPage) break;
+    page++;
+  }
+  return all;
+}
+
+let tlFilter = "ALL";
+
+async function loadTimeline() {
+  if (cache.timeline) { renderTimeline(cache.timeline, tlFilter); return; }
+  try {
+    const all = await fetchAllTimeline();
+    // Filter: only entries with at least startedAt date
+    const valid = all.filter(e => e.startedAt?.year);
+    cache.timeline = valid;
+    renderTimeline(valid, "ALL");
+  } catch (err) {
+    document.getElementById("tab-timeline").innerHTML =
+      `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}</div>`;
+  }
+}
+
+function switchTlFilter(key, btn) {
+  tlFilter = key;
+  document.querySelectorAll(".tl-filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  if (cache.timeline) renderTimelineList(cache.timeline, key);
+}
+
+function renderTimeline(list, filter) {
+  const box = document.getElementById("tab-timeline");
+  box.innerHTML = `
+    <div class="timeline-controls">
+      <button class="tl-filter-btn ${filter==="ALL"?"active":""}"    onclick="switchTlFilter('ALL',this)">Всё</button>
+      <button class="tl-filter-btn ${filter==="ANIME"?"active":""}"  onclick="switchTlFilter('ANIME',this)">Аниме</button>
+      <button class="tl-filter-btn ${filter==="MANGA"?"active":""}"  onclick="switchTlFilter('MANGA',this)">Манга</button>
+      <button class="tl-filter-btn ${filter==="NOVEL"?"active":""}"  onclick="switchTlFilter('NOVEL',this)">Ранобэ</button>
+    </div>
+    <div id="tl-list"></div>`;
+  renderTimelineList(list, filter);
+}
+
+function renderTimelineList(list, filter) {
+  let filtered = list;
+  if (filter === "ANIME") filtered = list.filter(e => e.media.type === "ANIME");
+  else if (filter === "MANGA") filtered = list.filter(e => e.media.type === "MANGA" && !NOVEL_FORMATS.includes(e.media.format));
+  else if (filter === "NOVEL") filtered = list.filter(e => NOVEL_FORMATS.includes(e.media.format));
+
+  if (!filtered.length) {
+    document.getElementById("tl-list").innerHTML = `<div class="tl-empty">Нет записей</div>`;
+    return;
+  }
+
+  // Group by year (of startedAt or completedAt)
+  const byYear = {};
+  for (const e of filtered) {
+    const y = e.completedAt?.year || e.startedAt?.year;
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push(e);
+  }
+  const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+
+  let html = "";
+  for (const year of years) {
+    html += `<div class="tl-year-label">${year}</div>
+    <div class="timeline">
+      ${byYear[year].map(e => tlEntry(e)).join("")}
+    </div>`;
+  }
+
+  document.getElementById("tl-list").innerHTML = html;
+}
+
+function fmtDate(d) {
+  if (!d?.year) return null;
+  if (!d.month) return `${d.year}`;
+  if (!d.day) return new Date(d.year, d.month - 1).toLocaleDateString("ru-RU", { month: "short", year: "numeric" });
+  return new Date(d.year, d.month - 1, d.day).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+}
+
+function daysBetween(a, b) {
+  if (!a?.year || !b?.year) return null;
+  const d1 = new Date(a.year, (a.month||1) - 1, a.day||1);
+  const d2 = new Date(b.year, (b.month||1) - 1, b.day||1);
+  const diff = Math.round((d2 - d1) / 86400000);
+  if (diff < 1) return null;
+  if (diff < 31) return `${diff} дн.`;
+  if (diff < 365) return `${Math.round(diff/30)} мес.`;
+  return `${(diff/365).toFixed(1)} г.`;
+}
+
+function tlEntry(entry) {
+  const m = entry.media;
+  const img = m.coverImage?.large || m.coverImage?.medium || PH_TALL;
+  const t   = mediaTitle(m.title);
+  const [tagClass, tagLabel] = entryTypeTag(entry);
+
+  const start    = fmtDate(entry.startedAt);
+  const end      = fmtDate(entry.completedAt);
+  const duration = daysBetween(entry.startedAt, entry.completedAt);
+  const score    = entry.score > 0 ? entry.score : null;
+  const ongoing  = entry.status === "CURRENT";
+
+  const datesHtml = `<div class="tl-date-range">
+    ${start ? `<span>${start}</span>` : ""}
+    ${(start && (end || ongoing)) ? `<span class="tl-arrow">→</span>` : ""}
+    ${end   ? `<span>${end}</span>` : ongoing ? `<span class="tl-ongoing">сейчас</span>` : ""}
+    ${duration ? `<span class="tl-dur">${duration}</span>` : ""}
+  </div>`;
+
+  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="tl-entry">
+    <div class="tl-thumb"><img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'"></div>
+    <div class="tl-info">
+      <div class="tl-name">${t}</div>
+      <div class="tl-dates">${datesHtml}</div>
+    </div>
+    <span class="tl-type-tag tag-${tagClass}">${tagLabel}</span>
+    ${score ? `<div class="tl-score">★ ${score}</div>` : ""}
+  </a>`;
+}
+
 // ── START ──────────────────────────────────────────
-loadAnime();
+loadNow();
 </script>
 </body>
 </html>
