@@ -1,49 +1,354 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeQerrti - Личный Хаб</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #0b0c10; color: #c5c6c7; font-family: system-ui, sans-serif; }
-        .tab-btn.active { color: #66fcf1; border-color: #66fcf1; background-color: rgba(102, 252, 241, 0.05); }
-    </style>
+
+```
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    body {
+        background-color: #0b0c10;
+        color: #c5c6c7;
+        font-family: system-ui, sans-serif;
+    }
+
+    .tab-btn.active {
+        color: #66fcf1;
+        border-color: #66fcf1;
+        background-color: rgba(102,252,241,.05);
+    }
+
+    .card {
+        background: rgba(31,40,51,.4);
+        border: 1px solid #1f2937;
+        transition: .25s;
+    }
+
+    .card:hover {
+        border-color: #66fcf1;
+        transform: translateY(-2px);
+    }
+</style>
+```
+
 </head>
+
 <body class="p-4 md:p-8 max-w-6xl mx-auto">
 
-    <header class="text-center my-6 border-b border-gray-800 pb-6">
-        <h1 class="text-4xl font-black tracking-wide text-[#66fcf1] mb-2">DeQerrti</h1>
-        <p class="text-gray-400 max-w-xl mx-auto text-sm">Личный трекер и фавориты из Shikimori</p>
-    </header>
+<header class="text-center my-6 border-b border-gray-800 pb-6">
+    <h1 class="text-4xl font-black tracking-wide text-[#66fcf1] mb-2">
+        DeQerrti
+    </h1>
 
-    <nav class="flex justify-center gap-2 border-b border-gray-800 mb-8 overflow-x-auto">
-        <button onclick="switchTab('tab-tracker')" class="tab-btn active px-4 py-3 font-semibold text-sm border-b-2 border-transparent">🏠 Трекер</button>
-        <button onclick="switchTab('tab-favorites')" class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent">⭐ Фавориты</button>
-    </nav>
+```
+<p class="text-gray-400 max-w-xl mx-auto text-sm">
+    Личный трекер и фавориты из Shikimori
+</p>
+```
 
-    <main>
-        <!-- Сетка для текущего трекера -->
-        <div id="tab-tracker" class="tab-content grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div id="tracker-loading" class="col-span-full text-center py-8 text-gray-500 animate-pulse">Загрузка трекера...</div>
-        </div>
+</header>
 
-        <!-- Сетка для фаворитов -->
-        <div id="tab-favorites" class="tab-content hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div id="fav-loading" class="col-span-full text-center py-8 text-gray-500 animate-pulse">Загрузка фаворитов...</div>
-        </div>
-    </main>
+<nav class="flex justify-center gap-2 border-b border-gray-800 mb-8 overflow-x-auto whitespace-nowrap">
 
-    <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.remove('hidden');
-            event.currentTarget.classList.add('active');
+```
+<button
+    onclick="switchTab('tab-tracker', this)"
+    class="tab-btn active px-4 py-3 font-semibold text-sm border-b-2 border-transparent">
+    🏠 Трекер
+</button>
+
+<button
+    onclick="switchTab('tab-favorites', this)"
+    class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent">
+    ⭐ Фавориты
+</button>
+```
+
+</nav>
+
+<main>
+
+```
+<div
+    id="tab-tracker"
+    class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+    <div class="col-span-full text-center py-8 text-gray-500 animate-pulse">
+        Загрузка трекера...
+    </div>
+
+</div>
+
+<div
+    id="tab-favorites"
+    class="tab-content hidden space-y-8">
+
+    <div class="text-center py-8 text-gray-500 animate-pulse">
+        Загрузка фаворитов...
+    </div>
+
+</div>
+```
+
+</main>
+
+<script>
+
+const USERNAME = "Qerrti";
+const API = "https://shikimori.one/api";
+
+const cache = {
+    tracker: null,
+    favorites: null
+};
+
+function switchTab(tabId, button) {
+
+    document
+        .querySelectorAll(".tab-content")
+        .forEach(el => el.classList.add("hidden"));
+
+    document
+        .querySelectorAll(".tab-btn")
+        .forEach(el => el.classList.remove("active"));
+
+    document
+        .getElementById(tabId)
+        .classList.remove("hidden");
+
+    button.classList.add("active");
+
+    if (tabId === "tab-favorites") {
+        loadFavorites();
+    }
+}
+
+async function api(url) {
+
+    const response = await fetch(url, {
+        headers: {
+            Accept: "application/json"
         }
-    </script>
+    });
 
-    <!-- СЮДА МЫ ВСТАВИМ СКРИПТ ШИКИМОРИ НА СЛЕДУЮЩЕМ ШАГЕ -->
+    if (!response.ok) {
+        throw new Error(response.status);
+    }
+
+    return response.json();
+}
+
+function animeImage(anime) {
+
+    if (!anime?.image) {
+        return "https://placehold.co/300x420?text=No+Image";
+    }
+
+    const img =
+        anime.image.original ||
+        anime.image.preview ||
+        anime.image.x96;
+
+    return img.startsWith("http")
+        ? img
+        : `https://shikimori.one${img}`;
+}
+
+async function loadTracker() {
+
+    if (cache.tracker) {
+        renderTracker(cache.tracker);
+        return;
+    }
+
+    const box = document.getElementById("tab-tracker");
+
+    try {
+
+        const data = await api(
+            `${API}/users/${USERNAME}/anime_rates?status=watching&limit=100`
+        );
+
+        cache.tracker = data;
+
+        renderTracker(data);
+
+    } catch (e) {
+
+        console.error(e);
+
+        box.innerHTML = `
+            <div class="col-span-full text-center text-red-400 py-8">
+                Ошибка загрузки трекера
+            </div>
+        `;
+    }
+}
+
+function renderTracker(entries) {
+
+    const box = document.getElementById("tab-tracker");
+
+    if (!entries.length) {
+
+        box.innerHTML = `
+            <div class="col-span-full text-center py-8 text-gray-500">
+                Сейчас ничего не смотрится
+            </div>
+        `;
+
+        return;
+    }
+
+    box.innerHTML = entries.map(entry => {
+
+        const anime = entry.anime;
+
+        return `
+        <a
+            href="https://shikimori.one${anime.url}"
+            target="_blank"
+            class="card rounded-xl overflow-hidden flex flex-col">
+
+            <div class="aspect-[2/3] overflow-hidden bg-black">
+
+                <img
+                    src="${animeImage(anime)}"
+                    alt="${anime.russian || anime.name}"
+                    loading="lazy"
+                    class="w-full h-full object-cover">
+
+            </div>
+
+            <div class="p-3 flex flex-col gap-2">
+
+                <h3 class="font-semibold text-sm line-clamp-2 text-white">
+                    ${anime.russian || anime.name}
+                </h3>
+
+                <div class="text-xs text-[#66fcf1]">
+                    ${entry.episodes || 0} / ${anime.episodes || "?"} эп.
+                </div>
+
+            </div>
+
+        </a>
+        `;
+
+    }).join("");
+}
+
+async function loadFavorites() {
+
+    if (cache.favorites) {
+        renderFavorites(cache.favorites);
+        return;
+    }
+
+    const box = document.getElementById("tab-favorites");
+
+    try {
+
+        const data = await api(
+            `${API}/users/${USERNAME}/favourites`
+        );
+
+        cache.favorites = data;
+
+        renderFavorites(data);
+
+    } catch (e) {
+
+        console.error(e);
+
+        box.innerHTML = `
+            <div class="text-center text-red-400 py-8">
+                Ошибка загрузки фаворитов
+            </div>
+        `;
+    }
+}
+
+function renderFavorites(data) {
+
+    const animes = data.animes || [];
+    const characters = data.characters || [];
+
+    const box = document.getElementById("tab-favorites");
+
+    box.innerHTML = `
+
+        <section>
+
+            <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
+                Любимые аниме
+            </h2>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+                ${animes.map(anime => `
+                    <a
+                        href="https://shikimori.one${anime.url}"
+                        target="_blank"
+                        class="card rounded-xl overflow-hidden">
+
+                        <img
+                            src="${animeImage(anime)}"
+                            loading="lazy"
+                            class="aspect-[2/3] w-full object-cover">
+
+                        <div class="p-3 text-sm font-semibold text-white">
+                            ${anime.russian || anime.name}
+                        </div>
+
+                    </a>
+                `).join("")}
+
+            </div>
+
+        </section>
+
+        <section>
+
+            <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
+                Любимые персонажи
+            </h2>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+
+                ${characters.map(character => `
+
+                    <a
+                        href="https://shikimori.one${character.url}"
+                        target="_blank"
+                        class="card rounded-xl overflow-hidden">
+
+                        <img
+                            src="https://shikimori.one${character.image.original}"
+                            loading="lazy"
+                            class="aspect-square w-full object-cover">
+
+                        <div class="p-3 text-sm font-semibold text-white">
+                            ${character.russian || character.name}
+                        </div>
+
+                    </a>
+
+                `).join("")}
+
+            </div>
+
+        </section>
+    `;
+}
+
+loadTracker();
+
+</script>
 
 </body>
 </html>
