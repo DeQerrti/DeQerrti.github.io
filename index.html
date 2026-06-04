@@ -253,11 +253,10 @@ section.group { margin-bottom: 3.5rem; }
 ══════════════════════════════════════════════════ */
 .reviews-grid {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.5rem;
   grid-template-columns: 1fr;
 }
-@media (min-width: 700px)  { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1100px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 800px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* Карточка отзыва */
 .review-card {
@@ -282,12 +281,12 @@ section.group { margin-bottom: 3.5rem; }
 /* Верхняя часть: обложка + инфо */
 .review-top {
   display: flex;
-  gap: .85rem;
-  padding: .75rem .85rem;
+  gap: 1.1rem;
+  padding: 1.1rem;
   flex: 1;
 }
 .review-cover {
-  width: 90px;
+  width: 130px;
   flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -311,7 +310,7 @@ section.group { margin-bottom: 3.5rem; }
 }
 .review-title {
   font-family: 'Syne', sans-serif;
-  font-size: .92rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-hi);
   line-height: 1.25;
@@ -324,17 +323,17 @@ section.group { margin-bottom: 3.5rem; }
   flex-wrap: wrap;
 }
 .review-format {
-  font-size: .65rem;
+  font-size: .72rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: .06em;
 }
 .review-date {
-  font-size: .65rem;
+  font-size: .72rem;
   color: var(--text-dim);
 }
 .review-waifu {
-  font-size: .7rem;
+  font-size: .78rem;
   color: var(--text-dim);
   font-style: italic;
   margin-bottom: .5rem;
@@ -342,29 +341,29 @@ section.group { margin-bottom: 3.5rem; }
 .review-waifu span { color: var(--accent); font-style: normal; }
 
 .review-preview {
-  font-size: .78rem;
+  font-size: .82rem;
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.65;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 /* Теги */
 .review-tags {
-  padding: .45rem .85rem;
+  padding: .6rem 1.1rem;
   display: flex;
   flex-wrap: wrap;
-  gap: .35rem;
+  gap: .4rem;
   border-top: 1px solid var(--border);
   overflow: visible;
   position: relative;
   z-index: 2;
 }
 .rtag {
-  font-size: .62rem;
-  padding: .2rem .5rem;
+  font-size: .68rem;
+  padding: .25rem .6rem;
   border-radius: 5px;
   font-weight: 500;
   letter-spacing: .02em;
@@ -412,18 +411,18 @@ section.group { margin-bottom: 3.5rem; }
 .review-grade-bar {
   display: flex;
   align-items: center;
-  gap: .6rem;
-  padding: .45rem .85rem;
+  gap: .7rem;
+  padding: .65rem 1.1rem;
   border-top: 1px solid var(--border);
 }
 .grade-square {
-  width: 10px; height: 10px;
-  border-radius: 3px;
+  width: 13px; height: 13px;
+  border-radius: 4px;
   flex-shrink: 0;
 }
 .grade-name {
   font-family: 'Syne', sans-serif;
-  font-size: .75rem;
+  font-size: .85rem;
   font-weight: 700;
   flex: 1;
 }
