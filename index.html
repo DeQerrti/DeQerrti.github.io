@@ -1,98 +1,72 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeQerrti - Личный Хаб</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeQerrti - Личный Хаб</title>
 
-```
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    body {
-        background-color: #0b0c10;
-        color: #c5c6c7;
-        font-family: system-ui, sans-serif;
-    }
+body {
+    background-color: #0b0c10;
+    color: #c5c6c7;
+    font-family: system-ui, sans-serif;
+}
 
-    .tab-btn.active {
-        color: #66fcf1;
-        border-color: #66fcf1;
-        background-color: rgba(102,252,241,.05);
-    }
+.tab-btn.active {
+    color: #66fcf1;
+    border-color: #66fcf1;
+    background-color: rgba(102,252,241,.05);
+}
 
-    .card {
-        background: rgba(31,40,51,.4);
-        border: 1px solid #1f2937;
-        transition: .25s;
-    }
+.card {
+    background: rgba(31,40,51,.4);
+    border: 1px solid #1f2937;
+    transition: .25s;
+}
 
-    .card:hover {
-        border-color: #66fcf1;
-        transform: translateY(-2px);
-    }
+.card:hover {
+    border-color: #66fcf1;
+    transform: translateY(-2px);
+}
 </style>
-```
 
 </head>
 
 <body class="p-4 md:p-8 max-w-6xl mx-auto">
 
 <header class="text-center my-6 border-b border-gray-800 pb-6">
-    <h1 class="text-4xl font-black tracking-wide text-[#66fcf1] mb-2">
-        DeQerrti
-    </h1>
-
-```
-<p class="text-gray-400 max-w-xl mx-auto text-sm">
-    Личный трекер и фавориты из Shikimori
-</p>
-```
-
+    <h1 class="text-4xl font-black text-[#66fcf1] mb-2">DeQerrti</h1>
+    <p class="text-gray-400 text-sm">Личный трекер Shikimori (как AniList)</p>
 </header>
 
-<nav class="flex justify-center gap-2 border-b border-gray-800 mb-8 overflow-x-auto whitespace-nowrap">
+<nav class="flex justify-center gap-2 border-b border-gray-800 mb-8">
 
-```
-<button
-    onclick="switchTab('tab-tracker', this)"
-    class="tab-btn active px-4 py-3 font-semibold text-sm border-b-2 border-transparent">
-    🏠 Трекер
+<button onclick="switchTab('tab-tracker', this)"
+class="tab-btn active px-4 py-3 border-b-2 border-transparent">
+🏠 Трекер
 </button>
 
-<button
-    onclick="switchTab('tab-favorites', this)"
-    class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent">
-    ⭐ Фавориты
+<button onclick="switchTab('tab-favorites', this)"
+class="tab-btn px-4 py-3 border-b-2 border-transparent">
+⭐ Фавориты
 </button>
-```
 
 </nav>
 
 <main>
 
-```
-<div
-    id="tab-tracker"
-    class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-
-    <div class="col-span-full text-center py-8 text-gray-500 animate-pulse">
-        Загрузка трекера...
-    </div>
-
+<div id="tab-tracker"
+class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+<div class="col-span-full text-center text-gray-500">
+Загрузка...
+</div>
 </div>
 
-<div
-    id="tab-favorites"
-    class="tab-content hidden space-y-8">
-
-    <div class="text-center py-8 text-gray-500 animate-pulse">
-        Загрузка фаворитов...
-    </div>
-
+<div id="tab-favorites" class="tab-content hidden">
+<div class="text-center text-gray-500">Загрузка...</div>
 </div>
-```
 
 </main>
 
@@ -106,21 +80,16 @@ const cache = {
     favorites: null
 };
 
-function switchTab(tabId, button) {
+function switchTab(tabId, btn) {
 
-    document
-        .querySelectorAll(".tab-content")
+    document.querySelectorAll(".tab-content")
         .forEach(el => el.classList.add("hidden"));
 
-    document
-        .querySelectorAll(".tab-btn")
+    document.querySelectorAll(".tab-btn")
         .forEach(el => el.classList.remove("active"));
 
-    document
-        .getElementById(tabId)
-        .classList.remove("hidden");
-
-    button.classList.add("active");
+    document.getElementById(tabId).classList.remove("hidden");
+    btn.classList.add("active");
 
     if (tabId === "tab-favorites") {
         loadFavorites();
@@ -128,35 +97,35 @@ function switchTab(tabId, button) {
 }
 
 async function api(url) {
-
-    const response = await fetch(url, {
-        headers: {
-            Accept: "application/json"
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error(response.status);
-    }
-
-    return response.json();
+    const res = await fetch(url);
+    return res.json();
 }
 
+// 🔥 ИСПРАВЛЕННЫЕ КАРТИНКИ
 function animeImage(anime) {
 
-    if (!anime?.image) {
+    const img = anime?.image;
+
+    if (!img) {
         return "https://placehold.co/300x420?text=No+Image";
     }
 
-    const img =
-        anime.image.original ||
-        anime.image.preview ||
-        anime.image.x96;
+    const raw =
+        img.original ||
+        img.preview ||
+        img.x96 ||
+        img.x48;
 
-    return img.startsWith("http")
-        ? img
-        : `https://shikimori.one${img}`;
+    if (!raw || raw.includes("missing_original")) {
+        return "https://placehold.co/300x420?text=No+Image";
+    }
+
+    return raw.startsWith("http")
+        ? raw
+        : `https://shikimori.one${raw}`;
 }
+
+// ---------------- TRACKER ----------------
 
 async function loadTracker() {
 
@@ -165,82 +134,87 @@ async function loadTracker() {
         return;
     }
 
-    const box = document.getElementById("tab-tracker");
+    const data = await api(
+        `${API}/users/${USERNAME}/anime_rates?limit=200`
+    );
 
-    try {
+    const grouped = {
+        watching: [],
+        planned: [],
+        completed: [],
+        dropped: []
+    };
 
-        const data = await api(
-            `${API}/users/${USERNAME}/anime_rates?status=watching&limit=100`
-        );
-
-        cache.tracker = data;
-
-        renderTracker(data);
-
-    } catch (e) {
-
-        console.error(e);
-
-        box.innerHTML = `
-            <div class="col-span-full text-center text-red-400 py-8">
-                Ошибка загрузки трекера
-            </div>
-        `;
+    for (const entry of data) {
+        if (grouped[entry.status]) {
+            grouped[entry.status].push(entry);
+        }
     }
+
+    cache.tracker = grouped;
+    renderTracker(grouped);
 }
 
-function renderTracker(entries) {
+function renderTracker(grouped) {
 
     const box = document.getElementById("tab-tracker");
 
-    if (!entries.length) {
+    const titles = {
+        watching: "Сейчас смотрю",
+        planned: "Запланировано",
+        completed: "Просмотрено",
+        dropped: "Брошено"
+    };
 
-        box.innerHTML = `
-            <div class="col-span-full text-center py-8 text-gray-500">
-                Сейчас ничего не смотрится
-            </div>
+    let html = "";
+
+    for (const [status, entries] of Object.entries(grouped)) {
+
+        if (!entries.length) continue;
+
+        html += `
+        <section class="col-span-full mb-10">
+            <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
+                ${titles[status]}
+            </h2>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         `;
 
-        return;
-    }
+        html += entries.map(entry => {
 
-    box.innerHTML = entries.map(entry => {
+            const anime = entry.anime;
 
-        const anime = entry.anime;
+            return `
+            <a href="https://shikimori.one${anime.url}"
+               target="_blank"
+               class="card rounded-xl overflow-hidden">
 
-        return `
-        <a
-            href="https://shikimori.one${anime.url}"
-            target="_blank"
-            class="card rounded-xl overflow-hidden flex flex-col">
+                <img src="${animeImage(anime)}"
+                     class="aspect-[2/3] w-full object-cover"
+                     loading="lazy">
 
-            <div class="aspect-[2/3] overflow-hidden bg-black">
+                <div class="p-3">
+                    <div class="text-sm font-semibold text-white line-clamp-2">
+                        ${anime.russian || anime.name}
+                    </div>
 
-                <img
-                    src="${animeImage(anime)}"
-                    alt="${anime.russian || anime.name}"
-                    loading="lazy"
-                    class="w-full h-full object-cover">
-
-            </div>
-
-            <div class="p-3 flex flex-col gap-2">
-
-                <h3 class="font-semibold text-sm line-clamp-2 text-white">
-                    ${anime.russian || anime.name}
-                </h3>
-
-                <div class="text-xs text-[#66fcf1]">
-                    ${entry.episodes || 0} / ${anime.episodes || "?"} эп.
+                    <div class="text-xs text-gray-400 mt-1">
+                        ${entry.episodes || 0} / ${anime.episodes || "?"}
+                    </div>
                 </div>
 
-            </div>
+            </a>
+            `;
+        }).join("");
 
-        </a>
-        `;
+        html += `</div></section>`;
+    }
 
-    }).join("");
+    box.innerHTML = html;
 }
+
+// ---------------- FAVORITES ----------------
 
 async function loadFavorites() {
 
@@ -249,103 +223,79 @@ async function loadFavorites() {
         return;
     }
 
-    const box = document.getElementById("tab-favorites");
+    const data = await api(`${API}/users/${USERNAME}/favourites`);
 
-    try {
-
-        const data = await api(
-            `${API}/users/${USERNAME}/favourites`
-        );
-
-        cache.favorites = data;
-
-        renderFavorites(data);
-
-    } catch (e) {
-
-        console.error(e);
-
-        box.innerHTML = `
-            <div class="text-center text-red-400 py-8">
-                Ошибка загрузки фаворитов
-            </div>
-        `;
-    }
+    cache.favorites = data;
+    renderFavorites(data);
 }
 
 function renderFavorites(data) {
 
+    const box = document.getElementById("tab-favorites");
+
     const animes = data.animes || [];
     const characters = data.characters || [];
 
-    const box = document.getElementById("tab-favorites");
-
     box.innerHTML = `
+    <section class="mb-10">
 
-        <section>
+        <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
+            Любимые аниме
+        </h2>
 
-            <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
-                Любимые аниме
-            </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            ${animes.map(anime => `
+                <a href="https://shikimori.one${anime.url}"
+                   target="_blank"
+                   class="card rounded-xl overflow-hidden">
 
-                ${animes.map(anime => `
-                    <a
-                        href="https://shikimori.one${anime.url}"
-                        target="_blank"
-                        class="card rounded-xl overflow-hidden">
+                    <img src="${animeImage(anime)}"
+                         class="aspect-[2/3] w-full object-cover">
 
-                        <img
-                            src="${animeImage(anime)}"
-                            loading="lazy"
-                            class="aspect-[2/3] w-full object-cover">
+                    <div class="p-3 text-sm text-white font-semibold">
+                        ${anime.russian || anime.name}
+                    </div>
 
-                        <div class="p-3 text-sm font-semibold text-white">
-                            ${anime.russian || anime.name}
-                        </div>
+                </a>
+            `).join("")}
 
-                    </a>
-                `).join("")}
+        </div>
 
-            </div>
+    </section>
 
-        </section>
+    <section>
 
-        <section>
+        <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
+            Любимые персонажи
+        </h2>
 
-            <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
-                Любимые персонажи
-            </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            ${characters.map(c => `
+                <a href="https://shikimori.one${c.url}"
+                   target="_blank"
+                   class="card rounded-xl overflow-hidden">
 
-                ${characters.map(character => `
+                    <img src="${c.image?.original
+                        ? `https://shikimori.one${c.image.original}`
+                        : "https://placehold.co/300x300?text=No+Image"}"
+                        class="aspect-square w-full object-cover">
 
-                    <a
-                        href="https://shikimori.one${character.url}"
-                        target="_blank"
-                        class="card rounded-xl overflow-hidden">
+                    <div class="p-3 text-sm text-white font-semibold">
+                        ${c.russian || c.name}
+                    </div>
 
-                        <img
-                            src="https://shikimori.one${character.image.original}"
-                            loading="lazy"
-                            class="aspect-square w-full object-cover">
+                </a>
+            `).join("")}
 
-                        <div class="p-3 text-sm font-semibold text-white">
-                            ${character.russian || character.name}
-                        </div>
+        </div>
 
-                    </a>
-
-                `).join("")}
-
-            </div>
-
-        </section>
+    </section>
     `;
 }
 
+// старт
 loadTracker();
 
 </script>
