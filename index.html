@@ -850,7 +850,7 @@ function renderNow({ current, completed }) {
   let html = "";
   if (current.length) {
     html += `<section class="group">
-      <h2 class="section-title">Сейчас</h2>
+      <h2 class="section-title">В процессе</h2>
       <div class="grid-now">${current.map((e, i) => nowCard(e, i)).join("")}</div>
     </section>`;
   }
@@ -1241,7 +1241,7 @@ function tlEntry(entry) {
   const datesHtml = `<div class="tl-date-range">
     ${start ? `<span>${start}</span>` : ""}
     ${(start && (end || ongoing)) ? `<span class="tl-arrow">→</span>` : ""}
-    ${end ? `<span>${end}</span>` : ongoing ? `<span class="tl-ongoing">сейчас</span>` : ""}
+    ${end ? `<span>${end}</span>` : ongoing ? `<span class="tl-ongoing">В процессе</span>` : ""}
     ${duration ? `<span class="tl-dur">${duration}</span>` : ""}
   </div>`;
 
