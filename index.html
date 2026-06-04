@@ -3,299 +3,628 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DeQerrti - Личный Хаб</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>DeQerrti — Личный Хаб</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+/* ─── ПЕРЕМЕННЫЕ ─────────────────────────────── */
+:root {
+    --bg:        #080a0f;
+    --surface:   #0f1219;
+    --border:    #1a2030;
+    --border-hi: #66fcf1;
+    --accent:    #66fcf1;
+    --accent2:   #c678dd;
+    --text:      #c8cdd8;
+    --text-dim:  #4a5568;
+    --text-hi:   #ffffff;
+}
+
+/* ─── СБРОС И БАЗА ───────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    background-color: #0b0c10;
-    color: #c5c6c7;
-    font-family: system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    /* тонкая зернистость фона */
+    background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,252,241,.06) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
 }
 
-.tab-btn.active {
-    color: #66fcf1;
-    border-color: #66fcf1;
-    background-color: rgba(102,252,241,.05);
+/* ─── ШАПКА ──────────────────────────────────── */
+header {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
 }
 
+.logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    /* свечение */
+    text-shadow: 0 0 40px rgba(102,252,241,.35);
+}
+
+.subtitle {
+    margin-top: .5rem;
+    font-size: .85rem;
+    color: var(--text-dim);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
+
+/* ─── НАВИГАЦИЯ ──────────────────────────────── */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: .25rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,10,15,.8);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+}
+
+.tab-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .9rem;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 1rem .9rem;
+    cursor: pointer;
+    transition: color .2s, border-color .2s;
+    white-space: nowrap;
+}
+
+.tab-btn:hover  { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ─── КОНТЕНТ ────────────────────────────────── */
+main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+}
+
+.tab-content.hidden { display: none; }
+
+/* ─── СЕКЦИЯ ─────────────────────────────────── */
+section.group {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-hi);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.section-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .7rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: rgba(102,252,241,.08);
+    border: 1px solid rgba(102,252,241,.2);
+    padding: .15rem .5rem;
+    border-radius: 999px;
+    letter-spacing: .06em;
+}
+
+/* ─── СЕТКА КАРТОЧЕК ─────────────────────────── */
+.grid-cards {
+    display: grid;
+    gap: .85rem;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 480px)  { .grid-cards { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 720px)  { .grid-cards { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1024px) { .grid-cards { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 1280px) { .grid-cards { grid-template-columns: repeat(6, 1fr); } }
+
+.grid-chars {
+    display: grid;
+    gap: .85rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+@media (min-width: 480px)  { .grid-chars { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 720px)  { .grid-chars { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 1024px) { .grid-chars { grid-template-columns: repeat(7, 1fr); } }
+
+/* ─── КАРТОЧКА ───────────────────────────────── */
 .card {
-    background: rgba(31,40,51,.4);
-    border: 1px solid #1f2937;
-    transition: .25s;
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+    position: relative;
 }
 
 .card:hover {
-    border-color: #66fcf1;
-    transform: translateY(-2px);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(102,252,241,.08);
+}
+
+/* полоска прогресса сверху карточки */
+.card-progress-bar {
+    position: absolute;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 2;
+    transition: width .4s ease;
+}
+
+.card img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    display: block;
+    background: var(--border);
+}
+
+.card-char img {
+    aspect-ratio: 1/1;
+}
+
+.card-body {
+    padding: .6rem .7rem .7rem;
+}
+
+.card-title {
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--text-hi);
+    line-height: 1.3;
+    /* максимум 2 строки */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-meta {
+    margin-top: .35rem;
+    font-size: .72rem;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-score {
+    color: #f0c040;
+    font-weight: 600;
+    font-size: .78rem;
+}
+
+/* ─── СОСТОЯНИЯ ──────────────────────────────── */
+.state-box {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dim);
+    font-size: .9rem;
+}
+
+.spinner {
+    width: 36px; height: 36px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-icon { font-size: 2rem; margin-bottom: .75rem; }
+
+/* ─── ПОЯВЛЕНИЕ КАРТОЧЕК ─────────────────────── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeUp .3s ease both;
 }
 </style>
-
 </head>
 
-<body class="p-4 md:p-8 max-w-6xl mx-auto">
+<body>
 
-<header class="text-center my-6 border-b border-gray-800 pb-6">
-    <h1 class="text-4xl font-black text-[#66fcf1] mb-2">DeQerrti</h1>
-    <p class="text-gray-400 text-sm">Личный трекер Shikimori</p>
+<!-- ══════════ ШАПКА ══════════ -->
+<header>
+    <div class="logo">DeQerrti</div>
+    <div class="subtitle">Личный трекер · Shikimori</div>
 </header>
 
-<nav class="flex justify-center gap-2 border-b border-gray-800 mb-8">
-
-<button onclick="switchTab('tab-tracker', this)"
-class="tab-btn active px-4 py-3 border-b-2 border-transparent">
-🏠 Трекер
-</button>
-
-<button onclick="switchTab('tab-favorites', this)"
-class="tab-btn px-4 py-3 border-b-2 border-transparent">
-⭐ Фавориты
-</button>
-
+<!-- ══════════ НАВИГАЦИЯ ══════════ -->
+<nav>
+    <button class="tab-btn active" onclick="switchTab('tab-tracker', this)">🏠 Трекер</button>
+    <button class="tab-btn"        onclick="switchTab('tab-favorites', this)">⭐ Фавориты</button>
 </nav>
 
+<!-- ══════════ КОНТЕНТ ══════════ -->
 <main>
 
-<div id="tab-tracker"
-class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-<div class="col-span-full text-center text-gray-500">
-Загрузка...
-</div>
-</div>
+    <div id="tab-tracker" class="tab-content">
+        <div class="state-box">
+            <div class="spinner"></div>
+            Загружаем аниме-лист…
+        </div>
+    </div>
 
-<div id="tab-favorites" class="tab-content hidden">
-<div class="text-center text-gray-500">Загрузка...</div>
-</div>
+    <div id="tab-favorites" class="tab-content hidden">
+        <div class="state-box">
+            <div class="spinner"></div>
+            Загружаем фаворитов…
+        </div>
+    </div>
 
 </main>
 
-<script>
 
+<script>
+// ════════════════════════════════════════════════
+//  КОНФИГ
+// ════════════════════════════════════════════════
 const USERNAME = "Qerrti";
-const API = "https://shikimori.one/api";
+const API      = "https://shikimori.one/api";
 
 const cache = {
-    tracker: null,
+    tracker:   null,
     favorites: null
 };
 
+// ════════════════════════════════════════════════
+//  ВКЛАДКИ
+// ════════════════════════════════════════════════
 function switchTab(tabId, btn) {
-
-    document.querySelectorAll(".tab-content")
-        .forEach(el => el.classList.add("hidden"));
-
-    document.querySelectorAll(".tab-btn")
-        .forEach(el => el.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+    document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
 
     document.getElementById(tabId).classList.remove("hidden");
     btn.classList.add("active");
 
-    if (tabId === "tab-favorites") {
-        loadFavorites();
-    }
+    if (tabId === "tab-favorites") loadFavorites();
 }
 
-async function api(url) {
-    const res = await fetch(url);
+// ════════════════════════════════════════════════
+//  УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ДЛЯ КАРТИНОК
+//  Работает и когда image — строка (фавориты),
+//  и когда image — объект (anime_rates)
+// ════════════════════════════════════════════════
+function buildImageUrl(imageData, square = false) {
+    const placeholder = square
+        ? "https://placehold.co/300x300/0f1219/4a5568?text=?"
+        : "https://placehold.co/300x420/0f1219/4a5568?text=?";
+
+    // image — строка (структура фаворитов)
+    if (typeof imageData === "string") {
+        if (!imageData || imageData.includes("missing")) return placeholder;
+        return imageData.startsWith("http")
+            ? imageData
+            : `https://shikimori.one${imageData}`;
+    }
+
+    // image — объект (структура anime_rates)
+    if (imageData && typeof imageData === "object") {
+        const path = imageData.original
+            || imageData.preview
+            || imageData.x96
+            || imageData.x48;
+
+        if (!path || path.includes("missing")) return placeholder;
+
+        return path.startsWith("http")
+            ? path
+            : `https://shikimori.one${path}`;
+    }
+
+    return placeholder;
+}
+
+// ════════════════════════════════════════════════
+//  ЗАПРОС К API
+// ════════════════════════════════════════════════
+async function apiFetch(url) {
+    const res = await fetch(url, {
+        headers: {
+            // Shikimori требует User-Agent, иначе может вернуть 429
+            "User-Agent": "DeQerrti Personal Hub (github)"
+        }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
 }
 
-// 🔥 НОРМАЛЬНАЯ ОБРАБОТКА КАРТИНОК
-function animeImage(anime) {
-
-    const img = anime?.image;
-
-    if (!img) {
-        return "https://placehold.co/300x420?text=No+Image";
-    }
-
-    const raw =
-        img.original ||
-        img.preview ||
-        img.x96 ||
-        img.x48;
-
-    if (!raw || raw.includes("missing_original")) {
-        return "https://placehold.co/300x420?text=No+Image";
-    }
-
-    return raw.startsWith("http")
-        ? raw
-        : `https://shikimori.one${raw}`;
-}
-
-// ---------------- TRACKER ----------------
-
+// ════════════════════════════════════════════════
+//  ТРЕКЕР
+// ════════════════════════════════════════════════
 async function loadTracker() {
+    const box = document.getElementById("tab-tracker");
 
     if (cache.tracker) {
         renderTracker(cache.tracker);
         return;
     }
 
-    const data = await api(
-        `${API}/users/${USERNAME}/anime_rates?limit=200`
-    );
+    try {
+        const data = await apiFetch(`${API}/users/${USERNAME}/anime_rates?limit=500&order=name`);
 
-    const grouped = {
-        watching: [],
-        planned: [],
-        completed: [],
-        dropped: []
-    };
+        // Группируем по статусу
+        const grouped = {
+            watching:  { label: "Сейчас смотрю",  icon: "▶️", items: [] },
+            planned:   { label: "Запланировано",   icon: "📋", items: [] },
+            completed: { label: "Просмотрено",     icon: "✅", items: [] },
+            on_hold:   { label: "Отложено",        icon: "⏸️", items: [] },
+            dropped:   { label: "Брошено",         icon: "🗑️", items: [] },
+        };
 
-    for (const entry of data) {
-        if (grouped[entry.status]) {
-            grouped[entry.status].push(entry);
+        for (const entry of data) {
+            if (grouped[entry.status]) {
+                grouped[entry.status].items.push(entry);
+            }
         }
-    }
 
-    cache.tracker = grouped;
-    renderTracker(grouped);
+        cache.tracker = grouped;
+        renderTracker(grouped);
+
+    } catch (err) {
+        box.innerHTML = `
+            <div class="state-box">
+                <div class="error-icon">⚠️</div>
+                Не удалось загрузить данные.<br>
+                <small style="color:#4a5568">${err.message}</small>
+            </div>`;
+    }
 }
 
 function renderTracker(grouped) {
-
     const box = document.getElementById("tab-tracker");
-
-    const titles = {
-        watching: "Сейчас смотрю",
-        planned: "Запланировано",
-        completed: "Просмотрено",
-        dropped: "Брошено"
-    };
-
     let html = "";
 
-    for (const [status, entries] of Object.entries(grouped)) {
-
-        if (!entries.length) continue;
+    for (const [, group] of Object.entries(grouped)) {
+        if (!group.items.length) continue;
 
         html += `
-        <section class="col-span-full mb-10">
-            <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
-                ${titles[status]}
+        <section class="group">
+            <h2 class="section-title">
+                ${group.icon} ${group.label}
+                <span class="section-badge">${group.items.length}</span>
             </h2>
+            <div class="grid-cards">
+                ${group.items.map((entry, i) => animeCard(entry, i)).join("")}
+            </div>
+        </section>`;
+    }
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        `;
-
-        html += entries.map(entry => {
-
-            const anime = entry.anime;
-
-            return `
-            <a href="https://shikimori.one${anime.url}"
-               target="_blank"
-               class="card rounded-xl overflow-hidden">
-
-                <img src="${animeImage(anime)}"
-                     class="aspect-[2/3] w-full object-cover"
-                     loading="lazy">
-
-                <div class="p-3">
-                    <div class="text-sm font-semibold text-white line-clamp-2">
-                        ${anime.russian || anime.name}
-                    </div>
-
-                    <div class="text-xs text-gray-400 mt-1">
-                        ${entry.episodes || 0} / ${anime.episodes || "?"}
-                    </div>
-                </div>
-
-            </a>
-            `;
-        }).join("");
-
-        html += `</div></section>`;
+    if (!html) {
+        html = `<div class="state-box">Список пустой</div>`;
     }
 
     box.innerHTML = html;
 }
 
-// ---------------- FAVORITES ----------------
+function animeCard(entry, index) {
+    const anime   = entry.anime;
+    const imgSrc  = buildImageUrl(anime?.image);
+    const title   = anime?.russian || anime?.name || "—";
+    const epDone  = entry.episodes ?? 0;
+    const epTotal = anime?.episodes || 0;
+    const score   = entry.score > 0 ? entry.score : null;
 
+    // прогресс в % для полоски сверху
+    const progress = epTotal > 0 ? Math.min((epDone / epTotal) * 100, 100) : 0;
+
+    return `
+    <a href="https://shikimori.one${anime?.url || ''}"
+       target="_blank"
+       rel="noopener"
+       class="card"
+       style="animation-delay: ${Math.min(index * 30, 400)}ms">
+
+        ${progress > 0 ? `<div class="card-progress-bar" style="width:${progress}%"></div>` : ""}
+
+        <img src="${imgSrc}"
+             alt="${title}"
+             loading="lazy"
+             onerror="this.src='https://placehold.co/300x420/0f1219/4a5568?text=?'">
+
+        <div class="card-body">
+            <div class="card-title">${title}</div>
+            <div class="card-meta">
+                <span>${epDone} / ${epTotal || "?"}</span>
+                ${score ? `<span class="card-score">★ ${score}</span>` : ""}
+            </div>
+        </div>
+
+    </a>`;
+}
+
+// ════════════════════════════════════════════════
+//  ФАВОРИТЫ
+// ════════════════════════════════════════════════
 async function loadFavorites() {
+    const box = document.getElementById("tab-favorites");
 
     if (cache.favorites) {
         renderFavorites(cache.favorites);
         return;
     }
 
-    const data = await api(`${API}/users/${USERNAME}/favourites`);
+    try {
+        const data = await apiFetch(`${API}/users/${USERNAME}/favourites`);
+        cache.favorites = data;
+        renderFavorites(data);
 
-    cache.favorites = data;
-    renderFavorites(data);
+    } catch (err) {
+        box.innerHTML = `
+            <div class="state-box">
+                <div class="error-icon">⚠️</div>
+                Не удалось загрузить фавориты.<br>
+                <small style="color:#4a5568">${err.message}</small>
+            </div>`;
+    }
 }
 
 function renderFavorites(data) {
-
-    const box = document.getElementById("tab-favorites");
-
-    const animes = data.animes || [];
+    const box        = document.getElementById("tab-favorites");
+    const animes     = data.animes     || [];
+    const mangas     = data.mangas     || [];
     const characters = data.characters || [];
+    const people     = data.people     || [];
 
-    box.innerHTML = `
-    <section class="mb-10">
+    let html = "";
 
-        <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
-            Любимые аниме
-        </h2>
+    // ── Любимые аниме ──
+    if (animes.length) {
+        html += `
+        <section class="group">
+            <h2 class="section-title">
+                🎬 Любимые аниме
+                <span class="section-badge">${animes.length}</span>
+            </h2>
+            <div class="grid-cards">
+                ${animes.map((a, i) => favAnimeCard(a, i)).join("")}
+            </div>
+        </section>`;
+    }
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    // ── Любимые манга ──
+    if (mangas.length) {
+        html += `
+        <section class="group">
+            <h2 class="section-title">
+                📚 Любимые манга
+                <span class="section-badge">${mangas.length}</span>
+            </h2>
+            <div class="grid-cards">
+                ${mangas.map((m, i) => favAnimeCard(m, i)).join("")}
+            </div>
+        </section>`;
+    }
 
-            ${animes.map(anime => `
-                <a href="https://shikimori.one${anime.url}"
-                   target="_blank"
-                   class="card rounded-xl overflow-hidden">
+    // ── Любимые персонажи ──
+    if (characters.length) {
+        html += `
+        <section class="group">
+            <h2 class="section-title">
+                👤 Любимые персонажи
+                <span class="section-badge">${characters.length}</span>
+            </h2>
+            <div class="grid-chars">
+                ${characters.map((c, i) => favCharCard(c, i)).join("")}
+            </div>
+        </section>`;
+    }
 
-                    <img src="${animeImage(anime)}"
-                         class="aspect-[2/3] w-full object-cover">
+    // ── Любимые люди ──
+    if (people.length) {
+        html += `
+        <section class="group">
+            <h2 class="section-title">
+                🎌 Любимые сейю / режиссёры
+                <span class="section-badge">${people.length}</span>
+            </h2>
+            <div class="grid-chars">
+                ${people.map((p, i) => favCharCard(p, i)).join("")}
+            </div>
+        </section>`;
+    }
 
-                    <div class="p-3 text-sm text-white font-semibold">
-                        ${anime.russian || anime.name}
-                    </div>
+    if (!html) {
+        html = `<div class="state-box">Фавориты не найдены</div>`;
+    }
 
-                </a>
-            `).join("")}
-
-        </div>
-
-    </section>
-
-    <section>
-
-        <h2 class="text-xl font-bold mb-4 text-[#66fcf1]">
-            Любимые персонажи
-        </h2>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-
-            ${characters.map(c => `
-                <a href="https://shikimori.one${c.url}"
-                   target="_blank"
-                   class="card rounded-xl overflow-hidden">
-
-                    <img src="${c.image?.original
-                        ? `https://shikimori.one${c.image.original}`
-                        : "https://placehold.co/300x300?text=No+Image"}"
-                        class="aspect-square w-full object-cover">
-
-                    <div class="p-3 text-sm text-white font-semibold">
-                        ${c.russian || c.name}
-                    </div>
-
-                </a>
-            `).join("")}
-
-        </div>
-
-    </section>
-    `;
+    box.innerHTML = html;
 }
 
-// старт
+// Карточка аниме/манги в фаворитах
+// У фаворитов image — это СТРОКА, не объект
+function favAnimeCard(item, index) {
+    const imgSrc = buildImageUrl(item.image);          // строка
+    const title  = item.russian || item.name || "—";
+
+    return `
+    <a href="https://shikimori.one${item.url || ''}"
+       target="_blank"
+       rel="noopener"
+       class="card"
+       style="animation-delay: ${Math.min(index * 30, 400)}ms">
+
+        <img src="${imgSrc}"
+             alt="${title}"
+             loading="lazy"
+             onerror="this.src='https://placehold.co/300x420/0f1219/4a5568?text=?'">
+
+        <div class="card-body">
+            <div class="card-title">${title}</div>
+        </div>
+
+    </a>`;
+}
+
+// Карточка персонажа / человека в фаворитах
+function favCharCard(item, index) {
+    // У персонажей image тоже может быть строкой или объектом — buildImageUrl справится
+    const imgSrc = buildImageUrl(item.image, true);
+    const title  = item.russian || item.name || "—";
+
+    return `
+    <a href="https://shikimori.one${item.url || ''}"
+       target="_blank"
+       rel="noopener"
+       class="card card-char"
+       style="animation-delay: ${Math.min(index * 30, 400)}ms">
+
+        <img src="${imgSrc}"
+             alt="${title}"
+             loading="lazy"
+             onerror="this.src='https://placehold.co/300x300/0f1219/4a5568?text=?'">
+
+        <div class="card-body">
+            <div class="card-title">${title}</div>
+        </div>
+
+    </a>`;
+}
+
+// ════════════════════════════════════════════════
+//  СТАРТ
+// ════════════════════════════════════════════════
 loadTracker();
 
 </script>
