@@ -38,7 +38,7 @@ body {
 
 <header class="text-center my-6 border-b border-gray-800 pb-6">
     <h1 class="text-4xl font-black text-[#66fcf1] mb-2">DeQerrti</h1>
-    <p class="text-gray-400 text-sm">Личный трекер Shikimori (как AniList)</p>
+    <p class="text-gray-400 text-sm">Личный трекер Shikimori</p>
 </header>
 
 <nav class="flex justify-center gap-2 border-b border-gray-800 mb-8">
@@ -78,9 +78,6 @@ const API = "https://shikimori.one/api";
 const cache = {
     tracker: null,
     favorites: null
-    async function getFullAnime(id) {
-    const res = await fetch(`https://shikimori.one/api/animes/${id}`);
-    return await res.json();
 };
 
 function switchTab(tabId, btn) {
@@ -95,44 +92,7 @@ function switchTab(tabId, btn) {
     btn.classList.add("active");
 
     if (tabId === "tab-favorites") {
-        async function loadTracker() {
-
-    if (cache.tracker) {
-        renderTracker(cache.tracker);
-        return;
-    }
-
-    const data = await api(
-        `${API}/users/${USERNAME}/anime_rates?limit=200`
-    );
-
-    const enriched = await Promise.all(
-        data.map(async (entry) => {
-            const full = await getFullAnime(entry.anime.id);
-
-            return {
-                ...entry,
-                anime: full
-            };
-        })
-    );
-
-    const grouped = {
-        watching: [],
-        planned: [],
-        completed: [],
-        dropped: []
-    };
-
-    for (const entry of enriched) {
-        if (grouped[entry.status]) {
-            grouped[entry.status].push(entry);
-        }
-    }
-
-    cache.tracker = grouped;
-    renderTracker(grouped);
-}
+        loadFavorites();
     }
 }
 
@@ -141,7 +101,7 @@ async function api(url) {
     return res.json();
 }
 
-// 🔥 ИСПРАВЛЕННЫЕ КАРТИНКИ
+// 🔥 НОРМАЛЬНАЯ ОБРАБОТКА КАРТИНОК
 function animeImage(anime) {
 
     const img = anime?.image;
