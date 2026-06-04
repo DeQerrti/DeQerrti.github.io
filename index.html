@@ -971,22 +971,17 @@ function favMediaSection(heading, items) {
     <h2 class="section-title">${heading}</h2>
     <div class="grid-now">
       ${items.map((item, i) => {
-        const img = coverUrl(item.coverImage);
-        const t   = mediaTitle(item.title);
-        const fmt = FORMAT_LABELS[item.format] || "";
-        const score = item.averageScore ? (item.averageScore / 10).toFixed(1) : null;
-        return `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card"
-          style="animation-delay:${Math.min(i*25,500)}ms">
-          <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
-          <div class="card-body">
-            <div class="card-title">${t}</div>
-            <div class="card-meta">
-              <span style="color:var(--text-dim);font-size:.65rem">${fmt}</span>
-              ${score ? `<span class="card-score">★ ${score}</span>` : ""}
-            </div>
-          </div>
-        </a>`;
-      }).join("")}
+  const img = coverUrl(item.coverImage);
+  const t   = mediaTitle(item.title);
+
+  return `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card"
+    style="animation-delay:${Math.min(i*25,500)}ms">
+    <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <div class="card-body">
+      <div class="card-title">${t}</div>
+    </div>
+  </a>`;
+}).join("")}
     </div>
   </section>`;
 }
