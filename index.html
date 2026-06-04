@@ -783,9 +783,9 @@ function entryTypeTag(entry) {
 // ══════════════════════════════════════════════════
 const NOW_QUERY = `
 query($name: String) {
-  anime: Page(perPage: 50) {
+  anime_cur: Page(perPage: 50) {
     mediaList(userName: $name, type: ANIME, status: CURRENT, sort: UPDATED_TIME_DESC) {
-      progress score(format: POINT_10)
+      progress
       media { id siteUrl type format
         title { userPreferred romaji }
         coverImage { extraLarge large }
@@ -793,13 +793,29 @@ query($name: String) {
       }
     }
   }
-  manga: Page(perPage: 50) {
+  manga_cur: Page(perPage: 50) {
     mediaList(userName: $name, type: MANGA, status: CURRENT, sort: UPDATED_TIME_DESC) {
-      progress score(format: POINT_10)
+      progress
       media { id siteUrl type format
         title { userPreferred romaji }
         coverImage { extraLarge large }
         chapters volumes
+      }
+    }
+  }
+  anime_done: Page(perPage: 50) {
+    mediaList(userName: $name, type: ANIME, status: COMPLETED, sort: UPDATED_TIME_DESC) {
+      media { id siteUrl type format
+        title { userPreferred romaji }
+        coverImage { extraLarge large }
+      }
+    }
+  }
+  manga_done: Page(perPage: 50) {
+    mediaList(userName: $name, type: MANGA, status: COMPLETED, sort: UPDATED_TIME_DESC) {
+      media { id siteUrl type format
+        title { userPreferred romaji }
+        coverImage { extraLarge large }
       }
     }
   }
@@ -809,33 +825,43 @@ async function loadNow() {
   if (cache.now) { renderNow(cache.now); return; }
   try {
     const data = await gql(NOW_QUERY, { name: USERNAME });
-    const all = [
-      ...(data.anime?.mediaList || []),
-      ...(data.manga?.mediaList || [])
+    const current = [
+      ...(data.anime_cur?.mediaList || []),
+      ...(data.manga_cur?.mediaList || [])
     ];
-    all.sort((a, b) => {
+    current.sort((a, b) => {
       const order = e => e.media.type === "ANIME" ? 0 : NOVEL_FORMATS.includes(e.media.format) ? 2 : 1;
       return order(a) - order(b);
     });
-    cache.now = all;
-    renderNow(all);
+    const completed = [
+      ...(data.anime_done?.mediaList || []),
+      ...(data.manga_done?.mediaList || [])
+    ];
+    cache.now = { current, completed };
+    renderNow(cache.now);
   } catch (err) {
     document.getElementById("tab-now").innerHTML =
       `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}</div>`;
   }
 }
 
-function renderNow(list) {
+function renderNow({ current, completed }) {
   const box = document.getElementById("tab-now");
-  if (!list.length) {
-    box.innerHTML = `<div class="state-box">Сейчас ничего не смотришь и не читаешь</div>`;
-    return;
-  }
-  box.innerHTML = `
-    <section class="group">
-      <h2 class="section-title">В процессе</h2>
-      <div class="grid-now">${list.map((e, i) => nowCard(e, i)).join("")}</div>
+  let html = "";
+  if (current.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Сейчас</h2>
+      <div class="grid-now">${current.map((e, i) => nowCard(e, i)).join("")}</div>
     </section>`;
+  }
+  if (completed.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Просмотрено / Прочитано</h2>
+      <div class="grid-now">${completed.map((e, i) => completedCard(e, i)).join("")}</div>
+    </section>`;
+  }
+  if (!html) html = `<div class="state-box">Список пуст</div>`;
+  box.innerHTML = html;
 }
 
 function nowCard(entry, index) {
@@ -860,6 +886,22 @@ function nowCard(entry, index) {
   </a>`;
 }
 
+  function completedCard(entry, index) {
+  const m   = entry.media;
+  const img = coverUrl(m.coverImage);
+  const t   = mediaTitle(m.title);
+  const [tagClass, tagLabel] = entryTypeTag(entry);
+
+  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card"
+    style="animation-delay:${Math.min(index * 30, 600)}ms">
+    <span class="type-tag tag-${tagClass}">${tagLabel}</span>
+    <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <div class="card-body">
+      <div class="card-title">${t}</div>
+    </div>
+  </a>`;
+}
+  
 // ══════════════════════════════════════════════════
 // FAVORITES
 // ══════════════════════════════════════════════════
