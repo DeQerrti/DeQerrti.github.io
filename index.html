@@ -11,13 +11,11 @@
         .status-watching { background-color: #0284c7; color: #fff; }
         .status-completed { background-color: #16a34a; color: #fff; }
         .status-planned { background-color: #4b5563; color: #fff; }
-        .tier-S { background: #ff7f7f; color: #000; }
-        .tier-A { background: #ffbf7f; color: #000; }
-        .tier-B { background: #ffdf7f; color: #000; }
     </style>
 </head>
 <body class="p-4 md:p-8 max-w-6xl mx-auto">
 
+    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ ДАННЫМИ (РЕДАКТИРУЙ ТОЛЬКО ЭТОТ БЛОК) -->
     <script>
         const MY_DATA = {
             username: "DeQerrti",
@@ -32,7 +30,7 @@
                 {
                     title: "Атака титанов",
                     type: "аниме", 
-                    status: "completed", // watching (смотрю/играю), completed (просмотрено/пройдено), planned (в планах)
+                    status: "completed",
                     progress: "Финал. Часть 3", 
                     score: "10/10",
                     image: "https://images.shikimori.one/animes/original/16498.jpg"
@@ -44,33 +42,15 @@
                     progress: "4 сезон, 5 серия",
                     score: "8/10",
                     image: "https://images.shikimori.one/animes/original/38000.jpg"
-                },
-                {
-                    title: "Cyberpunk 2077",
-                    type: "игра",
-                    status: "watching", 
-                    progress: "Phantom Liberty DLC",
-                    score: "9/10",
-                    image: "https://images.shikimori.one/animes/original/41930.jpg" 
-                },
-                {
-                    title: "Человек-бензопила",
-                    type: "манга",
-                    status: "planned",
-                    progress: "Ждет перевода",
-                    score: "Не начато",
-                    image: "https://images.shikimori.one/animes/original/44511.jpg"
                 }
             ],
 
-            // 2. ФАВОРИТЫ (КОЛЛЕКЦИИ)
+            // 2. ФАВОРИТЫ
             favorites: {
                 anime: [
-                    { title: "Евангелион", desc: "Лучшая психологическая драма", image: "https://images.shikimori.one/animes/original/30.jpg" },
-                    { title: "Тетрадь смерти", desc: "Классика ментальных битв", image: "https://images.shikimori.one/animes/original/1535.jpg" }
+                    { title: "Евангелион", desc: "Лучшая психологическая драма", image: "https://images.shikimori.one/animes/original/30.jpg" }
                 ],
                 games: [
-                    { title: "The Witcher 3", desc: "Шедевр сторителлинга", image: "https://images.shikimori.one/animes/original/24703.jpg" },
                     { title: "Elden Ring", desc: "Лучший открытый мир", image: "https://images.shikimori.one/animes/original/49303.jpg" }
                 ],
                 characters: [
@@ -81,41 +61,74 @@
             // 3. ОТЗЫВЫ
             reviews: [
                 {
-                    title: "Отзыв на Магическую Битву (Сезон 2)",
-                    tag: "аниме", // аниме, игры, книги
-                    date: "2026-05-15",
-                    text: "Визуально это шедевр от MAPPA. Студия выложилась на максимум в арке Сибуи. Сюжет держит в напряжении, но темп повествования местами слишком безумный."
-                },
-                {
                     title: "Мнение о Elden Ring: Shadow of the Erdtree",
                     tag: "игры",
                     date: "2026-06-01",
-                    text: "Сложность выкручена на предел. Дизайн локаций вертикальный и запутанный, исследовать одно удовольствие. Боссы заставляют потеть, но награда того стоит."
+                    text: "Сложность выкручена на предел. Дизайн локаций вертикальный и запутанный, исследовать одно удовольствие."
                 }
             ],
 
-            // 4. КАНБАН ДОСКА (Твоя интерактивная зона)
-            kanban: [
-                { title: "Атака титанов", tier: "S", image: "https://images.shikimori.one/animes/original/16498.jpg" },
-                { title: "Клинок рассекающий демонов", tier: "A", image: "https://images.shikimori.one/animes/original/38000.jpg" },
-                { title: "Магическая битва", tier: "B", image: "https://images.shikimori.one/animes/original/40748.jpg" }
+            // 4. ТИР-ЛИСТЫ ИЗ ОБСИДИАНА
+            tierlists: [
+                {
+                    title: "Duet Night Abyss",
+                    desc: "Тир-лист персонажей актуального патча",
+                    image: "duet-night.png" 
+                },
+                {
+                    title: "Morimens",
+                    desc: "Моя личная оценка ростера",
+                    image: "morimens.png"
+                }
+            ],
+
+            // 5. КАЛЕНДАРЬ ХРОНОЛОГИИ (ИСТОРИЯ ПРОСМОТРА / ЧТЕНИЯ / ИГР)
+            history: [
+                {
+                    date: "15 Июня 2026",
+                    title: "Магическая битва (Сезон 2)",
+                    type: "аниме",
+                    event: "Завершил просмотр",
+                    comment: "Эпичный финал арки Сибуи, побежал писать отзыв.",
+                    image: "https://images.shikimori.one/animes/original/40748.jpg"
+                },
+                {
+                    date: "01 Июня 2026",
+                    title: "Elden Ring: Shadow of the Erdtree",
+                    type: "игра",
+                    event: "Начал прохождение DLC",
+                    comment: "Первый же босс размотал меня за 10 секунд. Прекрасно.",
+                    image: "https://images.shikimori.one/animes/original/49303.jpg"
+                },
+                {
+                    date: "20 Мая 2026",
+                    title: "Человек-бензопила (Том 12)",
+                    type: "манга",
+                    event: "Прочитал полностью",
+                    comment: "Начало второй части интригует, Аса Митака — отличный персонаж.",
+                    image: "https://images.shikimori.one/animes/original/44511.jpg"
+                }
             ]
         };
     </script>
 
+    <!-- ШАПКА САЙТА -->
     <header class="text-center my-6 border-b border-gray-800 pb-6">
         <h1 id="header-name" class="text-4xl font-black tracking-wide text-[#66fcf1] mb-2"></h1>
         <p id="header-bio" class="text-gray-400 max-w-xl mx-auto text-sm mb-4"></p>
         <div id="header-links" class="flex justify-center gap-3"></div>
     </header>
 
+    <!-- НАВИГАЦИЯ -->
     <nav class="flex justify-center gap-2 border-b border-gray-800 mb-8 overflow-x-auto whitespace-nowrap">
         <button onclick="switchTab('tab-tracker')" class="tab-btn active px-4 py-3 font-semibold text-sm border-b-2 border-transparent transition-all">🏠 Трекер</button>
         <button onclick="switchTab('tab-favorites')" class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent transition-all">⭐ Фавориты</button>
         <button onclick="switchTab('tab-reviews')" class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent transition-all">📝 Отзывы</button>
-        <button onclick="switchTab('tab-kanban')" class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent transition-all">📋 Канбан Доска</button>
+        <button onclick="switchTab('tab-tierlists')" class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent transition-all">📊 Мои Тир-листы</button>
+        <button onclick="switchTab('tab-history')" class="tab-btn px-4 py-3 font-semibold text-sm border-b-2 border-transparent transition-all">📅 История</button>
     </nav>
 
+    <!-- СОДЕРЖИМОЕ -->
     <main>
         <div id="tab-tracker" class="tab-content grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
 
@@ -135,19 +148,23 @@
         </div>
 
         <div id="tab-reviews" class="tab-content hidden space-y-6">
-            <div class="flex gap-2 mb-4 overflow-x-auto py-1">
-                <button onclick="filterReviews('all')" class="rev-filter-btn bg-gray-800 text-xs font-bold px-3 py-1.5 rounded-md text-white hover:bg-gray-700">Все</button>
-                <button onclick="filterReviews('аниме')" class="rev-filter-btn bg-gray-800 text-xs font-bold px-3 py-1.5 rounded-md text-gray-400 hover:bg-gray-700">Аниме</button>
-                <button onclick="filterReviews('игры')" class="rev-filter-btn bg-gray-800 text-xs font-bold px-3 py-1.5 rounded-md text-gray-400 hover:bg-gray-700">Игры</button>
-            </div>
             <div id="reviews-container" class="space-y-4"></div>
         </div>
 
-        <div id="tab-kanban" class="tab-content hidden bg-[#1f2833]/20 p-4 rounded-xl border border-gray-800">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="kanban-cols"></div>
+        <div id="tab-tierlists" class="tab-content hidden space-y-8">
+            <div id="tierlists-container" class="grid grid-cols-1 gap-8"></div>
+        </div>
+
+        <!-- НОВАЯ ВКЛАДКА: КАЛЕНДАРЬ ИСТОРИИ -->
+        <div id="tab-history" class="tab-content hidden max-w-2xl mx-auto px-2">
+            <div class="relative border-l-2 border-[#66fcf1]/30 ml-4 md:ml-32 space-y-8">
+                <!-- Сюда генерируются события хронологии -->
+                <div id="history-container" class="space-y-8"></div>
+            </div>
         </div>
     </main>
 
+    <!-- ДВИЖКОВАЯ ЛОГИКА -->
     <script>
         document.getElementById('header-name').innerText = MY_DATA.username;
         document.getElementById('header-bio').innerText = MY_DATA.bio;
@@ -200,51 +217,58 @@
         renderFavs('fav-games', MY_DATA.favorites.games);
         renderFavs('fav-chars', MY_DATA.favorites.characters);
 
-        function displayReviews(filterTag) {
-            const container = document.getElementById('reviews-container');
-            container.innerHTML = '';
-            const list = filterTag === 'all' ? MY_DATA.reviews : MY_DATA.reviews.filter(r => r.tag === filterTag);
-            if(list.length === 0) { container.innerHTML = '<p class="text-gray-600 text-sm">Тут пока ничего нет.</p>'; return; }
-            list.forEach(r => {
-                container.innerHTML += `
-                    <div class="bg-[#1f2833]/30 border border-gray-800 rounded-xl p-4 space-y-2">
-                        <div class="flex justify-between items-start">
-                            <h4 class="font-bold text-white text-base">${r.title}</h4>
-                            <span class="text-[10px] font-mono text-gray-500">${r.date}</span>
-                        </div>
-                        <p class="text-sm text-gray-300 leading-relaxed">${r.text}</p>
-                        <div class="pt-1"><span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded text-[#66fcf1] font-medium">#${r.tag}</span></div>
-                    </div>`;
-            });
-        }
-        function filterReviews(tag) {
-            displayReviews(tag);
-            document.querySelectorAll('.rev-filter-btn').forEach(btn => {
-                if(btn.innerText.toLowerCase() === tag || (tag === 'all' && btn.innerText === 'Все')) {
-                    btn.classList.remove('text-gray-400'); btn.classList.add('text-white', 'bg-gray-700');
-                } else {
-                    btn.classList.add('text-gray-400'); btn.classList.remove('text-white', 'bg-gray-700');
-                }
-            });
-        }
-        displayReviews('all');
+        const container = document.getElementById('reviews-container');
+        MY_DATA.reviews.forEach(r => {
+            container.innerHTML += `
+                <div class="bg-[#1f2833]/30 border border-gray-800 rounded-xl p-4 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-white text-base">${r.title}</h4>
+                        <span class="text-[10px] font-mono text-gray-500">${r.date}</span>
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed">${r.text}</p>
+                    <div class="pt-1"><span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded text-[#66fcf1] font-medium">#${r.tag}</span></div>
+                </div>`;
+        });
 
-        const kanbanBox = document.getElementById('kanban-cols');
-        const tiers = ['S', 'A', 'B'];
-        tiers.forEach(t => {
-            const items = MY_DATA.kanban.filter(k => k.tier === t);
-            let cardsHtml = '';
-            items.forEach(i => {
-                cardsHtml += `
-                    <div class="bg-[#0b0c10] border border-gray-800 rounded-lg p-2 flex gap-3 items-center">
-                        <img src="${i.image}" class="w-10 h-14 object-cover rounded bg-gray-900 flex-shrink-0">
-                        <span class="text-xs font-bold text-white truncate">${i.title}</span>
-                    </div>`;
-            });
-            kanbanBox.innerHTML += `
-                <div class="bg-[#0b0c10]/50 border border-gray-800/80 rounded-xl p-3 flex flex-col space-y-3">
-                    <div class="tier-${t} text-center py-1 rounded font-black text-sm tracking-widest">${t} ТИР</div>
-                    <div class="flex flex-col space-y-2 flex-grow">${cardsHtml || '<p class="text-gray-600 text-xs text-center py-4">Пусто</p>'}</div>
+        const tlContainer = document.getElementById('tierlists-container');
+        MY_DATA.tierlists.forEach(tl => {
+            tlContainer.innerHTML += `
+                <div class="bg-[#1f2833]/10 border border-gray-800 rounded-2xl p-4 md:p-6 space-y-4">
+                    <div>
+                        <h4 class="text-xl font-bold text-white">${tl.title}</h4>
+                        <p class="text-xs text-gray-400 mt-1">${tl.desc}</p>
+                    </div>
+                    <div class="overflow-x-auto bg-[#0b0c10] p-2 rounded-xl border border-gray-900 shadow-inner">
+                        <img src="${tl.image}" alt="${tl.title}" class="max-w-full h-auto object-contain mx-auto rounded-lg" loading="lazy">
+                    </div>
+                </div>`;
+        });
+
+        // Логика отрисовки Хронологического Календаря
+        const histContainer = document.getElementById('history-container');
+        MY_DATA.history.forEach(h => {
+            histContainer.innerHTML += `
+                <div class="relative pl-6 md:pl-8 group">
+                    <!-- Неоновая точка на линии -->
+                    <div class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-[#66fcf1] border-2 border-[#0b0c10] group-hover:bg-white transition-colors shadow-[0_0_8px_#66fcf1]"></div>
+                    
+                    <!-- Блок даты для больших экранов -->
+                    <div class="hidden md:block absolute -left-32 top-0.5 w-24 text-right text-xs font-bold text-gray-500 font-mono">${h.date}</div>
+                    
+                    <!-- Сама карточка события -->
+                    <div class="bg-[#1f2833]/20 border border-gray-800/80 rounded-xl p-4 flex gap-4 items-start hover:border-[#66fcf1]/30 transition-all">
+                        <img src="${h.image}" class="w-14 h-20 object-cover rounded-lg bg-gray-900 flex-shrink-0 shadow-md">
+                        <div class="space-y-1 flex-grow">
+                            <!-- Дата для мобильных устройств внутри карточки -->
+                            <div class="block md:hidden text-[10px] font-bold text-gray-500 font-mono mb-1">${h.date}</div>
+                            <div class="flex flex-wrap items-center gap-x-2">
+                                <h4 class="font-bold text-white text-sm sm:text-base">${h.title}</h4>
+                                <span class="text-[10px] bg-gray-800 px-1.5 py-0.2 rounded text-gray-400 uppercase tracking-wider">${h.type}</span>
+                            </div>
+                            <div class="text-xs font-semibold text-[#66fcf1]">${h.event}</div>
+                            <p class="text-xs sm:text-sm text-gray-400 leading-relaxed pt-1">${h.comment}</p>
+                        </div>
+                    </div>
                 </div>`;
         });
     </script>
