@@ -16,6 +16,21 @@
   },
   {
     "id": 2,
+    "title": "The Day of the Jackal",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/tYLecM3WSEjlkKhkGiH5G68Dprm.jpg",
+    "type": "movie",
+    "format": "Сериал (1 сезон)",
+    "year": "2024",
+    "grade": "attrakcion",
+    "favorites": "Шакал",
+    "tags": ["Топ визуал", "Осты в тему", "Затягивает сразу", "До титров", "Проседает", "Крутой протагонист", "Серая мораль"],
+    "source": "teletype",
+    "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
+    "preview": "Сериал о мире где грань между солдатом, агентом и киллером исчезает, а самые опасные люди никогда не нажимают на спусковой крючок. На поверхности всё выглядит как классический триллер: загадочный наёмный убийца по прозвищу Шакал выполняет почти невозможные заказы...",
+    "date": "2026-03-11"
+  },
+  {
+    "id": 3,
     "title": "Tokyo Ghoul:re",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85611-Asb0BNP23NsJ.png",
     "type": "manga",
@@ -30,7 +45,7 @@
     "date": "2026-02-18"
   },
   {
-     "id": 3,
+     "id": 4,
     "title": "Tokyo Ghoul",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx63327-glC9cDxYBja9.png",
     "type": "manga",
