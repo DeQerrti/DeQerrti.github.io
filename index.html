@@ -959,9 +959,9 @@ function renderFavorites(fav) {
   const staff  = fav.staff?.nodes || [];
 
   let html = "";
-  if (animes.length) html += favMediaSection("Любимые аниме", animes);
-  if (mangas.length) html += favMediaSection("Любимая манга", mangas);
-  if (chars.length)  html += favPersonSection("Любимые персонажи", chars);
+  if (animes.length) html += favMediaSection("Аниме", animes);
+  if (mangas.length) html += favMediaSection("Манга", mangas);
+  if (chars.length)  html += favPersonSection("Персонажи", chars);
   if (staff.length)  html += favPersonSection("Сейю / Режиссёры", staff);
   box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
 }
