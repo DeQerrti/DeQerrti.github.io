@@ -22,13 +22,6 @@
   --yellow: #f0c040;
   --orange: #ed8936;
   --red: #fc6b68;
-  --grade-brown:  #8B6914;
-  --grade-red:    #c0392b;
-  --grade-white:  #6b7280;
-  --grade-yellow: #d4a017;
-  --grade-green:  #2d8a4e;
-  --grade-blue:   #2563a8;
-  --grade-purple: #7c3aed;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -173,7 +166,6 @@ section.group { margin-bottom: 3.5rem; }
   align-items: center;
   gap: .3rem;
 }
-.card-score { color: var(--yellow); font-weight: 600; font-size: .75rem; }
 .type-tag {
   position: absolute;
   top: 6px; right: 6px;
@@ -247,12 +239,7 @@ section.group { margin-bottom: 3.5rem; }
   transform: translateY(-4px);
   box-shadow: 0 14px 40px rgba(0,0,0,.4);
 }
-.review-top {
-  display: flex;
-  gap: 1.1rem;
-  padding: 1.1rem;
-  flex: 1;
-}
+.review-top { display: flex; gap: 1.1rem; padding: 1.1rem; flex: 1; }
 .review-cover {
   width: 150px;
   flex-shrink: 0;
@@ -261,34 +248,11 @@ section.group { margin-bottom: 3.5rem; }
   border: 1px solid var(--border);
   align-self: flex-start;
 }
-.review-cover img {
-  width: 100%;
-  aspect-ratio: 2/3;
-  object-fit: cover;
-  display: block;
-}
+.review-cover img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
 .review-body { flex: 1; min-width: 0; }
-.review-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: .5rem;
-  margin-bottom: .3rem;
-}
-.review-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.12rem;
-  font-weight: 700;
-  color: var(--text-hi);
-  line-height: 1.25;
-}
-.review-meta-row {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  margin-bottom: .55rem;
-  flex-wrap: wrap;
-}
+.review-header { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; margin-bottom: .3rem; }
+.review-title { font-family: 'Syne', sans-serif; font-size: 1.12rem; font-weight: 700; color: var(--text-hi); line-height: 1.25; }
+.review-meta-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .55rem; flex-wrap: wrap; }
 .review-format { font-size: .72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .06em; }
 .review-date   { font-size: .72rem; color: var(--text-dim); }
 .review-waifu  { font-size: .78rem; color: var(--text-dim); font-style: italic; margin-bottom: .5rem; }
@@ -346,13 +310,7 @@ section.group { margin-bottom: 3.5rem; }
   border-top-color: var(--border);
   z-index: 21;
 }
-.review-grade-bar {
-  display: flex;
-  align-items: center;
-  gap: .7rem;
-  padding: .65rem 1.1rem;
-  border-top: 1px solid var(--border);
-}
+.review-grade-bar { display: flex; align-items: center; gap: .7rem; padding: .65rem 1.1rem; border-top: 1px solid var(--border); }
 .grade-square { width: 13px; height: 13px; border-radius: 4px; flex-shrink: 0; }
 .grade-name { font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 700; flex: 1; }
 .grade-desc { font-size: .65rem; color: var(--text-dim); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
@@ -449,9 +407,9 @@ const TRAKT_USERNAME = "Qerrti";
 const TRAKT_CLIENT   = "f9e52841369f43c4d8f0f4ab92033469eb89c2959c1005cb493749d29b8ee19c";
 const TMDB_TOKEN     = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjFhNzQwYmU5OGZlM2RjOGU5MDM4MTliMzhiZmVkOCIsIm5iZiI6MTc4MDYzNjA4MS45NTksInN1YiI6IjZhMjI1OWIxNDU5ZmNjOGIwZmJjMGQ3NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9aMoESd6Okdst8IX5NrRkLcZipD7yJ9Qb0mmlJniGDg";
 
-const AL     = "https://graphql.anilist.co";
-const TRAKT  = "https://api.trakt.tv";
-const TMDB   = "https://api.themoviedb.org/3";
+const AL       = "https://graphql.anilist.co";
+const TRAKT    = "https://api.trakt.tv";
+const TMDB     = "https://api.themoviedb.org/3";
 const TMDB_IMG = "https://image.tmdb.org/t/p";
 
 const PH_TALL = "https://placehold.co/300x420/0f1219/4a5568?text=?";
@@ -566,7 +524,7 @@ function entryTypeTag(entry) {
 }
 
 // ══════════════════════════════════════════════════
-// TRAKT helpers (shared between NOW and FAVORITES)
+// TRAKT helpers
 // ══════════════════════════════════════════════════
 async function enrichTraktWithPosters(items, type) {
   const BATCH = 20;
@@ -593,6 +551,36 @@ async function enrichTraktWithPosters(items, type) {
     }));
   }
   return result;
+}
+
+// Fetch ALL pages of Trakt watched history (movies or shows)
+// Returns deduplicated items (one entry per unique title, with last_watched_at)
+async function fetchTraktWatched(type) {
+  const path = type === "movie"
+    ? `/users/${TRAKT_USERNAME}/watched/movies?extended=noseasons`
+    : `/users/${TRAKT_USERNAME}/watched/shows?extended=noseasons`;
+  try {
+    const items = await traktFetch(path);
+    return items;
+  } catch {
+    return [];
+  }
+}
+
+// Fetch Trakt history with actual watch dates (paginated, newest first)
+// We use this for the timeline — we want the FIRST watch date per title
+async function fetchTraktHistoryDates(type) {
+  // Get watched list (has last_watched_at)
+  const items = await fetchTraktWatched(type);
+  // Build map: id -> { last_watched_at, item }
+  const map = {};
+  for (const item of items) {
+    const entry = type === "movie" ? item.movie : item.show;
+    const id = entry?.ids?.trakt;
+    if (!id) continue;
+    map[id] = { item, watched_at: item.last_watched_at };
+  }
+  return map;
 }
 
 // ══════════════════════════════════════════════════
@@ -627,11 +615,10 @@ query($name: String) {
 async function loadNow() {
   if (cache.now) { renderNow(cache.now); return; }
   try {
-    // Load AniList + Trakt in parallel
-    const [alData, traktMovies, traktShows] = await Promise.all([
+    const [alData, traktMoviesRaw, traktShowsRaw] = await Promise.all([
       gql(NOW_QUERY, { name: AL_USERNAME }),
-      traktFetch(`/users/${TRAKT_USERNAME}/watched/movies?extended=noseasons`).catch(() => []),
-      traktFetch(`/users/${TRAKT_USERNAME}/watched/shows?extended=noseasons`).catch(() => [])
+      fetchTraktWatched("movie"),
+      fetchTraktWatched("show")
     ]);
 
     const alCurrent = [
@@ -643,10 +630,9 @@ async function loadNow() {
       ...(alData.manga_done?.mediaList || [])
     ];
 
-    // Enrich Trakt with posters (limit to 50 each for speed)
     const [enrichedMovies, enrichedShows] = await Promise.all([
-      enrichTraktWithPosters(traktMovies.slice(0, 50), "movie"),
-      enrichTraktWithPosters(traktShows.slice(0, 50), "show")
+      enrichTraktWithPosters(traktMoviesRaw.slice(0, 50), "movie"),
+      enrichTraktWithPosters(traktShowsRaw.slice(0, 50), "show")
     ]);
 
     cache.now = { alCurrent, alCompleted, traktMovies: enrichedMovies, traktShows: enrichedShows };
@@ -668,7 +654,6 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
     </section>`;
   }
 
-  // Completed: merge AL + Trakt, interleaved
   const allCompleted = [
     ...alCompleted.map(e => ({ _src: "al", data: e })),
     ...traktMovies.map(e => ({ _src: "trakt", type: "movie", data: e })),
@@ -761,7 +746,6 @@ async function loadFavorites() {
       traktFetch(`/users/${TRAKT_USERNAME}/ratings/shows?limit=50`).catch(() => [])
     ]);
 
-    // Use top-rated Trakt items as "favorites" (rating >= 8)
     const favMovies = traktMovies.filter(r => r.rating >= 8);
     const favShows  = traktShows.filter(r => r.rating >= 8);
 
@@ -770,11 +754,7 @@ async function loadFavorites() {
       enrichTraktWithPosters(favShows, "show")
     ]);
 
-    cache.fav = {
-      al: alData.User.favourites,
-      traktMovies: enrichedMovies,
-      traktShows: enrichedShows
-    };
+    cache.fav = { al: alData.User.favourites, traktMovies: enrichedMovies, traktShows: enrichedShows };
     renderFavorites(cache.fav);
   } catch (err) {
     document.getElementById("tab-favorites").innerHTML =
@@ -789,7 +769,6 @@ function renderFavorites({ al, traktMovies, traktShows }) {
   const chars  = al.characters?.nodes || [];
   const staff  = al.staff?.nodes || [];
 
-  // Merge all titles: AL anime + AL manga + Trakt movies + Trakt shows
   const allTitles = [
     ...animes.map(item => ({ _src: "al-anime", data: item })),
     ...mangas.map(item => ({ _src: "al-manga", data: item })),
@@ -820,7 +799,6 @@ function renderFavorites({ al, traktMovies, traktShows }) {
               <div class="card-body"><div class="card-title">${mediaTitle(item.data.title)}</div></div>
             </a>`;
           }
-          // Trakt
           return traktCard(item.data, item.type, i);
         }).join("")}
       </div>
@@ -928,7 +906,7 @@ function reviewCard(r, i) {
 }
 
 // ══════════════════════════════════════════════════
-// TIMELINE
+// TIMELINE — AniList + Trakt
 // ══════════════════════════════════════════════════
 const TL_QUERY = `
 query($name: String, $page: Int) {
@@ -943,7 +921,7 @@ query($name: String, $page: Int) {
   }
 }`;
 
-async function fetchAllTimeline() {
+async function fetchAllALTimeline() {
   const all = [];
   let page = 1;
   while (true) {
@@ -956,13 +934,73 @@ async function fetchAllTimeline() {
   return all;
 }
 
+// Convert Trakt watched items into unified timeline entries
+// Each item gets { _tl_type, _tl_year, _tl_watched_at, ... }
+async function buildTraktTimelineEntries() {
+  const [moviesRaw, showsRaw] = await Promise.all([
+    fetchTraktWatched("movie"),
+    fetchTraktWatched("show")
+  ]);
+
+  // Merge movies and shows, enrich with posters
+  const allRaw = [
+    ...moviesRaw.map(i => ({ ...i, _traktType: "movie" })),
+    ...showsRaw.map(i => ({ ...i, _traktType: "show" }))
+  ];
+
+  const enriched = [];
+  const BATCH = 20;
+  for (let i = 0; i < allRaw.length; i += BATCH) {
+    const chunk = allRaw.slice(i, i + BATCH);
+    await Promise.all(chunk.map(async item => {
+      const type = item._traktType;
+      const entry = type === "movie" ? item.movie : item.show;
+      const tmdbId = entry?.ids?.tmdb;
+      let poster = null, titleRu = entry?.title || "—", year = entry?.year || "", tmdbUrl = "#";
+      if (tmdbId) {
+        try {
+          const detail = await tmdbFetch(`/${type === "movie" ? "movie" : "tv"}/${tmdbId}?language=ru-RU`);
+          poster   = tmdbPoster(detail.poster_path, "w342");
+          titleRu  = detail.title || detail.name || entry.title;
+          year     = (detail.release_date || detail.first_air_date || "").slice(0, 4);
+          tmdbUrl  = `https://www.themoviedb.org/${type === "movie" ? "movie" : "tv"}/${tmdbId}`;
+        } catch {}
+      }
+      // last_watched_at is ISO string like "2024-03-15T20:00:00.000Z"
+      const watchedAt = item.last_watched_at ? new Date(item.last_watched_at) : null;
+      enriched.push({
+        _src: "trakt",
+        _traktType: type,
+        _poster: poster || PH_TALL,
+        _title: titleRu,
+        _year: year,
+        _url: tmdbUrl,
+        _watchedAt: watchedAt,
+        _watchedYear: watchedAt ? watchedAt.getFullYear() : (parseInt(year) || null),
+        _watchedDateStr: watchedAt
+          ? watchedAt.toLocaleDateString("ru-RU", { day: "numeric", month: "short" })
+          : null
+      });
+    }));
+  }
+  return enriched;
+}
+
 let tlFilter = "ALL";
 
 async function loadTimeline() {
   if (cache.timeline) { renderTimeline(cache.timeline, tlFilter); return; }
   try {
-    const all = await fetchAllTimeline();
-    cache.timeline = all.filter(e => e.startedAt?.year);
+    // Load AniList and Trakt timeline in parallel
+    const [alEntries, traktEntries] = await Promise.all([
+      fetchAllALTimeline(),
+      buildTraktTimelineEntries()
+    ]);
+
+    cache.timeline = {
+      al: alEntries.filter(e => e.startedAt?.year || e.completedAt?.year),
+      trakt: traktEntries.filter(e => e._watchedYear)
+    };
     renderTimeline(cache.timeline, "ALL");
   } catch (err) {
     document.getElementById("tab-timeline").innerHTML =
@@ -977,42 +1015,78 @@ function switchTlFilter(key, btn) {
   if (cache.timeline) renderTimelineList(cache.timeline, key);
 }
 
-function renderTimeline(list, filter) {
+function renderTimeline(data, filter) {
   const box = document.getElementById("tab-timeline");
   box.innerHTML = `
     <div class="timeline-controls">
-      <button class="tl-filter-btn ${filter==="ALL"?"active":""}"   onclick="switchTlFilter('ALL',this)">Всё</button>
-      <button class="tl-filter-btn ${filter==="ANIME"?"active":""}" onclick="switchTlFilter('ANIME',this)">Аниме</button>
-      <button class="tl-filter-btn ${filter==="MANGA"?"active":""}" onclick="switchTlFilter('MANGA',this)">Манга</button>
-      <button class="tl-filter-btn ${filter==="NOVEL"?"active":""}" onclick="switchTlFilter('NOVEL',this)">Ранобэ</button>
+      <button class="tl-filter-btn ${filter==="ALL"?"active":""}"    onclick="switchTlFilter('ALL',this)">Всё</button>
+      <button class="tl-filter-btn ${filter==="ANIME"?"active":""}"  onclick="switchTlFilter('ANIME',this)">Аниме</button>
+      <button class="tl-filter-btn ${filter==="MANGA"?"active":""}"  onclick="switchTlFilter('MANGA',this)">Манга</button>
+      <button class="tl-filter-btn ${filter==="NOVEL"?"active":""}"  onclick="switchTlFilter('NOVEL',this)">Ранобэ</button>
+      <button class="tl-filter-btn ${filter==="MOVIE"?"active":""}"  onclick="switchTlFilter('MOVIE',this)">Фильмы</button>
+      <button class="tl-filter-btn ${filter==="SHOW"?"active":""}"   onclick="switchTlFilter('SHOW',this)">Сериалы</button>
     </div>
     <div id="tl-list"></div>`;
-  renderTimelineList(list, filter);
+  renderTimelineList(data, filter);
 }
 
-function renderTimelineList(list, filter) {
-  let filtered = list;
-  if (filter === "ANIME") filtered = list.filter(e => e.media.type === "ANIME");
-  else if (filter === "MANGA") filtered = list.filter(e => e.media.type === "MANGA" && !NOVEL_FORMATS.includes(e.media.format));
-  else if (filter === "NOVEL") filtered = list.filter(e => NOVEL_FORMATS.includes(e.media.format));
+function renderTimelineList({ al, trakt }, filter) {
+  // Filter AL entries
+  let alFiltered = al;
+  if (filter === "ANIME") alFiltered = al.filter(e => e.media.type === "ANIME");
+  else if (filter === "MANGA") alFiltered = al.filter(e => e.media.type === "MANGA" && !NOVEL_FORMATS.includes(e.media.format));
+  else if (filter === "NOVEL") alFiltered = al.filter(e => NOVEL_FORMATS.includes(e.media.format));
+  else if (filter === "MOVIE" || filter === "SHOW") alFiltered = [];
 
-  if (!filtered.length) {
+  // Filter Trakt entries
+  let traktFiltered = trakt;
+  if (filter === "ANIME" || filter === "MANGA" || filter === "NOVEL") traktFiltered = [];
+  else if (filter === "MOVIE") traktFiltered = trakt.filter(e => e._traktType === "movie");
+  else if (filter === "SHOW")  traktFiltered = trakt.filter(e => e._traktType === "show");
+
+  // Build unified year buckets
+  const byYear = {};
+
+  for (const e of alFiltered) {
+    const y = e.completedAt?.year || e.startedAt?.year;
+    if (!y) continue;
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push({ _src: "al", data: e });
+  }
+
+  for (const e of traktFiltered) {
+    const y = e._watchedYear;
+    if (!y) continue;
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push({ _src: "trakt", data: e });
+  }
+
+  // Sort each year's entries: AL by completedAt desc, Trakt by watchedAt desc, interleaved by date
+  for (const y of Object.keys(byYear)) {
+    byYear[y].sort((a, b) => {
+      const dateA = a._src === "al"
+        ? new Date(a.data.completedAt?.year ? `${a.data.completedAt.year}-${(a.data.completedAt.month||1).toString().padStart(2,'0')}-${(a.data.completedAt.day||1).toString().padStart(2,'0')}` : '1970-01-01')
+        : (a.data._watchedAt || new Date(0));
+      const dateB = b._src === "al"
+        ? new Date(b.data.completedAt?.year ? `${b.data.completedAt.year}-${(b.data.completedAt.month||1).toString().padStart(2,'0')}-${(b.data.completedAt.day||1).toString().padStart(2,'0')}` : '1970-01-01')
+        : (b.data._watchedAt || new Date(0));
+      return dateB - dateA;
+    });
+  }
+
+  const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+
+  if (!years.length) {
     document.getElementById("tl-list").innerHTML = `<div class="tl-empty">Нет записей</div>`;
     return;
   }
 
-  const byYear = {};
-  for (const e of filtered) {
-    const y = e.completedAt?.year || e.startedAt?.year;
-    if (!byYear[y]) byYear[y] = [];
-    byYear[y].push(e);
-  }
-  const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
-
   let html = "";
   for (const year of years) {
     html += `<div class="tl-year-label">${year}</div>
-    <div class="timeline">${byYear[year].map(e => tlEntry(e)).join("")}</div>`;
+    <div class="timeline">${byYear[year].map(item =>
+      item._src === "al" ? tlEntryAL(item.data) : tlEntryTrakt(item.data)
+    ).join("")}</div>`;
   }
   document.getElementById("tl-list").innerHTML = html;
 }
@@ -1035,7 +1109,7 @@ function daysBetween(a, b) {
   return `${(diff/365).toFixed(1)} г.`;
 }
 
-function tlEntry(entry) {
+function tlEntryAL(entry) {
   const m   = entry.media;
   const img = m.coverImage?.large || m.coverImage?.medium || PH_TALL;
   const t   = mediaTitle(m.title);
@@ -1059,6 +1133,20 @@ function tlEntry(entry) {
     </div>
     <span class="tl-type-tag tag-${tagClass}">${tagLabel}</span>
     ${score ? `<div class="tl-score">★ ${score}</div>` : ""}
+  </a>`;
+}
+
+function tlEntryTrakt(e) {
+  const tagClass = e._traktType === "movie" ? "tag-movie" : "tag-show";
+  const tagLabel = e._traktType === "movie" ? "Фильм" : "Сериал";
+  const dateStr  = e._watchedDateStr ? `<span>${e._watchedDateStr}</span>` : "";
+  return `<a href="${e._url}" target="_blank" rel="noopener" class="tl-entry">
+    <div class="tl-thumb"><img src="${e._poster}" alt="${e._title}" loading="lazy" onerror="this.src='${PH_TALL}'"></div>
+    <div class="tl-info">
+      <div class="tl-name">${e._title}</div>
+      <div class="tl-dates"><div class="tl-date-range">${dateStr}${e._year ? `<span class="tl-dur">${e._year}</span>` : ""}</div></div>
+    </div>
+    <span class="tl-type-tag ${tagClass}">${tagLabel}</span>
   </a>`;
 }
 
