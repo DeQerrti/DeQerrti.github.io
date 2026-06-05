@@ -22,8 +22,6 @@
   --yellow: #f0c040;
   --orange: #ed8936;
   --red: #fc6b68;
-
-  /* Шкала послевкусия */
   --grade-brown:  #8B6914;
   --grade-red:    #c0392b;
   --grade-white:  #6b7280;
@@ -40,8 +38,6 @@ body {
   min-height: 100vh;
   background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(102,252,241,.07) 0%, transparent 60%);
 }
-
-/* HEADER */
 header {
   text-align: center;
   padding: 3rem 1rem 2rem;
@@ -63,8 +59,6 @@ header {
   letter-spacing: .18em;
   text-transform: uppercase;
 }
-
-/* NAV */
 nav {
   display: flex;
   justify-content: center;
@@ -95,8 +89,6 @@ nav::-webkit-scrollbar { display: none; }
 }
 .tab-btn:hover { color: var(--text); }
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-/* MAIN */
 main {
   max-width: 1800px;
   margin: 0 auto;
@@ -104,7 +96,6 @@ main {
 }
 .tab-content.hidden { display: none; }
 section.group { margin-bottom: 3.5rem; }
-
 .section-title {
   font-family: 'Syne', sans-serif;
   font-size: 1.05rem;
@@ -130,8 +121,6 @@ section.group { margin-bottom: 3.5rem; }
   padding: .15rem .5rem;
   border-radius: 999px;
 }
-
-/* GRIDS */
 .grid-now {
   display: grid;
   gap: .85rem;
@@ -142,7 +131,6 @@ section.group { margin-bottom: 3.5rem; }
 @media (min-width: 900px)  { .grid-now { grid-template-columns: repeat(5, 1fr); } }
 @media (min-width: 1100px) { .grid-now { grid-template-columns: repeat(6, 1fr); } }
 @media (min-width: 1300px) { .grid-now { grid-template-columns: repeat(7, 1fr); } }
-
 .grid-chars {
   display: grid;
   gap: .85rem;
@@ -151,8 +139,6 @@ section.group { margin-bottom: 3.5rem; }
 @media (min-width: 480px)  { .grid-chars { grid-template-columns: repeat(4, 1fr); } }
 @media (min-width: 720px)  { .grid-chars { grid-template-columns: repeat(6, 1fr); } }
 @media (min-width: 1024px) { .grid-chars { grid-template-columns: repeat(8, 1fr); } }
-
-/* CARD */
 .card {
   display: block;
   background: var(--surface);
@@ -197,8 +183,6 @@ section.group { margin-bottom: 3.5rem; }
   gap: .3rem;
 }
 .card-score { color: var(--yellow); font-weight: 600; font-size: .75rem; }
-
-/* TYPE TAG */
 .type-tag {
   position: absolute;
   top: 6px; right: 6px;
@@ -214,8 +198,8 @@ section.group { margin-bottom: 3.5rem; }
 .tag-anime  { background: rgba(102,252,241,.18); color: var(--accent);  border: 1px solid rgba(102,252,241,.3); }
 .tag-manga  { background: rgba(240,192, 64,.15); color: var(--yellow);  border: 1px solid rgba(240,192, 64,.25); }
 .tag-novel  { background: rgba( 72,187,120,.15); color: var(--green);   border: 1px solid rgba( 72,187,120,.25); }
-
-/* PROGRESS */
+.tag-movie  { background: rgba(252,107,104,.15); color: var(--red);     border: 1px solid rgba(252,107,104,.25); }
+.tag-show   { background: rgba(237,137, 54,.15); color: var(--orange);  border: 1px solid rgba(237,137, 54,.25); }
 .progress-line {
   font-size: .7rem;
   color: var(--accent);
@@ -224,8 +208,6 @@ section.group { margin-bottom: 3.5rem; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* STATES */
 .state-box {
   text-align: center;
   padding: 5rem 2rem;
@@ -241,16 +223,13 @@ section.group { margin-bottom: 3.5rem; }
   margin: 0 auto 1rem;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .card { animation: fadeUp .3s ease both; }
 
-/* ══════════════════════════════════════════════════
-   REVIEWS — новая система
-══════════════════════════════════════════════════ */
+/* ══ REVIEWS ══════════════════════════════════════ */
 .reviews-grid {
   display: grid;
   gap: 1.5rem;
@@ -259,8 +238,6 @@ section.group { margin-bottom: 3.5rem; }
 @media (min-width: 700px)  { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1050px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 1400px) { .reviews-grid { grid-template-columns: repeat(4, 1fr); } }
-
-/* Карточка отзыва */
 .review-card {
   display: flex;
   flex-direction: column;
@@ -279,8 +256,6 @@ section.group { margin-bottom: 3.5rem; }
   transform: translateY(-4px);
   box-shadow: 0 14px 40px rgba(0,0,0,.4);
 }
-
-/* Верхняя часть: обложка + инфо */
 .review-top {
   display: flex;
   gap: 1.1rem;
@@ -302,7 +277,6 @@ section.group { margin-bottom: 3.5rem; }
   display: block;
 }
 .review-body { flex: 1; min-width: 0; }
-
 .review-header {
   display: flex;
   align-items: flex-start;
@@ -324,31 +298,11 @@ section.group { margin-bottom: 3.5rem; }
   margin-bottom: .55rem;
   flex-wrap: wrap;
 }
-.review-format {
-  font-size: .72rem;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .06em;
-}
-.review-date {
-  font-size: .72rem;
-  color: var(--text-dim);
-}
-.review-waifu {
-  font-size: .78rem;
-  color: var(--text-dim);
-  font-style: italic;
-  margin-bottom: .5rem;
-}
+.review-format { font-size: .72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: .06em; }
+.review-date   { font-size: .72rem; color: var(--text-dim); }
+.review-waifu  { font-size: .78rem; color: var(--text-dim); font-style: italic; margin-bottom: .5rem; }
 .review-waifu span { color: var(--accent); font-style: normal; }
-
-.review-preview {
-  font-size: .82rem;
-  color: var(--text);
-  line-height: 1.65;
-}
-
-/* Теги */
+.review-preview { font-size: .82rem; color: var(--text); line-height: 1.65; }
 .review-tags {
   padding: .6rem 1.1rem;
   display: flex;
@@ -369,13 +323,10 @@ section.group { margin-bottom: 3.5rem; }
   position: relative;
   cursor: default;
 }
-/* Категории тегов по цвету */
 .rtag-visual  { background: rgba(69,183,209,.12);  color: #45b7d1; border: 1px solid rgba(69,183,209,.25); }
 .rtag-plot    { background: rgba(240,192, 64,.1);  color: #d4a500; border: 1px solid rgba(240,192,64,.22); }
 .rtag-chars   { background: rgba(72,187,120,.1);   color: #48bb78; border: 1px solid rgba(72,187,120,.22); }
 .rtag-special { background: rgba(237,137, 54,.1);  color: #ed8936; border: 1px solid rgba(237,137,54,.22); }
-
-/* Тултип на теге */
 .rtag[data-tip]:hover::after {
   content: attr(data-tip);
   position: absolute;
@@ -404,8 +355,6 @@ section.group { margin-bottom: 3.5rem; }
   border-top-color: var(--border);
   z-index: 21;
 }
-
-/* Нижняя полоса — оценка по шкале послевкусия */
 .review-grade-bar {
   display: flex;
   align-items: center;
@@ -413,53 +362,14 @@ section.group { margin-bottom: 3.5rem; }
   padding: .65rem 1.1rem;
   border-top: 1px solid var(--border);
 }
-.grade-square {
-  width: 13px; height: 13px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-.grade-name {
-  font-family: 'Syne', sans-serif;
-  font-size: .85rem;
-  font-weight: 700;
-  flex: 1;
-}
-.grade-desc {
-  font-size: .65rem;
-  color: var(--text-dim);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.review-source-link {
-  font-size: .65rem;
-  color: var(--text-dim);
-  display: flex;
-  align-items: center;
-  gap: .3rem;
-  padding: .2rem .45rem;
-  background: rgba(255,255,255,.04);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-.review-source-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.grade-square { width: 13px; height: 13px; border-radius: 4px; flex-shrink: 0; }
+.grade-name { font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 700; flex: 1; }
+.grade-desc { font-size: .65rem; color: var(--text-dim); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.review-source-link { font-size: .65rem; color: var(--text-dim); display: flex; align-items: center; gap: .3rem; padding: .2rem .45rem; background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 5px; flex-shrink: 0; white-space: nowrap; }
+.review-source-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 
-/* ══ TIMELINE ══════════════════════════════════════════ */
-.timeline-controls {
-  display: flex;
-  gap: .5rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
+/* ══ TIMELINE ══════════════════════════════════════ */
+.timeline-controls { display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center; }
 .tl-filter-btn {
   font-size: .8rem;
   padding: .35rem .85rem;
@@ -472,24 +382,9 @@ section.group { margin-bottom: 3.5rem; }
   font-family: 'DM Sans', sans-serif;
 }
 .tl-filter-btn:hover { color: var(--text); border-color: #2a3448; }
-.tl-filter-btn.active {
-  background: rgba(102,252,241,.08);
-  border-color: rgba(102,252,241,.3);
-  color: var(--accent);
-}
-
-.timeline {
-  position: relative;
-  padding-left: 1.6rem;
-}
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 6px; top: 6px; bottom: 0;
-  width: 1px;
-  background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%);
-}
-
+.tl-filter-btn.active { background: rgba(102,252,241,.08); border-color: rgba(102,252,241,.3); color: var(--accent); }
+.timeline { position: relative; padding-left: 1.6rem; }
+.timeline::before { content: ''; position: absolute; left: 6px; top: 6px; bottom: 0; width: 1px; background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%); }
 .tl-year-label {
   font-family: 'Syne', sans-serif;
   font-size: .8rem;
@@ -501,18 +396,7 @@ section.group { margin-bottom: 3.5rem; }
   padding-left: 1.6rem;
   position: relative;
 }
-.tl-year-label::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%);
-  width: 13px; height: 13px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  background: var(--bg);
-  box-shadow: 0 0 10px rgba(102,252,241,.3);
-}
-
+.tl-year-label::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--accent); background: var(--bg); box-shadow: 0 0 10px rgba(102,252,241,.3); }
 .tl-entry {
   position: relative;
   display: flex;
@@ -527,88 +411,72 @@ section.group { margin-bottom: 3.5rem; }
   transition: border-color .2s, background .2s;
   align-items: center;
 }
-.tl-entry::before {
-  content: '';
-  position: absolute;
-  left: -1.28rem; top: 50%;
-  transform: translateY(-50%);
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--border);
-  border: 1px solid var(--text-dim);
-}
+.tl-entry::before { content: ''; position: absolute; left: -1.28rem; top: 50%; transform: translateY(-50%); width: 7px; height: 7px; border-radius: 50%; background: var(--border); border: 1px solid var(--text-dim); }
 .tl-entry:hover { border-color: rgba(102,252,241,.3); background: var(--surface2); }
-.tl-entry:hover::before {
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 6px rgba(102,252,241,.5);
-}
-
-.tl-thumb {
-  width: 42px;
-  flex-shrink: 0;
-  border-radius: 5px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-.tl-thumb img {
-  width: 100%;
-  aspect-ratio: 2/3;
-  object-fit: cover;
-  display: block;
-}
+.tl-entry:hover::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 6px rgba(102,252,241,.5); }
+.tl-thumb { width: 42px; flex-shrink: 0; border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+.tl-thumb img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
 .tl-info { flex: 1; min-width: 0; }
-.tl-name {
-  font-size: .84rem;
-  font-weight: 500;
-  color: var(--text-hi);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: .25rem;
-}
-.tl-dates {
-  font-size: .7rem;
-  color: var(--text-dim);
-  display: flex;
-  flex-wrap: wrap;
-  gap: .4rem;
-  align-items: center;
-}
+.tl-name { font-size: .84rem; font-weight: 500; color: var(--text-hi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: .25rem; }
+.tl-dates { font-size: .7rem; color: var(--text-dim); display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
 .tl-date-range { display: flex; align-items: center; gap: .35rem; }
 .tl-arrow { color: var(--text-dim); font-size: .65rem; }
 .tl-ongoing { color: var(--accent); font-size: .7rem; }
-.tl-dur {
-  background: rgba(255,255,255,.05);
+.tl-dur { background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 4px; padding: .1rem .4rem; font-size: .65rem; color: var(--text-dim); }
+.tl-type-tag { font-size: .6rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: .15rem .4rem; border-radius: 4px; flex-shrink: 0; }
+.tl-score { font-size: .78rem; font-weight: 700; color: var(--yellow); flex-shrink: 0; min-width: 2.2rem; text-align: right; }
+.tl-empty { text-align: center; padding: 3rem; color: var(--text-dim); font-size: .88rem; }
+
+/* ══ КИНО ══════════════════════════════════════════ */
+.cinema-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .75rem;
+  margin-bottom: 2.5rem;
+}
+@media (min-width: 600px) { .cinema-stats { grid-template-columns: repeat(4, 1fr); } }
+
+.stat-card {
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: .1rem .4rem;
-  font-size: .65rem;
-  color: var(--text-dim);
-}
-.tl-type-tag {
-  font-size: .6rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  padding: .15rem .4rem;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-.tl-score {
-  font-size: .78rem;
-  font-weight: 700;
-  color: var(--yellow);
-  flex-shrink: 0;
-  min-width: 2.2rem;
-  text-align: right;
-}
-.tl-empty {
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
   text-align: center;
-  padding: 3rem;
-  color: var(--text-dim);
-  font-size: .88rem;
 }
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.stat-label {
+  font-size: .72rem;
+  color: var(--text-dim);
+  margin-top: .3rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.cinema-filters {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.cf-btn {
+  font-size: .8rem;
+  padding: .35rem .85rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all .18s;
+  font-family: 'DM Sans', sans-serif;
+}
+.cf-btn:hover { color: var(--text); border-color: #2a3448; }
+.cf-btn.active { background: rgba(102,252,241,.08); border-color: rgba(102,252,241,.3); color: var(--accent); }
 </style>
 </head>
 <body>
@@ -621,6 +489,7 @@ section.group { margin-bottom: 3.5rem; }
 <nav>
   <button class="tab-btn active" onclick="switchTab('tab-now', this)">Главная</button>
   <button class="tab-btn" onclick="switchTab('tab-favorites', this)">Любимое</button>
+  <button class="tab-btn" onclick="switchTab('tab-cinema', this)">🎬 Кино</button>
   <button class="tab-btn" onclick="switchTab('tab-reviews', this)">Отзывы</button>
   <button class="tab-btn" onclick="switchTab('tab-timeline', this)">Хронология</button>
 </nav>
@@ -628,116 +497,73 @@ section.group { margin-bottom: 3.5rem; }
 <main>
   <div id="tab-now"       class="tab-content"><div class="state-box"><div class="spinner"></div>Загружаем…</div></div>
   <div id="tab-favorites" class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем любимчиков…</div></div>
+  <div id="tab-cinema"    class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем фильмы и сериалы…</div></div>
   <div id="tab-reviews"   class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем отзывы…</div></div>
   <div id="tab-timeline"  class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем хронологию…</div></div>
 </main>
 
 <script>
-const USERNAME = "Qerrti";
-const AL = "https://graphql.anilist.co";
+// ══════════════════════════════════════════════════
+// КОНФИГ
+// ══════════════════════════════════════════════════
+const AL_USERNAME    = "Qerrti";       // AniList ник
+const TRAKT_USERNAME = "DeQerrti";     // Trakt ник
+const TRAKT_CLIENT   = "f9e52841369f43c4d8f0f4ab92033469eb89c2959c1005cb493749d29b8ee19c";
+const TMDB_TOKEN     = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjFhNzQwYmU5OGZlM2RjOGU5MDM4MTliMzhiZmVkOCIsIm5iZiI6MTc4MDYzNjA4MS45NTksInN1YiI6IjZhMjI1OWIxNDU5ZmNjOGIwZmJjMGQ3NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9aMoESd6Okdst8IX5NrRkLcZipD7yJ9Qb0mmlJniGDg";
+
+const AL     = "https://graphql.anilist.co";
+const TRAKT  = "https://api.trakt.tv";
+const TMDB   = "https://api.themoviedb.org/3";
+const TMDB_IMG = "https://image.tmdb.org/t/p";
+
 const PH_TALL = "https://placehold.co/300x420/0f1219/4a5568?text=?";
 const PH_SQ   = "https://placehold.co/300x300/0f1219/4a5568?text=?";
 
 const NOVEL_FORMATS = ["NOVEL","LIGHT_NOVEL"];
-const MANGA_FORMATS = ["MANGA","ONE_SHOT","MANHWA","MANHUA","DOUJIN"];
-
 const cache = {};
 
 // ══════════════════════════════════════════════════
 // ШКАЛА ПОСЛЕВКУСИЯ
 // ══════════════════════════════════════════════════
 const GRADES = {
-  razocharo: {
-    color: "#8B6914",
-    square: "🟫",
-    name: "Разочарование",
-    desc: "Хороший старт, перечеркнутый бездарным финалом"
-  },
-  brak: {
-    color: "#c0392b",
-    square: "🟥",
-    name: "Брак",
-    desc: "Технически или сценарно несостоятельно"
-  },
-  fon: {
-    color: "#6b7280",
-    square: "⬜",
-    name: "Фоновый шум",
-    desc: "Стерильно и вторично"
-  },
-  attrakcion: {
-    color: "#d4a017",
-    square: "🟨",
-    name: "Аттракцион",
-    desc: "Ярко, бодро, на один вечер"
-  },
-  vyskazyvanie: {
-    color: "#2d8a4e",
-    square: "🟩",
-    name: "Высказывание",
-    desc: "Достойная работа с посылом"
-  },
-  etalon: {
-    color: "#2563a8",
-    square: "🟦",
-    name: "Эталон",
-    desc: "Почти безупречное исполнение"
-  },
-  rezonans: {
-    color: "#7c3aed",
-    square: "🟪",
-    name: "Резонанс",
-    desc: "Личный фаворит. То, что откликнулось"
-  }
+  razocharo:    { color: "#8B6914", name: "Разочарование", desc: "Хороший старт, перечеркнутый бездарным финалом" },
+  brak:         { color: "#c0392b", name: "Брак",          desc: "Технически или сценарно несостоятельно" },
+  fon:          { color: "#6b7280", name: "Фоновый шум",   desc: "Стерильно и вторично" },
+  attrakcion:   { color: "#d4a017", name: "Аттракцион",    desc: "Ярко, бодро, на один вечер" },
+  vyskazyvanie: { color: "#2d8a4e", name: "Высказывание",  desc: "Достойная работа с посылом" },
+  etalon:       { color: "#2563a8", name: "Эталон",        desc: "Почти безупречное исполнение" },
+  rezonans:     { color: "#7c3aed", name: "Резонанс",      desc: "Личный фаворит. То, что откликнулось" }
 };
 
-// ══════════════════════════════════════════════════
-// ТЕГИ
-// ══════════════════════════════════════════════════
 const TAGS_MAP = {
-  // Визуал
-  "Топ рисовка":       { cat: "visual",  tip: "Эстетическое наслаждение, детализация на высоте" },
-  "Специфичный стиль": { cat: "visual",  tip: "Авторский почерк, к которому нужно привыкнуть" },
-  "Слабая картинка":   { cat: "visual",  tip: "Бюджетно, криво или слишком упрощённо" },
-  // Сюжет
-  "Затягивает сразу":  { cat: "plot",    tip: "Бодрый старт, невозможно оторваться" },
-  "Долгая раскачка":   { cat: "plot",    tip: "Нужно перетерпеть начало, чтобы стало интересно" },
-  "Сюжетные дыры":     { cat: "plot",    tip: "Много логических нестыковок" },
-  "Рояли в кустах":    { cat: "plot",    tip: "Внезапные спасения и нелепые совпадения" },
-  "Стеклище":          { cat: "plot",    tip: "Автор беспощаден к героям и твоим нервам" },
-  "Чеховские ружья":   { cat: "plot",    tip: "Детали из первых глав выстреливают спустя 100 выпусков" },
-  "Слитый финал":      { cat: "plot",    tip: "Концовка портит всё" },
-  // Персонажи
-  "Живые герои":       { cat: "chars",   tip: "Персонажи с душой, которым веришь и сопереживаешь" },
-  "Картонные чары":    { cat: "chars",   tip: "Пустые герои-функции без внятной мотивации" },
-  "Крутой протагонист":{ cat: "chars",   tip: "Главный герой тащит на себе весь тайтл" },
-  "Оригинальный сеттинг":{ cat: "chars", tip: "Необычный мир, который интересно изучать" },
-  "Дырявый сеттинг":   { cat: "chars",   tip: "Декорации без внятного лора и истории" },
-  "Топ антагонист":    { cat: "chars",   tip: "Злодей интереснее или харизматичнее героев" },
-  "Слабый ГГ":         { cat: "chars",   tip: "Главный герой скучный, глупый или раздражающий" },
-  // Особенности
-  "Без кринжа":        { cat: "special", tip: "Выдержанный тон, без неловкого пафоса" },
-  "Много кринжа":      { cat: "special", tip: "Неловкие моменты, пафос или странный юмор" },
-  "Жесть":             { cat: "special", tip: "Много насилия, крови или безумных поворотов" },
-  "Философия":         { cat: "special", tip: "Размышления о смысле бытия и прочего" },
-  "Чистый кайф":       { cat: "special", tip: "Читается легко, идеально для расслабления" },
-  "Серая мораль":      { cat: "special", tip: "Нет чёткого деления на добро и зло" },
-  "Хорни вайб":        { cat: "special", tip: "Много фансервиса, акцент на сексуальности" },
+  "Топ рисовка":         { cat: "visual",  tip: "Эстетическое наслаждение, детализация на высоте" },
+  "Специфичный стиль":   { cat: "visual",  tip: "Авторский почерк, к которому нужно привыкнуть" },
+  "Слабая картинка":     { cat: "visual",  tip: "Бюджетно, криво или слишком упрощённо" },
+  "Затягивает сразу":    { cat: "plot",    tip: "Бодрый старт, невозможно оторваться" },
+  "Долгая раскачка":     { cat: "plot",    tip: "Нужно перетерпеть начало, чтобы стало интересно" },
+  "Сюжетные дыры":       { cat: "plot",    tip: "Много логических нестыковок" },
+  "Рояли в кустах":      { cat: "plot",    tip: "Внезапные спасения и нелепые совпадения" },
+  "Стеклище":            { cat: "plot",    tip: "Автор беспощаден к героям и твоим нервам" },
+  "Чеховские ружья":     { cat: "plot",    tip: "Детали из первых глав выстреливают спустя 100 выпусков" },
+  "Слитый финал":        { cat: "plot",    tip: "Концовка портит всё" },
+  "Живые герои":         { cat: "chars",   tip: "Персонажи с душой, которым веришь и сопереживаешь" },
+  "Картонные чары":      { cat: "chars",   tip: "Пустые герои-функции без внятной мотивации" },
+  "Крутой протагонист":  { cat: "chars",   tip: "Главный герой тащит на себе весь тайтл" },
+  "Оригинальный сеттинг":{ cat: "chars",   tip: "Необычный мир, который интересно изучать" },
+  "Дырявый сеттинг":     { cat: "chars",   tip: "Декорации без внятного лора и истории" },
+  "Топ антагонист":      { cat: "chars",   tip: "Злодей интереснее или харизматичнее героев" },
+  "Слабый ГГ":           { cat: "chars",   tip: "Главный герой скучный, глупый или раздражающий" },
+  "Без кринжа":          { cat: "special", tip: "Выдержанный тон, без неловкого пафоса" },
+  "Почти без кринжа":    { cat: "special", tip: "Почти выдержанный тон" },
+  "Много кринжа":        { cat: "special", tip: "Неловкие моменты, пафос или странный юмор" },
+  "Жесть":               { cat: "special", tip: "Много насилия, крови или безумных поворотов" },
+  "Философия":           { cat: "special", tip: "Размышления о смысле бытия и прочего" },
+  "Чистый кайф":         { cat: "special", tip: "Читается легко, идеально для расслабления" },
+  "Серая мораль":        { cat: "special", tip: "Нет чёткого деления на добро и зло" },
+  "Хорни вайб":          { cat: "special", tip: "Много фансервиса, акцент на сексуальности" },
 };
-
-const TAG_CAT_CLASS = {
-  visual:  "rtag-visual",
-  plot:    "rtag-plot",
-  chars:   "rtag-chars",
-  special: "rtag-special",
-};
-
-const SOURCE_LABELS = {
-  telegraph: "Telegraph",
-  teletype:  "Teletype",
-  bluesky:   "Bluesky",
-  other:     "Ссылка"
-};
+const TAG_CAT_CLASS = { visual:"rtag-visual", plot:"rtag-plot", chars:"rtag-chars", special:"rtag-special" };
+const SOURCE_LABELS = { telegraph:"Telegraph", teletype:"Teletype", bluesky:"Bluesky", other:"Ссылка" };
 
 // ══════════════════════════════════════════════════
 // UTILS
@@ -754,6 +580,31 @@ async function gql(query, variables = {}) {
   return json.data;
 }
 
+async function traktFetch(path) {
+  const res = await fetch(`${TRAKT}${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "trakt-api-version": "2",
+      "trakt-api-key": TRAKT_CLIENT
+    }
+  });
+  if (!res.ok) throw new Error(`Trakt HTTP ${res.status}`);
+  return res.json();
+}
+
+async function tmdbFetch(path) {
+  const res = await fetch(`${TMDB}${path}`, {
+    headers: { "Authorization": `Bearer ${TMDB_TOKEN}` }
+  });
+  if (!res.ok) throw new Error(`TMDb HTTP ${res.status}`);
+  return res.json();
+}
+
+function tmdbPoster(path, size = "w342") {
+  if (!path) return PH_TALL;
+  return `${TMDB_IMG}/${size}${path}`;
+}
+
 function switchTab(tabId, btn) {
   document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
   document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
@@ -761,6 +612,7 @@ function switchTab(tabId, btn) {
   btn.classList.add("active");
   if (tabId === "tab-now")       loadNow();
   if (tabId === "tab-favorites") loadFavorites();
+  if (tabId === "tab-cinema")    loadCinema();
   if (tabId === "tab-reviews")   loadReviews();
   if (tabId === "tab-timeline")  loadTimeline();
 }
@@ -769,9 +621,7 @@ function coverUrl(img, sq = false) {
   if (!img) return sq ? PH_SQ : PH_TALL;
   return img.extraLarge || img.large || img.medium || (sq ? PH_SQ : PH_TALL);
 }
-function mediaTitle(t) {
-  return t?.userPreferred || t?.romaji || t?.english || "—";
-}
+function mediaTitle(t) { return t?.userPreferred || t?.romaji || t?.english || "—"; }
 function entryTypeTag(entry) {
   if (entry.media.type === "ANIME") return ["anime","Аниме"];
   if (NOVEL_FORMATS.includes(entry.media.format)) return ["novel","Ранобе"];
@@ -786,37 +636,23 @@ query($name: String) {
   anime_cur: Page(perPage: 50) {
     mediaList(userName: $name, type: ANIME, status: CURRENT, sort: UPDATED_TIME_DESC) {
       progress
-      media { id siteUrl type format
-        title { userPreferred romaji }
-        coverImage { extraLarge large }
-        episodes
-      }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } episodes }
     }
   }
   manga_cur: Page(perPage: 50) {
     mediaList(userName: $name, type: MANGA, status: CURRENT, sort: UPDATED_TIME_DESC) {
       progress
-      media { id siteUrl type format
-        title { userPreferred romaji }
-        coverImage { extraLarge large }
-        chapters volumes
-      }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } chapters volumes }
     }
   }
   anime_done: Page(perPage: 50) {
     mediaList(userName: $name, type: ANIME, status: COMPLETED, sort: UPDATED_TIME_DESC) {
-      media { id siteUrl type format
-        title { userPreferred romaji }
-        coverImage { extraLarge large }
-      }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } }
     }
   }
   manga_done: Page(perPage: 50) {
     mediaList(userName: $name, type: MANGA, status: COMPLETED, sort: UPDATED_TIME_DESC) {
-      media { id siteUrl type format
-        title { userPreferred romaji }
-        coverImage { extraLarge large }
-      }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } }
     }
   }
 }`;
@@ -824,15 +660,11 @@ query($name: String) {
 async function loadNow() {
   if (cache.now) { renderNow(cache.now); return; }
   try {
-    const data = await gql(NOW_QUERY, { name: USERNAME });
+    const data = await gql(NOW_QUERY, { name: AL_USERNAME });
     const current = [
       ...(data.anime_cur?.mediaList || []),
       ...(data.manga_cur?.mediaList || [])
     ];
-    current.sort((a, b) => {
-      const order = e => e.media.type === "ANIME" ? 0 : NOVEL_FORMATS.includes(e.media.format) ? 2 : 1;
-      return order(a) - order(b);
-    });
     const completed = [
       ...(data.anime_done?.mediaList || []),
       ...(data.manga_done?.mediaList || [])
@@ -865,43 +697,35 @@ function renderNow({ current, completed }) {
 }
 
 function nowCard(entry, index) {
-  const m   = entry.media;
+  const m = entry.media;
   const img = coverUrl(m.coverImage);
   const t   = mediaTitle(m.title);
   const [tagClass, tagLabel] = entryTypeTag(entry);
   const done  = entry.progress ?? 0;
   const total = m.type === "ANIME" ? (m.episodes || 0) : (m.chapters || 0);
   const unit  = m.type === "ANIME" ? "эп." : "гл.";
-
-  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card"
-    style="animation-delay:${Math.min(index * 30, 600)}ms">
+  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*30,600)}ms">
     <span class="type-tag tag-${tagClass}">${tagLabel}</span>
     <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
       <div class="card-title">${t}</div>
-      <div class="card-meta">
-        <span class="progress-line">${done}${total ? " / " + total : ""} ${unit}</span>
-      </div>
+      <div class="card-meta"><span class="progress-line">${done}${total ? " / "+total : ""} ${unit}</span></div>
     </div>
   </a>`;
 }
 
-  function completedCard(entry, index) {
-  const m   = entry.media;
+function completedCard(entry, index) {
+  const m = entry.media;
   const img = coverUrl(m.coverImage);
   const t   = mediaTitle(m.title);
   const [tagClass, tagLabel] = entryTypeTag(entry);
-
-  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card"
-    style="animation-delay:${Math.min(index * 30, 600)}ms">
+  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*30,600)}ms">
     <span class="type-tag tag-${tagClass}">${tagLabel}</span>
     <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    <div class="card-body">
-      <div class="card-title">${t}</div>
-    </div>
+    <div class="card-body"><div class="card-title">${t}</div></div>
   </a>`;
 }
-  
+
 // ══════════════════════════════════════════════════
 // FAVORITES
 // ══════════════════════════════════════════════════
@@ -909,26 +733,10 @@ const FAV_QUERY = `
 query($name: String) {
   User(name: $name) {
     favourites {
-      anime(perPage: 50) { nodes {
-        id siteUrl format averageScore
-        title { userPreferred romaji }
-        coverImage { extraLarge large }
-      }}
-      manga(perPage: 50) { nodes {
-        id siteUrl format averageScore
-        title { userPreferred romaji }
-        coverImage { extraLarge large }
-      }}
-      characters(perPage: 50) { nodes {
-        id siteUrl
-        name { full }
-        image { large medium }
-      }}
-      staff(perPage: 50) { nodes {
-        id siteUrl
-        name { full }
-        image { large medium }
-      }}
+      anime(perPage: 50) { nodes { id siteUrl format title { userPreferred romaji } coverImage { extraLarge large } } }
+      manga(perPage: 50) { nodes { id siteUrl format title { userPreferred romaji } coverImage { extraLarge large } } }
+      characters(perPage: 50) { nodes { id siteUrl name { full } image { large medium } } }
+      staff(perPage: 50) { nodes { id siteUrl name { full } image { large medium } } }
     }
   }
 }`;
@@ -936,7 +744,7 @@ query($name: String) {
 async function loadFavorites() {
   if (cache.fav) { renderFavorites(cache.fav); return; }
   try {
-    const data = await gql(FAV_QUERY, { name: USERNAME });
+    const data = await gql(FAV_QUERY, { name: AL_USERNAME });
     cache.fav = data.User.favourites;
     renderFavorites(cache.fav);
   } catch (err) {
@@ -945,62 +753,207 @@ async function loadFavorites() {
   }
 }
 
-const FORMAT_LABELS = {
-  TV:"TV", TV_SHORT:"TV Short", MOVIE:"Фильм", SPECIAL:"Спешл",
-  OVA:"OVA", ONA:"ONA", MANGA:"Манга", NOVEL:"Ранобэ", ONE_SHOT:"Ваншот",
-  MANHWA:"Манхва", MANHUA:"Маньхуа"
-};
-
 function renderFavorites(fav) {
-  const box = document.getElementById("tab-favorites");
+  const box    = document.getElementById("tab-favorites");
   const animes = fav.anime?.nodes || [];
   const mangas = fav.manga?.nodes || [];
   const chars  = fav.characters?.nodes || [];
   const staff  = fav.staff?.nodes || [];
-
   let html = "";
-  if (animes.length) html += favMediaSection("Аниме", animes);
-  if (mangas.length) html += favMediaSection("Манга", mangas);
-  if (chars.length)  html += favPersonSection("Персонажи", chars);
-  if (staff.length)  html += favPersonSection("Сейю / Режиссёры", staff);
+  if (animes.length) html += favMediaSection("🎬 Любимое аниме", animes);
+  if (mangas.length) html += favMediaSection("📚 Любимая манга / ранобэ", mangas);
+  if (chars.length)  html += favPersonSection("👤 Любимые персонажи", chars);
+  if (staff.length)  html += favPersonSection("🎌 Сейю / Режиссёры", staff);
   box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
 }
 
 function favMediaSection(heading, items) {
   return `<section class="group">
-    <h2 class="section-title">${heading}</h2>
+    <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
     <div class="grid-now">
-      ${items.map((item, i) => {
-  const img = coverUrl(item.coverImage);
-  const t   = mediaTitle(item.title);
-
-  return `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card"
-    style="animation-delay:${Math.min(i*25,500)}ms">
-    <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    <div class="card-body">
-      <div class="card-title">${t}</div>
-    </div>
-  </a>`;
-}).join("")}
+      ${items.map((item, i) => `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(i*25,500)}ms">
+        <img src="${coverUrl(item.coverImage)}" alt="${mediaTitle(item.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+        <div class="card-body"><div class="card-title">${mediaTitle(item.title)}</div></div>
+      </a>`).join("")}
     </div>
   </section>`;
 }
 
 function favPersonSection(heading, items) {
   return `<section class="group">
-    <h2 class="section-title">${heading}</h2>
+    <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
     <div class="grid-chars">
-      ${items.map((item, i) => {
-        const img  = item.image?.large || item.image?.medium || PH_SQ;
-        const name = item.name?.full || "—";
-        return `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card card-char"
-          style="animation-delay:${Math.min(i*25,500)}ms">
-          <img src="${img}" alt="${name}" loading="lazy" onerror="this.src='${PH_SQ}'">
-          <div class="card-body"><div class="card-title">${name}</div></div>
-        </a>`;
-      }).join("")}
+      ${items.map((item, i) => `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card card-char" style="animation-delay:${Math.min(i*25,500)}ms">
+        <img src="${item.image?.large || item.image?.medium || PH_SQ}" alt="${item.name?.full || '—'}" loading="lazy" onerror="this.src='${PH_SQ}'">
+        <div class="card-body"><div class="card-title">${item.name?.full || "—"}</div></div>
+      </a>`).join("")}
     </div>
   </section>`;
+}
+
+// ══════════════════════════════════════════════════
+// КИНО — Trakt + TMDb
+// ══════════════════════════════════════════════════
+let cinemaFilter = "ALL";
+
+async function loadCinema() {
+  if (cache.cinema) { renderCinema(cache.cinema); return; }
+  const box = document.getElementById("tab-cinema");
+
+  try {
+    // 1. Параллельно тянем фильмы и сериалы с Trakt
+    const [movies, shows, statsMovies, statsShows] = await Promise.all([
+      traktFetch(`/users/${TRAKT_USERNAME}/watched/movies?extended=noseasons`),
+      traktFetch(`/users/${TRAKT_USERNAME}/watched/shows?extended=noseasons`),
+      traktFetch(`/users/${TRAKT_USERNAME}/stats`),
+      traktFetch(`/users/${TRAKT_USERNAME}/ratings/movies?limit=500`),
+    ]);
+
+    // 2. Рейтинги фильмов — map tmdb_id → rating
+    const ratingsMap = {};
+    for (const r of statsShows) {
+      if (r.movie?.ids?.tmdb) ratingsMap[r.movie.ids.tmdb] = r.rating;
+    }
+
+    // 3. Тянем постеры с TMDb пачками
+    const BATCH = 20;
+
+    async function enrichWithPosters(items, type) {
+      const result = [];
+      for (let i = 0; i < items.length; i += BATCH) {
+        const chunk = items.slice(i, i + BATCH);
+        await Promise.all(chunk.map(async item => {
+          const entry = type === "movie" ? item.movie : item.show;
+          const tmdbId = entry?.ids?.tmdb;
+          if (!tmdbId) { result.push({ ...item, _poster: null }); return; }
+          try {
+            const detail = await tmdbFetch(`/${type === "movie" ? "movie" : "tv"}/${tmdbId}?language=ru-RU`);
+            result.push({
+              ...item,
+              _poster: tmdbPoster(detail.poster_path, "w342"),
+              _title_ru: detail.title || detail.name || entry.title,
+              _year: (detail.release_date || detail.first_air_date || "").slice(0, 4),
+              _tmdb_url: `https://www.themoviedb.org/${type === "movie" ? "movie" : "tv"}/${tmdbId}`
+            });
+          } catch {
+            result.push({ ...item, _poster: null });
+          }
+        }));
+      }
+      return result;
+    }
+
+    // Берём последние 100 для скорости
+    const recentMovies = movies.slice(0, 100);
+    const recentShows  = shows.slice(0, 100);
+
+    const [enrichedMovies, enrichedShows] = await Promise.all([
+      enrichWithPosters(recentMovies, "movie"),
+      enrichWithPosters(recentShows, "show")
+    ]);
+
+    cache.cinema = { movies: enrichedMovies, shows: enrichedShows, stats: statsMovies };
+    renderCinema(cache.cinema);
+
+  } catch (err) {
+    box.innerHTML = `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}<br><small style="font-size:.75rem;margin-top:.5rem;display:block;color:#4a5568">Убедись что профиль Trakt публичный</small></div>`;
+  }
+}
+
+function renderCinema({ movies, shows, stats }) {
+  const box = document.getElementById("tab-cinema");
+
+  // Статистика
+  const totalMovies = movies.length;
+  const totalShows  = shows.length;
+  const totalEps    = shows.reduce((acc, s) => acc + (s.plays || 0), 0);
+
+  const statsHtml = `
+  <div class="cinema-stats">
+    <div class="stat-card">
+      <div class="stat-value">${totalMovies}</div>
+      <div class="stat-label">Фильмов</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${totalShows}</div>
+      <div class="stat-label">Сериалов</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${totalEps}</div>
+      <div class="stat-label">Просмотров</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">${totalMovies + totalShows}</div>
+      <div class="stat-label">Всего</div>
+    </div>
+  </div>`;
+
+  const filtersHtml = `
+  <div class="cinema-filters">
+    <button class="cf-btn ${cinemaFilter==="ALL"?"active":""}"    onclick="setCinemaFilter('ALL',this)">Всё</button>
+    <button class="cf-btn ${cinemaFilter==="MOVIES"?"active":""}" onclick="setCinemaFilter('MOVIES',this)">🎬 Фильмы</button>
+    <button class="cf-btn ${cinemaFilter==="SHOWS"?"active":""}"  onclick="setCinemaFilter('SHOWS',this)">📺 Сериалы</button>
+  </div>`;
+
+  box.innerHTML = statsHtml + filtersHtml + `<div id="cinema-grid"></div>`;
+  renderCinemaGrid(movies, shows);
+}
+
+function setCinemaFilter(filter, btn) {
+  cinemaFilter = filter;
+  document.querySelectorAll(".cf-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  if (cache.cinema) renderCinemaGrid(cache.cinema.movies, cache.cinema.shows);
+}
+
+function renderCinemaGrid(movies, shows) {
+  const grid = document.getElementById("cinema-grid");
+  if (!grid) return;
+
+  let html = "";
+
+  if (cinemaFilter !== "SHOWS" && movies.length) {
+    html += `<section class="group">
+      <h2 class="section-title">🎬 Фильмы <span class="section-badge">${movies.length}</span></h2>
+      <div class="grid-now">
+        ${movies.map((item, i) => cinemaCard(item, "movie", i)).join("")}
+      </div>
+    </section>`;
+  }
+
+  if (cinemaFilter !== "MOVIES" && shows.length) {
+    html += `<section class="group">
+      <h2 class="section-title">📺 Сериалы <span class="section-badge">${shows.length}</span></h2>
+      <div class="grid-now">
+        ${shows.map((item, i) => cinemaCard(item, "show", i)).join("")}
+      </div>
+    </section>`;
+  }
+
+  grid.innerHTML = html || `<div class="state-box">Список пустой</div>`;
+}
+
+function cinemaCard(item, type, index) {
+  const entry   = type === "movie" ? item.movie : item.show;
+  const title   = item._title_ru || entry?.title || "—";
+  const poster  = item._poster || PH_TALL;
+  const year    = item._year || entry?.year || "";
+  const url     = item._tmdb_url || "#";
+  const tagClass = type === "movie" ? "tag-movie" : "tag-show";
+  const tagLabel = type === "movie" ? "Фильм" : "Сериал";
+  const plays   = item.plays > 1 ? `× ${item.plays}` : "";
+
+  return `<a href="${url}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*20,500)}ms">
+    <span class="type-tag ${tagClass}">${tagLabel}</span>
+    <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <div class="card-body">
+      <div class="card-title">${title}</div>
+      <div class="card-meta">
+        <span>${year}</span>
+        ${plays ? `<span style="color:var(--accent)">${plays}</span>` : ""}
+      </div>
+    </div>
+  </a>`;
 }
 
 // ══════════════════════════════════════════════════
@@ -1017,26 +970,20 @@ async function loadReviews() {
     renderReviews(data);
   } catch (err) {
     document.getElementById("tab-reviews").innerHTML =
-      `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">📝</div>
-      Отзывов пока нет.<br><span style="font-size:.8rem;margin-top:.5rem;display:block">Добавь записи в <code>reviews.json</code></span></div>`;
+      `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">📝</div>Отзывов пока нет.<br><span style="font-size:.8rem;margin-top:.5rem;display:block">Добавь записи в reviews.json</span></div>`;
   }
 }
 
 function renderReviews(reviews) {
-  const box = document.getElementById("tab-reviews");
-  box.innerHTML = `
+  document.getElementById("tab-reviews").innerHTML = `
     <section class="group">
-      <h2 class="section-title">Отзывы</h2>
-      <div class="reviews-grid">
-        ${reviews.map((r, i) => reviewCard(r, i)).join("")}
-      </div>
+      <h2 class="section-title">Отзывы <span class="section-badge">${reviews.length}</span></h2>
+      <div class="reviews-grid">${reviews.map((r, i) => reviewCard(r, i)).join("")}</div>
     </section>`;
 }
 
 function reviewCard(r, i) {
   const grade = GRADES[r.grade] || null;
-
-  // Теги
   const tags = (r.tags || []);
   const tagsHtml = tags.length
     ? `<div class="review-tags">${tags.map(tag => {
@@ -1046,21 +993,11 @@ function reviewCard(r, i) {
         return `<span class="rtag ${cls}" data-tip="${tip}">${tag}</span>`;
       }).join("")}</div>`
     : "";
-
-  // Фавориты
-  const waifuHtml = r.favorites
-    ? `<div class="review-waifu">Фавориты: <span>${r.favorites}</span></div>`
-    : "";
-
-  // Формат и дата
-  const typeColors = { anime: "var(--accent)", manga: "var(--yellow)", novel: "var(--green)" };
+  const waifuHtml = r.favorites ? `<div class="review-waifu">Фавориты: <span>${r.favorites}</span></div>` : "";
+  const typeColors = { anime:"var(--accent)", manga:"var(--yellow)", novel:"var(--green)", movie:"var(--red)", show:"var(--orange)" };
   const typeColor  = typeColors[r.type] || "var(--text-dim)";
-  const dateStr    = r.date
-    ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
-    : "";
+  const dateStr    = r.date ? new Date(r.date).toLocaleDateString("ru-RU",{day:"numeric",month:"long",year:"numeric"}) : "";
   const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Ссылка";
-
-  // Нижняя полоса оценки + источник в одной строке
   const gradeHtml = grade
     ? `<div class="review-grade-bar">
         <div class="grade-square" style="background:${grade.color};box-shadow:0 0 8px ${grade.color}55"></div>
@@ -1068,29 +1005,16 @@ function reviewCard(r, i) {
           <div class="grade-name" style="color:${grade.color}">${grade.name}</div>
           <div class="grade-desc">${grade.desc}</div>
         </div>
-        <div class="review-source-link">
-          <span class="review-source-dot" style="background:${typeColor}"></span>
-          ${sourceLabel}
-        </div>
+        <div class="review-source-link"><span class="review-source-dot" style="background:${typeColor}"></span>${sourceLabel}</div>
       </div>`
-    : `<div class="review-grade-bar">
-        <div style="flex:1"></div>
-        <div class="review-source-link">
-          <span class="review-source-dot" style="background:${typeColor}"></span>
-          ${sourceLabel}
-        </div>
-      </div>`;
+    : `<div class="review-grade-bar"><div style="flex:1"></div><div class="review-source-link"><span class="review-source-dot" style="background:${typeColor}"></span>${sourceLabel}</div></div>`;
 
   return `<a href="${r.url}" target="_blank" rel="noopener" class="review-card"
-    style="animation-delay:${Math.min(i*40,600)}ms;border-top: 2px solid ${grade ? grade.color + "55" : "var(--border)"}">
+    style="animation-delay:${Math.min(i*40,600)}ms;border-top:2px solid ${grade ? grade.color+"55" : "var(--border)"}">
     <div class="review-top">
-      <div class="review-cover">
-        <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
-      </div>
+      <div class="review-cover"><img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'"></div>
       <div class="review-body">
-        <div class="review-header">
-          <div class="review-title">${r.title}</div>
-        </div>
+        <div class="review-header"><div class="review-title">${r.title}</div></div>
         <div class="review-meta-row">
           ${r.format ? `<span class="review-format">${r.format}</span>` : ""}
           ${r.year   ? `<span class="review-date">${r.year}</span>` : ""}
@@ -1113,17 +1037,10 @@ query($name: String, $page: Int) {
   Page(page: $page, perPage: 50) {
     pageInfo { hasNextPage }
     mediaList(userName: $name, sort: FINISHED_ON_DESC, status_in: [COMPLETED, CURRENT, DROPPED]) {
-      status
-      score(format: POINT_10)
-      progress
+      status score(format: POINT_10) progress
       startedAt   { year month day }
       completedAt { year month day }
-      media {
-        id siteUrl type format
-        title { userPreferred romaji }
-        coverImage { large medium }
-        episodes chapters
-      }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { large medium } episodes chapters }
     }
   }
 }`;
@@ -1132,7 +1049,7 @@ async function fetchAllTimeline() {
   const all = [];
   let page = 1;
   while (true) {
-    const data = await gql(TL_QUERY, { name: USERNAME, page });
+    const data = await gql(TL_QUERY, { name: AL_USERNAME, page });
     const p = data.Page;
     all.push(...p.mediaList);
     if (!p.pageInfo.hasNextPage) break;
@@ -1147,9 +1064,8 @@ async function loadTimeline() {
   if (cache.timeline) { renderTimeline(cache.timeline, tlFilter); return; }
   try {
     const all = await fetchAllTimeline();
-    const valid = all.filter(e => e.startedAt?.year);
-    cache.timeline = valid;
-    renderTimeline(valid, "ALL");
+    cache.timeline = all.filter(e => e.startedAt?.year);
+    renderTimeline(cache.timeline, "ALL");
   } catch (err) {
     document.getElementById("tab-timeline").innerHTML =
       `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}</div>`;
@@ -1206,15 +1122,15 @@ function renderTimelineList(list, filter) {
 function fmtDate(d) {
   if (!d?.year) return null;
   if (!d.month) return `${d.year}`;
-  if (!d.day)   return new Date(d.year, d.month - 1).toLocaleDateString("ru-RU", { month: "short", year: "numeric" });
-  return new Date(d.year, d.month - 1, d.day).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  if (!d.day)   return new Date(d.year, d.month-1).toLocaleDateString("ru-RU",{month:"short",year:"numeric"});
+  return new Date(d.year, d.month-1, d.day).toLocaleDateString("ru-RU",{day:"numeric",month:"short"});
 }
 
 function daysBetween(a, b) {
   if (!a?.year || !b?.year) return null;
-  const d1 = new Date(a.year, (a.month||1) - 1, a.day||1);
-  const d2 = new Date(b.year, (b.month||1) - 1, b.day||1);
-  const diff = Math.round((d2 - d1) / 86400000);
+  const d1 = new Date(a.year,(a.month||1)-1,a.day||1);
+  const d2 = new Date(b.year,(b.month||1)-1,b.day||1);
+  const diff = Math.round((d2-d1)/86400000);
   if (diff < 1)   return null;
   if (diff < 31)  return `${diff} дн.`;
   if (diff < 365) return `${Math.round(diff/30)} мес.`;
@@ -1222,24 +1138,21 @@ function daysBetween(a, b) {
 }
 
 function tlEntry(entry) {
-  const m = entry.media;
+  const m   = entry.media;
   const img = m.coverImage?.large || m.coverImage?.medium || PH_TALL;
   const t   = mediaTitle(m.title);
   const [tagClass, tagLabel] = entryTypeTag(entry);
-
   const start    = fmtDate(entry.startedAt);
   const end      = fmtDate(entry.completedAt);
   const duration = daysBetween(entry.startedAt, entry.completedAt);
   const score    = entry.score > 0 ? entry.score : null;
   const ongoing  = entry.status === "CURRENT";
-
   const datesHtml = `<div class="tl-date-range">
     ${start ? `<span>${start}</span>` : ""}
     ${(start && (end || ongoing)) ? `<span class="tl-arrow">→</span>` : ""}
     ${end ? `<span>${end}</span>` : ongoing ? `<span class="tl-ongoing">В процессе</span>` : ""}
     ${duration ? `<span class="tl-dur">${duration}</span>` : ""}
   </div>`;
-
   return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="tl-entry">
     <div class="tl-thumb"><img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'"></div>
     <div class="tl-info">
@@ -1251,7 +1164,7 @@ function tlEntry(entry) {
   </a>`;
 }
 
-// ── START ──────────────────────────────────────────
+// ── СТАРТ ──────────────────────────────────────────
 loadNow();
 </script>
 </body>
