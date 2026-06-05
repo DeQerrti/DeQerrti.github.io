@@ -695,3 +695,7 @@ section.group { margin-bottom: 3.5rem; }
 .deco-hr-inner span:nth-child(2) {
   width: 7px; height: 7px;
 }
+.year-divider + .card {
+  max-width: 240px;
+}
+
