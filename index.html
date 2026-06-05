@@ -191,6 +191,27 @@ section.group { margin-bottom: 3.5rem; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* ══ WATCH BADGE ══════════════════════════════════ */
+.watch-badge {
+  position: absolute;
+  top: 6px; left: 6px;
+  font-size: .58rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.9);
+  background: rgba(8,10,15,.78);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 5px;
+  padding: .2rem .45rem;
+  backdrop-filter: blur(8px);
+  z-index: 3;
+  line-height: 1.3;
+  max-width: calc(100% - 60px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .state-box {
   text-align: center;
   padding: 5rem 2rem;
@@ -553,8 +574,6 @@ async function enrichTraktWithPosters(items, type) {
   return result;
 }
 
-// Fetch ALL pages of Trakt watched history (movies or shows)
-// Returns deduplicated items (one entry per unique title, with last_watched_at)
 async function fetchTraktWatched(type) {
   const path = type === "movie"
     ? `/users/${TRAKT_USERNAME}/watched/movies?extended=noseasons`
@@ -567,12 +586,8 @@ async function fetchTraktWatched(type) {
   }
 }
 
-// Fetch Trakt history with actual watch dates (paginated, newest first)
-// We use this for the timeline — we want the FIRST watch date per title
 async function fetchTraktHistoryDates(type) {
-  // Get watched list (has last_watched_at)
   const items = await fetchTraktWatched(type);
-  // Build map: id -> { last_watched_at, item }
   const map = {};
   for (const item of items) {
     const entry = type === "movie" ? item.movie : item.show;
@@ -591,23 +606,27 @@ query($name: String) {
   anime_cur: Page(perPage: 50) {
     mediaList(userName: $name, type: ANIME, status: CURRENT, sort: UPDATED_TIME_DESC) {
       progress
-      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } episodes }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } episodes startDate { year } }
     }
   }
   manga_cur: Page(perPage: 50) {
     mediaList(userName: $name, type: MANGA, status: CURRENT, sort: UPDATED_TIME_DESC) {
       progress
-      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } chapters volumes }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } chapters volumes startDate { year } }
     }
   }
   anime_done: Page(perPage: 50) {
     mediaList(userName: $name, type: ANIME, status: COMPLETED, sort: UPDATED_TIME_DESC) {
-      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } }
+      startedAt   { year month day }
+      completedAt { year month day }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } startDate { year } }
     }
   }
   manga_done: Page(perPage: 50) {
     mediaList(userName: $name, type: MANGA, status: COMPLETED, sort: UPDATED_TIME_DESC) {
-      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } }
+      startedAt   { year month day }
+      completedAt { year month day }
+      media { id siteUrl type format title { userPreferred romaji } coverImage { extraLarge large } startDate { year } }
     }
   }
 }`;
@@ -654,11 +673,27 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
     </section>`;
   }
 
+  // Объединяем AL completed и Trakt, добавляем сортировочную дату
   const allCompleted = [
-    ...alCompleted.map(e => ({ _src: "al", data: e })),
-    ...traktMovies.map(e => ({ _src: "trakt", type: "movie", data: e })),
-    ...traktShows.map(e => ({ _src: "trakt", type: "show", data: e }))
+    ...alCompleted.map(e => {
+      const c = e.completedAt;
+      const sortDate = c?.year
+        ? new Date(c.year, (c.month || 1) - 1, c.day || 1)
+        : new Date(0);
+      return { _src: "al", data: e, _sortDate: sortDate };
+    }),
+    ...traktMovies.map(e => ({
+      _src: "trakt", type: "movie", data: e,
+      _sortDate: e.last_watched_at ? new Date(e.last_watched_at) : new Date(0)
+    })),
+    ...traktShows.map(e => ({
+      _src: "trakt", type: "show", data: e,
+      _sortDate: e.last_watched_at ? new Date(e.last_watched_at) : new Date(0)
+    }))
   ];
+
+  // Сортируем по дате просмотра, новые первые
+  allCompleted.sort((a, b) => b._sortDate - a._sortDate);
 
   if (allCompleted.length) {
     html += `<section class="group">
@@ -697,10 +732,33 @@ function completedCard(entry, index) {
   const img = coverUrl(m.coverImage);
   const t   = mediaTitle(m.title);
   const [tagClass, tagLabel] = entryTypeTag(entry);
+
+  // Бейдж просмотра: диапазон если есть обе даты, иначе только дата завершения
+  const s = entry.startedAt;
+  const c = entry.completedAt;
+  let watchBadge = "";
+  if (c?.year) {
+    const endStr   = fmtDate(c);
+    const startStr = s?.year ? fmtDate(s) : null;
+    const isSameDay = s?.year === c?.year && s?.month === c?.month && s?.day === c?.day;
+    watchBadge = (startStr && !isSameDay)
+      ? `${startStr} → ${endStr}`
+      : endStr;
+  }
+
+  // Год выпуска тайтла
+  const releaseYear = m.startDate?.year || "";
+
   return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*30,600)}ms">
     <span class="type-tag tag-${tagClass}">${tagLabel}</span>
+    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
     <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    <div class="card-body"><div class="card-title">${t}</div></div>
+    <div class="card-body">
+      <div class="card-title">${t}</div>
+      <div class="card-meta">
+        ${releaseYear ? `<span>${releaseYear}</span>` : ""}
+      </div>
+    </div>
   </a>`;
 }
 
@@ -712,8 +770,17 @@ function traktCard(item, type, index) {
   const url    = item._tmdb_url || "#";
   const tagClass = type === "movie" ? "tag-movie" : "tag-show";
   const tagLabel = type === "movie" ? "Фильм" : "Сериал";
+
+  // Дата последнего просмотра из Trakt
+  let watchBadge = "";
+  if (item.last_watched_at) {
+    const d = new Date(item.last_watched_at);
+    watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" });
+  }
+
   return `<a href="${url}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*20,600)}ms">
     <span class="type-tag ${tagClass}">${tagLabel}</span>
+    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
     <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
       <div class="card-title">${title}</div>
@@ -934,15 +1001,12 @@ async function fetchAllALTimeline() {
   return all;
 }
 
-// Convert Trakt watched items into unified timeline entries
-// Each item gets { _tl_type, _tl_year, _tl_watched_at, ... }
 async function buildTraktTimelineEntries() {
   const [moviesRaw, showsRaw] = await Promise.all([
     fetchTraktWatched("movie"),
     fetchTraktWatched("show")
   ]);
 
-  // Merge movies and shows, enrich with posters
   const allRaw = [
     ...moviesRaw.map(i => ({ ...i, _traktType: "movie" })),
     ...showsRaw.map(i => ({ ...i, _traktType: "show" }))
@@ -966,7 +1030,6 @@ async function buildTraktTimelineEntries() {
           tmdbUrl  = `https://www.themoviedb.org/${type === "movie" ? "movie" : "tv"}/${tmdbId}`;
         } catch {}
       }
-      // last_watched_at is ISO string like "2024-03-15T20:00:00.000Z"
       const watchedAt = item.last_watched_at ? new Date(item.last_watched_at) : null;
       enriched.push({
         _src: "trakt",
@@ -991,7 +1054,6 @@ let tlFilter = "ALL";
 async function loadTimeline() {
   if (cache.timeline) { renderTimeline(cache.timeline, tlFilter); return; }
   try {
-    // Load AniList and Trakt timeline in parallel
     const [alEntries, traktEntries] = await Promise.all([
       fetchAllALTimeline(),
       buildTraktTimelineEntries()
@@ -1031,20 +1093,17 @@ function renderTimeline(data, filter) {
 }
 
 function renderTimelineList({ al, trakt }, filter) {
-  // Filter AL entries
   let alFiltered = al;
   if (filter === "ANIME") alFiltered = al.filter(e => e.media.type === "ANIME");
   else if (filter === "MANGA") alFiltered = al.filter(e => e.media.type === "MANGA" && !NOVEL_FORMATS.includes(e.media.format));
   else if (filter === "NOVEL") alFiltered = al.filter(e => NOVEL_FORMATS.includes(e.media.format));
   else if (filter === "MOVIE" || filter === "SHOW") alFiltered = [];
 
-  // Filter Trakt entries
   let traktFiltered = trakt;
   if (filter === "ANIME" || filter === "MANGA" || filter === "NOVEL") traktFiltered = [];
   else if (filter === "MOVIE") traktFiltered = trakt.filter(e => e._traktType === "movie");
   else if (filter === "SHOW")  traktFiltered = trakt.filter(e => e._traktType === "show");
 
-  // Build unified year buckets
   const byYear = {};
 
   for (const e of alFiltered) {
@@ -1061,7 +1120,6 @@ function renderTimelineList({ al, trakt }, filter) {
     byYear[y].push({ _src: "trakt", data: e });
   }
 
-  // Sort each year's entries: AL by completedAt desc, Trakt by watchedAt desc, interleaved by date
   for (const y of Object.keys(byYear)) {
     byYear[y].sort((a, b) => {
       const dateA = a._src === "al"
