@@ -106,7 +106,6 @@ section.group { margin-bottom: 3.5rem; }
   background: linear-gradient(90deg, var(--border), transparent);
 }
 
-/* год-разделитель внутри «Просмотрено» */
 .year-divider {
   font-family: 'Syne', sans-serif;
   font-size: .75rem;
@@ -134,29 +133,34 @@ section.group { margin-bottom: 3.5rem; }
   background: linear-gradient(90deg, var(--border), transparent);
 }
 
+/* ══ GRID — larger columns ════════════════════════ */
 .grid-now {
   display: grid;
-  gap: .85rem;
+  gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
 }
-@media (min-width: 480px)  { .grid-now { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 700px)  { .grid-now { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 900px)  { .grid-now { grid-template-columns: repeat(5, 1fr); } }
-@media (min-width: 1100px) { .grid-now { grid-template-columns: repeat(6, 1fr); } }
-@media (min-width: 1300px) { .grid-now { grid-template-columns: repeat(7, 1fr); } }
+@media (min-width: 480px)  { .grid-now { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 640px)  { .grid-now { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 860px)  { .grid-now { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1060px) { .grid-now { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 1280px) { .grid-now { grid-template-columns: repeat(6, 1fr); } }
+@media (min-width: 1520px) { .grid-now { grid-template-columns: repeat(7, 1fr); } }
+
 .grid-chars {
   display: grid;
-  gap: .85rem;
+  gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
 }
-@media (min-width: 480px)  { .grid-chars { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 720px)  { .grid-chars { grid-template-columns: repeat(6, 1fr); } }
-@media (min-width: 1024px) { .grid-chars { grid-template-columns: repeat(8, 1fr); } }
+@media (min-width: 480px)  { .grid-chars { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 640px)  { .grid-chars { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 860px)  { .grid-chars { grid-template-columns: repeat(6, 1fr); } }
+@media (min-width: 1100px) { .grid-chars { grid-template-columns: repeat(8, 1fr); } }
+
 .card {
   display: block;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   text-decoration: none;
   transition: border-color .22s, transform .22s, box-shadow .22s;
@@ -175,20 +179,22 @@ section.group { margin-bottom: 3.5rem; }
   background: var(--border);
 }
 .card-char img { aspect-ratio: 1/1; }
-.card-body { padding: .55rem .65rem .65rem; }
+
+/* ── larger card text ──────────────────────────── */
+.card-body { padding: .65rem .75rem .75rem; }
 .card-title {
-  font-size: .78rem;
+  font-size: .9rem;
   font-weight: 500;
   color: var(--text-hi);
-  line-height: 1.3;
+  line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .card-meta {
-  margin-top: .3rem;
-  font-size: .7rem;
+  margin-top: .35rem;
+  font-size: .8rem;
   color: var(--text-dim);
   display: flex;
   justify-content: space-between;
@@ -197,13 +203,13 @@ section.group { margin-bottom: 3.5rem; }
 }
 .type-tag {
   position: absolute;
-  top: 6px; right: 6px;
-  font-size: .6rem;
+  top: 7px; right: 7px;
+  font-size: .66rem;
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
-  padding: .18rem .45rem;
-  border-radius: 5px;
+  padding: .22rem .52rem;
+  border-radius: 6px;
   backdrop-filter: blur(8px);
   z-index: 3;
 }
@@ -213,7 +219,7 @@ section.group { margin-bottom: 3.5rem; }
 .tag-movie  { background: rgba(252,107,104,.15); color: var(--red);     border: 1px solid rgba(252,107,104,.25); }
 .tag-show   { background: rgba(237,137, 54,.15); color: var(--orange);  border: 1px solid rgba(237,137, 54,.25); }
 .progress-line {
-  font-size: .7rem;
+  font-size: .8rem;
   color: var(--accent);
   font-weight: 500;
   white-space: nowrap;
@@ -221,39 +227,38 @@ section.group { margin-bottom: 3.5rem; }
   text-overflow: ellipsis;
 }
 
-/* ══ WATCH BADGE (дата просмотра, левый верх) ═════ */
+/* ══ WATCH BADGE ══════════════════════════════════ */
 .watch-badge {
   position: absolute;
-  top: 6px; left: 6px;
-  font-size: .58rem;
+  top: 7px; left: 7px;
+  font-size: .63rem;
   font-weight: 500;
   color: rgba(255,255,255,.9);
   background: rgba(8,10,15,.78);
   border: 1px solid rgba(255,255,255,.1);
-  border-radius: 5px;
-  padding: .2rem .45rem;
+  border-radius: 6px;
+  padding: .22rem .52rem;
   backdrop-filter: blur(8px);
   z-index: 3;
   line-height: 1.3;
-  max-width: calc(100% - 64px);
+  max-width: calc(100% - 74px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ══ GRADE BADGE (оценка, нижний левый угол) ══════ */
+/* ══ GRADE BADGE — numeric X/7 ═══════════════════ */
 .grade-badge {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: .35rem .6rem;
+  padding: .45rem .7rem;
   font-family: 'Syne', sans-serif;
-  font-size: .62rem;
   font-weight: 700;
   color: #fff;
   display: flex;
   align-items: center;
-  gap: .35rem;
-  background: linear-gradient(0deg, rgba(8,10,15,.92) 60%, transparent);
+  gap: .4rem;
+  background: linear-gradient(0deg, rgba(8,10,15,.95) 55%, transparent);
   z-index: 2;
   pointer-events: none;
 }
@@ -261,6 +266,16 @@ section.group { margin-bottom: 3.5rem; }
   width: 6px; height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
+}
+.grade-score {
+  font-size: .88rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.grade-denom {
+  font-size: .64rem;
+  font-weight: 400;
+  opacity: .6;
 }
 
 .state-box {
@@ -410,9 +425,6 @@ section.group { margin-bottom: 3.5rem; }
 </main>
 
 <script>
-// ══════════════════════════════════════════════════
-// КОНФИГ
-// ══════════════════════════════════════════════════
 const AL_USERNAME    = "Qerrti";
 const TRAKT_USERNAME = "Qerrti";
 const TRAKT_CLIENT   = "f9e52841369f43c4d8f0f4ab92033469eb89c2959c1005cb493749d29b8ee19c";
@@ -430,8 +442,10 @@ const NOVEL_FORMATS = ["NOVEL","LIGHT_NOVEL"];
 const cache = {};
 
 // ══════════════════════════════════════════════════
-// ШКАЛА ПОСЛЕВКУСИЯ
+// ШКАЛА — порядок определяет числовой балл 1–7
 // ══════════════════════════════════════════════════
+const GRADE_ORDER = ["razocharo","brak","fon","attrakcion","vyskazyvanie","etalon","rezonans"];
+
 const GRADES = {
   razocharo:    { color: "#8B6914", name: "Разочарование", desc: "Хороший старт, перечеркнутый бездарным финалом" },
   brak:         { color: "#c0392b", name: "Брак",          desc: "Технически или сценарно несостоятельно" },
@@ -441,6 +455,11 @@ const GRADES = {
   etalon:       { color: "#2563a8", name: "Эталон",        desc: "Почти безупречное исполнение" },
   rezonans:     { color: "#7c3aed", name: "Резонанс",      desc: "Личный фаворит. То, что откликнулось" }
 };
+
+function gradeScore(key) {
+  const idx = GRADE_ORDER.indexOf(key);
+  return idx >= 0 ? idx + 1 : null;
+}
 
 const TAGS_MAP = {
   "Топ рисовка":         { cat: "visual",  tip: "Эстетическое наслаждение, детализация на высоте" },
@@ -533,25 +552,28 @@ function entryTypeTag(entry) {
   return ["manga","Манга"];
 }
 
-// Нормализуем название для поиска совпадений с reviews.json
 function normTitle(s) {
   return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
 }
 
-// Ищем оценку в reviews по названию (нечёткое совпадение)
-function findGradeForTitle(title) {
+// Возвращает { grade, score } или null
+function findReviewForTitle(title) {
   if (!cache.reviews || !title) return null;
   const norm = normTitle(title);
   const found = cache.reviews.find(r => normTitle(r.title) === norm);
-  return found ? (GRADES[found.grade] || null) : null;
+  if (!found) return null;
+  const grade = GRADES[found.grade] || null;
+  const score = gradeScore(found.grade);
+  return grade ? { grade, score } : null;
 }
 
-// Рендер бейджа оценки поверх постера
-function gradeBadgeHtml(grade) {
-  if (!grade) return "";
+// Числовой бейдж X/7 поверх постера
+function gradeBadgeHtml(info) {
+  if (!info) return "";
+  const { grade, score } = info;
   return `<div class="grade-badge">
     <span class="grade-dot" style="background:${grade.color};box-shadow:0 0 5px ${grade.color}88"></span>
-    <span style="color:${grade.color}">${grade.name}</span>
+    <span class="grade-score" style="color:${grade.color}">${score}<span class="grade-denom">/7</span></span>
   </div>`;
 }
 
@@ -589,15 +611,12 @@ async function fetchTraktWatched(type) {
   const path = type === "movie"
     ? `/users/${TRAKT_USERNAME}/watched/movies?extended=noseasons`
     : `/users/${TRAKT_USERNAME}/watched/shows?extended=noseasons`;
-  try {
-    return await traktFetch(path);
-  } catch {
-    return [];
-  }
+  try { return await traktFetch(path); }
+  catch { return []; }
 }
 
 // ══════════════════════════════════════════════════
-// NOW — AniList + Trakt
+// NOW
 // ══════════════════════════════════════════════════
 const NOW_QUERY = `
 query($name: String) {
@@ -631,8 +650,6 @@ query($name: String) {
 
 async function loadNow() {
   if (cache.now) { renderNow(cache.now); return; }
-
-  // Грузим reviews.json параллельно — нужен для бейджей оценок
   if (!cache.reviews) {
     try {
       const res = await fetch("reviews.json");
@@ -643,14 +660,12 @@ async function loadNow() {
       }
     } catch {}
   }
-
   try {
     const [alData, traktMoviesRaw, traktShowsRaw] = await Promise.all([
       gql(NOW_QUERY, { name: AL_USERNAME }),
       fetchTraktWatched("movie"),
       fetchTraktWatched("show")
     ]);
-
     const alCurrent = [
       ...(alData.anime_cur?.mediaList || []),
       ...(alData.manga_cur?.mediaList || [])
@@ -659,12 +674,10 @@ async function loadNow() {
       ...(alData.anime_done?.mediaList || []),
       ...(alData.manga_done?.mediaList || [])
     ];
-
     const [enrichedMovies, enrichedShows] = await Promise.all([
       enrichTraktWithPosters(traktMoviesRaw.slice(0, 50), "movie"),
       enrichTraktWithPosters(traktShowsRaw.slice(0, 50), "show")
     ]);
-
     cache.now = { alCurrent, alCompleted, traktMovies: enrichedMovies, traktShows: enrichedShows };
     renderNow(cache.now);
   } catch (err) {
@@ -677,7 +690,6 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
   const box = document.getElementById("tab-now");
   let html = "";
 
-  // «В процессе» — без изменений
   if (alCurrent.length) {
     html += `<section class="group">
       <h2 class="section-title">В процессе</h2>
@@ -685,28 +697,24 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
     </section>`;
   }
 
-  // Объединяем и сортируем по дате просмотра
   const allCompleted = [
     ...alCompleted.map(e => {
       const c = e.completedAt;
-      const sortDate = c?.year
-        ? new Date(c.year, (c.month || 1) - 1, c.day || 1)
-        : new Date(0);
-      return { _src: "al", data: e, _sortDate: sortDate, _sortYear: c?.year || 0 };
+      const sortDate = c?.year ? new Date(c.year, (c.month||1)-1, c.day||1) : new Date(0);
+      return { _src:"al", data:e, _sortDate:sortDate, _sortYear:c?.year||0 };
     }),
     ...traktMovies.map(e => {
       const d = e.last_watched_at ? new Date(e.last_watched_at) : new Date(0);
-      return { _src: "trakt", type: "movie", data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
+      return { _src:"trakt", type:"movie", data:e, _sortDate:d, _sortYear:d.getFullYear()||0 };
     }),
     ...traktShows.map(e => {
       const d = e.last_watched_at ? new Date(e.last_watched_at) : new Date(0);
-      return { _src: "trakt", type: "show", data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
+      return { _src:"trakt", type:"show", data:e, _sortDate:d, _sortYear:d.getFullYear()||0 };
     })
   ];
   allCompleted.sort((a, b) => b._sortDate - a._sortDate);
 
   if (allCompleted.length) {
-    // Группируем по году просмотра
     const byYear = {};
     for (const item of allCompleted) {
       const y = item._sortYear || "—";
@@ -714,7 +722,6 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
       byYear[y].push(item);
     }
     const years = Object.keys(byYear).sort((a, b) => b - a);
-
     let completedHtml = "";
     years.forEach(year => {
       completedHtml += `<div class="year-divider">${year}</div>
@@ -725,7 +732,6 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
           }).join("")}
         </div>`;
     });
-
     html += `<section class="group">
       <h2 class="section-title">Просмотрено / Прочитано</h2>
       ${completedHtml}
@@ -754,10 +760,10 @@ function nowCard(entry, index) {
   </a>`;
 }
 
+// AniList: день и месяц без года
 function fmtDate(d) {
-  if (!d?.year) return null;
-  if (!d.month) return `${d.year}`;
-  if (!d.day)   return new Date(d.year, d.month-1).toLocaleDateString("ru-RU",{month:"short",year:"numeric"});
+  if (!d?.year || !d?.month) return null;
+  if (!d.day) return new Date(d.year, d.month-1).toLocaleDateString("ru-RU",{month:"short"});
   return new Date(d.year, d.month-1, d.day).toLocaleDateString("ru-RU",{day:"numeric",month:"short"});
 }
 
@@ -767,27 +773,23 @@ function completedCard(entry, index) {
   const t   = mediaTitle(m.title);
   const [tagClass, tagLabel] = entryTypeTag(entry);
 
-  // Бейдж даты просмотра
   const s = entry.startedAt, c = entry.completedAt;
   let watchBadge = "";
-  if (c?.year) {
+  if (c?.year && c?.month) {
     const endStr   = fmtDate(c);
-    const startStr = s?.year ? fmtDate(s) : null;
+    const startStr = s?.month ? fmtDate(s) : null;
     const isSameDay = s?.year === c?.year && s?.month === c?.month && s?.day === c?.day;
-    watchBadge = (startStr && !isSameDay) ? `${startStr} → ${endStr}` : endStr;
+    if (endStr) watchBadge = (startStr && !isSameDay) ? `${startStr} → ${endStr}` : endStr;
   }
 
-  // Год выпуска
   const releaseYear = m.startDate?.year || "";
-
-  // Оценка из reviews.json
-  const grade = findGradeForTitle(t);
+  const info = findReviewForTitle(t);
 
   return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*30,600)}ms">
     <span class="type-tag tag-${tagClass}">${tagLabel}</span>
     ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
     <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    ${gradeBadgeHtml(grade)}
+    ${gradeBadgeHtml(info)}
     <div class="card-body">
       <div class="card-title">${t}</div>
       ${releaseYear ? `<div class="card-meta"><span>${releaseYear}</span></div>` : ""}
@@ -795,6 +797,7 @@ function completedCard(entry, index) {
   </a>`;
 }
 
+// ── [FIX 1] Trakt: только день и месяц ─────────────
 function traktCard(item, type, index) {
   const entry  = type === "movie" ? item.movie : item.show;
   const title  = item._title_ru || entry?.title || "—";
@@ -804,21 +807,20 @@ function traktCard(item, type, index) {
   const tagClass = type === "movie" ? "tag-movie" : "tag-show";
   const tagLabel = type === "movie" ? "Фильм" : "Сериал";
 
-  // Бейдж даты просмотра
   let watchBadge = "";
   if (item.last_watched_at) {
     const d = new Date(item.last_watched_at);
-    watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" });
+    // только день и месяц — без года
+    watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
   }
 
-  // Оценка из reviews.json — ищем и по русскому, и по оригинальному названию
-  const grade = findGradeForTitle(title) || findGradeForTitle(entry?.title);
+  const info = findReviewForTitle(title) || findReviewForTitle(entry?.title);
 
   return `<a href="${url}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*20,600)}ms">
     <span class="type-tag ${tagClass}">${tagLabel}</span>
     ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
     <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    ${gradeBadgeHtml(grade)}
+    ${gradeBadgeHtml(info)}
     <div class="card-body">
       <div class="card-title">${title}</div>
       ${year ? `<div class="card-meta"><span>${year}</span></div>` : ""}
@@ -827,14 +829,15 @@ function traktCard(item, type, index) {
 }
 
 // ══════════════════════════════════════════════════
-// FAVORITES — AniList + Trakt
+// FAVORITES
 // ══════════════════════════════════════════════════
+// ── [FIX 3] запрашиваем startDate для аниме и манги
 const FAV_QUERY = `
 query($name: String) {
   User(name: $name) {
     favourites {
-      anime(perPage: 50) { nodes { id siteUrl format title { userPreferred romaji } coverImage { extraLarge large } } }
-      manga(perPage: 50) { nodes { id siteUrl format title { userPreferred romaji } coverImage { extraLarge large } } }
+      anime(perPage: 50) { nodes { id siteUrl format title { userPreferred romaji } coverImage { extraLarge large } startDate { year } } }
+      manga(perPage: 50) { nodes { id siteUrl format title { userPreferred romaji } coverImage { extraLarge large } startDate { year } } }
       characters(perPage: 50) { nodes { id siteUrl name { full } image { large medium } } }
       staff(perPage: 50) { nodes { id siteUrl name { full } image { large medium } } }
     }
@@ -843,21 +846,28 @@ query($name: String) {
 
 async function loadFavorites() {
   if (cache.fav) { renderFavorites(cache.fav); return; }
+  if (!cache.reviews) {
+    try {
+      const res = await fetch("reviews.json");
+      if (res.ok) {
+        const data = await res.json();
+        data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        cache.reviews = data;
+      }
+    } catch {}
+  }
   try {
     const [alData, traktMovies, traktShows] = await Promise.all([
       gql(FAV_QUERY, { name: AL_USERNAME }),
       traktFetch(`/users/${TRAKT_USERNAME}/ratings/movies?limit=50`).catch(() => []),
       traktFetch(`/users/${TRAKT_USERNAME}/ratings/shows?limit=50`).catch(() => [])
     ]);
-
     const favMovies = traktMovies.filter(r => r.rating >= 8);
     const favShows  = traktShows.filter(r => r.rating >= 8);
-
     const [enrichedMovies, enrichedShows] = await Promise.all([
       enrichTraktWithPosters(favMovies, "movie"),
       enrichTraktWithPosters(favShows, "show")
     ]);
-
     cache.fav = { al: alData.User.favourites, traktMovies: enrichedMovies, traktShows: enrichedShows };
     renderFavorites(cache.fav);
   } catch (err) {
@@ -874,10 +884,10 @@ function renderFavorites({ al, traktMovies, traktShows }) {
   const staff  = al.staff?.nodes || [];
 
   const allTitles = [
-    ...animes.map(item => ({ _src: "al-anime", data: item })),
-    ...mangas.map(item => ({ _src: "al-manga", data: item })),
-    ...traktMovies.map(item => ({ _src: "trakt", type: "movie", data: item })),
-    ...traktShows.map(item => ({ _src: "trakt", type: "show", data: item }))
+    ...animes.map(item => ({ _src:"al-anime", data:item })),
+    ...mangas.map(item => ({ _src:"al-manga", data:item })),
+    ...traktMovies.map(item => ({ _src:"trakt", type:"movie", data:item })),
+    ...traktShows.map(item => ({ _src:"trakt", type:"show", data:item }))
   ];
 
   let html = "";
@@ -887,20 +897,35 @@ function renderFavorites({ al, traktMovies, traktShows }) {
       <h2 class="section-title">Тайтлы</h2>
       <div class="grid-now">
         ${allTitles.map((item, i) => {
+          // ── [FIX 3] год + оценка в карточках Любимого ──
           if (item._src === "al-anime") {
+            const t = mediaTitle(item.data.title);
+            const releaseYear = item.data.startDate?.year || "";
+            const info = findReviewForTitle(t);
             return `<a href="${item.data.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(i*25,500)}ms">
               <span class="type-tag tag-anime">Аниме</span>
-              <img src="${coverUrl(item.data.coverImage)}" alt="${mediaTitle(item.data.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
-              <div class="card-body"><div class="card-title">${mediaTitle(item.data.title)}</div></div>
+              <img src="${coverUrl(item.data.coverImage)}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
+              ${gradeBadgeHtml(info)}
+              <div class="card-body">
+                <div class="card-title">${t}</div>
+                ${releaseYear ? `<div class="card-meta"><span>${releaseYear}</span></div>` : ""}
+              </div>
             </a>`;
           }
           if (item._src === "al-manga") {
+            const t = mediaTitle(item.data.title);
             const tagClass = NOVEL_FORMATS.includes(item.data.format) ? "tag-novel" : "tag-manga";
             const tagLabel = NOVEL_FORMATS.includes(item.data.format) ? "Ранобе" : "Манга";
+            const releaseYear = item.data.startDate?.year || "";
+            const info = findReviewForTitle(t);
             return `<a href="${item.data.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(i*25,500)}ms">
               <span class="type-tag ${tagClass}">${tagLabel}</span>
-              <img src="${coverUrl(item.data.coverImage)}" alt="${mediaTitle(item.data.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
-              <div class="card-body"><div class="card-title">${mediaTitle(item.data.title)}</div></div>
+              <img src="${coverUrl(item.data.coverImage)}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
+              ${gradeBadgeHtml(info)}
+              <div class="card-body">
+                <div class="card-title">${t}</div>
+                ${releaseYear ? `<div class="card-meta"><span>${releaseYear}</span></div>` : ""}
+              </div>
             </a>`;
           }
           return traktCard(item.data, item.type, i);
@@ -964,6 +989,7 @@ function renderReviews(reviews) {
 
 function reviewCard(r, i) {
   const grade = GRADES[r.grade] || null;
+  const score = gradeScore(r.grade);
   const tags = (r.tags || []);
   const tagsHtml = tags.length
     ? `<div class="review-tags">${tags.map(tag => {
@@ -978,11 +1004,12 @@ function reviewCard(r, i) {
   const typeColor  = typeColors[r.type] || "var(--text-dim)";
   const dateStr    = r.date ? new Date(r.date).toLocaleDateString("ru-RU",{day:"numeric",month:"long",year:"numeric"}) : "";
   const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Ссылка";
+  // ── [FIX 4] в карточке отзыва показываем и цифру, и название
   const gradeHtml = grade
     ? `<div class="review-grade-bar">
         <div class="grade-square" style="background:${grade.color};box-shadow:0 0 8px ${grade.color}55"></div>
         <div style="flex:1">
-          <div class="grade-name" style="color:${grade.color}">${grade.name}</div>
+          <div class="grade-name" style="color:${grade.color}">${score}/7 — ${grade.name}</div>
           <div class="grade-desc">${grade.desc}</div>
         </div>
         <div class="review-source-link"><span class="review-source-dot" style="background:${typeColor}"></span>${sourceLabel}</div>
@@ -1009,7 +1036,6 @@ function reviewCard(r, i) {
   </a>`;
 }
 
-// ── СТАРТ ──────────────────────────────────────────
 loadNow();
 </script>
 </body>
