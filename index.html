@@ -841,7 +841,7 @@ function renderFavorites({ al, traktMovies, traktShows }) {
 
   if (staff.length) {
     html += `<section class="group">
-      <h2 class="section-title">Авторы</h2>
+      <h2 class="section-title">Персоны</h2>
       <div class="grid-chars">
         ${staff.map((item, i) => `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card card-char" style="animation-delay:${Math.min(i*25,500)}ms">
           <img src="${item.image?.large || item.image?.medium || PH_SQ}" alt="${item.name?.full || '—'}" loading="lazy" onerror="this.src='${PH_SQ}'">
