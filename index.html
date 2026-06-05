@@ -816,10 +816,16 @@ async function traktFetch(path) {
 }
 
 async function tmdbFetch(path) {
-  const res = await fetch(`${TMDB}${path}`, {
-    headers: { "Authorization": `Bearer ${TMDB_TOKEN}` }
-  });
-  if (!res.ok) throw new Error(`TMDb HTTP ${res.status}`);
+  const cleanPath = path.replace(/^\//, "");
+
+  const res = await fetch(
+    `/api/tmdb?path=${encodeURIComponent(cleanPath)}`
+  );
+
+  if (!res.ok) {
+    throw new Error(`TMDb HTTP ${res.status}`);
+  }
+
   return res.json();
 }
 
