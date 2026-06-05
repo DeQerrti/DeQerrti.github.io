@@ -112,15 +112,6 @@ section.group { margin-bottom: 3.5rem; }
   height: 1px;
   background: linear-gradient(90deg, var(--border), transparent);
 }
-.section-badge {
-  font-size: .68rem;
-  font-weight: 500;
-  color: var(--accent);
-  background: rgba(102,252,241,.08);
-  border: 1px solid rgba(102,252,241,.18);
-  padding: .15rem .5rem;
-  border-radius: 999px;
-}
 .grid-now {
   display: grid;
   gap: .85rem;
@@ -426,57 +417,6 @@ section.group { margin-bottom: 3.5rem; }
 .tl-type-tag { font-size: .6rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: .15rem .4rem; border-radius: 4px; flex-shrink: 0; }
 .tl-score { font-size: .78rem; font-weight: 700; color: var(--yellow); flex-shrink: 0; min-width: 2.2rem; text-align: right; }
 .tl-empty { text-align: center; padding: 3rem; color: var(--text-dim); font-size: .88rem; }
-
-/* ══ КИНО ══════════════════════════════════════════ */
-.cinema-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: .75rem;
-  margin-bottom: 2.5rem;
-}
-@media (min-width: 600px) { .cinema-stats { grid-template-columns: repeat(4, 1fr); } }
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem 1.2rem;
-  text-align: center;
-}
-.stat-value {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--accent);
-  line-height: 1;
-}
-.stat-label {
-  font-size: .72rem;
-  color: var(--text-dim);
-  margin-top: .3rem;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-.cinema-filters {
-  display: flex;
-  gap: .5rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-.cf-btn {
-  font-size: .8rem;
-  padding: .35rem .85rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  transition: all .18s;
-  font-family: 'DM Sans', sans-serif;
-}
-.cf-btn:hover { color: var(--text); border-color: #2a3448; }
-.cf-btn.active { background: rgba(102,252,241,.08); border-color: rgba(102,252,241,.3); color: var(--accent); }
 </style>
 </head>
 <body>
@@ -489,7 +429,6 @@ section.group { margin-bottom: 3.5rem; }
 <nav>
   <button class="tab-btn active" onclick="switchTab('tab-now', this)">Главная</button>
   <button class="tab-btn" onclick="switchTab('tab-favorites', this)">Любимое</button>
-  <button class="tab-btn" onclick="switchTab('tab-cinema', this)">🎬 Кино</button>
   <button class="tab-btn" onclick="switchTab('tab-reviews', this)">Отзывы</button>
   <button class="tab-btn" onclick="switchTab('tab-timeline', this)">Хронология</button>
 </nav>
@@ -497,7 +436,6 @@ section.group { margin-bottom: 3.5rem; }
 <main>
   <div id="tab-now"       class="tab-content"><div class="state-box"><div class="spinner"></div>Загружаем…</div></div>
   <div id="tab-favorites" class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем любимчиков…</div></div>
-  <div id="tab-cinema"    class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем фильмы и сериалы…</div></div>
   <div id="tab-reviews"   class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем отзывы…</div></div>
   <div id="tab-timeline"  class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем хронологию…</div></div>
 </main>
@@ -506,8 +444,8 @@ section.group { margin-bottom: 3.5rem; }
 // ══════════════════════════════════════════════════
 // КОНФИГ
 // ══════════════════════════════════════════════════
-const AL_USERNAME    = "Qerrti";       // AniList ник
-const TRAKT_USERNAME = "DeQerrti";     // Trakt ник
+const AL_USERNAME    = "Qerrti";
+const TRAKT_USERNAME = "DeQerrti";
 const TRAKT_CLIENT   = "f9e52841369f43c4d8f0f4ab92033469eb89c2959c1005cb493749d29b8ee19c";
 const TMDB_TOKEN     = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNjFhNzQwYmU5OGZlM2RjOGU5MDM4MTliMzhiZmVkOCIsIm5iZiI6MTc4MDYzNjA4MS45NTksInN1YiI6IjZhMjI1OWIxNDU5ZmNjOGIwZmJjMGQ3NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9aMoESd6Okdst8IX5NrRkLcZipD7yJ9Qb0mmlJniGDg";
 
@@ -612,7 +550,6 @@ function switchTab(tabId, btn) {
   btn.classList.add("active");
   if (tabId === "tab-now")       loadNow();
   if (tabId === "tab-favorites") loadFavorites();
-  if (tabId === "tab-cinema")    loadCinema();
   if (tabId === "tab-reviews")   loadReviews();
   if (tabId === "tab-timeline")  loadTimeline();
 }
@@ -629,7 +566,37 @@ function entryTypeTag(entry) {
 }
 
 // ══════════════════════════════════════════════════
-// NOW
+// TRAKT helpers (shared between NOW and FAVORITES)
+// ══════════════════════════════════════════════════
+async function enrichTraktWithPosters(items, type) {
+  const BATCH = 20;
+  const result = [];
+  for (let i = 0; i < items.length; i += BATCH) {
+    const chunk = items.slice(i, i + BATCH);
+    await Promise.all(chunk.map(async item => {
+      const entry = type === "movie" ? item.movie : item.show;
+      const tmdbId = entry?.ids?.tmdb;
+      if (!tmdbId) { result.push({ ...item, _poster: null, _type: type }); return; }
+      try {
+        const detail = await tmdbFetch(`/${type === "movie" ? "movie" : "tv"}/${tmdbId}?language=ru-RU`);
+        result.push({
+          ...item,
+          _poster: tmdbPoster(detail.poster_path, "w342"),
+          _title_ru: detail.title || detail.name || entry.title,
+          _year: (detail.release_date || detail.first_air_date || "").slice(0, 4),
+          _tmdb_url: `https://www.themoviedb.org/${type === "movie" ? "movie" : "tv"}/${tmdbId}`,
+          _type: type
+        });
+      } catch {
+        result.push({ ...item, _poster: null, _type: type });
+      }
+    }));
+  }
+  return result;
+}
+
+// ══════════════════════════════════════════════════
+// NOW — AniList + Trakt (recent)
 // ══════════════════════════════════════════════════
 const NOW_QUERY = `
 query($name: String) {
@@ -660,16 +627,29 @@ query($name: String) {
 async function loadNow() {
   if (cache.now) { renderNow(cache.now); return; }
   try {
-    const data = await gql(NOW_QUERY, { name: AL_USERNAME });
-    const current = [
-      ...(data.anime_cur?.mediaList || []),
-      ...(data.manga_cur?.mediaList || [])
+    // Load AniList + Trakt in parallel
+    const [alData, traktMovies, traktShows] = await Promise.all([
+      gql(NOW_QUERY, { name: AL_USERNAME }),
+      traktFetch(`/users/${TRAKT_USERNAME}/watched/movies?extended=noseasons`).catch(() => []),
+      traktFetch(`/users/${TRAKT_USERNAME}/watched/shows?extended=noseasons`).catch(() => [])
+    ]);
+
+    const alCurrent = [
+      ...(alData.anime_cur?.mediaList || []),
+      ...(alData.manga_cur?.mediaList || [])
     ];
-    const completed = [
-      ...(data.anime_done?.mediaList || []),
-      ...(data.manga_done?.mediaList || [])
+    const alCompleted = [
+      ...(alData.anime_done?.mediaList || []),
+      ...(alData.manga_done?.mediaList || [])
     ];
-    cache.now = { current, completed };
+
+    // Enrich Trakt with posters (limit to 50 each for speed)
+    const [enrichedMovies, enrichedShows] = await Promise.all([
+      enrichTraktWithPosters(traktMovies.slice(0, 50), "movie"),
+      enrichTraktWithPosters(traktShows.slice(0, 50), "show")
+    ]);
+
+    cache.now = { alCurrent, alCompleted, traktMovies: enrichedMovies, traktShows: enrichedShows };
     renderNow(cache.now);
   } catch (err) {
     document.getElementById("tab-now").innerHTML =
@@ -677,21 +657,34 @@ async function loadNow() {
   }
 }
 
-function renderNow({ current, completed }) {
+function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
   const box = document.getElementById("tab-now");
   let html = "";
-  if (current.length) {
+
+  if (alCurrent.length) {
     html += `<section class="group">
       <h2 class="section-title">В процессе</h2>
-      <div class="grid-now">${current.map((e, i) => nowCard(e, i)).join("")}</div>
+      <div class="grid-now">${alCurrent.map((e, i) => nowCard(e, i)).join("")}</div>
     </section>`;
   }
-  if (completed.length) {
+
+  // Completed: merge AL + Trakt, interleaved
+  const allCompleted = [
+    ...alCompleted.map(e => ({ _src: "al", data: e })),
+    ...traktMovies.map(e => ({ _src: "trakt", type: "movie", data: e })),
+    ...traktShows.map(e => ({ _src: "trakt", type: "show", data: e }))
+  ];
+
+  if (allCompleted.length) {
     html += `<section class="group">
       <h2 class="section-title">Просмотрено / Прочитано</h2>
-      <div class="grid-now">${completed.map((e, i) => completedCard(e, i)).join("")}</div>
+      <div class="grid-now">${allCompleted.map((item, i) => {
+        if (item._src === "al") return completedCard(item.data, i);
+        return traktCard(item.data, item.type, i);
+      }).join("")}</div>
     </section>`;
   }
+
   if (!html) html = `<div class="state-box">Список пуст</div>`;
   box.innerHTML = html;
 }
@@ -726,8 +719,26 @@ function completedCard(entry, index) {
   </a>`;
 }
 
+function traktCard(item, type, index) {
+  const entry  = type === "movie" ? item.movie : item.show;
+  const title  = item._title_ru || entry?.title || "—";
+  const poster = item._poster || PH_TALL;
+  const year   = item._year || entry?.year || "";
+  const url    = item._tmdb_url || "#";
+  const tagClass = type === "movie" ? "tag-movie" : "tag-show";
+  const tagLabel = type === "movie" ? "Фильм" : "Сериал";
+  return `<a href="${url}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*20,600)}ms">
+    <span class="type-tag ${tagClass}">${tagLabel}</span>
+    <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <div class="card-body">
+      <div class="card-title">${title}</div>
+      ${year ? `<div class="card-meta"><span>${year}</span></div>` : ""}
+    </div>
+  </a>`;
+}
+
 // ══════════════════════════════════════════════════
-// FAVORITES
+// FAVORITES — AniList + Trakt
 // ══════════════════════════════════════════════════
 const FAV_QUERY = `
 query($name: String) {
@@ -744,8 +755,26 @@ query($name: String) {
 async function loadFavorites() {
   if (cache.fav) { renderFavorites(cache.fav); return; }
   try {
-    const data = await gql(FAV_QUERY, { name: AL_USERNAME });
-    cache.fav = data.User.favourites;
+    const [alData, traktMovies, traktShows] = await Promise.all([
+      gql(FAV_QUERY, { name: AL_USERNAME }),
+      traktFetch(`/users/${TRAKT_USERNAME}/ratings/movies?limit=50`).catch(() => []),
+      traktFetch(`/users/${TRAKT_USERNAME}/ratings/shows?limit=50`).catch(() => [])
+    ]);
+
+    // Use top-rated Trakt items as "favorites" (rating >= 8)
+    const favMovies = traktMovies.filter(r => r.rating >= 8);
+    const favShows  = traktShows.filter(r => r.rating >= 8);
+
+    const [enrichedMovies, enrichedShows] = await Promise.all([
+      enrichTraktWithPosters(favMovies, "movie"),
+      enrichTraktWithPosters(favShows, "show")
+    ]);
+
+    cache.fav = {
+      al: alData.User.favourites,
+      traktMovies: enrichedMovies,
+      traktShows: enrichedShows
+    };
     renderFavorites(cache.fav);
   } catch (err) {
     document.getElementById("tab-favorites").innerHTML =
@@ -753,207 +782,76 @@ async function loadFavorites() {
   }
 }
 
-function renderFavorites(fav) {
+function renderFavorites({ al, traktMovies, traktShows }) {
   const box    = document.getElementById("tab-favorites");
-  const animes = fav.anime?.nodes || [];
-  const mangas = fav.manga?.nodes || [];
-  const chars  = fav.characters?.nodes || [];
-  const staff  = fav.staff?.nodes || [];
+  const animes = al.anime?.nodes || [];
+  const mangas = al.manga?.nodes || [];
+  const chars  = al.characters?.nodes || [];
+  const staff  = al.staff?.nodes || [];
+
+  // Merge all titles: AL anime + AL manga + Trakt movies + Trakt shows
+  const allTitles = [
+    ...animes.map(item => ({ _src: "al-anime", data: item })),
+    ...mangas.map(item => ({ _src: "al-manga", data: item })),
+    ...traktMovies.map(item => ({ _src: "trakt", type: "movie", data: item })),
+    ...traktShows.map(item => ({ _src: "trakt", type: "show", data: item }))
+  ];
+
   let html = "";
-  if (animes.length) html += favMediaSection("🎬 Любимое аниме", animes);
-  if (mangas.length) html += favMediaSection("📚 Любимая манга / ранобэ", mangas);
-  if (chars.length)  html += favPersonSection("👤 Любимые персонажи", chars);
-  if (staff.length)  html += favPersonSection("🎌 Сейю / Режиссёры", staff);
-  box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
-}
 
-function favMediaSection(heading, items) {
-  return `<section class="group">
-    <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
-    <div class="grid-now">
-      ${items.map((item, i) => `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(i*25,500)}ms">
-        <img src="${coverUrl(item.coverImage)}" alt="${mediaTitle(item.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
-        <div class="card-body"><div class="card-title">${mediaTitle(item.title)}</div></div>
-      </a>`).join("")}
-    </div>
-  </section>`;
-}
-
-function favPersonSection(heading, items) {
-  return `<section class="group">
-    <h2 class="section-title">${heading} <span class="section-badge">${items.length}</span></h2>
-    <div class="grid-chars">
-      ${items.map((item, i) => `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card card-char" style="animation-delay:${Math.min(i*25,500)}ms">
-        <img src="${item.image?.large || item.image?.medium || PH_SQ}" alt="${item.name?.full || '—'}" loading="lazy" onerror="this.src='${PH_SQ}'">
-        <div class="card-body"><div class="card-title">${item.name?.full || "—"}</div></div>
-      </a>`).join("")}
-    </div>
-  </section>`;
-}
-
-// ══════════════════════════════════════════════════
-// КИНО — Trakt + TMDb
-// ══════════════════════════════════════════════════
-let cinemaFilter = "ALL";
-
-async function loadCinema() {
-  if (cache.cinema) { renderCinema(cache.cinema); return; }
-  const box = document.getElementById("tab-cinema");
-
-  try {
-    // 1. Параллельно тянем фильмы и сериалы с Trakt
-    const [movies, shows, statsMovies, statsShows] = await Promise.all([
-      traktFetch(`/users/${TRAKT_USERNAME}/watched/movies?extended=noseasons`),
-      traktFetch(`/users/${TRAKT_USERNAME}/watched/shows?extended=noseasons`),
-      traktFetch(`/users/${TRAKT_USERNAME}/stats`),
-      traktFetch(`/users/${TRAKT_USERNAME}/ratings/movies?limit=500`),
-    ]);
-
-    // 2. Рейтинги фильмов — map tmdb_id → rating
-    const ratingsMap = {};
-    for (const r of statsShows) {
-      if (r.movie?.ids?.tmdb) ratingsMap[r.movie.ids.tmdb] = r.rating;
-    }
-
-    // 3. Тянем постеры с TMDb пачками
-    const BATCH = 20;
-
-    async function enrichWithPosters(items, type) {
-      const result = [];
-      for (let i = 0; i < items.length; i += BATCH) {
-        const chunk = items.slice(i, i + BATCH);
-        await Promise.all(chunk.map(async item => {
-          const entry = type === "movie" ? item.movie : item.show;
-          const tmdbId = entry?.ids?.tmdb;
-          if (!tmdbId) { result.push({ ...item, _poster: null }); return; }
-          try {
-            const detail = await tmdbFetch(`/${type === "movie" ? "movie" : "tv"}/${tmdbId}?language=ru-RU`);
-            result.push({
-              ...item,
-              _poster: tmdbPoster(detail.poster_path, "w342"),
-              _title_ru: detail.title || detail.name || entry.title,
-              _year: (detail.release_date || detail.first_air_date || "").slice(0, 4),
-              _tmdb_url: `https://www.themoviedb.org/${type === "movie" ? "movie" : "tv"}/${tmdbId}`
-            });
-          } catch {
-            result.push({ ...item, _poster: null });
+  if (allTitles.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Тайтлы</h2>
+      <div class="grid-now">
+        ${allTitles.map((item, i) => {
+          if (item._src === "al-anime") {
+            return `<a href="${item.data.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(i*25,500)}ms">
+              <span class="type-tag tag-anime">Аниме</span>
+              <img src="${coverUrl(item.data.coverImage)}" alt="${mediaTitle(item.data.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+              <div class="card-body"><div class="card-title">${mediaTitle(item.data.title)}</div></div>
+            </a>`;
           }
-        }));
-      }
-      return result;
-    }
-
-    // Берём последние 100 для скорости
-    const recentMovies = movies.slice(0, 100);
-    const recentShows  = shows.slice(0, 100);
-
-    const [enrichedMovies, enrichedShows] = await Promise.all([
-      enrichWithPosters(recentMovies, "movie"),
-      enrichWithPosters(recentShows, "show")
-    ]);
-
-    cache.cinema = { movies: enrichedMovies, shows: enrichedShows, stats: statsMovies };
-    renderCinema(cache.cinema);
-
-  } catch (err) {
-    box.innerHTML = `<div class="state-box"><div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>Ошибка: ${err.message}<br><small style="font-size:.75rem;margin-top:.5rem;display:block;color:#4a5568">Убедись что профиль Trakt публичный</small></div>`;
-  }
-}
-
-function renderCinema({ movies, shows, stats }) {
-  const box = document.getElementById("tab-cinema");
-
-  // Статистика
-  const totalMovies = movies.length;
-  const totalShows  = shows.length;
-  const totalEps    = shows.reduce((acc, s) => acc + (s.plays || 0), 0);
-
-  const statsHtml = `
-  <div class="cinema-stats">
-    <div class="stat-card">
-      <div class="stat-value">${totalMovies}</div>
-      <div class="stat-label">Фильмов</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">${totalShows}</div>
-      <div class="stat-label">Сериалов</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">${totalEps}</div>
-      <div class="stat-label">Просмотров</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">${totalMovies + totalShows}</div>
-      <div class="stat-label">Всего</div>
-    </div>
-  </div>`;
-
-  const filtersHtml = `
-  <div class="cinema-filters">
-    <button class="cf-btn ${cinemaFilter==="ALL"?"active":""}"    onclick="setCinemaFilter('ALL',this)">Всё</button>
-    <button class="cf-btn ${cinemaFilter==="MOVIES"?"active":""}" onclick="setCinemaFilter('MOVIES',this)">🎬 Фильмы</button>
-    <button class="cf-btn ${cinemaFilter==="SHOWS"?"active":""}"  onclick="setCinemaFilter('SHOWS',this)">📺 Сериалы</button>
-  </div>`;
-
-  box.innerHTML = statsHtml + filtersHtml + `<div id="cinema-grid"></div>`;
-  renderCinemaGrid(movies, shows);
-}
-
-function setCinemaFilter(filter, btn) {
-  cinemaFilter = filter;
-  document.querySelectorAll(".cf-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  if (cache.cinema) renderCinemaGrid(cache.cinema.movies, cache.cinema.shows);
-}
-
-function renderCinemaGrid(movies, shows) {
-  const grid = document.getElementById("cinema-grid");
-  if (!grid) return;
-
-  let html = "";
-
-  if (cinemaFilter !== "SHOWS" && movies.length) {
-    html += `<section class="group">
-      <h2 class="section-title">🎬 Фильмы <span class="section-badge">${movies.length}</span></h2>
-      <div class="grid-now">
-        ${movies.map((item, i) => cinemaCard(item, "movie", i)).join("")}
+          if (item._src === "al-manga") {
+            const tagClass = NOVEL_FORMATS.includes(item.data.format) ? "tag-novel" : "tag-manga";
+            const tagLabel = NOVEL_FORMATS.includes(item.data.format) ? "Ранобе" : "Манга";
+            return `<a href="${item.data.siteUrl}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(i*25,500)}ms">
+              <span class="type-tag ${tagClass}">${tagLabel}</span>
+              <img src="${coverUrl(item.data.coverImage)}" alt="${mediaTitle(item.data.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+              <div class="card-body"><div class="card-title">${mediaTitle(item.data.title)}</div></div>
+            </a>`;
+          }
+          // Trakt
+          return traktCard(item.data, item.type, i);
+        }).join("")}
       </div>
     </section>`;
   }
 
-  if (cinemaFilter !== "MOVIES" && shows.length) {
+  if (chars.length) {
     html += `<section class="group">
-      <h2 class="section-title">📺 Сериалы <span class="section-badge">${shows.length}</span></h2>
-      <div class="grid-now">
-        ${shows.map((item, i) => cinemaCard(item, "show", i)).join("")}
+      <h2 class="section-title">Персонажи</h2>
+      <div class="grid-chars">
+        ${chars.map((item, i) => `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card card-char" style="animation-delay:${Math.min(i*25,500)}ms">
+          <img src="${item.image?.large || item.image?.medium || PH_SQ}" alt="${item.name?.full || '—'}" loading="lazy" onerror="this.src='${PH_SQ}'">
+          <div class="card-body"><div class="card-title">${item.name?.full || "—"}</div></div>
+        </a>`).join("")}
       </div>
     </section>`;
   }
 
-  grid.innerHTML = html || `<div class="state-box">Список пустой</div>`;
-}
-
-function cinemaCard(item, type, index) {
-  const entry   = type === "movie" ? item.movie : item.show;
-  const title   = item._title_ru || entry?.title || "—";
-  const poster  = item._poster || PH_TALL;
-  const year    = item._year || entry?.year || "";
-  const url     = item._tmdb_url || "#";
-  const tagClass = type === "movie" ? "tag-movie" : "tag-show";
-  const tagLabel = type === "movie" ? "Фильм" : "Сериал";
-  const plays   = item.plays > 1 ? `× ${item.plays}` : "";
-
-  return `<a href="${url}" target="_blank" rel="noopener" class="card" style="animation-delay:${Math.min(index*20,500)}ms">
-    <span class="type-tag ${tagClass}">${tagLabel}</span>
-    <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    <div class="card-body">
-      <div class="card-title">${title}</div>
-      <div class="card-meta">
-        <span>${year}</span>
-        ${plays ? `<span style="color:var(--accent)">${plays}</span>` : ""}
+  if (staff.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Авторы</h2>
+      <div class="grid-chars">
+        ${staff.map((item, i) => `<a href="${item.siteUrl}" target="_blank" rel="noopener" class="card card-char" style="animation-delay:${Math.min(i*25,500)}ms">
+          <img src="${item.image?.large || item.image?.medium || PH_SQ}" alt="${item.name?.full || '—'}" loading="lazy" onerror="this.src='${PH_SQ}'">
+          <div class="card-body"><div class="card-title">${item.name?.full || "—"}</div></div>
+        </a>`).join("")}
       </div>
-    </div>
-  </a>`;
+    </section>`;
+  }
+
+  box.innerHTML = html || `<div class="state-box">Фавориты не найдены</div>`;
 }
 
 // ══════════════════════════════════════════════════
@@ -977,7 +875,7 @@ async function loadReviews() {
 function renderReviews(reviews) {
   document.getElementById("tab-reviews").innerHTML = `
     <section class="group">
-      <h2 class="section-title">Отзывы <span class="section-badge">${reviews.length}</span></h2>
+      <h2 class="section-title">Отзывы</h2>
       <div class="reviews-grid">${reviews.map((r, i) => reviewCard(r, i)).join("")}</div>
     </section>`;
 }
