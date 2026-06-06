@@ -2,7 +2,6 @@
 //  REVIEWS — вкладка Отзывы
 //  Зависит от: config.js, api.js
 // ══════════════════════════════════════════════
-
 async function loadReviews() {
   const data = await fetchReviews();
   if (data.length) {
@@ -45,55 +44,65 @@ function reviewCard(r, i) {
     : "";
 
   // Дата
-  const typeColor  = TYPE_COLORS[r.type] || "#6b5e4a";
-  const dateStr    = r.date
+  const typeColor = TYPE_COLORS[r.type] || "#6b5e4a";
+  const dateStr   = r.date
     ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
+
+  // Источник
   const isMini = r.source === "bluesky";
-const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Подробнее";
-const sourceLinkClass = isMini ? "review-source-link source-mini" : "review-source-link";
-const sourceLinkInner = isMini
-  ? `<span class="review-source-dot" style="background:${typeColor}"></span><span class="source-mini-badge">мини</span> ${sourceLabel} →`
-  : `<span class="review-source-dot" style="background:${typeColor}"></span> ${sourceLabel} →`;
+  const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Подробнее";
+  const sourceLinkClass = isMini ? "review-source-link source-mini" : "review-source-link";
+  const sourceLinkInner = isMini
+    ? `<span class="review-source-dot" style="background:${typeColor}"></span><span class="source-mini-badge">мини</span> ${sourceLabel} →`
+    : `<span class="review-source-dot" style="background:${typeColor}"></span> ${sourceLabel} →`;
 
-const gradeHtml = grade
-  ? `<div class="review-grade-bar">
-      <div class="grade-square" style="background:${grade.color}"></div>
-      <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">
-        ${grade.name}
-      </div>
-      <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
-        ${sourceLinkInner}
-      </a>
-    </div>`
-  : `<div class="review-grade-bar">
-      <div style="flex:1"></div>
-      <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
-        ${sourceLinkInner}
-      </a>
-    </div>`;
+  // Оценка + ссылка
+  const gradeHtml = grade
+    ? `<div class="review-grade-bar">
+        <div class="grade-square" style="background:${grade.color}"></div>
+        <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">
+          ${grade.name}
+        </div>
+        <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
+          ${sourceLinkInner}
+        </a>
+      </div>`
+    : `<div class="review-grade-bar">
+        <div style="flex:1"></div>
+        <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
+          ${sourceLinkInner}
+        </a>
+      </div>`;
 
-  return `<div class="review-card"
-      style="animation-delay:${Math.min(i * 40, 600)}ms;
-             border-top: 2px solid ${grade ? grade.color + "66" : "var(--border2)"}">
-    <div class="review-top">
-      <div class="review-cover">
-        <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
-      </div>
-      <div class="review-body">
-        <div class="review-header">
-          <div class="review-title">${r.title}</div>
+  // Ссылка на редактирование — по id если есть, иначе по title
+  const editId  = r.id ?? encodeURIComponent(r.title);
+  const editUrl = `add.html?edit=${editId}`;
+
+  return `<div class="review-card-wrap">
+    <a href="${editUrl}" class="review-edit-btn" title="Редактировать">✎</a>
+    <div class="review-card"
+        style="animation-delay:${Math.min(i * 40, 600)}ms;
+               border-top: 2px solid ${grade ? grade.color + "66" : "var(--border2)"}">
+      <div class="review-top">
+        <div class="review-cover">
+          <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
         </div>
-        <div class="review-meta-row">
-          ${r.format ? `<span class="review-format">${r.format}</span>` : ""}
-          ${r.year   ? `<span class="review-date">${r.year}</span>` : ""}
-          ${dateStr  ? `<span class="review-date" style="margin-left:auto">${dateStr}</span>` : ""}
+        <div class="review-body">
+          <div class="review-header">
+            <div class="review-title">${r.title}</div>
+          </div>
+          <div class="review-meta-row">
+            ${r.format ? `<span class="review-format">${r.format}</span>` : ""}
+            ${r.year   ? `<span class="review-date">${r.year}</span>` : ""}
+            ${dateStr  ? `<span class="review-date" style="margin-left:auto">${dateStr}</span>` : ""}
+          </div>
+          ${waifuHtml}
+          <div class="review-preview">${r.preview || ""}</div>
         </div>
-        ${waifuHtml}
-        <div class="review-preview">${r.preview || ""}</div>
       </div>
+      ${tagsHtml}
+      ${gradeHtml}
     </div>
-    ${tagsHtml}
-    ${gradeHtml}
   </div>`;
 }
