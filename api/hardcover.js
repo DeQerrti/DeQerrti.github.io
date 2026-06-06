@@ -13,20 +13,12 @@ export default async function handler(req) {
 
   const token = process.env.HARDCOVER_TOKEN || "";
 
-  // Временная отладка
-  if (url.searchParams.get("debug")) {
-    return new Response(JSON.stringify({
-      token_start: token.slice(0, 15),
-      token_length: token.length
-    }), { status: 200, headers: { "Content-Type": "application/json" } });
-  }
-
   try {
     const response = await fetch("https://api.hardcover.app/v1/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": token
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({ query: decodeURIComponent(query) })
     });
