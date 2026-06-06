@@ -49,33 +49,51 @@ function reviewCard(r, i) {
     ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
 
-  // Источник
-  const isMini = r.source === "bluesky";
-  const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Подробнее";
-  const sourceLinkClass = isMini ? "review-source-link source-mini" : "review-source-link";
-  const sourceLinkInner = isMini
-    ? `<span class="review-source-dot" style="background:${typeColor}"></span><span class="source-mini-badge">мини</span> ${sourceLabel} →`
-    : `<span class="review-source-dot" style="background:${typeColor}"></span> ${sourceLabel} →`;
+  // Ссылки — поддержка двух: url (основная) и url2 (дополнительная)
+  // Определяем какой источник у каждой ссылки
+  function sourceBtnHtml(url, source) {
+    if (!url) return "";
+    const isMini = source === "bluesky";
+    const isTeletype = source === "teletype";
+    const label = SOURCE_LABELS[source] || source || "Подробнее";
 
-  // Оценка + ссылка
+    if (isMini) {
+      return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
+        <span class="review-source-dot" style="background:${typeColor}"></span>
+        <span class="source-badge">мини</span> ${label} →
+      </a>`;
+    }
+    if (isTeletype) {
+      return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-teletype">
+        <span class="review-source-dot" style="background:${typeColor}"></span>
+        <span class="source-badge">полный</span> ${label} →
+      </a>`;
+    }
+    // other
+    return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-other">
+      <span class="review-source-dot" style="background:${typeColor}"></span> ${label} →
+    </a>`;
+  }
+
+  const btn1 = sourceBtnHtml(r.url,  r.source);
+  const btn2 = sourceBtnHtml(r.url2, r.source2);
+  const sourceButtons = `<div class="source-buttons">${btn1}${btn2}</div>`;
+
+  // Оценка + кнопки
   const gradeHtml = grade
     ? `<div class="review-grade-bar">
         <div class="grade-square" style="background:${grade.color}"></div>
         <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">
           ${grade.name}
         </div>
-        <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
-          ${sourceLinkInner}
-        </a>
+        ${sourceButtons}
       </div>`
     : `<div class="review-grade-bar">
         <div style="flex:1"></div>
-        <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
-          ${sourceLinkInner}
-        </a>
+        ${sourceButtons}
       </div>`;
 
-  // Ссылка на редактирование — по id если есть, иначе по title
+  // Ссылка на редактирование
   const editId  = r.id ?? encodeURIComponent(r.title);
   const editUrl = `add.html?edit=${editId}`;
 
@@ -89,9 +107,7 @@ function reviewCard(r, i) {
           <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
         </div>
         <div class="review-body">
-          <div class="review-header">
-            <div class="review-title">${r.title}</div>
-          </div>
+          <div class="review-title">${r.title}</div>
           <div class="review-meta-row">
             ${r.format ? `<span class="review-format">${r.format}</span>` : ""}
             ${r.year   ? `<span class="review-date">${r.year}</span>` : ""}
@@ -101,8 +117,10 @@ function reviewCard(r, i) {
           <div class="review-preview">${r.preview || ""}</div>
         </div>
       </div>
-      ${tagsHtml}
-      ${gradeHtml}
+      <div class="review-bottom">
+        ${tagsHtml}
+        ${gradeHtml}
+      </div>
     </div>
   </div>`;
 }
