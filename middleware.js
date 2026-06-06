@@ -1,4 +1,4 @@
-export const config = { matcher: ["/add", "/add/"] };
+export const config = { matcher: ["/add", "/add/", "/add.html"] };
 
 export default function middleware(req) {
   const url    = new URL(req.url);
@@ -6,11 +6,16 @@ export default function middleware(req) {
   const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
   const token  = auth?.split("=")[1]?.trim();
 
-  // Не авторизован — на логин
+  // Не авторизован — редирект на логин
   if (token !== process.env.ADMIN_PASSWORD?.trim()) {
     return Response.redirect(new URL("/login.html", req.url));
   }
 
-  // Авторизован — показываем add.html
-  return Response.redirect(new URL("/add.html", req.url));
+  // Авторизован и зашёл на /add или /add/ — редирект на add.html
+  if (!url.pathname.endsWith(".html")) {
+    return Response.redirect(new URL("/add.html" + url.search, req.url));
+  }
+
+  // Авторизован и уже на /add.html — пропускаем
+  return new Response(null, { status: 200 });
 }
