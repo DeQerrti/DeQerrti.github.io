@@ -30,11 +30,19 @@ export default async function handler(req) {
     });
   }
 
+  // Две куки:
+  // tasteid_auth — HttpOnly, для middleware (защита маршрутов)
+  // tasteid_ui   — без HttpOnly, для JS (показ кнопки карандаша)
+  const cookieOpts = `Path=/; SameSite=Strict; Max-Age=604800`;
+
   return new Response(JSON.stringify({ ok: true }), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Set-Cookie": `tasteid_auth=${expected.trim()}; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800`
+      "Set-Cookie": [
+        `tasteid_auth=${expected.trim()}; ${cookieOpts}; HttpOnly`,
+        `tasteid_ui=1; ${cookieOpts}`
+      ].join(", ")
     }
   });
 }
