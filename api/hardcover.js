@@ -1,34 +1,24 @@
-export default async function handler(req, res) {
-  const { query } = req.query;
-  if (!query) return res.status(400).json({ error: "Missing query" });
+export const config = { runtime: "edge" };
 
-  try {
-    const response = await fetch("https://api.hardcover.app/v1/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": process.env.HARDCOVER_TOKEN
-      },
-      body: JSON.stringify({ query: decodeURIComponent(query) })
+export default async function handler(req) {
+  const url   = new URL(req.url);
+  const query = url.searchParams.get("query");
+
+  if (!query) {
+    return new Response(JSON.stringify({ error: "Missing query" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" }
     });
-    const data = await response.json();
-    res.status(response.status).json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
-}
-export default async function handler(req, res) {
-  const { query } = req.query;
-  if (!query) return res.status(400).json({ error: "Missing query" });
 
   const token = process.env.HARDCOVER_TOKEN || "";
-  
-  // Временная отладка — удалить после проверки
-  if (req.query.debug) {
-    return res.status(200).json({ 
-      token_start: token.slice(0, 10),
-      token_length: token.length 
-    });
+
+  // Временная отладка
+  if (url.searchParams.get("debug")) {
+    return new Response(JSON.stringify({
+      token_start: token.slice(0, 15),
+      token_length: token.length
+    }), { status: 200, headers: { "Content-Type": "application/json" } });
   }
 
   try {
@@ -41,8 +31,14 @@ export default async function handler(req, res) {
       body: JSON.stringify({ query: decodeURIComponent(query) })
     });
     const data = await response.json();
-    res.status(response.status).json(data);
+    return new Response(JSON.stringify(data), {
+      status: response.status,
+      headers: { "Content-Type": "application/json" }
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
