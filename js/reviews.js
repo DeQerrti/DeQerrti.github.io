@@ -53,24 +53,23 @@ function reviewCard(r, i) {
 
   // Нижняя полоса с оценкой
   const gradeHtml = grade
-    ? `<div class="review-grade-bar">
-        <div class="grade-square" style="background:${grade.color}"></div>
-        <div style="flex:1">
-          <div class="grade-name" style="color:${grade.color}">${grade.name}</div>
-          <div class="grade-desc">${grade.desc}</div>
-        </div>
-        <a href="${r.url}" target="_blank" rel="noopener" class="review-source-link">
-          <span class="review-source-dot" style="background:${typeColor}"></span>
-          ${sourceLabel} →
-        </a>
-      </div>`
-    : `<div class="review-grade-bar">
-        <div style="flex:1"></div>
-        <a href="${r.url}" target="_blank" rel="noopener" class="review-source-link">
-          <span class="review-source-dot" style="background:${typeColor}"></span>
-          ${sourceLabel} →
-        </a>
-      </div>`;
+  ? `<div class="review-grade-bar">
+      <div class="grade-square" style="background:${grade.color}"></div>
+      <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">
+        ${grade.name}
+      </div>
+      <a href="${r.url}" target="_blank" rel="noopener" class="review-source-link">
+        <span class="review-source-dot" style="background:${typeColor}"></span>
+        ${sourceLabel} →
+      </a>
+    </div>`
+  : `<div class="review-grade-bar">
+      <div style="flex:1"></div>
+      <a href="${r.url}" target="_blank" rel="noopener" class="review-source-link">
+        <span class="review-source-dot" style="background:${typeColor}"></span>
+        ${sourceLabel} →
+      </a>
+    </div>`;
 
   return `<div class="review-card"
       style="animation-delay:${Math.min(i * 40, 600)}ms;
