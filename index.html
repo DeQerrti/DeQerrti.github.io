@@ -121,57 +121,64 @@ section.group { margin-bottom: 3.5rem; }
 }
 .review-card::after {
   content: ''; position: absolute; bottom: -1px; right: -1px;
-  width: 18px; height: 18px; pointer-events: none; z-index: 2;
+  width: 20px; height: 20px; pointer-events: none; z-index: 2;
   border-bottom: 2px solid var(--gold-dim); border-right: 2px solid var(--gold-dim);
 }
 
-.review-top { display: flex; gap: 1.1rem; padding: 1.25rem; }
-.review-cover { width: 120px; flex-shrink: 0; border-radius: 2px; overflow: hidden; border: 1px solid var(--border2); align-self: flex-start; }
+/* ── review top block ── */
+.review-top { display: flex; gap: 1.3rem; padding: 1.4rem; }
+
+/* ── обложка увеличена ── */
+.review-cover { width: 160px; flex-shrink: 0; border-radius: 2px; overflow: hidden; border: 1px solid var(--border2); align-self: flex-start; }
 .review-cover img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; filter: sepia(.15) brightness(.92); }
 
 .review-body { flex: 1; min-width: 0; }
-.review-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--text-hi); line-height: 1.25; margin-bottom: .35rem; }
 
-/* формат + год — золотой, яркий */
-.review-meta-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .3rem; flex-wrap: wrap; }
-.review-format { font-family: 'DM Sans', sans-serif; font-size: .72rem; color: var(--gold); text-transform: uppercase; letter-spacing: .08em; }
+/* ── заголовок крупнее ── */
+.review-title { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; color: var(--text-hi); line-height: 1.25; margin-bottom: .45rem; }
 
-/* дата — полностью тусклая, слово и значение одного цвета */
-.review-dateline { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: #d6cfc4; margin-bottom: .4rem; }
+/* формат + год */
+.review-meta-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .35rem; flex-wrap: wrap; }
+.review-format { font-family: 'DM Sans', sans-serif; font-size: .8rem; color: var(--gold); text-transform: uppercase; letter-spacing: .08em; }
+
+/* дата — молочный */
+.review-dateline { font-family: 'DM Sans', sans-serif; font-size: .76rem; color: #d6cfc4; margin-bottom: .5rem; }
 .review-dateline span { color: #d6cfc4; }
 
-/* фавориты — метка тусклая, значение обычный текст, не капс */
-.review-waifu { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--text); margin-bottom: .45rem; }
-.review-waifu-label { font-family: 'DM Sans', sans-serif; font-size: .72rem; color: var(--text-dim); }
+/* фавориты */
+.review-waifu { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--text); margin-bottom: .5rem; }
+.review-waifu-label { font-family: 'DM Sans', sans-serif; font-size: .76rem; color: var(--text-dim); }
 .review-waifu span { color: var(--gold-dim); font-style: normal; font-weight: 600; }
 
-/* превью — светлее */
+/* ── превью крупнее, больше строк ── */
 .review-preview {
-  font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300;
-  color: var(--text-hi); line-height: 1.65; margin-top: .5rem;
-  display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;
+  font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 300;
+  color: var(--text-hi); line-height: 1.7; margin-top: .55rem;
+  display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden;
 }
 
 /* ══ TAGS ══════════════════════════════════════════ */
-.review-tags { padding: .65rem 1.25rem; display: flex; flex-wrap: wrap; gap: .4rem; border-top: 1px solid var(--border); overflow: visible; position: relative; z-index: 2; }
-.rtag { font-family: 'DM Sans', sans-serif; font-size: .68rem; padding: .25rem .6rem; border-radius: 2px; font-weight: 400; letter-spacing: .04em; white-space: nowrap; position: relative; cursor: default; }
+.review-tags { padding: .75rem 1.4rem; display: flex; flex-wrap: wrap; gap: .5rem; border-top: 1px solid var(--border); overflow: visible; position: relative; z-index: 2; }
+.rtag { font-family: 'DM Sans', sans-serif; font-size: .75rem; padding: .28rem .65rem; border-radius: 2px; font-weight: 400; letter-spacing: .04em; white-space: nowrap; position: relative; cursor: default; }
 .rtag-visual  { background: rgba(45,92,88,.2);   color: #72b8b3; border: 1px solid rgba(45,92,88,.35); }
 .rtag-plot    { background: rgba(201,168,76,.12); color: #c9a84c; border: 1px solid rgba(201,168,76,.25); }
 .rtag-chars   { background: rgba(74,103,65,.2);   color: #90b885; border: 1px solid rgba(74,103,65,.35); }
 .rtag-special { background: rgba(139,42,42,.2);   color: #e07070; border: 1px solid rgba(139,42,42,.35); }
-.rtag[data-tip]:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--surface2); color: var(--text); font-size: .72rem; padding: .4rem .7rem; border-radius: 2px; border: 1px solid var(--border2); white-space: nowrap; z-index: 9999; pointer-events: none; box-shadow: 0 6px 20px rgba(0,0,0,.6); }
+.rtag[data-tip]:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--surface2); color: var(--text); font-size: .75rem; padding: .4rem .75rem; border-radius: 2px; border: 1px solid var(--border2); white-space: nowrap; z-index: 9999; pointer-events: none; box-shadow: 0 6px 20px rgba(0,0,0,.6); }
 .rtag[data-tip]:hover::before { content: ''; position: absolute; bottom: calc(100% + 1px); left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--border2); z-index: 21; }
 
 /* ══ GRADE BAR ════════════════════════════════════ */
-.review-grade-bar { display: flex; align-items: center; gap: .8rem; padding: .75rem 1.25rem; border-top: 1px solid var(--border); flex-wrap: nowrap; margin-top: auto; }
-.grade-square { width: 12px; height: 12px; border-radius: 1px; flex-shrink: 0; transform: rotate(45deg); }
-.grade-chip { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--gc); flex: 1; cursor: default; position: relative; min-width: 80px; white-space: nowrap; }
-.grade-chip[data-tip]:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 0; background: var(--surface2); color: var(--text); font-family: 'Cormorant Garamond', serif; font-size: .92rem; font-style: italic; font-weight: 400; padding: .45rem .85rem; border-radius: 2px; border: 1px solid var(--border2); white-space: nowrap; z-index: 9999; pointer-events: none; box-shadow: 0 6px 20px rgba(0,0,0,.6); }
+.review-grade-bar { display: flex; align-items: center; gap: .8rem; padding: .85rem 1.4rem; border-top: 1px solid var(--border); flex-wrap: nowrap; margin-top: auto; }
+.grade-square { width: 13px; height: 13px; border-radius: 1px; flex-shrink: 0; transform: rotate(45deg); }
+
+/* ── grade chip крупнее ── */
+.grade-chip { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--gc); flex: 1; cursor: default; position: relative; min-width: 80px; white-space: nowrap; }
+.grade-chip[data-tip]:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 0; background: var(--surface2); color: var(--text); font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; font-weight: 400; padding: .5rem .9rem; border-radius: 2px; border: 1px solid var(--border2); white-space: nowrap; z-index: 9999; pointer-events: none; box-shadow: 0 6px 20px rgba(0,0,0,.6); }
 .grade-chip[data-tip]:hover::before { content: ''; position: absolute; bottom: calc(100% + 3px); left: 1rem; border: 5px solid transparent; border-top-color: var(--border2); z-index: 21; }
 
 /* ══ SOURCE BUTTONS ═══════════════════════════════ */
 .source-buttons { display: flex; gap: .45rem; flex-shrink: 0; }
-.review-source-link { font-family: 'DM Sans', sans-serif; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; display: inline-flex; align-items: center; gap: .4rem; padding: .32rem .75rem; border-radius: 2px; flex-shrink: 0; white-space: nowrap; text-decoration: none; transition: background .2s, color .2s, border-color .2s; border: 1px solid; }
+.review-source-link { font-family: 'DM Sans', sans-serif; font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; display: inline-flex; align-items: center; gap: .4rem; padding: .36rem .85rem; border-radius: 2px; flex-shrink: 0; white-space: nowrap; text-decoration: none; transition: background .2s, color .2s, border-color .2s; border: 1px solid; }
 .source-bluesky  { background: rgba(0,133,255,.1);   border-color: rgba(0,133,255,.3);   color: #5eb3ff; }
 .source-bluesky:hover  { background: rgba(0,133,255,.22);  border-color: rgba(0,133,255,.6);   color: #93cdff; }
 .source-teletype { background: rgba(180,180,180,.08); border-color: rgba(180,180,180,.25); color: #a8a8a8; }
