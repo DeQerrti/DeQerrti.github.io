@@ -21,8 +21,8 @@ export default async function handler(req) {
     const fileData = await getRes.json();
     const sha      = fileData.sha;
     // ── читаем через TextDecoder (UTF-8 safe) ────────
-    const raw      = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
-    let current    = JSON.parse(new TextDecoder().decode(raw));
+    const raw   = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
+    let current = JSON.parse(new TextDecoder().decode(raw));
     const isEdit = review._editId !== undefined && review._editId !== null;
     if (isEdit) {
       const editId = review._editId;
@@ -41,9 +41,9 @@ export default async function handler(req) {
       current.unshift(review);
     }
     current.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-    // ── пишем через TextEncoder (UTF-8 safe) ─────────
+    // ── пишем через TextEncoder (UTF-8 safe, без spread) ─
     const encoded = new TextEncoder().encode(JSON.stringify(current, null, 2));
-    const updated = btoa(String.fromCharCode(...encoded));
+    const updated = btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
     const message = isEdit
       ? `review: edit "${review.title}"`
       : `review: add "${review.title}"`;
