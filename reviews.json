@@ -1,5 +1,6 @@
 [
   {
+    "id": 5,
     "title": "Saya no Uta",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmxzc6q3ks2e",
     "type": "show",
@@ -23,6 +24,7 @@
     ]
   },
   {
+    "id": 1,
     "title": "Houseki no Kuni",
     "url": "https://teletype.in/@tknovas/LandoftheLustrous",
     "type": "manga",
@@ -48,18 +50,21 @@
       "Жесть",
       "Серая мораль",
       "Философия"
-    ],
-    "id": 1
+    ]
   },
   {
     "id": 2,
     "title": "The Day of the Jackal",
-    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/tYLecM3WSEjlkKhkGiH5G68Dprm.jpg",
+    "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
     "type": "movie",
-    "format": "Сериал (1 сезон)",
+    "source": "teletype",
     "year": "2024",
-    "grade": "attrakcion",
+    "format": "Сериал (1 сезон)",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/tYLecM3WSEjlkKhkGiH5G68Dprm.jpg",
+    "date": "2026-03-11",
     "favorites": "Шакал",
+    "preview": "Сериал о мире где грань между солдатом, агентом и киллером исчезает, а самые опасные люди никогда не нажимают на спусковой крючок. На поверхности всё выглядит как классический триллер: загадочный наёмный убийца по прозвищу Шакал выполняет почти невозможные заказы...",
+    "grade": "attrakcion",
     "tags": [
       "Топ визуал",
       "Осты в тему",
@@ -68,13 +73,10 @@
       "Проседает",
       "Крутой протагонист",
       "Серая мораль"
-    ],
-    "source": "teletype",
-    "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
-    "preview": "Сериал о мире где грань между солдатом, агентом и киллером исчезает, а самые опасные люди никогда не нажимают на спусковой крючок. На поверхности всё выглядит как классический триллер: загадочный наёмный убийца по прозвищу Шакал выполняет почти невозможные заказы...",
-    "date": "2026-03-11"
+    ]
   },
   {
+    "id": 3,
     "title": "Tokyo Ghoul:re",
     "url": "https://teletype.in/@tknovas/TokyoGhoulre",
     "type": "manga",
@@ -100,10 +102,10 @@
       "Жесть",
       "Серая мораль",
       "Философия"
-    ],
-    "id": 3
+    ]
   },
   {
+    "id": 4,
     "title": "Tokyo Ghoul",
     "url": "https://teletype.in/@tknovas/TokyoGhoul",
     "type": "manga",
@@ -129,7 +131,6 @@
       "Жесть",
       "Серая мораль",
       "Философия"
-    ],
-    "id": 4
+    ]
   }
 ]
