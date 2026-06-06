@@ -11,7 +11,7 @@
   --border: #3d3228; --border2: #554535;
   --gold: #c9a84c; --gold-dim: #7a5e28; --gold-hi: #e8c96a;
   --text: #c8b99a; --text-dim: #6b5e4a; --text-hi: #ede0c8;
-  --green: #90b885; --red: #e07070; --teal: #72b8b3;
+  --green: #90b885; --red: #e07070;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh;
@@ -69,6 +69,11 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .cover-preview { width: 80px; height: 120px; object-fit: cover; border: 1px solid var(--border2);
   border-radius: 2px; margin-top: .5rem; display: none; }
 
+/* source-2 hint */
+.source2-hint { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim);
+  margin-bottom: 1rem; padding: .55rem .85rem; border: 1px solid var(--border); border-radius: 2px;
+  background: rgba(201,168,76,.04); }
+
 /* режим редактирования */
 .edit-banner {
   background: rgba(201,168,76,.08); border: 1px solid rgba(201,168,76,.25); border-radius: 2px;
@@ -89,7 +94,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 </header>
 <main>
 
-  <!-- Баннер режима редактирования (скрыт по умолчанию) -->
+  <!-- Баннер режима редактирования -->
   <div class="edit-banner" id="edit-banner" style="display:none">
     <div>✦ Режим редактирования — <span id="edit-title-hint"></span></div>
     <button class="btn-new" onclick="resetToNew()">+ Новый отзыв</button>
@@ -128,11 +133,11 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
     </div>
   </div>
 
-  <!-- Источник -->
-  <h2 class="section-title">Ссылка</h2>
+  <!-- Источник 1 -->
+  <h2 class="section-title">Источник 1</h2>
   <div class="grid">
     <div class="field">
-      <label>Источник</label>
+      <label>Тип</label>
       <select id="f-source">
         <option value="bluesky">Bluesky (мини)</option>
         <option value="teletype">Teletype (полный)</option>
@@ -150,6 +155,27 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
     <div class="field">
       <label>Фавориты</label>
       <input type="text" id="f-favorites" placeholder="Kaneki Ken, Touka">
+    </div>
+  </div>
+
+  <!-- Источник 2 -->
+  <h2 class="section-title">Источник 2 <span style="font-size:.8rem;font-weight:400;font-style:italic;color:var(--text-dim)">— необязательно</span></h2>
+  <div class="source2-hint">
+    Заполни если у отзыва два места публикации — например мини на Bluesky и полный на Teletype. Оба появятся на карточке.
+  </div>
+  <div class="grid">
+    <div class="field">
+      <label>Тип</label>
+      <select id="f-source2">
+        <option value="">— не указан —</option>
+        <option value="bluesky">Bluesky (мини)</option>
+        <option value="teletype">Teletype (полный)</option>
+        <option value="other">Другое</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>URL 2</label>
+      <input type="text" id="f-url2" placeholder="https://teletype.in/...">
     </div>
   </div>
 
@@ -198,9 +224,7 @@ const TAGS_MAP = {
 
 let selectedGrade = null;
 let selectedTags  = new Set();
-
-// ID редактируемого отзыва (null = новый)
-let editingId = null;
+let editingId     = null;
 
 // ── рендер оценок ──────────────────────────────────
 const gradesGrid = document.getElementById("grades-grid");
@@ -245,15 +269,17 @@ function fillForm(r) {
   document.getElementById("f-preview").value   = r.preview   || "";
   document.getElementById("f-source").value    = r.source    || "bluesky";
   document.getElementById("f-type").value      = r.type      || "anime";
+  // второй источник
+  document.getElementById("f-url2").value      = r.url2      || "";
+  document.getElementById("f-source2").value   = r.source2   || "";
+
   updatePreview();
   previewCover(r.cover || "");
 
-  // оценка
   selectedGrade = r.grade || null;
   document.querySelectorAll(".grade-btn").forEach(b =>
     b.classList.toggle("active", b.dataset.key === selectedGrade));
 
-  // теги
   selectedTags = new Set(r.tags || []);
   document.querySelectorAll(".tag-toggle").forEach(b => {
     b.classList.toggle("active", selectedTags.has(b.dataset.tag));
@@ -268,11 +294,12 @@ function resetToNew() {
   document.getElementById("btn-save").textContent = "Сохранить отзыв";
   history.replaceState(null, "", "add.html");
 
-  ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview"].forEach(id =>
-    document.getElementById(id).value = "");
-  document.getElementById("f-date").value   = new Date().toISOString().slice(0,10);
-  document.getElementById("f-source").value = "bluesky";
-  document.getElementById("f-type").value   = "anime";
+  ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview","f-url2"]
+    .forEach(id => document.getElementById(id).value = "");
+  document.getElementById("f-date").value    = new Date().toISOString().slice(0,10);
+  document.getElementById("f-source").value  = "bluesky";
+  document.getElementById("f-source2").value = "";
+  document.getElementById("f-type").value    = "anime";
   document.getElementById("preview-out").textContent = "Здесь появится превью…";
   document.getElementById("cover-img").style.display = "none";
   selectedGrade = null;
@@ -286,17 +313,12 @@ function resetToNew() {
 async function initPage() {
   const params = new URLSearchParams(location.search);
   const editId = params.get("edit");
-
-  // дефолтная дата для нового
   document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
-
   if (!editId) return;
 
-  // режим редактирования: загружаем reviews.json и ищем по id или title
   try {
     const res  = await fetch("/reviews.json?_=" + Date.now());
     const data = await res.json();
-    // ищем сначала по числовому id, потом по title-slug
     const review = data.find(r =>
       String(r.id) === editId || encodeURIComponent(r.title) === editId
     );
@@ -307,7 +329,6 @@ async function initPage() {
     }
     editingId = review.id ?? review.title;
     fillForm(review);
-
     document.getElementById("edit-banner").style.display = "flex";
     document.getElementById("edit-title-hint").textContent = review.title;
     document.getElementById("page-subtitle").textContent = "Редактировать отзыв";
@@ -342,11 +363,17 @@ async function saveReview() {
     return;
   }
 
+  const url2    = document.getElementById("f-url2").value.trim()    || null;
+  const source2 = document.getElementById("f-source2").value        || null;
+
   const review = {
     title,
     url,
     type:      document.getElementById("f-type").value,
     source:    document.getElementById("f-source").value,
+    // второй источник — только если заполнен URL
+    url2:      url2,
+    source2:   url2 ? source2 : null,
     year:      document.getElementById("f-year").value.trim()      || null,
     format:    document.getElementById("f-format").value.trim()    || null,
     cover:     document.getElementById("f-cover").value.trim()     || null,
@@ -357,10 +384,7 @@ async function saveReview() {
     tags:      [...selectedTags],
   };
 
-  // если редактируем — добавляем маркер
-  if (editingId !== null) {
-    review._editId = editingId;
-  }
+  if (editingId !== null) review._editId = editingId;
 
   btn.disabled = true;
   btn.textContent = "Сохраняем…";
