@@ -166,7 +166,18 @@ section.group { margin-bottom: 3.5rem; }
   background: rgba(45,92,88,.25);
   border-radius: 2px;
   color: #72b8b3;
-}  
+}
+.review-card-wrap { position: relative; }
+.review-edit-btn {
+  position: absolute; top: -10px; right: -10px; z-index: 10;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--gold-dim); font-size: .9rem;
+  display: none; align-items: center; justify-content: center;
+  text-decoration: none; transition: all .18s;
+}
+.review-card-wrap:hover .review-edit-btn { display: flex; }
+.review-edit-btn:hover { background: var(--gold-dim); border-color: var(--gold); color: var(--gold-hi); }
 </style>
 </head>
 <body>
