@@ -49,25 +49,27 @@ function reviewCard(r, i) {
   const dateStr    = r.date
     ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
-  const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Подробнее";
+  const isMini = r.source === "bluesky";
+const sourceLabel = SOURCE_LABELS[r.source] || r.source || "Подробнее";
+const sourceLinkClass = isMini ? "review-source-link source-mini" : "review-source-link";
+const sourceLinkInner = isMini
+  ? `<span class="review-source-dot" style="background:${typeColor}"></span><span class="source-mini-badge">мини</span> ${sourceLabel} →`
+  : `<span class="review-source-dot" style="background:${typeColor}"></span> ${sourceLabel} →`;
 
-  // Нижняя полоса с оценкой
-  const gradeHtml = grade
+const gradeHtml = grade
   ? `<div class="review-grade-bar">
       <div class="grade-square" style="background:${grade.color}"></div>
       <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">
         ${grade.name}
       </div>
-      <a href="${r.url}" target="_blank" rel="noopener" class="review-source-link">
-        <span class="review-source-dot" style="background:${typeColor}"></span>
-        ${sourceLabel} →
+      <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
+        ${sourceLinkInner}
       </a>
     </div>`
   : `<div class="review-grade-bar">
       <div style="flex:1"></div>
-      <a href="${r.url}" target="_blank" rel="noopener" class="review-source-link">
-        <span class="review-source-dot" style="background:${typeColor}"></span>
-        ${sourceLabel} →
+      <a href="${r.url}" target="_blank" rel="noopener" class="${sourceLinkClass}">
+        ${sourceLinkInner}
       </a>
     </div>`;
 
