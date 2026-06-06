@@ -163,3 +163,23 @@ function tagHtml(tag) {
   const tip  = info?.tip || "";
   return `<span class="rtag ${cls}" data-tip="${tip}">${tag}</span>`;
 }
+function manualCard(r, index) {
+  const info = findReviewForTitle(r.title);
+  const typeLabels = { game: "Игра", vn: "Визуальная новелла" };
+  const tagLabel = typeLabels[r.type] || r.type || "—";
+
+  return `<a href="${r.url || "#"}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 20, 600)}ms">
+    <span class="type-tag tag-manual">${tagLabel}</span>
+    <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <div class="card-body">
+      <div class="card-title">${r.title}</div>
+      ${r.year || info
+        ? `<div class="card-meta">
+            ${r.year ? `<span>${r.year}</span>` : ""}
+            ${gradeInlineHtml(info)}
+          </div>`
+        : ""}
+    </div>
+  </a>`;
+}
