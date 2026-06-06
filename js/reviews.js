@@ -5,7 +5,7 @@
 
 // Проверяем авторизацию по куке — только у тебя она есть
 function isAdmin() {
-  return document.cookie.split(";").some(c => c.trim().startsWith("tasteid_auth="));
+  return document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui="));
 }
 
 async function loadReviews() {
