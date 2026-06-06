@@ -33,18 +33,16 @@ function sourceBtnHtml(url, source) {
   const label = SOURCE_LABELS[source] || source || "Подробнее";
   if (source === "bluesky") {
     return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
-      <span class="source-dot-bluesky"></span>
-      <span class="source-badge">мысли</span> ${label} →
+      <span class="source-dot-bluesky"></span>${label} →
     </a>`;
   }
   if (source === "teletype") {
     return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-teletype">
-      <span class="source-dot-teletype"></span>
-      <span class="source-badge">разбор</span> ${label} →
+      <span class="source-dot-teletype"></span>${label} →
     </a>`;
   }
   return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-other">
-    <span class="source-dot-other"></span> ${label} →
+    <span class="source-dot-other"></span>${label} →
   </a>`;
 }
 
@@ -58,12 +56,15 @@ function reviewCard(r, i) {
     : "";
 
   const waifuHtml = r.favorites
-    ? `<div class="review-waifu">Фавориты: <span>${r.favorites}</span></div>`
+    ? `<div class="review-waifu"><span class="review-waifu-label">Фавориты:</span> <span>${r.favorites}</span></div>`
     : "";
 
   const dateStr = r.date
     ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
+
+  // формат + год в одну строку через ·
+  const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
 
   const btn1 = sourceBtnHtml(r.url,  r.source);
   const btn2 = sourceBtnHtml(r.url2, r.source2);
@@ -89,7 +90,6 @@ function reviewCard(r, i) {
         style="animation-delay:${Math.min(i * 40, 600)}ms;
                border-top: 2px solid ${grade ? grade.color + "66" : "var(--border2)"}">
 
-      <!-- Верхняя часть: обложка + мета -->
       <div class="review-top">
         <div class="review-cover">
           <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
@@ -97,16 +97,14 @@ function reviewCard(r, i) {
         <div class="review-body">
           <div class="review-title">${r.title}</div>
           <div class="review-meta-row">
-            ${r.format ? `<span class="review-format">${r.format}</span>` : ""}
-            ${r.year   ? `<span class="review-date">${r.year}</span>` : ""}
-            ${dateStr  ? `<span class="review-date" style="margin-left:auto">${dateStr}</span>` : ""}
+            ${formatYear ? `<span class="review-format">${formatYear}</span>` : ""}
           </div>
+          ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${dateStr}</span></div>` : ""}
           ${waifuHtml}
           <div class="review-preview">${r.preview || ""}</div>
         </div>
       </div>
 
-      <!-- Теги — сразу под верхней частью, без пустоты -->
       ${tagsHtml}
       ${gradeHtml}
     </div>
