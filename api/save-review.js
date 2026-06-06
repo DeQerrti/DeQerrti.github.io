@@ -1,16 +1,23 @@
-export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).end();
+export default async function handler(req) {
+  if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
 
-  const cookie = req.headers.cookie || "";
-  const auth = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
-  const token = auth?.split("=")[1]?.trim();
+  // Проверка куки
+  const cookie = req.headers.get("cookie") || "";
+  const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
+  const token  = auth?.split("=")[1]?.trim();
   if (token !== process.env.ADMIN_PASSWORD) {
-    return res.status(401).json({ error: "Не авторизован" });
+    return new Response(JSON.stringify({ error: "Не авторизован" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
-  const review = req.body;
+  const review = await req.json();
   if (!review.title || !review.url) {
-    return res.status(400).json({ error: "Нужны title и url" });
+    return new Response(JSON.stringify({ error: "Нужны title и url" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 
   const repo    = process.env.GITHUB_REPO;
@@ -18,17 +25,20 @@ export default async function handler(req, res) {
   const apiUrl  = `https://api.github.com/repos/${repo}/contents/reviews.json`;
 
   try {
-    const getRes  = await fetch(apiUrl, {
+    // 1. Получаем текущий файл
+    const getRes   = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${ghToken}`, Accept: "application/vnd.github+json" }
     });
     const fileData = await getRes.json();
     const sha      = fileData.sha;
-    const current  = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf8"));
+    const current  = JSON.parse(atob(fileData.content.replace(/\n/g, "")));
 
+    // 2. Добавляем и сортируем по дате
     current.unshift(review);
     current.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
-    const updated = Buffer.from(JSON.stringify(current, null, 2)).toString("base64");
+    // 3. Пушим обратно
+    const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
     const putRes  = await fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -41,10 +51,20 @@ export default async function handler(req, res) {
 
     if (!putRes.ok) {
       const err = await putRes.json();
-      return res.status(500).json({ error: err.message });
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
     }
-    res.status(200).json({ ok: true });
+
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    return new Response(JSON.stringify({ error: e.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
