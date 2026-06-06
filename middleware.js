@@ -1,15 +1,14 @@
-import { NextResponse } from "next/server";
+export const config = { matcher: ["/add", "/add.html"] };
 
-export function middleware(req) {
-  const { pathname } = req.nextUrl;
-  if (!pathname.startsWith("/add")) return NextResponse.next();
+export default function middleware(req) {
+  const url  = new URL(req.url);
+  const cookie = req.headers.get("cookie") || "";
+  const auth = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
+  const token = auth?.split("=")[1]?.trim();
 
-  const cookie = req.cookies.get("tasteid_auth");
-  if (cookie?.value === process.env.ADMIN_PASSWORD) return NextResponse.next();
+  if (token === process.env.ADMIN_PASSWORD) {
+    return new Response(null, { status: 200 });
+  }
 
-  const loginUrl = req.nextUrl.clone();
-  loginUrl.pathname = "/login";
-  return NextResponse.redirect(loginUrl);
+  return Response.redirect(new URL("/login.html", req.url));
 }
-
-export const config = { matcher: ["/add"] };
