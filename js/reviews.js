@@ -28,64 +28,51 @@ function renderReviews(reviews) {
     </section>`;
 }
 
+function sourceBtnHtml(url, source) {
+  if (!url) return "";
+  const label = SOURCE_LABELS[source] || source || "Подробнее";
+  if (source === "bluesky") {
+    return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
+      <span class="source-dot-bluesky"></span>
+      <span class="source-badge">мини</span> ${label} →
+    </a>`;
+  }
+  if (source === "teletype") {
+    return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-teletype">
+      <span class="source-dot-teletype"></span>
+      <span class="source-badge">полный</span> ${label} →
+    </a>`;
+  }
+  return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-other">
+    <span class="source-dot-other"></span> ${label} →
+  </a>`;
+}
+
 function reviewCard(r, i) {
   const grade = GRADES[r.grade] || null;
 
-  // Теги
   const tagsHtml = (r.tags || []).length
     ? `<div class="review-tags">
         ${r.tags.map(tag => tagHtml(tag)).join("")}
       </div>`
     : "";
 
-  // Фавориты
   const waifuHtml = r.favorites
     ? `<div class="review-waifu">Фавориты: <span>${r.favorites}</span></div>`
     : "";
 
-  // Дата
-  const typeColor = TYPE_COLORS[r.type] || "#6b5e4a";
-  const dateStr   = r.date
+  const dateStr = r.date
     ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
-
-  // Ссылки — поддержка двух: url (основная) и url2 (дополнительная)
-  // Определяем какой источник у каждой ссылки
-  function sourceBtnHtml(url, source) {
-    if (!url) return "";
-    const isMini = source === "bluesky";
-    const isTeletype = source === "teletype";
-    const label = SOURCE_LABELS[source] || source || "Подробнее";
-
-    if (isMini) {
-      return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
-        <span class="review-source-dot" style="background:${typeColor}"></span>
-        <span class="source-badge">мини</span> ${label} →
-      </a>`;
-    }
-    if (isTeletype) {
-      return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-teletype">
-        <span class="review-source-dot" style="background:${typeColor}"></span>
-        <span class="source-badge">полный</span> ${label} →
-      </a>`;
-    }
-    // other
-    return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-other">
-      <span class="review-source-dot" style="background:${typeColor}"></span> ${label} →
-    </a>`;
-  }
 
   const btn1 = sourceBtnHtml(r.url,  r.source);
   const btn2 = sourceBtnHtml(r.url2, r.source2);
   const sourceButtons = `<div class="source-buttons">${btn1}${btn2}</div>`;
 
-  // Оценка + кнопки
   const gradeHtml = grade
     ? `<div class="review-grade-bar">
         <div class="grade-square" style="background:${grade.color}"></div>
-        <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">
-          ${grade.name}
-        </div>
+        <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">${grade.name}</div>
         ${sourceButtons}
       </div>`
     : `<div class="review-grade-bar">
@@ -93,7 +80,6 @@ function reviewCard(r, i) {
         ${sourceButtons}
       </div>`;
 
-  // Ссылка на редактирование
   const editId  = r.id ?? encodeURIComponent(r.title);
   const editUrl = `add.html?edit=${editId}`;
 
@@ -102,6 +88,8 @@ function reviewCard(r, i) {
     <div class="review-card"
         style="animation-delay:${Math.min(i * 40, 600)}ms;
                border-top: 2px solid ${grade ? grade.color + "66" : "var(--border2)"}">
+
+      <!-- Верхняя часть: обложка + мета -->
       <div class="review-top">
         <div class="review-cover">
           <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
@@ -117,10 +105,10 @@ function reviewCard(r, i) {
           <div class="review-preview">${r.preview || ""}</div>
         </div>
       </div>
-      <div class="review-bottom">
-        ${tagsHtml}
-        ${gradeHtml}
-      </div>
+
+      <!-- Теги — сразу под верхней частью, без пустоты -->
+      ${tagsHtml}
+      ${gradeHtml}
     </div>
   </div>`;
 }
