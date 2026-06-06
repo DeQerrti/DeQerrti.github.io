@@ -55,8 +55,6 @@ function reviewCard(r, i) {
       </div>`
     : "";
 
-  // [FIX 1] «Фавориты:» — с заглавной, не капсом (через CSS class)
-  // [FIX 2] расцветку фаворитов и формат+год — фавориты выше, формат ниже
   const waifuHtml = r.favorites
     ? `<div class="review-waifu"><span class="review-waifu-label">Фавориты:</span> <span>${r.favorites}</span></div>`
     : "";
@@ -65,7 +63,6 @@ function reviewCard(r, i) {
     ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
 
-  // формат + год в одну строку через ·
   const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
 
   const btn1 = sourceBtnHtml(r.url,  r.source);
@@ -99,12 +96,12 @@ function reviewCard(r, i) {
         <div class="review-body">
           <div class="review-title">${r.title}</div>
 
-          ${waifuHtml}
-
           <div class="review-meta-row">
             ${formatYear ? `<span class="review-format">${formatYear}</span>` : ""}
           </div>
           ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${dateStr}</span></div>` : ""}
+
+          ${waifuHtml}
 
           <div class="review-preview">${r.preview || ""}</div>
         </div>
