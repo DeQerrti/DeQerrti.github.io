@@ -191,3 +191,48 @@ function manualCard(r, index) {
     </div>
   </a>`;
 }
+// Книга (Hardcover)
+function bookCard(book, index, mode = "completed") {
+  const b       = book.book || book;
+  const title   = b.title || "—";
+  const cover   = b.image?.url || PH_TALL;
+  const year    = b.release_year || "";
+  const url     = b.slug ? `https://hardcover.app/books/${b.slug}` : "#";
+  const info    = findReviewForTitle(title);
+
+  let watchBadge = "";
+  if (mode === "completed") {
+    const reads    = book.user_book_reads || [];
+    const finished = reads[reads.length - 1]?.finished_at;
+    if (finished) {
+      const d = new Date(finished);
+      watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+    }
+  }
+
+  let progressHtml = "";
+  if (mode === "current") {
+    const reads   = book.user_book_reads || [];
+    const started = reads[reads.length - 1]?.started_at;
+    if (started) {
+      const d = new Date(started);
+      progressHtml = `<span class="progress-line">с ${d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" })}</span>`;
+    }
+  }
+
+  return `<a href="${url}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 20, 600)}ms">
+    <span class="type-tag tag-book">Книга</span>
+    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
+    <img src="${cover}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <div class="card-body">
+      <div class="card-title">${title}</div>
+      ${progressHtml || year || info
+        ? `<div class="card-meta">
+            ${progressHtml || (year ? `<span>${year}</span>` : "")}
+            ${gradeInlineHtml(info)}
+          </div>`
+        : ""}
+    </div>
+  </a>`;
+}
