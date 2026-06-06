@@ -80,11 +80,17 @@ async function loadNow() {
       enrichTraktWithPosters(traktShowsRaw.slice(0,  50), "show")
     ]);
 
+    // Ручные записи из reviews.json — всё что не anime/manga/movie/show
+    const manualEntries = (cache.reviews || []).filter(
+      r => !["anime", "manga", "novel", "movie", "show"].includes(r.type)
+    );
+
     cache.now = {
       alCurrent,
       alCompleted,
-      traktMovies: enrichedMovies,
-      traktShows:  enrichedShows
+      traktMovies:    enrichedMovies,
+      traktShows:     enrichedShows,
+      manualEntries
     };
     renderNow(cache.now);
 
@@ -97,7 +103,7 @@ async function loadNow() {
   }
 }
 
-function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
+function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntries = [] }) {
   const box = document.getElementById("tab-now");
   let html  = "";
 
@@ -127,6 +133,10 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
     ...traktShows.map(e => {
       const d = e.last_watched_at ? new Date(e.last_watched_at) : new Date(0);
       return { _src: "trakt", type: "show",  data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
+    }),
+    ...manualEntries.map(e => {
+      const d = e.date ? new Date(e.date) : new Date(0);
+      return { _src: "manual", data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
     })
   ];
   allCompleted.sort((a, b) => b._sortDate - a._sortDate);
@@ -145,7 +155,8 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows }) {
       completedHtml += `<div class="year-divider">${year}</div>
         <div class="grid-now">
           ${byYear[year].map((item, i) => {
-            if (item._src === "al") return completedCard(item.data, i);
+            if (item._src === "al")     return completedCard(item.data, i);
+            if (item._src === "manual") return manualCard(item.data, i);
             return traktCard(item.data, item.type, i);
           }).join("")}
         </div>`;
