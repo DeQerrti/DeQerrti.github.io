@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export const config = { matcher: ["/add", "/add/", "/add.html"] };
 
 export default function middleware(req) {
@@ -8,14 +10,14 @@ export default function middleware(req) {
 
   // Не авторизован — редирект на логин
   if (token !== process.env.ADMIN_PASSWORD?.trim()) {
-    return Response.redirect(new URL("/login.html", req.url));
+    return NextResponse.redirect(new URL("/login.html", req.url));
   }
 
   // Авторизован и зашёл на /add или /add/ — редирект на add.html
   if (!url.pathname.endsWith(".html")) {
-    return Response.redirect(new URL("/add.html" + url.search, req.url));
+    return NextResponse.redirect(new URL("/add.html" + url.search, req.url));
   }
 
   // Авторизован и уже на /add.html — пропускаем
-  return new Response(null, { status: 200 });
+  return NextResponse.next();
 }
