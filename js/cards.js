@@ -191,4 +191,3 @@ function manualCard(r, index) {
     </div>
   </a>`;
 }
-
