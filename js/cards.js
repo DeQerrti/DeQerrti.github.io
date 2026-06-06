@@ -168,9 +168,17 @@ function manualCard(r, index) {
   const typeLabels = { game: "Игра", vn: "Визуальная новелла" };
   const tagLabel = typeLabels[r.type] || r.type || "—";
 
+  // дата из поля date
+  let watchBadge = "";
+  if (r.date) {
+    const d = new Date(r.date);
+    watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  }
+
   return `<a href="${r.url || "#"}" target="_blank" rel="noopener" class="card"
       style="animation-delay:${Math.min(index * 20, 600)}ms">
     <span class="type-tag tag-manual">${tagLabel}</span>
+    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
     <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
       <div class="card-title">${r.title}</div>
@@ -183,3 +191,4 @@ function manualCard(r, index) {
     </div>
   </a>`;
 }
+
