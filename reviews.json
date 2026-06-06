@@ -75,14 +75,19 @@
     "date": "2026-03-11"
   },
   {
-    "id": 3,
     "title": "Tokyo Ghoul:re",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85611-Asb0BNP23NsJ.png",
+    "url": "https://teletype.in/@tknovas/TokyoGhoulre",
     "type": "manga",
-    "format": "Манга (16 томов)",
+    "source": "teletype",
+    "url2": "https://bsky.app/profile/ktnovas.bsky.social/post/3mekrn7ycj22h",
+    "source2": "bluesky",
     "year": "2014",
-    "grade": "etalon",
+    "format": "Манга (16 томов)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85611-Asb0BNP23NsJ.png",
+    "date": "2026-02-18",
     "favorites": "Это, Чёрный бог смерти",
+    "preview": "Если первая часть была историей о личной трагедии, то вторая - это история о последствиях этой трагедии для всего мира. Продолжение не просто расширяет масштаб повествования - оно меняет саму оптику.",
+    "grade": "etalon",
     "tags": [
       "Топ рисовка",
       "Затягивает сразу",
@@ -96,10 +101,7 @@
       "Серая мораль",
       "Философия"
     ],
-    "source": "teletype",
-    "url": "https://teletype.in/@tknovas/TokyoGhoulre",
-    "preview": "Если первая часть была историей о личной трагедии, то вторая - это история о последствиях этой трагедии для всего мира. Продолжение не просто расширяет масштаб повествования - оно меняет саму оптику.",
-    "date": "2026-02-18"
+    "id": 3
   },
   {
     "id": 4,
