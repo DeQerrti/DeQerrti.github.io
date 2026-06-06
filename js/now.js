@@ -56,14 +56,14 @@ query($name: String) {
 async function loadNow() {
   if (cache.now) { renderNow(cache.now); return; }
 
-  // Предзагружаем отзывы чтобы показывать оценки на карточках
   await fetchReviews();
 
   try {
-    const [alData, traktMoviesRaw, traktShowsRaw] = await Promise.all([
+    const [alData, traktMoviesRaw, traktShowsRaw, hardcoverBooks] = await Promise.all([
       gql(NOW_QUERY, { name: AL_USERNAME }),
       fetchTraktWatched("movie"),
-      fetchTraktWatched("show")
+      fetchTraktWatched("show"),
+      fetchHardcoverBooks()
     ]);
 
     const alCurrent = [
@@ -80,17 +80,21 @@ async function loadNow() {
       enrichTraktWithPosters(traktShowsRaw.slice(0,  50), "show")
     ]);
 
-    // Ручные записи из reviews.json — всё что не anime/manga/movie/show
     const manualEntries = (cache.reviews || []).filter(
       r => !["anime", "manga", "novel", "movie", "show"].includes(r.type)
     );
+
+    const booksCurrent   = hardcoverBooks.filter(b => b.status_id === 2);
+    const booksCompleted = hardcoverBooks.filter(b => b.status_id === 3);
 
     cache.now = {
       alCurrent,
       alCompleted,
       traktMovies:    enrichedMovies,
       traktShows:     enrichedShows,
-      manualEntries
+      manualEntries,
+      booksCurrent,
+      booksCompleted
     };
     renderNow(cache.now);
 
@@ -103,21 +107,23 @@ async function loadNow() {
   }
 }
 
-function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntries = [] }) {
+function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntries = [], booksCurrent = [], booksCompleted = [] }) {
   const box = document.getElementById("tab-now");
   let html  = "";
 
-  // ── В процессе (только аниме + манга) ─────────
-  if (alCurrent.length) {
+  // ── В процессе ─────────────────────────────────
+  const inProgress = [
+    ...alCurrent.map((e, i) => nowCard(e, i)),
+    ...booksCurrent.map((b, i) => bookCard(b, alCurrent.length + i, "current"))
+  ];
+  if (inProgress.length) {
     html += `<section class="group">
       <h2 class="section-title">В процессе</h2>
-      <div class="grid-now">
-        ${alCurrent.map((e, i) => nowCard(e, i)).join("")}
-      </div>
+      <div class="grid-now">${inProgress.join("")}</div>
     </section>`;
   }
 
-  // ── Просмотрено — всё вместе, сортируем по дате ─
+  // ── Просмотрено / Прочитано ────────────────────
   const allCompleted = [
     ...alCompleted.map(e => {
       const c = e.completedAt;
@@ -137,12 +143,17 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntr
     ...manualEntries.map(e => {
       const d = e.date ? new Date(e.date) : new Date(0);
       return { _src: "manual", data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
+    }),
+    ...booksCompleted.map(b => {
+      const reads    = b.user_book_reads || [];
+      const finished = reads[reads.length - 1]?.finished_at;
+      const d        = finished ? new Date(finished) : (b.updated_at ? new Date(b.updated_at) : new Date(0));
+      return { _src: "book", data: b, _sortDate: d, _sortYear: d.getFullYear() || 0 };
     })
   ];
   allCompleted.sort((a, b) => b._sortDate - a._sortDate);
 
   if (allCompleted.length) {
-    // Группируем по году просмотра
     const byYear = {};
     for (const item of allCompleted) {
       const y = item._sortYear || "—";
@@ -157,6 +168,7 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntr
           ${byYear[year].map((item, i) => {
             if (item._src === "al")     return completedCard(item.data, i);
             if (item._src === "manual") return manualCard(item.data, i);
+            if (item._src === "book")   return bookCard(item.data, i, "completed");
             return traktCard(item.data, item.type, i);
           }).join("")}
         </div>`;
