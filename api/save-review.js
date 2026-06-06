@@ -1,11 +1,13 @@
+export const config = { runtime: "edge" };
+
 export default async function handler(req) {
   if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
 
-  // Проверка куки
   const cookie = req.headers.get("cookie") || "";
   const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
   const token  = auth?.split("=")[1]?.trim();
-  if (token !== process.env.ADMIN_PASSWORD) {
+
+  if (token !== process.env.ADMIN_PASSWORD?.trim()) {
     return new Response(JSON.stringify({ error: "Не авторизован" }), {
       status: 401,
       headers: { "Content-Type": "application/json" }
@@ -25,7 +27,6 @@ export default async function handler(req) {
   const apiUrl  = `https://api.github.com/repos/${repo}/contents/reviews.json`;
 
   try {
-    // 1. Получаем текущий файл
     const getRes   = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${ghToken}`, Accept: "application/vnd.github+json" }
     });
@@ -33,11 +34,9 @@ export default async function handler(req) {
     const sha      = fileData.sha;
     const current  = JSON.parse(atob(fileData.content.replace(/\n/g, "")));
 
-    // 2. Добавляем и сортируем по дате
     current.unshift(review);
     current.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
-    // 3. Пушим обратно
     const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
     const putRes  = await fetch(apiUrl, {
       method: "PUT",
@@ -52,19 +51,16 @@ export default async function handler(req) {
     if (!putRes.ok) {
       const err = await putRes.json();
       return new Response(JSON.stringify({ error: err.message }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
+        status: 500, headers: { "Content-Type": "application/json" }
       });
     }
 
     return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
+      status: 200, headers: { "Content-Type": "application/json" }
     });
   } catch (e) {
     return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
+      status: 500, headers: { "Content-Type": "application/json" }
     });
   }
 }
