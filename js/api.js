@@ -98,3 +98,41 @@ async function fetchReviews() {
     return [];
   }
 }
+
+// ── Hardcover ──────────────────────────────────
+async function fetchHardcoverBooks() {
+  try {
+    const query = encodeURIComponent(`{
+      user_books(
+        where: {
+          user: { username: { _eq: "Qerrti" } }
+          status_id: { _in: [2, 3] }
+        }
+        order_by: { updated_at: desc }
+        limit: 100
+      ) {
+        status_id
+        updated_at
+        user_book_reads {
+          started_at
+          finished_at
+        }
+        book {
+          title
+          slug
+          contributions { author { name } }
+          image { url }
+          release_year
+        }
+      }
+    }`);
+
+    const res  = await fetch(`/api/hardcover?query=${query}`);
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json.data?.user_books || [];
+  } catch {
+    return [];
+  }
+}
+
