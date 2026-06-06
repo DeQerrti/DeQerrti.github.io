@@ -1,69 +1,52 @@
 export const config = { runtime: "edge" };
-
 export default async function handler(req) {
   if (req.method !== "POST")
     return new Response("Method Not Allowed", { status: 405 });
-
-  // ── авторизация ──────────────────────────────────
   const cookie = req.headers.get("cookie") || "";
   const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
   const token  = auth?.split("=")[1]?.trim();
   if (token !== process.env.ADMIN_PASSWORD?.trim()) {
     return json({ error: "Не авторизован" }, 401);
   }
-
   const review = await req.json();
   if (!review.title || !review.url)
     return json({ error: "Нужны title и url" }, 400);
-
   const repo    = process.env.GITHUB_REPO;
   const ghToken = process.env.GITHUB_TOKEN;
   const apiUrl  = `https://api.github.com/repos/${repo}/contents/reviews.json`;
-
   try {
-    // ── читаем текущий файл ──────────────────────────
     const getRes   = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${ghToken}`, Accept: "application/vnd.github+json" }
     });
     const fileData = await getRes.json();
     const sha      = fileData.sha;
-    let current    = JSON.parse(atob(fileData.content.replace(/\n/g, "")));
-
+    // ── читаем через TextDecoder (UTF-8 safe) ────────
+    const raw      = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
+    let current    = JSON.parse(new TextDecoder().decode(raw));
     const isEdit = review._editId !== undefined && review._editId !== null;
-
     if (isEdit) {
-      // ── режим редактирования: находим и заменяем ────
       const editId = review._editId;
       delete review._editId;
-
       const idx = current.findIndex(r =>
         String(r.id) === String(editId) || r.title === editId
       );
-
       if (idx === -1)
         return json({ error: `Отзыв с id «${editId}» не найден` }, 404);
-
-      // сохраняем оригинальный id если он был
       if (current[idx].id !== undefined) review.id = current[idx].id;
       current[idx] = review;
-
     } else {
-      // ── режим добавления: генерируем id и добавляем ─
       delete review._editId;
       const maxId = current.reduce((m, r) => Math.max(m, r.id ?? 0), 0);
       review.id   = maxId + 1;
       current.unshift(review);
     }
-
-    // сортируем по дате
     current.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-
-    // ── пишем обратно в GitHub ───────────────────────
-    const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+    // ── пишем через TextEncoder (UTF-8 safe) ─────────
+    const encoded = new TextEncoder().encode(JSON.stringify(current, null, 2));
+    const updated = btoa(String.fromCharCode(...encoded));
     const message = isEdit
       ? `review: edit "${review.title}"`
       : `review: add "${review.title}"`;
-
     const putRes = await fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -73,19 +56,15 @@ export default async function handler(req) {
       },
       body: JSON.stringify({ message, content: updated, sha }),
     });
-
     if (!putRes.ok) {
       const err = await putRes.json();
       return json({ error: err.message }, 500);
     }
-
     return json({ ok: true });
-
   } catch (e) {
     return json({ error: e.message }, 500);
   }
 }
-
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
