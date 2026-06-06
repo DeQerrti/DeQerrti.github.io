@@ -25,18 +25,13 @@ export async function onRequest(context) {
 
   const cookieOpts = `Path=/; SameSite=Strict; Max-Age=604800`;
 
-  return new Response(JSON.stringify({ ok: true }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      // tasteid_auth — HttpOnly, для защиты маршрутов в middleware
-      // tasteid_ui   — читается JS, для показа кнопки карандаша
-      "Set-Cookie": [
-        `tasteid_auth=${expected.trim()}; ${cookieOpts}; HttpOnly`,
-        `tasteid_ui=1; ${cookieOpts}`
-      ].join(", ")
-    }
-  });
+  // Cloudflare не поддерживает два Set-Cookie через запятую —
+  // используем Headers.append чтобы добавить два отдельных заголовка
+  const headers = new Headers({ "Content-Type": "application/json" });
+  headers.append("Set-Cookie", `tasteid_auth=${expected.trim()}; ${cookieOpts}; HttpOnly`);
+  headers.append("Set-Cookie", `tasteid_ui=1; ${cookieOpts}`);
+
+  return new Response(JSON.stringify({ ok: true }), { status: 200, headers });
 }
 
 function json(data, status = 200) {
