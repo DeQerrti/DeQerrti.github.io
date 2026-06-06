@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.HARDCOVER_TOKEN}`
+        "Authorization": process.env.HARDCOVER_TOKEN
       },
       body: JSON.stringify({ query: decodeURIComponent(query) })
     });
