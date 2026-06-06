@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TasteID — Добавить отзыв</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1a1510; --bg2: #211c15; --surface: #28211a; --surface2: #2f2820;
+  --border: #3d3228; --border2: #554535;
+  --gold: #c9a84c; --gold-dim: #7a5e28; --gold-hi: #e8c96a;
+  --text: #c8b99a; --text-dim: #6b5e4a; --text-hi: #ede0c8;
+  --green: #90b885; --red: #e07070; --teal: #72b8b3;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh;
+  background-image: radial-gradient(ellipse 100% 40% at 50% 0%, rgba(201,168,76,.06) 0%, transparent 60%); }
+header { text-align: center; padding: 2.5rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
+header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent 0%, var(--gold-dim) 20%, var(--gold) 50%, var(--gold-dim) 80%, transparent 100%); }
+.logo { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; font-size: 2.5rem; color: var(--gold-hi); }
+.logo-sub { font-family: 'DM Sans', sans-serif; font-size: .65rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold-dim); margin-top: .3rem; }
+main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
+.section-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic; color: var(--text-hi); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .8rem; }
+.section-title::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+.section-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.field { margin-bottom: 1rem; }
+.field.full { grid-column: 1 / -1; }
+label { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim); letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: .4rem; }
+input, textarea, select {
+  width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 2px;
+  padding: .65rem .85rem; color: var(--text-hi); font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; outline: none; transition: border-color .2s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--gold-dim); }
+select option { background: var(--bg2); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+.tags-grid { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+.tag-toggle { font-family: 'DM Sans', sans-serif; font-size: .65rem; padding: .25rem .6rem; border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; user-select: none; }
+.tag-toggle.visual  { background: rgba(45,92,88,.1);   color: #72b8b3; border-color: rgba(45,92,88,.3); }
+.tag-toggle.plot    { background: rgba(201,168,76,.08); color: #c9a84c; border-color: rgba(201,168,76,.2); }
+.tag-toggle.chars   { background: rgba(74,103,65,.1);  color: #90b885; border-color: rgba(74,103,65,.3); }
+.tag-toggle.special { background: rgba(139,42,42,.1);  color: #e07070; border-color: rgba(139,42,42,.3); }
+.tag-toggle.active.visual  { background: rgba(45,92,88,.35);   border-color: #72b8b3; }
+.tag-toggle.active.plot    { background: rgba(201,168,76,.25);  border-color: #c9a84c; }
+.tag-toggle.active.chars   { background: rgba(74,103,65,.35);   border-color: #90b885; }
+.tag-toggle.active.special { background: rgba(139,42,42,.35);   border-color: #e07070; }
+.grades-grid { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.grade-btn { font-family: 'Playfair Display', serif; font-size: .82rem; font-weight: 700; padding: .35rem .8rem; border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; background: rgba(255,255,255,.03); }
+.grade-btn.active { filter: brightness(1.3); }
+.divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 2rem 0; }
+.btn-save { width: 100%; background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.35); border-radius: 2px; color: var(--gold-hi); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; font-style: italic; letter-spacing: .05em; padding: .9rem; cursor: pointer; transition: background .2s, border-color .2s; }
+.btn-save:hover { background: rgba(201,168,76,.22); border-color: var(--gold); }
+.btn-save:disabled { opacity: .5; cursor: not-allowed; }
+.status { font-family: 'DM Sans', sans-serif; font-size: .8rem; text-align: center; margin-top: 1rem; min-height: 1.2rem; }
+.status.ok  { color: var(--green); }
+.status.err { color: var(--red); }
+.preview-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 1rem; margin-top: .5rem; font-size: .9rem; line-height: 1.6; color: var(--text); font-style: italic; min-height: 60px; }
+.cover-preview { width: 80px; height: 120px; object-fit: cover; border: 1px solid var(--border2); border-radius: 2px; margin-top: .5rem; display: none; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">TasteID</div>
+  <div class="logo-sub">Добавить отзыв</div>
+</header>
+<main>
+
+  <!-- Основное -->
+  <h2 class="section-title">Основное</h2>
+  <div class="grid">
+    <div class="field">
+      <label>Название *</label>
+      <input type="text" id="f-title" placeholder="Tokyo Ghoul">
+    </div>
+    <div class="field">
+      <label>Год</label>
+      <input type="text" id="f-year" placeholder="2014">
+    </div>
+    <div class="field">
+      <label>Тип</label>
+      <select id="f-type">
+        <option value="anime">Аниме</option>
+        <option value="manga">Манга</option>
+        <option value="novel">Ранобэ</option>
+        <option value="movie">Фильм</option>
+        <option value="show">Сериал</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Формат (доп.)</label>
+      <input type="text" id="f-format" placeholder="TV · 12 эп.">
+    </div>
+    <div class="field full">
+      <label>Ссылка на обложку</label>
+      <input type="text" id="f-cover" placeholder="https://..." oninput="previewCover(this.value)">
+      <img id="cover-img" class="cover-preview">
+    </div>
+  </div>
+
+  <!-- Источник -->
+  <h2 class="section-title">Ссылка</h2>
+  <div class="grid">
+    <div class="field">
+      <label>Источник</label>
+      <select id="f-source">
+        <option value="bluesky">Bluesky (мини)</option>
+        <option value="teletype">Teletype (полный)</option>
+        <option value="other">Другое</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>URL *</label>
+      <input type="text" id="f-url" placeholder="https://bsky.app/...">
+    </div>
+    <div class="field">
+      <label>Дата (YYYY-MM-DD)</label>
+      <input type="date" id="f-date">
+    </div>
+    <div class="field">
+      <label>Фавориты</label>
+      <input type="text" id="f-favorites" placeholder="Kaneki Ken, Touka">
+    </div>
+  </div>
+
+  <!-- Превью -->
+  <h2 class="section-title">Превью текст</h2>
+  <div class="field">
+    <textarea id="f-preview" placeholder="Пара предложений о тайтле..." oninput="updatePreview()"></textarea>
+    <div class="preview-box" id="preview-out">Здесь появится превью…</div>
+  </div>
+
+  <!-- Оценка -->
+  <div class="divider"></div>
+  <h2 class="section-title">Оценка</h2>
+  <div class="grades-grid" id="grades-grid"></div>
+
+  <!-- Теги -->
+  <h2 class="section-title">Теги</h2>
+  <div class="tags-grid" id="tags-grid"></div>
+
+  <!-- Сохранить -->
+  <div class="divider"></div>
+  <button class="btn-save" id="btn-save" onclick="saveReview()">Сохранить отзыв</button>
+  <div class="status" id="status"></div>
+
+</main>
+<script>
+const GRADES = {
+  razocharo:    { color: "#8B6914", name: "Разочарование" },
+  brak:         { color: "#c0392b", name: "Брак" },
+  fon:          { color: "#6b7280", name: "Фоновый шум" },
+  attrakcion:   { color: "#d4a017", name: "Аттракцион" },
+  vyskazyvanie: { color: "#2d8a4e", name: "Высказывание" },
+  etalon:       { color: "#2563a8", name: "Эталон" },
+  rezonans:     { color: "#7c3aed", name: "Резонанс" },
+};
+
+const TAGS_MAP = {
+  "Топ рисовка":"visual","Топ визуал":"visual","Специфичный стиль":"visual","Слабая картинка":"visual","Осты в тему":"visual",
+  "Затягивает сразу":"plot","Долгая раскачка":"plot","Сюжетные дыры":"plot","Рояли в кустах":"plot","Стеклище":"plot",
+  "Чеховские ружья":"plot","Слитый финал":"plot","До титров":"plot","Проседает":"plot",
+  "Живые герои":"chars","Картонные чары":"chars","Крутой протагонист":"chars","Оригинальный сеттинг":"chars",
+  "Дырявый сеттинг":"chars","Топ антагонист":"chars","Слабый ГГ":"chars",
+  "Без кринжа":"special","Почти без кринжа":"special","Много кринжа":"special","Жесть":"special",
+  "Философия":"special","Чистый кайф":"special","Серая мораль":"special","Хорни вайб":"special",
+};
+
+let selectedGrade = null;
+let selectedTags  = new Set();
+
+// Рендер кнопок оценок
+const gradesGrid = document.getElementById("grades-grid");
+for (const [key, g] of Object.entries(GRADES)) {
+  const btn = document.createElement("button");
+  btn.className = "grade-btn";
+  btn.textContent = g.name;
+  btn.style.color = g.color;
+  btn.style.borderColor = g.color + "55";
+  btn.dataset.key = key;
+  btn.onclick = () => {
+    selectedGrade = selectedGrade === key ? null : key;
+    document.querySelectorAll(".grade-btn").forEach(b => b.classList.toggle("active", b.dataset.key === selectedGrade));
+  };
+  gradesGrid.appendChild(btn);
+}
+
+// Рендер тегов
+const tagsGrid = document.getElementById("tags-grid");
+for (const [tag, cat] of Object.entries(TAGS_MAP)) {
+  const btn = document.createElement("span");
+  btn.className = `tag-toggle ${cat}`;
+  btn.textContent = tag;
+  btn.onclick = () => {
+    if (selectedTags.has(tag)) { selectedTags.delete(tag); btn.classList.remove("active"); }
+    else { selectedTags.add(tag); btn.classList.add("active"); }
+  };
+  tagsGrid.appendChild(btn);
+}
+
+function updatePreview() {
+  const val = document.getElementById("f-preview").value;
+  document.getElementById("preview-out").textContent = val || "Здесь появится превью…";
+}
+
+function previewCover(url) {
+  const img = document.getElementById("cover-img");
+  if (url.startsWith("http")) { img.src = url; img.style.display = "block"; }
+  else { img.style.display = "none"; }
+}
+
+// Устанавливаем сегодняшнюю дату по умолчанию
+document.getElementById("f-date").value = new Date().toISOString().slice(0, 10);
+
+async function saveReview() {
+  const btn    = document.getElementById("btn-save");
+  const status = document.getElementById("status");
+
+  const title = document.getElementById("f-title").value.trim();
+  const url   = document.getElementById("f-url").value.trim();
+  if (!title || !url) { status.className = "status err"; status.textContent = "Заполни название и ссылку"; return; }
+
+  const review = {
+    title,
+    url,
+    type:      document.getElementById("f-type").value,
+    source:    document.getElementById("f-source").value,
+    year:      document.getElementById("f-year").value.trim() || null,
+    format:    document.getElementById("f-format").value.trim() || null,
+    cover:     document.getElementById("f-cover").value.trim() || null,
+    date:      document.getElementById("f-date").value || null,
+    favorites: document.getElementById("f-favorites").value.trim() || null,
+    preview:   document.getElementById("f-preview").value.trim() || null,
+    grade:     selectedGrade,
+    tags:      [...selectedTags],
+  };
+
+  btn.disabled = true;
+  btn.textContent = "Сохраняем…";
+  status.className = "status";
+  status.textContent = "";
+
+  try {
+    const res = await fetch("/api/save-review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(review),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      status.className = "status ok";
+      status.textContent = `✦ «${title}» сохранён. Сайт обновится через ~30 секунд.`;
+      // Сброс формы
+      ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
+      document.getElementById("f-source").value = "bluesky";
+      document.getElementById("f-type").value = "anime";
+      document.getElementById("preview-out").textContent = "Здесь появится превью…";
+      document.getElementById("cover-img").style.display = "none";
+      selectedGrade = null;
+      selectedTags.clear();
+      document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tag-toggle").forEach(b => b.classList.remove("active"));
+    } else {
+      status.className = "status err";
+      status.textContent = "Ошибка: " + (data.error || "неизвестная");
+    }
+  } catch (e) {
+    status.className = "status err";
+    status.textContent = "Ошибка сети: " + e.message;
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Сохранить отзыв";
+}
+</script>
+</body>
+</html>
