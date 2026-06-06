@@ -175,7 +175,7 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntr
     }
 
     html += `<section class="group">
-      <h2 class="section-title">Просмотрено / Прочитано</h2>
+      <h2 class="section-title">Архив</h2>
       ${completedHtml}
     </section>`;
   }
