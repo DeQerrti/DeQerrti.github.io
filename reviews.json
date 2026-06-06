@@ -1,10 +1,11 @@
 [
   {
-    "id": 5,
     "title": "Saya no Uta",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmxzc6q3ks2e",
-    "type": "show",
+    "type": "game",
     "source": "bluesky",
+    "url2": null,
+    "source2": null,
     "year": "2003",
     "format": "Визуальная новелла",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co25zj.webp",
@@ -21,7 +22,8 @@
       "Хорни вайб",
       "Серая мораль",
       "Специфичный стиль"
-    ]
+    ],
+    "id": 5
   },
   {
     "id": 1,
