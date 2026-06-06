@@ -34,13 +34,13 @@ function sourceBtnHtml(url, source) {
   if (source === "bluesky") {
     return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
       <span class="source-dot-bluesky"></span>
-      <span class="source-badge">мини</span> ${label} →
+      <span class="source-badge">мысли</span> ${label} →
     </a>`;
   }
   if (source === "teletype") {
     return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-teletype">
       <span class="source-dot-teletype"></span>
-      <span class="source-badge">полный</span> ${label} →
+      <span class="source-badge">разбор</span> ${label} →
     </a>`;
   }
   return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-other">
