@@ -119,8 +119,43 @@ section.group { margin-bottom: 3.5rem; }
 .rtag[data-tip]:hover::before { content: ''; position: absolute; bottom: calc(100% + 1px); left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--border2); z-index: 21; }
 .review-grade-bar { display: flex; align-items: center; gap: .7rem; padding: .7rem 1.1rem; border-top: 1px solid var(--border); background: linear-gradient(180deg, transparent, rgba(0,0,0,.15)); }
 .grade-square { width: 11px; height: 11px; border-radius: 1px; flex-shrink: 0; transform: rotate(45deg); }
-.grade-name { font-family: 'Playfair Display', serif; font-size: .88rem; font-weight: 700; flex: 1; }
-.grade-desc { font-family: 'Cormorant Garamond', serif; font-size: .82rem; font-style: italic; color: var(--text-dim); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.grade-chip {
+  font-family: 'Playfair Display', serif;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--gc);
+  flex: 1;
+  cursor: default;
+  position: relative;
+}
+.grade-chip[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  background: var(--surface2);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .82rem;
+  font-style: italic;
+  font-weight: 400;
+  padding: .4rem .75rem;
+  border-radius: 2px;
+  border: 1px solid var(--border2);
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,.6);
+}
+.grade-chip[data-tip]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 1rem;
+  border: 5px solid transparent;
+  border-top-color: var(--border2);
+  z-index: 21;
+}
 .review-source-link { font-family: 'DM Sans', sans-serif; font-size: .65rem; letter-spacing: .06em; text-transform: uppercase; color: var(--gold-dim); display: inline-flex; align-items: center; gap: .35rem; padding: .28rem .65rem; background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.2); border-radius: 2px; flex-shrink: 0; white-space: nowrap; text-decoration: none; transition: background .2s, color .2s, border-color .2s; }
 .review-source-link:hover { background: rgba(201,168,76,.14); border-color: rgba(201,168,76,.45); color: var(--gold-hi); }
 .review-source-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
