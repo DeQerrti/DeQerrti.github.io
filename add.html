@@ -17,18 +17,20 @@
 body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh;
   background-image: radial-gradient(ellipse 100% 40% at 50% 0%, rgba(201,168,76,.06) 0%, transparent 60%); }
 header { text-align: center; padding: 2.5rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent 0%, var(--gold-dim) 20%, var(--gold) 50%, var(--gold-dim) 80%, transparent 100%); }
+header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-dim) 20%, var(--gold) 50%, var(--gold-dim) 80%, transparent 100%); }
 .logo { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; font-size: 2.5rem; color: var(--gold-hi); }
 .logo-sub { font-family: 'DM Sans', sans-serif; font-size: .65rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold-dim); margin-top: .3rem; }
 main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
-.section-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic; color: var(--text-hi); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .8rem; }
+.section-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic;
+  color: var(--text-hi); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .8rem; }
 .section-title::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
 .section-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-.field { margin-bottom: 1rem; }
+.grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.field  { margin-bottom: 1rem; }
 .field.full { grid-column: 1 / -1; }
-label { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim); letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: .4rem; }
+label { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim); letter-spacing: .1em;
+  text-transform: uppercase; display: block; margin-bottom: .4rem; }
 input, textarea, select {
   width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 2px;
   padding: .65rem .85rem; color: var(--text-hi); font-family: 'Cormorant Garamond', serif;
@@ -38,7 +40,8 @@ input:focus, textarea:focus, select:focus { border-color: var(--gold-dim); }
 select option { background: var(--bg2); }
 textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .tags-grid { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
-.tag-toggle { font-family: 'DM Sans', sans-serif; font-size: .65rem; padding: .25rem .6rem; border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; user-select: none; }
+.tag-toggle { font-family: 'DM Sans', sans-serif; font-size: .65rem; padding: .25rem .6rem;
+  border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; user-select: none; }
 .tag-toggle.visual  { background: rgba(45,92,88,.1);   color: #72b8b3; border-color: rgba(45,92,88,.3); }
 .tag-toggle.plot    { background: rgba(201,168,76,.08); color: #c9a84c; border-color: rgba(201,168,76,.2); }
 .tag-toggle.chars   { background: rgba(74,103,65,.1);  color: #90b885; border-color: rgba(74,103,65,.3); }
@@ -48,25 +51,49 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .tag-toggle.active.chars   { background: rgba(74,103,65,.35);   border-color: #90b885; }
 .tag-toggle.active.special { background: rgba(139,42,42,.35);   border-color: #e07070; }
 .grades-grid { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
-.grade-btn { font-family: 'Playfair Display', serif; font-size: .82rem; font-weight: 700; padding: .35rem .8rem; border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; background: rgba(255,255,255,.03); }
+.grade-btn { font-family: 'Playfair Display', serif; font-size: .82rem; font-weight: 700; padding: .35rem .8rem;
+  border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; background: rgba(255,255,255,.03); }
 .grade-btn.active { filter: brightness(1.3); }
 .divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 2rem 0; }
-.btn-save { width: 100%; background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.35); border-radius: 2px; color: var(--gold-hi); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; font-style: italic; letter-spacing: .05em; padding: .9rem; cursor: pointer; transition: background .2s, border-color .2s; }
+.btn-save { width: 100%; background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.35); border-radius: 2px;
+  color: var(--gold-hi); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+  font-style: italic; letter-spacing: .05em; padding: .9rem; cursor: pointer; transition: background .2s, border-color .2s; }
 .btn-save:hover { background: rgba(201,168,76,.22); border-color: var(--gold); }
 .btn-save:disabled { opacity: .5; cursor: not-allowed; }
 .status { font-family: 'DM Sans', sans-serif; font-size: .8rem; text-align: center; margin-top: 1rem; min-height: 1.2rem; }
 .status.ok  { color: var(--green); }
 .status.err { color: var(--red); }
-.preview-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 1rem; margin-top: .5rem; font-size: .9rem; line-height: 1.6; color: var(--text); font-style: italic; min-height: 60px; }
-.cover-preview { width: 80px; height: 120px; object-fit: cover; border: 1px solid var(--border2); border-radius: 2px; margin-top: .5rem; display: none; }
+.preview-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px;
+  padding: 1rem; margin-top: .5rem; font-size: .9rem; line-height: 1.6; color: var(--text);
+  font-style: italic; min-height: 60px; }
+.cover-preview { width: 80px; height: 120px; object-fit: cover; border: 1px solid var(--border2);
+  border-radius: 2px; margin-top: .5rem; display: none; }
+
+/* режим редактирования */
+.edit-banner {
+  background: rgba(201,168,76,.08); border: 1px solid rgba(201,168,76,.25); border-radius: 2px;
+  padding: .7rem 1rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between;
+  font-family: 'DM Sans', sans-serif; font-size: .8rem; color: var(--gold);
+}
+.edit-banner span { opacity: .6; }
+.btn-new { background: none; border: 1px solid rgba(201,168,76,.3); border-radius: 2px;
+  color: var(--gold-dim); font-family: 'DM Sans', sans-serif; font-size: .72rem;
+  padding: .3rem .7rem; cursor: pointer; transition: all .15s; }
+.btn-new:hover { border-color: var(--gold); color: var(--gold); }
 </style>
 </head>
 <body>
 <header>
   <div class="logo">TasteID</div>
-  <div class="logo-sub">Добавить отзыв</div>
+  <div class="logo-sub" id="page-subtitle">Добавить отзыв</div>
 </header>
 <main>
+
+  <!-- Баннер режима редактирования (скрыт по умолчанию) -->
+  <div class="edit-banner" id="edit-banner" style="display:none">
+    <div>✦ Режим редактирования — <span id="edit-title-hint"></span></div>
+    <button class="btn-new" onclick="resetToNew()">+ Новый отзыв</button>
+  </div>
 
   <!-- Основное -->
   <h2 class="section-title">Основное</h2>
@@ -87,7 +114,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
         <option value="novel">Ранобэ</option>
         <option value="movie">Фильм</option>
         <option value="show">Сериал</option>
-        <option value="show">Игра</option>
+        <option value="game">Игра</option>
       </select>
     </div>
     <div class="field">
@@ -172,7 +199,10 @@ const TAGS_MAP = {
 let selectedGrade = null;
 let selectedTags  = new Set();
 
-// Рендер кнопок оценок
+// ID редактируемого отзыва (null = новый)
+let editingId = null;
+
+// ── рендер оценок ──────────────────────────────────
 const gradesGrid = document.getElementById("grades-grid");
 for (const [key, g] of Object.entries(GRADES)) {
   const btn = document.createElement("button");
@@ -183,22 +213,109 @@ for (const [key, g] of Object.entries(GRADES)) {
   btn.dataset.key = key;
   btn.onclick = () => {
     selectedGrade = selectedGrade === key ? null : key;
-    document.querySelectorAll(".grade-btn").forEach(b => b.classList.toggle("active", b.dataset.key === selectedGrade));
+    document.querySelectorAll(".grade-btn").forEach(b =>
+      b.classList.toggle("active", b.dataset.key === selectedGrade));
   };
   gradesGrid.appendChild(btn);
 }
 
-// Рендер тегов
+// ── рендер тегов ───────────────────────────────────
 const tagsGrid = document.getElementById("tags-grid");
 for (const [tag, cat] of Object.entries(TAGS_MAP)) {
   const btn = document.createElement("span");
   btn.className = `tag-toggle ${cat}`;
   btn.textContent = tag;
+  btn.dataset.tag = tag;
   btn.onclick = () => {
     if (selectedTags.has(tag)) { selectedTags.delete(tag); btn.classList.remove("active"); }
     else { selectedTags.add(tag); btn.classList.add("active"); }
   };
   tagsGrid.appendChild(btn);
+}
+
+// ── заполняем форму данными отзыва ─────────────────
+function fillForm(r) {
+  document.getElementById("f-title").value     = r.title     || "";
+  document.getElementById("f-year").value      = r.year      || "";
+  document.getElementById("f-format").value    = r.format    || "";
+  document.getElementById("f-cover").value     = r.cover     || "";
+  document.getElementById("f-url").value       = r.url       || "";
+  document.getElementById("f-date").value      = r.date      || "";
+  document.getElementById("f-favorites").value = r.favorites || "";
+  document.getElementById("f-preview").value   = r.preview   || "";
+  document.getElementById("f-source").value    = r.source    || "bluesky";
+  document.getElementById("f-type").value      = r.type      || "anime";
+  updatePreview();
+  previewCover(r.cover || "");
+
+  // оценка
+  selectedGrade = r.grade || null;
+  document.querySelectorAll(".grade-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.key === selectedGrade));
+
+  // теги
+  selectedTags = new Set(r.tags || []);
+  document.querySelectorAll(".tag-toggle").forEach(b => {
+    b.classList.toggle("active", selectedTags.has(b.dataset.tag));
+  });
+}
+
+// ── сброс в режим «новый отзыв» ────────────────────
+function resetToNew() {
+  editingId = null;
+  document.getElementById("edit-banner").style.display = "none";
+  document.getElementById("page-subtitle").textContent = "Добавить отзыв";
+  document.getElementById("btn-save").textContent = "Сохранить отзыв";
+  history.replaceState(null, "", "add.html");
+
+  ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview"].forEach(id =>
+    document.getElementById(id).value = "");
+  document.getElementById("f-date").value   = new Date().toISOString().slice(0,10);
+  document.getElementById("f-source").value = "bluesky";
+  document.getElementById("f-type").value   = "anime";
+  document.getElementById("preview-out").textContent = "Здесь появится превью…";
+  document.getElementById("cover-img").style.display = "none";
+  selectedGrade = null;
+  selectedTags.clear();
+  document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tag-toggle").forEach(b => b.classList.remove("active"));
+  document.getElementById("status").textContent = "";
+}
+
+// ── определяем режим по URL (?edit=ID) ─────────────
+async function initPage() {
+  const params = new URLSearchParams(location.search);
+  const editId = params.get("edit");
+
+  // дефолтная дата для нового
+  document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
+
+  if (!editId) return;
+
+  // режим редактирования: загружаем reviews.json и ищем по id или title
+  try {
+    const res  = await fetch("/reviews.json?_=" + Date.now());
+    const data = await res.json();
+    // ищем сначала по числовому id, потом по title-slug
+    const review = data.find(r =>
+      String(r.id) === editId || encodeURIComponent(r.title) === editId
+    );
+    if (!review) {
+      document.getElementById("status").className = "status err";
+      document.getElementById("status").textContent = "Отзыв с таким ID не найден";
+      return;
+    }
+    editingId = review.id ?? review.title;
+    fillForm(review);
+
+    document.getElementById("edit-banner").style.display = "flex";
+    document.getElementById("edit-title-hint").textContent = review.title;
+    document.getElementById("page-subtitle").textContent = "Редактировать отзыв";
+    document.getElementById("btn-save").textContent = "Сохранить изменения";
+  } catch (e) {
+    document.getElementById("status").className = "status err";
+    document.getElementById("status").textContent = "Не удалось загрузить отзыв: " + e.message;
+  }
 }
 
 function updatePreview() {
@@ -208,35 +325,42 @@ function updatePreview() {
 
 function previewCover(url) {
   const img = document.getElementById("cover-img");
-  if (url.startsWith("http")) { img.src = url; img.style.display = "block"; }
+  if (url && url.startsWith("http")) { img.src = url; img.style.display = "block"; }
   else { img.style.display = "none"; }
 }
 
-// Устанавливаем сегодняшнюю дату по умолчанию
-document.getElementById("f-date").value = new Date().toISOString().slice(0, 10);
-
+// ── сохранение ─────────────────────────────────────
 async function saveReview() {
   const btn    = document.getElementById("btn-save");
   const status = document.getElementById("status");
 
   const title = document.getElementById("f-title").value.trim();
   const url   = document.getElementById("f-url").value.trim();
-  if (!title || !url) { status.className = "status err"; status.textContent = "Заполни название и ссылку"; return; }
+  if (!title || !url) {
+    status.className = "status err";
+    status.textContent = "Заполни название и ссылку";
+    return;
+  }
 
   const review = {
     title,
     url,
     type:      document.getElementById("f-type").value,
     source:    document.getElementById("f-source").value,
-    year:      document.getElementById("f-year").value.trim() || null,
-    format:    document.getElementById("f-format").value.trim() || null,
-    cover:     document.getElementById("f-cover").value.trim() || null,
-    date:      document.getElementById("f-date").value || null,
+    year:      document.getElementById("f-year").value.trim()      || null,
+    format:    document.getElementById("f-format").value.trim()    || null,
+    cover:     document.getElementById("f-cover").value.trim()     || null,
+    date:      document.getElementById("f-date").value             || null,
     favorites: document.getElementById("f-favorites").value.trim() || null,
-    preview:   document.getElementById("f-preview").value.trim() || null,
+    preview:   document.getElementById("f-preview").value.trim()   || null,
     grade:     selectedGrade,
     tags:      [...selectedTags],
   };
+
+  // если редактируем — добавляем маркер
+  if (editingId !== null) {
+    review._editId = editingId;
+  }
 
   btn.disabled = true;
   btn.textContent = "Сохраняем…";
@@ -244,7 +368,7 @@ async function saveReview() {
   status.textContent = "";
 
   try {
-    const res = await fetch("/api/save-review", {
+    const res  = await fetch("/api/save-review", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(review),
@@ -252,18 +376,10 @@ async function saveReview() {
     const data = await res.json();
     if (res.ok) {
       status.className = "status ok";
-      status.textContent = `✦ «${title}» сохранён. Сайт обновится через ~30 секунд.`;
-      // Сброс формы
-      ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview"].forEach(id => document.getElementById(id).value = "");
-      document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
-      document.getElementById("f-source").value = "bluesky";
-      document.getElementById("f-type").value = "anime";
-      document.getElementById("preview-out").textContent = "Здесь появится превью…";
-      document.getElementById("cover-img").style.display = "none";
-      selectedGrade = null;
-      selectedTags.clear();
-      document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
-      document.querySelectorAll(".tag-toggle").forEach(b => b.classList.remove("active"));
+      status.textContent = editingId !== null
+        ? `✦ «${title}» обновлён. Сайт обновится через ~30 секунд.`
+        : `✦ «${title}» сохранён. Сайт обновится через ~30 секунд.`;
+      if (editingId === null) resetToNew();
     } else {
       status.className = "status err";
       status.textContent = "Ошибка: " + (data.error || "неизвестная");
@@ -274,8 +390,10 @@ async function saveReview() {
   }
 
   btn.disabled = false;
-  btn.textContent = "Сохранить отзыв";
+  btn.textContent = editingId !== null ? "Сохранить изменения" : "Сохранить отзыв";
 }
+
+initPage();
 </script>
 </body>
 </html>
