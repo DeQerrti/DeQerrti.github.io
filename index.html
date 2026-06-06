@@ -60,8 +60,9 @@ section.group { margin-bottom: 3.5rem; }
 .section-title { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; font-size: 1.5rem; color: var(--text-hi); margin-bottom: 1.5rem; display: flex; align-items: center; gap: .8rem; }
 .section-title::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--gold); }
 .section-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
-.year-divider { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.8rem; color: var(--gold-dim); margin: 2.5rem 0 1rem; display: flex; align-items: center; gap: 1rem; }
-.year-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+.year-divider { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2rem; color: var(--gold-dim); margin: 2.5rem 0 1rem; display: flex; align-items: center; gap: 1rem; justify-content: center; }
+.year-divider::before { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border2)); }
+.year-divider::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
 
 /* ══ GRIDS ════════════════════════════════════════ */
 .grid-now { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
