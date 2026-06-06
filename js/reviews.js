@@ -2,6 +2,12 @@
 //  REVIEWS — вкладка Отзывы
 //  Зависит от: config.js, api.js
 // ══════════════════════════════════════════════
+
+// Проверяем авторизацию по куке — только у тебя она есть
+function isAdmin() {
+  return document.cookie.split(";").some(c => c.trim().startsWith("tasteid_auth="));
+}
+
 async function loadReviews() {
   const data = await fetchReviews();
   if (data.length) {
@@ -80,11 +86,14 @@ function reviewCard(r, i) {
         ${sourceButtons}
       </div>`;
 
+  // Кнопка карандаша — только для админа
   const editId  = r.id ?? encodeURIComponent(r.title);
-  const editUrl = `add.html?edit=${editId}`;
+  const editBtn = isAdmin()
+    ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
+    : "";
 
   return `<div class="review-card-wrap">
-    <a href="${editUrl}" class="review-edit-btn" title="Редактировать">✎</a>
+    ${editBtn}
     <div class="review-card"
         style="animation-delay:${Math.min(i * 40, 600)}ms;
                border-top: 2px solid ${grade ? grade.color + "66" : "var(--border2)"}">
