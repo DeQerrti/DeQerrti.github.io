@@ -104,12 +104,19 @@
     "id": 3
   },
   {
-    "id": 4,
     "title": "Tokyo Ghoul",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx63327-glC9cDxYBja9.png",
+    "url": "https://teletype.in/@tknovas/TokyoGhoul",
     "type": "manga",
-    "format": "Манга (14 томов)",
+    "source": "teletype",
+    "url2": "https://bsky.app/profile/ktnovas.bsky.social/post/3mcbusf4ho22w",
+    "source2": "bluesky",
     "year": "2011",
+    "format": "Манга (14 томов)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx63327-glC9cDxYBja9.png",
+    "date": "2026-02-10",
+    "favorites": null,
+    "preview": "История Канеки - это медленный демонтаж личности. Его постоянно ломают, пока он сам не перестаёт понимать, где заканчивается человек и начинается гуль. Манга не предлагает простых ответов и сознательно оставляет читателя в состоянии моральной неопределённости.",
+    "grade": null,
     "tags": [
       "Топ рисовка",
       "Затягивает сразу",
@@ -123,9 +130,6 @@
       "Серая мораль",
       "Философия"
     ],
-    "source": "teletype",
-    "url": "https://teletype.in/@tknovas/TokyoGhoul",
-    "preview": "История Канеки - это медленный демонтаж личности. Его постоянно ломают, пока он сам не перестаёт понимать, где заканчивается человек и начинается гуль. Манга не предлагает простых ответов и сознательно оставляет читателя в состоянии моральной неопределённости.",
-    "date": "2026-02-10"
+    "id": 4
   }
 ]
