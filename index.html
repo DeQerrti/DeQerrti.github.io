@@ -544,7 +544,7 @@ function switchTab(tabId, btn) {
   if (tabId === "tab-favorites") loadFavorites();
   if (tabId === "tab-reviews")   loadReviews();
 }
-loadNow();
+document.querySelector(".tab-btn.active").click();
 </script>
 
 </body>
