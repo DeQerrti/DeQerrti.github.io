@@ -696,6 +696,7 @@ async function saveReview() {
     const res  = await fetch("/api/save-review", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(review),
     });
     const data = await res.json();
