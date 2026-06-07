@@ -280,11 +280,11 @@ section.group { margin-bottom: 3.5rem; }
   background: rgba(10,10,12,.82);
   backdrop-filter: blur(8px);
 }
-.tag-anime { color: var(--text-hi);  border-bottom: 1px solid rgba(240,236,230,.2); border-left: 1px solid rgba(240,236,230,.2); }
-.tag-manga { color: var(--red-hi);   border-bottom: 1px solid rgba(192,57,43,.35);  border-left: 1px solid rgba(192,57,43,.35); }
-.tag-novel { color: #a0a8b8;         border-bottom: 1px solid rgba(160,168,184,.25);border-left: 1px solid rgba(160,168,184,.25);}
-.tag-movie { color: #c8c0b0;         border-bottom: 1px solid rgba(200,192,176,.2); border-left: 1px solid rgba(200,192,176,.2); }
-.tag-show  { color: #8898a8;         border-bottom: 1px solid rgba(136,152,168,.25);border-left: 1px solid rgba(136,152,168,.25);}
+.tag-anime, .tag-manga, .tag-novel, .tag-movie, .tag-show {
+  color: var(--text-hi);
+  border-bottom: 1px solid rgba(240,236,230,.18);
+  border-left:   1px solid rgba(240,236,230,.18);
+}
 
 .watch-badge {
   position: absolute; top: 0; left: 0;
@@ -417,10 +417,11 @@ section.group { margin-bottom: 3.5rem; }
   cursor: default;
 }
 /* теги — все в единой серо-красной гамме */
-.rtag-visual  { background: rgba(136,152,168,.08); color: #8898a8; border: 1px solid rgba(136,152,168,.2); }
-.rtag-plot    { background: rgba(139,26,26,.1);    color: #b84040; border: 1px solid rgba(139,26,26,.25); }
-.rtag-chars   { background: rgba(200,192,176,.06); color: #888078; border: 1px solid rgba(200,192,176,.15);}
-.rtag-special { background: rgba(192,57,43,.12);   color: #c0392b; border: 1px solid rgba(192,57,43,.3); }
+.rtag-visual, .rtag-plot, .rtag-chars, .rtag-special {
+  background: rgba(240,236,230,.05);
+  color: #9a9490;
+  border: 1px solid rgba(240,236,230,.12);
+}
 
 .rtag[data-tip]:hover::after {
   content: attr(data-tip);
