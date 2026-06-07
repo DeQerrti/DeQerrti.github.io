@@ -197,7 +197,6 @@ section.group { margin-bottom: 3.5rem; }
   transition: border-color .25s, transform .25s;
   position: relative;
 }
-/* Уголки — тонкие, красные */
 .card::before {
   content: '';
   position: absolute; top: 0; left: 0;
@@ -417,7 +416,6 @@ section.group { margin-bottom: 3.5rem; }
   position: relative;
   cursor: default;
 }
-/* теги — все в единой серо-красной гамме */
 .rtag-visual, .rtag-plot, .rtag-chars, .rtag-special {
   background: rgba(240,236,230,.07);
   color: #c8c0b8;
@@ -514,6 +512,220 @@ section.group { margin-bottom: 3.5rem; }
 .review-card-wrap:hover .review-edit-btn { display: flex; }
 .review-edit-btn:hover { background: var(--red-dim); border-color: var(--red); color: var(--text-hi); }
 .review-card-wrap .card { height: 100%; }
+
+/* ══ STATS ═══════════════════════════════════════ */
+.stat-section {
+  margin-bottom: 3.5rem;
+  animation: fadeUp .4s ease both;
+}
+
+/* Общий счётчик */
+.stat-total {
+  display: flex;
+  align-items: baseline;
+  gap: .75rem;
+  margin-bottom: 2rem;
+}
+.stat-total-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  color: var(--text-hi);
+  line-height: 1;
+}
+.stat-total-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .85rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Счётчики по типам */
+.stat-counters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  border: 1px solid var(--border);
+}
+.stat-counter {
+  flex: 1;
+  min-width: 80px;
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-counter:last-child { border-right: none; }
+.stat-counter-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-hi);
+  line-height: 1;
+}
+.stat-counter-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: .35rem;
+}
+
+/* Пончик */
+.stat-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+.stat-donut-svg {
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+.donut-center-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  fill: var(--text-hi);
+}
+.donut-center-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  fill: var(--text-dim);
+}
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+}
+.donut-dot {
+  width: 8px; height: 8px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+.donut-legend-label { color: var(--text); flex: 1; }
+.donut-legend-val   { color: var(--text-hi); font-weight: 500; min-width: 24px; text-align: right; }
+.donut-legend-pct   { color: var(--text-dim); min-width: 36px; text-align: right; }
+
+/* Барчарт по годам — вертикальный */
+.year-bars-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: .5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+  min-height: 180px;
+}
+.year-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.year-bar-track {
+  width: 32px;
+  height: 140px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+.year-bar {
+  width: 100%;
+  background: var(--red-dim);
+  transition: background .2s;
+}
+.year-bar:hover { background: var(--red-hi); }
+.year-bar-val {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem;
+  color: var(--text-dim);
+  line-height: 1;
+}
+.year-bar-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .6rem;
+  color: var(--text-dim);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: .05em;
+}
+
+/* Барчарт оценок — горизонтальный */
+.grade-bars {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+.grade-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.grade-row-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .95rem;
+  font-weight: 600;
+  font-style: italic;
+  min-width: 140px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.grade-row-track {
+  flex: 1;
+  height: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.grade-row-bar {
+  height: 100%;
+  width: 0%;
+}
+.grade-row-val {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem;
+  color: var(--text-dim);
+  min-width: 20px;
+  text-align: right;
+}
+
+/* Облако тегов */
+.stat-tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+}
+.stat-tag {
+  transition: opacity .2s, transform .2s;
+  cursor: default;
+}
+.stat-tag:hover { opacity: .8; transform: translateY(-1px); }
+.stat-tag-cnt {
+  font-size: .65em;
+  opacity: .6;
+  margin-left: .2em;
+}
 </style>
 </head>
 <body>
@@ -530,12 +742,14 @@ section.group { margin-bottom: 3.5rem; }
   <button class="tab-btn active" onclick="switchTab('tab-now', this)">Главная</button>
   <button class="tab-btn" onclick="switchTab('tab-favorites', this)">Любимое</button>
   <button class="tab-btn" onclick="switchTab('tab-reviews', this)">Отзывы</button>
+  <button class="tab-btn" onclick="switchTab('tab-stats', this)">Статистика</button>
 </nav>
 
 <main>
   <div id="tab-now"       class="tab-content"><div class="state-box"><div class="spinner"></div>Загружаем…</div></div>
   <div id="tab-favorites" class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем любимчиков…</div></div>
   <div id="tab-reviews"   class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем отзывы…</div></div>
+  <div id="tab-stats"     class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Считаем…</div></div>
 </main>
 
 <script src="js/config.js"></script>
@@ -544,6 +758,7 @@ section.group { margin-bottom: 3.5rem; }
 <script src="js/now.js"></script>
 <script src="js/favorites.js"></script>
 <script src="js/reviews.js"></script>
+<script src="js/stats.js"></script>
 
 <script>
 function switchTab(tabId, btn) {
@@ -554,6 +769,7 @@ function switchTab(tabId, btn) {
   if (tabId === "tab-now")       loadNow();
   if (tabId === "tab-favorites") loadFavorites();
   if (tabId === "tab-reviews")   loadReviews();
+  if (tabId === "tab-stats")     loadStats();
 }
 document.querySelector(".tab-btn.active").click();
 </script>
