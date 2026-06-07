@@ -37,6 +37,15 @@ async function fetchTraktWatched(type) {
   catch { return []; }
 }
 
+// Watchlist — планируемые фильмы и сериалы
+async function fetchTraktWatchlist(type) {
+  const path = type === "movie"
+    ? `/users/${TRAKT_USERNAME}/watchlist/movies`
+    : `/users/${TRAKT_USERNAME}/watchlist/shows`;
+  try { return await traktFetch(path); }
+  catch { return []; }
+}
+
 // ── TMDb (через Vercel API Route) ──────────────
 async function tmdbFetch(path) {
   const cleanPath = path.replace(/^\//, "");
@@ -106,7 +115,7 @@ async function fetchHardcoverBooks() {
       user_books(
         where: {
           user: { username: { _eq: "Qerrti" } }
-          status_id: { _in: [2, 3] }
+          status_id: { _in: [1, 2, 3] }
         }
         order_by: { updated_at: desc }
         limit: 100
@@ -135,4 +144,3 @@ async function fetchHardcoverBooks() {
     return [];
   }
 }
-
