@@ -102,3 +102,9 @@ function json(data, status = 200) {
     headers: { "Content-Type": "application/json" }
   });
 }
+const cookie = request.headers.get("cookie") || "";
+const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
+const token  = auth?.split("=")[1]?.trim();
+if (token !== env.ADMIN_PASSWORD?.trim()) {
+  return json({ error: `Не авторизован. cookie: "${cookie.slice(0,80)}"` }, 401);
+}
