@@ -4,99 +4,377 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TasteID — Добавить отзыв</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+/* ══ NOIR PALETTE ════════════════════════════════ */
 :root {
-  --bg: #1a1510; --bg2: #211c15; --surface: #28211a; --surface2: #2f2820;
-  --border: #3d3228; --border2: #554535;
-  --gold: #c9a84c; --gold-dim: #7a5e28; --gold-hi: #e8c96a;
-  --text: #c8b99a; --text-dim: #6b5e4a; --text-hi: #ede0c8;
-  --green: #90b885; --red: #e07070;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh;
-  background-image: radial-gradient(ellipse 100% 40% at 50% 0%, rgba(201,168,76,.06) 0%, transparent 60%); }
-header { text-align: center; padding: 2.5rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent 0%, var(--gold-dim) 20%, var(--gold) 50%, var(--gold-dim) 80%, transparent 100%); }
-.logo { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; font-size: 2.5rem; color: var(--gold-hi); }
-.logo-sub { font-family: 'DM Sans', sans-serif; font-size: .65rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold-dim); margin-top: .3rem; }
-main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
-.section-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; font-style: italic;
-  color: var(--text-hi); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .8rem; }
-.section-title::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
-.section-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
-.grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-.field  { margin-bottom: 1rem; }
-.field.full { grid-column: 1 / -1; }
-label { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim); letter-spacing: .1em;
-  text-transform: uppercase; display: block; margin-bottom: .4rem; }
-input, textarea, select {
-  width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 2px;
-  padding: .65rem .85rem; color: var(--text-hi); font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem; outline: none; transition: border-color .2s;
-}
-input:focus, textarea:focus, select:focus { border-color: var(--gold-dim); }
-select option { background: var(--bg2); }
-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-.tags-grid { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
-.tag-toggle { font-family: 'DM Sans', sans-serif; font-size: .65rem; padding: .25rem .6rem;
-  border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; user-select: none; }
-.tag-toggle.visual  { background: rgba(45,92,88,.1);   color: #72b8b3; border-color: rgba(45,92,88,.3); }
-.tag-toggle.plot    { background: rgba(201,168,76,.08); color: #c9a84c; border-color: rgba(201,168,76,.2); }
-.tag-toggle.chars   { background: rgba(74,103,65,.1);  color: #90b885; border-color: rgba(74,103,65,.3); }
-.tag-toggle.special { background: rgba(139,42,42,.1);  color: #e07070; border-color: rgba(139,42,42,.3); }
-.tag-toggle.active.visual  { background: rgba(45,92,88,.35);   border-color: #72b8b3; }
-.tag-toggle.active.plot    { background: rgba(201,168,76,.25);  border-color: #c9a84c; }
-.tag-toggle.active.chars   { background: rgba(74,103,65,.35);   border-color: #90b885; }
-.tag-toggle.active.special { background: rgba(139,42,42,.35);   border-color: #e07070; }
-.grades-grid { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
-.grade-btn { font-family: 'Playfair Display', serif; font-size: .82rem; font-weight: 700; padding: .35rem .8rem;
-  border-radius: 2px; cursor: pointer; border: 1px solid; transition: all .15s; background: rgba(255,255,255,.03); }
-.grade-btn.active { filter: brightness(1.3); }
-.divider { height: 1px; background: linear-gradient(90deg, var(--border2), transparent); margin: 2rem 0; }
-.btn-save { width: 100%; background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.35); border-radius: 2px;
-  color: var(--gold-hi); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
-  font-style: italic; letter-spacing: .05em; padding: .9rem; cursor: pointer; transition: background .2s, border-color .2s; }
-.btn-save:hover { background: rgba(201,168,76,.22); border-color: var(--gold); }
-.btn-save:disabled { opacity: .5; cursor: not-allowed; }
-.status { font-family: 'DM Sans', sans-serif; font-size: .8rem; text-align: center; margin-top: 1rem; min-height: 1.2rem; }
-.status.ok  { color: var(--green); }
-.status.err { color: var(--red); }
-.preview-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px;
-  padding: 1rem; margin-top: .5rem; font-size: .9rem; line-height: 1.6; color: var(--text);
-  font-style: italic; min-height: 60px; }
-.cover-preview { width: 80px; height: 120px; object-fit: cover; border: 1px solid var(--border2);
-  border-radius: 2px; margin-top: .5rem; display: none; }
+  --bg:       #0a0a0c;
+  --bg2:      #0f0f12;
+  --surface:  #111114;
+  --surface2: #1a1a1f;
+  --border:   #222228;
+  --border2:  #333338;
 
-/* source-2 hint */
-.source2-hint { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim);
-  margin-bottom: 1rem; padding: .55rem .85rem; border: 1px solid var(--border); border-radius: 2px;
-  background: rgba(201,168,76,.04); }
+  --red:      #8b1a1a;
+  --red-hi:   #c0392b;
+  --red-dim:  #5a1010;
 
-/* режим редактирования */
+  --text:     #b8b0a8;
+  --text-dim: #4a4540;
+  --text-hi:  #f0ece6;
+
+  --green:    #4a8c5c;
+  --green-hi: #6ab87a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  min-height: 100vh;
+}
+
+/* ══ HEADER ══════════════════════════════════════ */
+header {
+  text-align: center;
+  padding: 3.5rem 1rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+header::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--red-dim) 20%, var(--red) 50%, var(--red-dim) 80%, transparent 100%);
+}
+
+.header-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .62rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+}
+.header-eyebrow::before,
+.header-eyebrow::after { content: '—'; color: var(--border2); }
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  color: var(--text-hi);
+  letter-spacing: .04em;
+  line-height: 1;
+}
+
+.header-deco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  margin-top: 1.2rem;
+}
+.header-deco span {
+  width: 4px; height: 4px;
+  transform: rotate(45deg);
+  background: var(--border2);
+}
+.header-deco span:nth-child(3) {
+  width: 6px; height: 6px;
+  background: var(--red);
+}
+.header-deco::before { content: ''; width: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--border2)); }
+.header-deco::after  { content: ''; width: 50px; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+
+/* ══ MAIN ════════════════════════════════════════ */
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+/* ══ EDIT BANNER ═════════════════════════════════ */
 .edit-banner {
-  background: rgba(201,168,76,.08); border: 1px solid rgba(201,168,76,.25); border-radius: 2px;
-  padding: .7rem 1rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between;
-  font-family: 'DM Sans', sans-serif; font-size: .8rem; color: var(--gold);
+  background: rgba(139,26,26,.08);
+  border: 1px solid rgba(139,26,26,.25);
+  border-radius: 2px;
+  padding: .75rem 1.1rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .78rem;
+  color: var(--red-hi);
+  gap: 1rem;
 }
-.edit-banner span { opacity: .6; }
-.btn-new { background: none; border: 1px solid rgba(201,168,76,.3); border-radius: 2px;
-  color: var(--gold-dim); font-family: 'DM Sans', sans-serif; font-size: .72rem;
-  padding: .3rem .7rem; cursor: pointer; transition: all .15s; }
-.btn-new:hover { border-color: var(--gold); color: var(--gold); }
+.edit-banner-title { opacity: .7; font-style: italic; }
+.btn-new {
+  background: none;
+  border: 1px solid rgba(139,26,26,.35);
+  border-radius: 2px;
+  color: var(--red-hi);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem;
+  padding: .3rem .8rem;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-new:hover { background: rgba(139,26,26,.15); border-color: var(--red-hi); }
+
+/* ══ SECTION TITLE ═══════════════════════════════ */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--text-hi);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.section-title::before { content: ''; display: inline-block; width: 16px; height: 1px; background: var(--red); }
+.section-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+.section-title .sub {
+  font-size: .8rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-dim);
+}
+
+/* ══ GRID / FIELDS ═══════════════════════════════ */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.field { margin-bottom: 1rem; }
+.field.full { grid-column: 1 / -1; }
+
+label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem;
+  color: var(--text-dim);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: .4rem;
+}
+
+input, textarea, select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  padding: .65rem .85rem;
+  color: var(--text-hi);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--red);
+  background: var(--bg2);
+}
+input::placeholder, textarea::placeholder { color: var(--text-dim); }
+select option { background: var(--bg2); }
+textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
+
+/* кастомная стрелка у select */
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content: '▾';
+  position: absolute; right: .85rem; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); pointer-events: none; font-size: .75rem;
+}
+.select-wrap select { padding-right: 2rem; }
+
+/* ══ HINT ════════════════════════════════════════ */
+.hint {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .68rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  padding: .55rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: rgba(255,255,255,.02);
+  margin-bottom: 1.25rem;
+  margin-top: -.25rem;
+}
+
+/* ══ PREVIEW BOX ═════════════════════════════════ */
+.preview-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--red-dim);
+  border-radius: 2px;
+  padding: .85rem 1rem;
+  margin-top: .5rem;
+  font-size: .95rem;
+  line-height: 1.7;
+  color: var(--text);
+  font-style: italic;
+  min-height: 60px;
+}
+
+.cover-preview {
+  width: 64px; height: 96px;
+  object-fit: cover;
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  margin-top: .6rem;
+  display: none;
+}
+
+/* ══ GRADES ══════════════════════════════════════ */
+.grades-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+.grade-btn {
+  font-family: 'Playfair Display', serif;
+  font-size: .82rem;
+  font-weight: 700;
+  padding: .35rem .85rem;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all .15s;
+  background: rgba(255,255,255,.02);
+  position: relative;
+}
+.grade-btn::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 6px; height: 6px;
+  border-top: 1px solid currentColor;
+  border-left: 1px solid currentColor;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.grade-btn.active::before { opacity: 1; }
+.grade-btn.active { filter: brightness(1.4); }
+
+/* ══ TAGS ════════════════════════════════════════ */
+.tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: 1.5rem;
+}
+.tag-toggle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .63rem;
+  padding: .25rem .65rem;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid rgba(240,236,230,.1);
+  background: rgba(255,255,255,.03);
+  color: var(--text-dim);
+  transition: all .15s;
+  user-select: none;
+  letter-spacing: .03em;
+}
+.tag-toggle:hover { color: var(--text); border-color: rgba(240,236,230,.2); }
+.tag-toggle.active {
+  background: rgba(139,26,26,.15);
+  border-color: rgba(192,57,43,.4);
+  color: #d88;
+}
+
+/* ══ DIVIDER ═════════════════════════════════════ */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--border2), transparent);
+  margin: 2rem 0;
+}
+
+/* ══ SAVE BUTTON ═════════════════════════════════ */
+.btn-save {
+  width: 100%;
+  background: rgba(139,26,26,.12);
+  border: 1px solid rgba(139,26,26,.35);
+  border-radius: 2px;
+  color: var(--text-hi);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: .08em;
+  padding: .9rem;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+  position: relative;
+}
+.btn-save::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 10px; height: 10px;
+  border-top: 1px solid var(--red-dim);
+  border-left: 1px solid var(--red-dim);
+  transition: border-color .2s;
+}
+.btn-save::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 10px; height: 10px;
+  border-bottom: 1px solid var(--red-dim);
+  border-right: 1px solid var(--red-dim);
+  transition: border-color .2s;
+}
+.btn-save:hover {
+  background: rgba(139,26,26,.22);
+  border-color: var(--red);
+}
+.btn-save:hover::before,
+.btn-save:hover::after { border-color: var(--red-hi); }
+.btn-save:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ══ STATUS ══════════════════════════════════════ */
+.status-msg {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .78rem;
+  text-align: center;
+  margin-top: 1rem;
+  min-height: 1.2rem;
+  letter-spacing: .03em;
+}
+.status-msg.ok  { color: var(--green-hi); }
+.status-msg.err { color: #d88; }
 </style>
 </head>
 <body>
+
 <header>
+  <div class="header-eyebrow" id="page-subtitle">Добавить отзыв</div>
   <div class="logo">TasteID</div>
-  <div class="logo-sub" id="page-subtitle">Добавить отзыв</div>
+  <div class="header-deco">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
 </header>
+
 <main>
 
-  <!-- Баннер режима редактирования -->
+  <!-- Баннер редактирования -->
   <div class="edit-banner" id="edit-banner" style="display:none">
-    <div>✦ Режим редактирования — <span id="edit-title-hint"></span></div>
+    <div>✦ Режим редактирования — <span class="edit-banner-title" id="edit-title-hint"></span></div>
     <button class="btn-new" onclick="resetToNew()">+ Новый отзыв</button>
   </div>
 
@@ -113,14 +391,26 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
     </div>
     <div class="field">
       <label>Тип</label>
-      <select id="f-type">
-        <option value="anime">Аниме</option>
-        <option value="manga">Манга</option>
-        <option value="novel">Ранобэ</option>
-        <option value="movie">Фильм</option>
-        <option value="show">Сериал</option>
-        <option value="game">Игра</option>
-      </select>
+      <div class="select-wrap">
+        <select id="f-type">
+          <option value="anime">Аниме</option>
+          <option value="manga">Манга</option>
+          <option value="novel">Ранобэ</option>
+          <option value="movie">Фильм</option>
+          <option value="show">Сериал</option>
+          <option value="game">Игра</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Статус</label>
+      <div class="select-wrap">
+        <select id="f-status">
+          <option value="planning">Планирую</option>
+          <option value="current">В процессе</option>
+          <option value="completed">Завершено</option>
+        </select>
+      </div>
     </div>
     <div class="field">
       <label>Формат (доп.)</label>
@@ -132,24 +422,31 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       <img id="cover-img" class="cover-preview">
     </div>
   </div>
+  <div class="hint">
+    <b style="color:var(--text)">Планирую</b> — появится в разделе «Планирую» без отзыва. &nbsp;
+    <b style="color:var(--text)">В процессе</b> — в разделе «В процессе». &nbsp;
+    <b style="color:var(--text)">Завершено</b> — в Архиве (нужна оценка или превью чтобы попасть в Отзывы).
+  </div>
 
   <!-- Источник 1 -->
   <h2 class="section-title">Источник 1</h2>
   <div class="grid">
     <div class="field">
       <label>Тип</label>
-      <select id="f-source">
-        <option value="bluesky">Bluesky (мини)</option>
-        <option value="teletype">Teletype (полный)</option>
-        <option value="other">Другое</option>
-      </select>
+      <div class="select-wrap">
+        <select id="f-source">
+          <option value="bluesky">Bluesky (мини)</option>
+          <option value="teletype">Teletype (полный)</option>
+          <option value="other">Другое</option>
+        </select>
+      </div>
     </div>
     <div class="field">
-      <label>URL *</label>
+      <label>URL</label>
       <input type="text" id="f-url" placeholder="https://bsky.app/...">
     </div>
     <div class="field">
-      <label>Дата (YYYY-MM-DD)</label>
+      <label>Дата</label>
       <input type="date" id="f-date">
     </div>
     <div class="field">
@@ -159,19 +456,19 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   </div>
 
   <!-- Источник 2 -->
-  <h2 class="section-title">Источник 2 <span style="font-size:.8rem;font-weight:400;font-style:italic;color:var(--text-dim)">— необязательно</span></h2>
-  <div class="source2-hint">
-    Заполни если у отзыва два места публикации — например мини на Bluesky и полный на Teletype. Оба появятся на карточке.
-  </div>
+  <h2 class="section-title">Источник 2 <span class="sub">— необязательно</span></h2>
+  <div class="hint">Заполни если у отзыва два места публикации — например мини на Bluesky и полный на Teletype.</div>
   <div class="grid">
     <div class="field">
       <label>Тип</label>
-      <select id="f-source2">
-        <option value="">— не указан —</option>
-        <option value="bluesky">Bluesky (мини)</option>
-        <option value="teletype">Teletype (полный)</option>
-        <option value="other">Другое</option>
-      </select>
+      <div class="select-wrap">
+        <select id="f-source2">
+          <option value="">— не указан —</option>
+          <option value="bluesky">Bluesky (мини)</option>
+          <option value="teletype">Teletype (полный)</option>
+          <option value="other">Другое</option>
+        </select>
+      </div>
     </div>
     <div class="field">
       <label>URL 2</label>
@@ -182,7 +479,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   <!-- Превью -->
   <h2 class="section-title">Превью текст</h2>
   <div class="field">
-    <textarea id="f-preview" placeholder="Пара предложений о тайтле..." oninput="updatePreview()"></textarea>
+    <textarea id="f-preview" placeholder="Пара предложений о тайтле…" oninput="updatePreview()"></textarea>
     <div class="preview-box" id="preview-out">Здесь появится превью…</div>
   </div>
 
@@ -198,9 +495,10 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   <!-- Сохранить -->
   <div class="divider"></div>
   <button class="btn-save" id="btn-save" onclick="saveReview()">Сохранить отзыв</button>
-  <div class="status" id="status"></div>
+  <div class="status-msg" id="status"></div>
 
 </main>
+
 <script>
 const GRADES = {
   razocharo:    { color: "#8B6914", name: "Разочарование" },
@@ -226,7 +524,7 @@ let selectedGrade = null;
 let selectedTags  = new Set();
 let editingId     = null;
 
-// ── рендер оценок ──────────────────────────────────
+// ── оценки ─────────────────────────────────────
 const gradesGrid = document.getElementById("grades-grid");
 for (const [key, g] of Object.entries(GRADES)) {
   const btn = document.createElement("button");
@@ -243,11 +541,11 @@ for (const [key, g] of Object.entries(GRADES)) {
   gradesGrid.appendChild(btn);
 }
 
-// ── рендер тегов ───────────────────────────────────
+// ── теги ───────────────────────────────────────
 const tagsGrid = document.getElementById("tags-grid");
-for (const [tag, cat] of Object.entries(TAGS_MAP)) {
+for (const [tag] of Object.entries(TAGS_MAP)) {
   const btn = document.createElement("span");
-  btn.className = `tag-toggle ${cat}`;
+  btn.className = "tag-toggle";
   btn.textContent = tag;
   btn.dataset.tag = tag;
   btn.onclick = () => {
@@ -257,7 +555,7 @@ for (const [tag, cat] of Object.entries(TAGS_MAP)) {
   tagsGrid.appendChild(btn);
 }
 
-// ── заполняем форму данными отзыва ─────────────────
+// ── заполнить форму ────────────────────────────
 function fillForm(r) {
   document.getElementById("f-title").value     = r.title     || "";
   document.getElementById("f-year").value      = r.year      || "";
@@ -269,7 +567,7 @@ function fillForm(r) {
   document.getElementById("f-preview").value   = r.preview   || "";
   document.getElementById("f-source").value    = r.source    || "bluesky";
   document.getElementById("f-type").value      = r.type      || "anime";
-  // второй источник
+  document.getElementById("f-status").value    = r.status    || "completed";
   document.getElementById("f-url2").value      = r.url2      || "";
   document.getElementById("f-source2").value   = r.source2   || "";
 
@@ -281,12 +579,11 @@ function fillForm(r) {
     b.classList.toggle("active", b.dataset.key === selectedGrade));
 
   selectedTags = new Set(r.tags || []);
-  document.querySelectorAll(".tag-toggle").forEach(b => {
-    b.classList.toggle("active", selectedTags.has(b.dataset.tag));
-  });
+  document.querySelectorAll(".tag-toggle").forEach(b =>
+    b.classList.toggle("active", selectedTags.has(b.dataset.tag)));
 }
 
-// ── сброс в режим «новый отзыв» ────────────────────
+// ── сброс ──────────────────────────────────────
 function resetToNew() {
   editingId = null;
   document.getElementById("edit-banner").style.display = "none";
@@ -300,6 +597,7 @@ function resetToNew() {
   document.getElementById("f-source").value  = "bluesky";
   document.getElementById("f-source2").value = "";
   document.getElementById("f-type").value    = "anime";
+  document.getElementById("f-status").value  = "planning";
   document.getElementById("preview-out").textContent = "Здесь появится превью…";
   document.getElementById("cover-img").style.display = "none";
   selectedGrade = null;
@@ -307,13 +605,14 @@ function resetToNew() {
   document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".tag-toggle").forEach(b => b.classList.remove("active"));
   document.getElementById("status").textContent = "";
+  document.getElementById("status").className = "status-msg";
 }
 
-// ── определяем режим по URL (?edit=ID) ─────────────
+// ── инит по URL ────────────────────────────────
 async function initPage() {
+  document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
   const params = new URLSearchParams(location.search);
   const editId = params.get("edit");
-  document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
   if (!editId) return;
 
   try {
@@ -323,8 +622,7 @@ async function initPage() {
       String(r.id) === editId || encodeURIComponent(r.title) === editId
     );
     if (!review) {
-      document.getElementById("status").className = "status err";
-      document.getElementById("status").textContent = "Отзыв с таким ID не найден";
+      setStatus("err", "Отзыв с таким ID не найден");
       return;
     }
     editingId = review.id ?? review.title;
@@ -334,8 +632,7 @@ async function initPage() {
     document.getElementById("page-subtitle").textContent = "Редактировать отзыв";
     document.getElementById("btn-save").textContent = "Сохранить изменения";
   } catch (e) {
-    document.getElementById("status").className = "status err";
-    document.getElementById("status").textContent = "Не удалось загрузить отзыв: " + e.message;
+    setStatus("err", "Не удалось загрузить отзыв: " + e.message);
   }
 }
 
@@ -347,47 +644,44 @@ function updatePreview() {
 function previewCover(url) {
   const img = document.getElementById("cover-img");
   if (url && url.startsWith("http")) { img.src = url; img.style.display = "block"; }
-  else { img.style.display = "none"; }
+  else img.style.display = "none";
 }
 
-// ── сохранение ─────────────────────────────────────
+function setStatus(type, text) {
+  const el = document.getElementById("status");
+  el.className = "status-msg" + (type ? " " + type : "");
+  el.textContent = text;
+}
+
+// ── сохранение ─────────────────────────────────
 async function saveReview() {
-  const btn    = document.getElementById("btn-save");
-  const status = document.getElementById("status");
+  const btn = document.getElementById("btn-save");
 
   const title   = document.getElementById("f-title").value.trim();
-const url     = document.getElementById("f-url").value.trim();
-const preview = document.getElementById("f-preview").value.trim();
-const hasContent = preview || selectedGrade;
+  const url     = document.getElementById("f-url").value.trim();
+  const preview = document.getElementById("f-preview").value.trim();
+  const hasContent = preview || selectedGrade;
 
-if (!title) {
-  status.className = "status err";
-  status.textContent = "Заполни название";
-  return;
-}
-if (hasContent && !url) {
-  status.className = "status err";
-  status.textContent = "Заполни ссылку на источник";
-  return;
-}
+  if (!title) { setStatus("err", "Заполни название"); return; }
+  if (hasContent && !url) { setStatus("err", "Заполни ссылку на источник"); return; }
 
-  const url2    = document.getElementById("f-url2").value.trim()    || null;
-  const source2 = document.getElementById("f-source2").value        || null;
+  const url2    = document.getElementById("f-url2").value.trim() || null;
+  const source2 = document.getElementById("f-source2").value     || null;
 
   const review = {
     title,
     url,
     type:      document.getElementById("f-type").value,
+    status:    document.getElementById("f-status").value,
     source:    document.getElementById("f-source").value,
-    // второй источник — только если заполнен URL
-    url2:      url2,
+    url2,
     source2:   url2 ? source2 : null,
     year:      document.getElementById("f-year").value.trim()      || null,
     format:    document.getElementById("f-format").value.trim()    || null,
     cover:     document.getElementById("f-cover").value.trim()     || null,
     date:      document.getElementById("f-date").value             || null,
     favorites: document.getElementById("f-favorites").value.trim() || null,
-    preview:   document.getElementById("f-preview").value.trim()   || null,
+    preview:   preview || null,
     grade:     selectedGrade,
     tags:      [...selectedTags],
   };
@@ -396,8 +690,7 @@ if (hasContent && !url) {
 
   btn.disabled = true;
   btn.textContent = "Сохраняем…";
-  status.className = "status";
-  status.textContent = "";
+  setStatus("", "");
 
   try {
     const res  = await fetch("/api/save-review", {
@@ -407,18 +700,15 @@ if (hasContent && !url) {
     });
     const data = await res.json();
     if (res.ok) {
-      status.className = "status ok";
-      status.textContent = editingId !== null
+      setStatus("ok", editingId !== null
         ? `✦ «${title}» обновлён. Сайт обновится через ~30 секунд.`
-        : `✦ «${title}» сохранён. Сайт обновится через ~30 секунд.`;
+        : `✦ «${title}» сохранён. Сайт обновится через ~30 секунд.`);
       if (editingId === null) resetToNew();
     } else {
-      status.className = "status err";
-      status.textContent = "Ошибка: " + (data.error || "неизвестная");
+      setStatus("err", "Ошибка: " + (data.error || "неизвестная"));
     }
   } catch (e) {
-    status.className = "status err";
-    status.textContent = "Ошибка сети: " + e.message;
+    setStatus("err", "Ошибка сети: " + e.message);
   }
 
   btn.disabled = false;
