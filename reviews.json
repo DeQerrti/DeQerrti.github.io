@@ -495,5 +495,24 @@
       "Серая мораль",
       "Философия"
     ]
+  },
+  {
+    "title": "Arknights: Endfield",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mdq42y67ac2b",
+    "type": "game",
+    "status": "current",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2026",
+    "format": null,
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/coc5sz.jpg",
+    "date_start": "2026-01-22",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [],
+    "id": 19
   }
 ]
