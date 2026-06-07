@@ -19,6 +19,17 @@ const NOVEL_FORMATS = ["NOVEL", "LIGHT_NOVEL"];
 // Глобальный кэш — один объект на всё приложение
 const cache = {};
 
+// ── Экранирование HTML ─────────────────────────
+// Защита от XSS: все данные из внешних API
+// нужно прогонять через эту функцию перед вставкой в innerHTML
+function esc(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 // ── Шкала послевкусия ──────────────────────────
 const GRADE_ORDER = ["razocharo","brak","fon","attrakcion","vyskazyvanie","etalon","rezonans"];
 
@@ -81,12 +92,4 @@ const SOURCE_LABELS = {
   teletype:  "Teletype",
   bluesky:   "Bluesky",
   other:     "Ссылка",
-};
-
-const TYPE_COLORS = {
-  anime: "#c9a84c",
-  manga: "#e07070",
-  novel: "#90b885",
-  movie: "#d4956a",
-  show:  "#72b8b3",
 };
