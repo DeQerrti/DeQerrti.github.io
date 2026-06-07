@@ -53,8 +53,13 @@ query($name: String) {
   }
 }`;
 
+// Флаг — чтобы не запускать загрузку дважды одновременно
+const loading = {};
+
 async function loadNow() {
-  if (cache.now) { renderNow(cache.now); return; }
+  if (cache.now)    { renderNow(cache.now); return; }
+  if (loading.now)  return;
+  loading.now = true;
 
   await fetchReviews();
 
@@ -102,8 +107,10 @@ async function loadNow() {
     document.getElementById("tab-now").innerHTML =
       `<div class="state-box">
         <div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>
-        Ошибка: ${err.message}
+        Ошибка: ${esc(err.message)}
       </div>`;
+  } finally {
+    loading.now = false;
   }
 }
 
@@ -163,7 +170,7 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntr
 
     let completedHtml = "";
     for (const year of Object.keys(byYear).sort((a, b) => b - a)) {
-      completedHtml += `<div class="year-divider">${year}</div>
+      completedHtml += `<div class="year-divider">${esc(String(year))}</div>
         <div class="grid-now">
           ${byYear[year].map((item, i) => {
             if (item._src === "al")     return completedCard(item.data, i);
