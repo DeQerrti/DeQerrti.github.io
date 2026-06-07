@@ -416,6 +416,29 @@
     "id": 18
   },
   {
+    "title": "Dolphin Tale",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mgwmwwrvh22p",
+    "type": "movie",
+    "status": "completed",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2011",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/af2SRFllNW26WFG84AfTv3xLT5t.jpg",
+    "date_start": null,
+    "date_end": "2026-03-13",
+    "favorites": null,
+    "preview": "Хороший фильм, основан на реальных событиях. Но, конечно, добавили художественной драмы. История жизнеутверждающая и напоминает о том, что инвалидность не конец, ни для людей, ни для животных.\n16:45 · 13 мар. 2026 г.\n1 лайк",
+    "grade": "attrakcion",
+    "tags": [
+      "Живые герои",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 25
+  },
+  {
     "id": 2,
     "title": "The Day of the Jackal",
     "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
