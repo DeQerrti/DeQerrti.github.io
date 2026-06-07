@@ -21,9 +21,13 @@ export async function onRequest(context) {
     return json({ error: "Bad JSON" }, 400);
   }
 
-  if (!review.title || !review.url) {
-    return json({ error: "Нужны title и url" }, 400);
-  }
+  const hasContent = review.preview || review.grade;
+if (!review.title) {
+  return json({ error: "Нужно название" }, 400);
+}
+if (hasContent && !review.url) {
+  return json({ error: "Нужна ссылка на источник" }, 400);
+}
 
   const repo    = env.GITHUB_REPO;
   const ghToken = env.GITHUB_TOKEN;
