@@ -164,7 +164,8 @@ function tagHtml(tag) {
   return `<span class="rtag ${cls}" data-tip="${esc(tip)}">${esc(tag)}</span>`;
 }
 
-// Игра / визуальная новелла (ручные записи из reviews.json)
+// Игра / визуальная новелла / другие ручные записи из reviews.json
+// Оборачиваем в review-card-wrap чтобы показывать карандаш редактирования (только для tasteid_ui)
 function manualCard(r, index) {
   const info = findReviewForTitle(r.title);
   const typeLabels = { game: "Игра", vn: "Визуальная новелла" };
@@ -176,21 +177,28 @@ function manualCard(r, index) {
     watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
   }
 
-  return `<a href="${esc(r.url || "#")}" target="_blank" rel="noopener" class="card"
-      style="animation-delay:${Math.min(index * 25, 600)}ms">
-    <span class="type-tag tag-manual">${esc(tagLabel)}</span>
-    ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
-    <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    <div class="card-body">
-      <div class="card-title">${esc(r.title)}</div>
-      ${r.year || info
-        ? `<div class="card-meta">
-            ${r.year ? `<span>${esc(String(r.year))}</span>` : ""}
-            ${gradeInlineHtml(info)}
-          </div>`
-        : ""}
-    </div>
-  </a>`;
+  const editId = r.id ?? encodeURIComponent(r.title);
+  const pencil = (typeof TASTEID_UI !== "undefined" && TASTEID_UI)
+    ? `<a href="add.html?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
+    : "";
+
+  return `<div class="review-card-wrap" style="animation-delay:${Math.min(index * 25, 600)}ms">
+    ${pencil}
+    <a href="${esc(r.url || "#")}" target="_blank" rel="noopener" class="card" style="animation-delay:0ms">
+      <span class="type-tag tag-manual">${esc(tagLabel)}</span>
+      ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+      <div class="card-body">
+        <div class="card-title">${esc(r.title)}</div>
+        ${r.year || info
+          ? `<div class="card-meta">
+              ${r.year ? `<span>${esc(String(r.year))}</span>` : ""}
+              ${gradeInlineHtml(info)}
+            </div>`
+          : ""}
+      </div>
+    </a>
+  </div>`;
 }
 
 // Книга (Hardcover)
