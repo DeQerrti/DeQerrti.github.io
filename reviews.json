@@ -1,35 +1,5 @@
 [
   {
-    "title": "To Be Hero",
-    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mkhkx6qqrs2f",
-    "type": "anime",
-    "status": "completed",
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2025",
-    "format": "1 сезон",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx156092-yHqgQZOF2mbg.jpg",
-    "date_start": "2026-04-27",
-    "date_end": "2026-06-27",
-    "favorites": "X",
-    "preview": "В целом смотрибельно. Своеобразный марвел дома. Первую половину нужно перетерпеть или просто особо не включать мозг, а вот во второй немного пошевелить извилинами придется, чтобы выкупать все взаимосвязи, отсылки и прочее",
-    "grade": "attrakcion",
-    "tags": [
-      "Топ рисовка",
-      "Слабая картинка",
-      "Осты в тему",
-      "Долгая раскачка",
-      "Чеховские ружья",
-      "Проседает",
-      "Картонные чары",
-      "Дырявый сеттинг",
-      "Много кринжа",
-      "Сюжет удивил"
-    ],
-    "id": 10
-  },
-  {
     "title": "Saya no Uta",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmxzc6q3ks2e",
     "type": "game",
@@ -159,6 +129,36 @@
       "Слабая режиссура"
     ],
     "id": 9
+  },
+  {
+    "title": "To Be Hero",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mkhkx6qqrs2f",
+    "type": "anime",
+    "status": "completed",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2025",
+    "format": "1 сезон",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx156092-yHqgQZOF2mbg.jpg",
+    "date_start": "2026-04-27",
+    "date_end": "2026-04-27",
+    "favorites": "X",
+    "preview": "В целом смотрибельно. Своеобразный марвел дома. Первую половину нужно перетерпеть или просто особо не включать мозг, а вот во второй немного пошевелить извилинами придется, чтобы выкупать все взаимосвязи, отсылки и прочее",
+    "grade": "attrakcion",
+    "tags": [
+      "Топ рисовка",
+      "Слабая картинка",
+      "Осты в тему",
+      "Долгая раскачка",
+      "Чеховские ружья",
+      "Проседает",
+      "Картонные чары",
+      "Дырявый сеттинг",
+      "Много кринжа",
+      "Сюжет удивил"
+    ],
+    "id": 10
   },
   {
     "id": 1,
