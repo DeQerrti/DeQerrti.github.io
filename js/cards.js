@@ -199,7 +199,7 @@ function manualCard(r, index) {
   // planning — badge не показываем
 
   const editId = r.id ?? encodeURIComponent(r.title);
-  const pencil = (typeof TASTEID_UI !== "undefined" && TASTEID_UI)
+  const pencil = (document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui=")))
     ? `<a href="add.html?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
     : "";
 
