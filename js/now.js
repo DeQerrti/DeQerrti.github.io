@@ -73,7 +73,6 @@ query($name: String) {
   }
 }`;
 
-// Флаг — чтобы не запускать загрузку дважды одновременно
 const loading = {};
 
 async function loadNow() {
@@ -113,13 +112,10 @@ async function loadNow() {
       enrichTraktWithPosters(traktWlShowsRaw.slice(0,  50), "show")
     ]);
 
-    // Ручные записи: игры и прочее из reviews.json
-    // Фильтруем всё что не anime/manga/novel/movie/show
     const allManual = (cache.reviews || []).filter(
       r => !["anime", "manga", "novel", "movie", "show"].includes(r.type)
     );
 
-    // Разделяем по полю status (с обратной совместимостью для старых записей без status)
     const manualPlanning  = allManual.filter(r => r.status === "planning");
     const manualCurrent   = allManual.filter(r => r.status === "current");
     const manualCompleted = allManual.filter(r =>
@@ -214,7 +210,9 @@ function renderNow({
       return { _src: "trakt", type: "show",  data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
     }),
     ...manualCompleted.map(e => {
-      const d = e.date ? new Date(e.date) : new Date(0);
+      // Поддержка новых полей date_end/date_start и старого date
+      const raw = e.date_end || e.date_start || e.date || null;
+      const d   = raw ? new Date(raw) : new Date(0);
       return { _src: "manual", data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
     }),
     ...booksCompleted.map(b => {
@@ -256,8 +254,6 @@ function renderNow({
   box.innerHTML = html || `<div class="state-box">Список пуст</div>`;
 }
 
-// Карточка планируемого аниме/манги (AniList PLANNING)
-// Без дат и прогресса — просто обложка и название
 function planCard(entry, index) {
   const m = entry.media;
   const img = coverUrl(m.coverImage);
