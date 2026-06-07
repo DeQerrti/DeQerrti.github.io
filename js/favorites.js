@@ -43,11 +43,12 @@ query($name: String) {
 
 async function loadFavorites() {
   if (cache.fav) { renderFavorites(cache.fav); return; }
+  if (loading.fav) return;
+  loading.fav = true;
 
   await fetchReviews();
 
   try {
-    // AniList фавориты + Trakt рейтинги (rating >= 8 считаем "любимым")
     const [alData, traktMoviesRaw, traktShowsRaw] = await Promise.all([
       gql(FAV_QUERY, { name: AL_USERNAME }),
       traktFetch(`/users/${TRAKT_USERNAME}/ratings/movies?limit=50`).catch(() => []),
@@ -73,8 +74,10 @@ async function loadFavorites() {
     document.getElementById("tab-favorites").innerHTML =
       `<div class="state-box">
         <div style="font-size:2rem;margin-bottom:.75rem">⚠️</div>
-        Ошибка: ${err.message}
+        Ошибка: ${esc(err.message)}
       </div>`;
+  } finally {
+    loading.fav = false;
   }
 }
 
@@ -86,7 +89,6 @@ function renderFavorites({ al, traktMovies, traktShows }) {
   const chars  = al.characters?.nodes || [];
   const staff  = al.staff?.nodes      || [];
 
-  // Тайтлы: аниме + манга (AniList) + фильмы + сериалы (Trakt)
   const allTitles = [
     ...animes.map(item => ({ _src: "al-anime", data: item })),
     ...mangas.map(item => ({ _src: "al-manga", data: item })),
@@ -142,15 +144,15 @@ function favTitleCard(item, index) {
   const year     = item.data.startDate?.year || "";
   const info     = findReviewForTitle(t);
 
-  return `<a href="${item.data.siteUrl}" target="_blank" rel="noopener" class="card"
+  return `<a href="${esc(item.data.siteUrl)}" target="_blank" rel="noopener" class="card"
       style="animation-delay:${Math.min(index * 25, 500)}ms">
-    <span class="type-tag tag-${tagClass}">${tagLabel}</span>
-    <img src="${coverUrl(item.data.coverImage)}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <span class="type-tag tag-${tagClass}">${esc(tagLabel)}</span>
+    <img src="${esc(coverUrl(item.data.coverImage))}" alt="${esc(t)}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
-      <div class="card-title">${t}</div>
+      <div class="card-title">${esc(t)}</div>
       ${year || info
         ? `<div class="card-meta">
-            ${year ? `<span>${year}</span>` : ""}
+            ${year ? `<span>${esc(String(year))}</span>` : ""}
             ${gradeInlineHtml(info)}
           </div>`
         : ""}
