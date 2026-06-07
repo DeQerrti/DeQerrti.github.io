@@ -516,6 +516,31 @@
     "id": 19
   },
   {
+    "title": "The Black Company",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mcj7lhfgys2o",
+    "type": "novel",
+    "status": "completed",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1984",
+    "format": "Книга",
+    "cover": "https://production-img.hardcover.app/enlarge?height=416&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F32349247%2F92193a3d-ebca-429e-bd0d-1e916c32f24e.png&width=270",
+    "date_start": "2026-01-14",
+    "date_end": "2026-01-16",
+    "favorites": null,
+    "preview": "Эта история - хроника. Записи ведущиеся от лица местного костоправа и по совместительству хрониста. В целом неплохое тёмное фэнтези, но мне не хватило деталей как у Джо Аберкромби, однако это лишь первая книга серии так ещё и 1984 года. И в какой-то степени это чувствуется, всё-таки я присытился",
+    "grade": "fon",
+    "tags": [
+      "Рояли в кустах",
+      "Стеклище",
+      "Проседает",
+      "Жесть",
+      "Серая мораль"
+    ],
+    "id": 24
+  },
+  {
     "title": "One Battle After Another",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mc2zvyxvsk2x",
     "type": "movie",
