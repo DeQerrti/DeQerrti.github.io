@@ -514,5 +514,37 @@
     "grade": "attrakcion",
     "tags": [],
     "id": 19
+  },
+  {
+    "title": "Wuthering Waves",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mdq42y67ac2b",
+    "type": "game",
+    "status": "current",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2024",
+    "format": "Гача",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/coc0x0.jpg",
+    "date_start": "2025-08-30",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Чеховские ружья",
+      "Живые герои",
+      "Почти без кринжа",
+      "Философия",
+      "Чистый кайф",
+      "Топ боёвка",
+      "Вайфугейминг",
+      "Сюжет удивил",
+      "Абсолют синема"
+    ],
+    "id": 20
   }
 ]
