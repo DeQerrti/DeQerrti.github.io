@@ -4,9 +4,9 @@
 // ══════════════════════════════════════════════
 
 const TIER_ROWS = [
-  { key: "rezonans",     label: "Резонанс",     color: "#7c3aed" },
+  { key: "rezonans",     label: "Резонанс",      color: "#7c3aed" },
   { key: "etalon",       label: "Эталон",        color: "#2563a8" },
-  { key: "vyskazyvanie", label: "Высказывание",  color: "#2d8a4e" },
+  { key: "vyskazyvanie", label: "Отлично",       color: "#2d8a4e" },
   { key: "attrakcion",   label: "Аттракцион",    color: "#d4a017" },
   { key: "fon",          label: "Фоновый шум",   color: "#6b7280" },
   { key: "brak",         label: "Брак",          color: "#c0392b" },
