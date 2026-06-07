@@ -37,7 +37,7 @@ function findReviewForTitle(title) {
 // Инлайн-плашка оценки внутри карточки
 function gradeInlineHtml(info) {
   if (!info) return "";
-  return `<span class="card-grade-inline" style="color:${info.grade.color}">${info.grade.name}</span>`;
+  return `<span class="card-grade-inline" style="color:${info.grade.color}">${esc(info.grade.name)}</span>`;
 }
 
 function fmtDate(d) {
@@ -60,12 +60,12 @@ function nowCard(entry, index) {
   const total = m.type === "ANIME" ? (m.episodes || 0) : (m.chapters || 0);
   const unit  = m.type === "ANIME" ? "эп." : "гл.";
 
-  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card"
-      style="animation-delay:${Math.min(index * 30, 600)}ms">
-    <span class="type-tag tag-${tagClass}">${tagLabel}</span>
-    <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
+  return `<a href="${esc(m.siteUrl)}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 25, 600)}ms">
+    <span class="type-tag tag-${tagClass}">${esc(tagLabel)}</span>
+    <img src="${esc(img)}" alt="${esc(t)}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
-      <div class="card-title">${t}</div>
+      <div class="card-title">${esc(t)}</div>
       <div class="card-meta">
         <span class="progress-line">${done}${total ? " / " + total : ""} ${unit}</span>
       </div>
@@ -92,16 +92,16 @@ function completedCard(entry, index) {
   const releaseYear = m.startDate?.year || "";
   const info = findReviewForTitle(t);
 
-  return `<a href="${m.siteUrl}" target="_blank" rel="noopener" class="card"
-      style="animation-delay:${Math.min(index * 30, 600)}ms">
-    <span class="type-tag tag-${tagClass}">${tagLabel}</span>
-    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
-    <img src="${img}" alt="${t}" loading="lazy" onerror="this.src='${PH_TALL}'">
+  return `<a href="${esc(m.siteUrl)}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 25, 600)}ms">
+    <span class="type-tag tag-${tagClass}">${esc(tagLabel)}</span>
+    ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
+    <img src="${esc(img)}" alt="${esc(t)}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
-      <div class="card-title">${t}</div>
+      <div class="card-title">${esc(t)}</div>
       ${releaseYear || info
         ? `<div class="card-meta">
-            ${releaseYear ? `<span>${releaseYear}</span>` : ""}
+            ${releaseYear ? `<span>${esc(String(releaseYear))}</span>` : ""}
             ${gradeInlineHtml(info)}
           </div>`
         : ""}
@@ -127,16 +127,16 @@ function traktCard(item, type, index) {
 
   const info = findReviewForTitle(title) || findReviewForTitle(entry?.title);
 
-  return `<a href="${url}" target="_blank" rel="noopener" class="card"
-      style="animation-delay:${Math.min(index * 20, 600)}ms">
-    <span class="type-tag ${tagClass}">${tagLabel}</span>
-    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
-    <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+  return `<a href="${esc(url)}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 25, 600)}ms">
+    <span class="type-tag ${tagClass}">${esc(tagLabel)}</span>
+    ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
+    <img src="${esc(poster)}" alt="${esc(title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
-      <div class="card-title">${title}</div>
+      <div class="card-title">${esc(title)}</div>
       ${year || info
         ? `<div class="card-meta">
-            ${year ? `<span>${year}</span>` : ""}
+            ${year ? `<span>${esc(String(year))}</span>` : ""}
             ${gradeInlineHtml(info)}
           </div>`
         : ""}
@@ -148,11 +148,11 @@ function traktCard(item, type, index) {
 function personCard(item, index) {
   const name = item.name?.full || "—";
   const img  = item.image?.large || item.image?.medium || PH_SQ;
-  return `<a href="${item.siteUrl}" target="_blank" rel="noopener"
+  return `<a href="${esc(item.siteUrl)}" target="_blank" rel="noopener"
       class="card card-char"
       style="animation-delay:${Math.min(index * 25, 500)}ms">
-    <img src="${img}" alt="${name}" loading="lazy" onerror="this.src='${PH_SQ}'">
-    <div class="card-body"><div class="card-title">${name}</div></div>
+    <img src="${esc(img)}" alt="${esc(name)}" loading="lazy" onerror="this.src='${PH_SQ}'">
+    <div class="card-body"><div class="card-title">${esc(name)}</div></div>
   </a>`;
 }
 
@@ -161,36 +161,38 @@ function tagHtml(tag) {
   const info = TAGS_MAP[tag];
   const cls  = info ? TAG_CAT_CLASS[info.cat] : "rtag-special";
   const tip  = info?.tip || "";
-  return `<span class="rtag ${cls}" data-tip="${tip}">${tag}</span>`;
+  return `<span class="rtag ${cls}" data-tip="${esc(tip)}">${esc(tag)}</span>`;
 }
+
+// Игра / визуальная новелла (ручные записи из reviews.json)
 function manualCard(r, index) {
   const info = findReviewForTitle(r.title);
   const typeLabels = { game: "Игра", vn: "Визуальная новелла" };
   const tagLabel = typeLabels[r.type] || r.type || "—";
 
-  // дата из поля date
   let watchBadge = "";
   if (r.date) {
     const d = new Date(r.date);
     watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
   }
 
-  return `<a href="${r.url || "#"}" target="_blank" rel="noopener" class="card"
-      style="animation-delay:${Math.min(index * 20, 600)}ms">
-    <span class="type-tag tag-manual">${tagLabel}</span>
-    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
-    <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+  return `<a href="${esc(r.url || "#")}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 25, 600)}ms">
+    <span class="type-tag tag-manual">${esc(tagLabel)}</span>
+    ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
+    <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
-      <div class="card-title">${r.title}</div>
+      <div class="card-title">${esc(r.title)}</div>
       ${r.year || info
         ? `<div class="card-meta">
-            ${r.year ? `<span>${r.year}</span>` : ""}
+            ${r.year ? `<span>${esc(String(r.year))}</span>` : ""}
             ${gradeInlineHtml(info)}
           </div>`
         : ""}
     </div>
   </a>`;
 }
+
 // Книга (Hardcover)
 function bookCard(book, index, mode = "completed") {
   const b       = book.book || book;
@@ -220,16 +222,16 @@ function bookCard(book, index, mode = "completed") {
     }
   }
 
-  return `<a href="${url}" target="_blank" rel="noopener" class="card"
-      style="animation-delay:${Math.min(index * 20, 600)}ms">
+  return `<a href="${esc(url)}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 25, 600)}ms">
     <span class="type-tag tag-book">Книга</span>
-    ${watchBadge ? `<span class="watch-badge">${watchBadge}</span>` : ""}
-    <img src="${cover}" alt="${title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
+    <img src="${esc(cover)}" alt="${esc(title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
     <div class="card-body">
-      <div class="card-title">${title}</div>
+      <div class="card-title">${esc(title)}</div>
       ${progressHtml || year || info
         ? `<div class="card-meta">
-            ${progressHtml || (year ? `<span>${year}</span>` : "")}
+            ${progressHtml || (year ? `<span>${esc(String(year))}</span>` : "")}
             ${gradeInlineHtml(info)}
           </div>`
         : ""}
