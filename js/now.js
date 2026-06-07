@@ -114,13 +114,17 @@ async function loadNow() {
     ]);
 
     // Ручные записи: игры и прочее из reviews.json
-    // Планируемые — без preview и без grade
-    // Завершённые — есть хоть что-то из preview или grade
+    // Фильтруем всё что не anime/manga/novel/movie/show
     const allManual = (cache.reviews || []).filter(
       r => !["anime", "manga", "novel", "movie", "show"].includes(r.type)
     );
-    const manualPlanning  = allManual.filter(r => !r.preview && !r.grade);
-    const manualCompleted = allManual.filter(r => r.preview || r.grade);
+
+    // Разделяем по полю status (с обратной совместимостью для старых записей без status)
+    const manualPlanning  = allManual.filter(r => r.status === "planning");
+    const manualCurrent   = allManual.filter(r => r.status === "current");
+    const manualCompleted = allManual.filter(r =>
+      r.status === "completed" || (!r.status && (r.preview || r.grade))
+    );
 
     const booksCurrent   = hardcoverBooks.filter(b => b.status_id === 2);
     const booksPlanning  = hardcoverBooks.filter(b => b.status_id === 1);
@@ -135,6 +139,7 @@ async function loadNow() {
       traktWlMovies:  enrichedWlMovies,
       traktWlShows:   enrichedWlShows,
       manualPlanning,
+      manualCurrent,
       manualCompleted,
       booksCurrent,
       booksPlanning,
@@ -157,7 +162,7 @@ function renderNow({
   alCurrent, alPlanning, alCompleted,
   traktMovies, traktShows,
   traktWlMovies, traktWlShows,
-  manualPlanning = [], manualCompleted = [],
+  manualPlanning = [], manualCurrent = [], manualCompleted = [],
   booksCurrent = [], booksPlanning = [], booksCompleted = []
 }) {
   const box = document.getElementById("tab-now");
@@ -166,7 +171,8 @@ function renderNow({
   // ── В процессе ─────────────────────────────────
   const inProgress = [
     ...alCurrent.map((e, i) => nowCard(e, i)),
-    ...booksCurrent.map((b, i) => bookCard(b, alCurrent.length + i, "current"))
+    ...booksCurrent.map((b, i) => bookCard(b, alCurrent.length + i, "current")),
+    ...manualCurrent.map((r, i) => manualCard(r, alCurrent.length + booksCurrent.length + i))
   ];
   if (inProgress.length) {
     html += `<section class="group">
