@@ -27,6 +27,26 @@ query($name: String) {
       }
     }
   }
+  anime_plan: Page(perPage: 50) {
+    mediaList(userName: $name, type: ANIME, status: PLANNING, sort: UPDATED_TIME_DESC) {
+      media {
+        id siteUrl type format episodes
+        title { userPreferred romaji }
+        coverImage { extraLarge large }
+        startDate { year }
+      }
+    }
+  }
+  manga_plan: Page(perPage: 50) {
+    mediaList(userName: $name, type: MANGA, status: PLANNING, sort: UPDATED_TIME_DESC) {
+      media {
+        id siteUrl type format chapters
+        title { userPreferred romaji }
+        coverImage { extraLarge large }
+        startDate { year }
+      }
+    }
+  }
   anime_done: Page(perPage: 50) {
     mediaList(userName: $name, type: ANIME, status: COMPLETED, sort: UPDATED_TIME_DESC) {
       startedAt   { year month day }
@@ -57,17 +77,19 @@ query($name: String) {
 const loading = {};
 
 async function loadNow() {
-  if (cache.now)    { renderNow(cache.now); return; }
-  if (loading.now)  return;
+  if (cache.now)   { renderNow(cache.now); return; }
+  if (loading.now) return;
   loading.now = true;
 
   await fetchReviews();
 
   try {
-    const [alData, traktMoviesRaw, traktShowsRaw, hardcoverBooks] = await Promise.all([
+    const [alData, traktMoviesRaw, traktShowsRaw, traktWlMoviesRaw, traktWlShowsRaw, hardcoverBooks] = await Promise.all([
       gql(NOW_QUERY, { name: AL_USERNAME }),
       fetchTraktWatched("movie"),
       fetchTraktWatched("show"),
+      fetchTraktWatchlist("movie"),
+      fetchTraktWatchlist("show"),
       fetchHardcoverBooks()
     ]);
 
@@ -75,30 +97,47 @@ async function loadNow() {
       ...(alData.anime_cur?.mediaList || []),
       ...(alData.manga_cur?.mediaList  || [])
     ];
+    const alPlanning = [
+      ...(alData.anime_plan?.mediaList || []),
+      ...(alData.manga_plan?.mediaList  || [])
+    ];
     const alCompleted = [
       ...(alData.anime_done?.mediaList || []),
       ...(alData.manga_done?.mediaList  || [])
     ];
 
-    const [enrichedMovies, enrichedShows] = await Promise.all([
+    const [enrichedMovies, enrichedShows, enrichedWlMovies, enrichedWlShows] = await Promise.all([
       enrichTraktWithPosters(traktMoviesRaw.slice(0, 50), "movie"),
-      enrichTraktWithPosters(traktShowsRaw.slice(0,  50), "show")
+      enrichTraktWithPosters(traktShowsRaw.slice(0,  50), "show"),
+      enrichTraktWithPosters(traktWlMoviesRaw.slice(0, 50), "movie"),
+      enrichTraktWithPosters(traktWlShowsRaw.slice(0,  50), "show")
     ]);
 
-    const manualEntries = (cache.reviews || []).filter(
+    // Ручные записи: игры и прочее из reviews.json
+    // Планируемые — без preview и без grade
+    // Завершённые — есть хоть что-то из preview или grade
+    const allManual = (cache.reviews || []).filter(
       r => !["anime", "manga", "novel", "movie", "show"].includes(r.type)
     );
+    const manualPlanning  = allManual.filter(r => !r.preview && !r.grade);
+    const manualCompleted = allManual.filter(r => r.preview || r.grade);
 
     const booksCurrent   = hardcoverBooks.filter(b => b.status_id === 2);
+    const booksPlanning  = hardcoverBooks.filter(b => b.status_id === 1);
     const booksCompleted = hardcoverBooks.filter(b => b.status_id === 3);
 
     cache.now = {
       alCurrent,
+      alPlanning,
       alCompleted,
       traktMovies:    enrichedMovies,
       traktShows:     enrichedShows,
-      manualEntries,
+      traktWlMovies:  enrichedWlMovies,
+      traktWlShows:   enrichedWlShows,
+      manualPlanning,
+      manualCompleted,
       booksCurrent,
+      booksPlanning,
       booksCompleted
     };
     renderNow(cache.now);
@@ -114,7 +153,13 @@ async function loadNow() {
   }
 }
 
-function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntries = [], booksCurrent = [], booksCompleted = [] }) {
+function renderNow({
+  alCurrent, alPlanning, alCompleted,
+  traktMovies, traktShows,
+  traktWlMovies, traktWlShows,
+  manualPlanning = [], manualCompleted = [],
+  booksCurrent = [], booksPlanning = [], booksCompleted = []
+}) {
   const box = document.getElementById("tab-now");
   let html  = "";
 
@@ -130,7 +175,22 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntr
     </section>`;
   }
 
-  // ── Просмотрено / Прочитано ────────────────────
+  // ── Планирую ───────────────────────────────────
+  const planning = [
+    ...alPlanning.map((e, i) => planCard(e, i)),
+    ...traktWlMovies.map((e, i) => traktCard(e, "movie", alPlanning.length + i)),
+    ...traktWlShows.map((e, i)  => traktCard(e, "show",  alPlanning.length + traktWlMovies.length + i)),
+    ...booksPlanning.map((b, i) => bookCard(b, alPlanning.length + traktWlMovies.length + traktWlShows.length + i, "planning")),
+    ...manualPlanning.map((r, i) => manualCard(r, alPlanning.length + traktWlMovies.length + traktWlShows.length + booksPlanning.length + i))
+  ];
+  if (planning.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Планирую</h2>
+      <div class="grid-now">${planning.join("")}</div>
+    </section>`;
+  }
+
+  // ── Архив ──────────────────────────────────────
   const allCompleted = [
     ...alCompleted.map(e => {
       const c = e.completedAt;
@@ -147,7 +207,7 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntr
       const d = e.last_watched_at ? new Date(e.last_watched_at) : new Date(0);
       return { _src: "trakt", type: "show",  data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
     }),
-    ...manualEntries.map(e => {
+    ...manualCompleted.map(e => {
       const d = e.date ? new Date(e.date) : new Date(0);
       return { _src: "manual", data: e, _sortDate: d, _sortYear: d.getFullYear() || 0 };
     }),
@@ -188,4 +248,24 @@ function renderNow({ alCurrent, alCompleted, traktMovies, traktShows, manualEntr
   }
 
   box.innerHTML = html || `<div class="state-box">Список пуст</div>`;
+}
+
+// Карточка планируемого аниме/манги (AniList PLANNING)
+// Без дат и прогресса — просто обложка и название
+function planCard(entry, index) {
+  const m = entry.media;
+  const img = coverUrl(m.coverImage);
+  const t   = mediaTitle(m.title);
+  const [tagClass, tagLabel] = entryTypeTag(entry);
+  const year = m.startDate?.year || "";
+
+  return `<a href="${esc(m.siteUrl)}" target="_blank" rel="noopener" class="card"
+      style="animation-delay:${Math.min(index * 25, 600)}ms">
+    <span class="type-tag tag-${tagClass}">${esc(tagLabel)}</span>
+    <img src="${esc(img)}" alt="${esc(t)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+    <div class="card-body">
+      <div class="card-title">${esc(t)}</div>
+      ${year ? `<div class="card-meta"><span>${esc(String(year))}</span></div>` : ""}
+    </div>
+  </a>`;
 }
