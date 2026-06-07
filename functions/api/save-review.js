@@ -1,6 +1,5 @@
 export async function onRequest(context) {
   const { request, env } = context;
-
   if (request.method !== "POST") {
     return new Response("Method Not Allowed", { status: 405 });
   }
@@ -9,7 +8,6 @@ export async function onRequest(context) {
   const cookie = request.headers.get("cookie") || "";
   const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
   const token  = auth?.split("=")[1]?.trim();
-
   if (token !== env.ADMIN_PASSWORD?.trim()) {
     return json({ error: "Не авторизован" }, 401);
   }
@@ -21,13 +19,14 @@ export async function onRequest(context) {
     return json({ error: "Bad JSON" }, 400);
   }
 
+  // Валидация — URL обязателен только если есть превью или оценка
   const hasContent = review.preview || review.grade;
-if (!review.title) {
-  return json({ error: "Нужно название" }, 400);
-}
-if (hasContent && !review.url) {
-  return json({ error: "Нужна ссылка на источник" }, 400);
-}
+  if (!review.title) {
+    return json({ error: "Нужно название" }, 400);
+  }
+  if (hasContent && !review.url) {
+    return json({ error: "Нужна ссылка на источник" }, 400);
+  }
 
   const repo    = env.GITHUB_REPO;
   const ghToken = env.GITHUB_TOKEN;
@@ -44,11 +43,10 @@ if (hasContent && !review.url) {
     const sha      = fileData.sha;
 
     // Читаем UTF-8 безопасно
-    const raw     = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
-    let current   = JSON.parse(new TextDecoder().decode(raw));
+    const raw   = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
+    let current = JSON.parse(new TextDecoder().decode(raw));
 
-    const isEdit  = review._editId !== undefined && review._editId !== null;
-
+    const isEdit = review._editId !== undefined && review._editId !== null;
     if (isEdit) {
       const editId = review._editId;
       delete review._editId;
@@ -70,6 +68,7 @@ if (hasContent && !review.url) {
     // Пишем UTF-8 безопасно
     const encoded = new TextEncoder().encode(JSON.stringify(current, null, 2));
     const updated = btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
+
     const message = isEdit
       ? `review: edit "${review.title}"`
       : `review: add "${review.title}"`;
@@ -90,7 +89,6 @@ if (hasContent && !review.url) {
     }
 
     return json({ ok: true });
-
   } catch (e) {
     return json({ error: e.message }, 500);
   }
@@ -101,10 +99,4 @@ function json(data, status = 200) {
     status,
     headers: { "Content-Type": "application/json" }
   });
-}
-const cookie = request.headers.get("cookie") || "";
-const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
-const token  = auth?.split("=")[1]?.trim();
-if (token !== env.ADMIN_PASSWORD?.trim()) {
-  return json({ error: `Не авторизован. cookie: "${cookie.slice(0,80)}"` }, 401);
 }
