@@ -405,7 +405,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     <div class="field">
       <label>Статус</label>
       <div class="select-wrap">
-        <select id="f-status">
+        <select id="f-status" onchange="updateDateFields()">
           <option value="planning">Планирую</option>
           <option value="current">В процессе</option>
           <option value="completed">Завершено</option>
@@ -428,6 +428,11 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     <b style="color:var(--text)">Завершено</b> — в Архиве (нужна оценка или превью чтобы попасть в Отзывы).
   </div>
 
+  <!-- Даты — показываются в зависимости от статуса -->
+  <div id="dates-section">
+    <!-- Заполняется динамически через updateDateFields() -->
+  </div>
+
   <!-- Источник 1 -->
   <h2 class="section-title">Источник 1</h2>
   <div class="grid">
@@ -444,10 +449,6 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     <div class="field">
       <label>URL</label>
       <input type="text" id="f-url" placeholder="https://bsky.app/...">
-    </div>
-    <div class="field">
-      <label>Дата</label>
-      <input type="date" id="f-date">
     </div>
     <div class="field">
       <label>Фавориты</label>
@@ -524,6 +525,51 @@ let selectedGrade = null;
 let selectedTags  = new Set();
 let editingId     = null;
 
+// ── Даты в зависимости от статуса ──────────────
+function updateDateFields() {
+  const status  = document.getElementById("f-status").value;
+  const section = document.getElementById("dates-section");
+  const today   = new Date().toISOString().slice(0, 10);
+
+  // Сохраняем текущие значения если поля уже есть
+  const prevStart = document.getElementById("f-date-start")?.value || today;
+  const prevEnd   = document.getElementById("f-date-end")?.value   || today;
+
+  if (status === "planning") {
+    section.innerHTML = "";
+    return;
+  }
+
+  if (status === "current") {
+    section.innerHTML = `
+      <h2 class="section-title">Дата начала</h2>
+      <div class="grid">
+        <div class="field">
+          <label>Начал</label>
+          <input type="date" id="f-date-start" value="${prevStart}">
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (status === "completed") {
+    section.innerHTML = `
+      <h2 class="section-title">Даты</h2>
+      <div class="hint">Если смотрел один день — заполни только «Завершил» или укажи одинаковые даты, на карточке покажется одна дата.</div>
+      <div class="grid">
+        <div class="field">
+          <label>Начал <span style="font-size:.6rem;opacity:.5">(необязательно)</span></label>
+          <input type="date" id="f-date-start" value="${prevStart}">
+        </div>
+        <div class="field">
+          <label>Завершил</label>
+          <input type="date" id="f-date-end" value="${prevEnd}">
+        </div>
+      </div>`;
+    return;
+  }
+}
+
 // ── оценки ─────────────────────────────────────
 const gradesGrid = document.getElementById("grades-grid");
 for (const [key, g] of Object.entries(GRADES)) {
@@ -562,7 +608,6 @@ function fillForm(r) {
   document.getElementById("f-format").value    = r.format    || "";
   document.getElementById("f-cover").value     = r.cover     || "";
   document.getElementById("f-url").value       = r.url       || "";
-  document.getElementById("f-date").value      = r.date      || "";
   document.getElementById("f-favorites").value = r.favorites || "";
   document.getElementById("f-preview").value   = r.preview   || "";
   document.getElementById("f-source").value    = r.source    || "bluesky";
@@ -570,6 +615,16 @@ function fillForm(r) {
   document.getElementById("f-status").value    = r.status    || "completed";
   document.getElementById("f-url2").value      = r.url2      || "";
   document.getElementById("f-source2").value   = r.source2   || "";
+
+  // Сначала рендерим поля дат под нужный статус
+  updateDateFields();
+
+  // Потом заполняем значения
+  const today = new Date().toISOString().slice(0, 10);
+  const startEl = document.getElementById("f-date-start");
+  const endEl   = document.getElementById("f-date-end");
+  if (startEl) startEl.value = r.date_start || today;
+  if (endEl)   endEl.value   = r.date_end   || today;
 
   updatePreview();
   previewCover(r.cover || "");
@@ -593,7 +648,6 @@ function resetToNew() {
 
   ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview","f-url2"]
     .forEach(id => document.getElementById(id).value = "");
-  document.getElementById("f-date").value    = new Date().toISOString().slice(0,10);
   document.getElementById("f-source").value  = "bluesky";
   document.getElementById("f-source2").value = "";
   document.getElementById("f-type").value    = "anime";
@@ -606,11 +660,12 @@ function resetToNew() {
   document.querySelectorAll(".tag-toggle").forEach(b => b.classList.remove("active"));
   document.getElementById("status").textContent = "";
   document.getElementById("status").className = "status-msg";
+  updateDateFields();
 }
 
 // ── инит по URL ────────────────────────────────
 async function initPage() {
-  document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
+  updateDateFields();
   const params = new URLSearchParams(location.search);
   const editId = params.get("edit");
   if (!editId) return;
@@ -660,6 +715,7 @@ async function saveReview() {
   const title   = document.getElementById("f-title").value.trim();
   const url     = document.getElementById("f-url").value.trim();
   const preview = document.getElementById("f-preview").value.trim();
+  const status  = document.getElementById("f-status").value;
   const hasContent = preview || selectedGrade;
 
   if (!title) { setStatus("err", "Заполни название"); return; }
@@ -668,22 +724,27 @@ async function saveReview() {
   const url2    = document.getElementById("f-url2").value.trim() || null;
   const source2 = document.getElementById("f-source2").value     || null;
 
+  // Читаем даты в зависимости от статуса
+  const dateStart = document.getElementById("f-date-start")?.value || null;
+  const dateEnd   = document.getElementById("f-date-end")?.value   || null;
+
   const review = {
     title,
     url,
-    type:      document.getElementById("f-type").value,
-    status:    document.getElementById("f-status").value,
-    source:    document.getElementById("f-source").value,
+    type:       document.getElementById("f-type").value,
+    status,
+    source:     document.getElementById("f-source").value,
     url2,
-    source2:   url2 ? source2 : null,
-    year:      document.getElementById("f-year").value.trim()      || null,
-    format:    document.getElementById("f-format").value.trim()    || null,
-    cover:     document.getElementById("f-cover").value.trim()     || null,
-    date:      document.getElementById("f-date").value             || null,
-    favorites: document.getElementById("f-favorites").value.trim() || null,
-    preview:   preview || null,
-    grade:     selectedGrade,
-    tags:      [...selectedTags],
+    source2:    url2 ? source2 : null,
+    year:       document.getElementById("f-year").value.trim()      || null,
+    format:     document.getElementById("f-format").value.trim()    || null,
+    cover:      document.getElementById("f-cover").value.trim()     || null,
+    date_start: dateStart,
+    date_end:   dateEnd,
+    favorites:  document.getElementById("f-favorites").value.trim() || null,
+    preview:    preview || null,
+    grade:      selectedGrade,
+    tags:       [...selectedTags],
   };
 
   if (editingId !== null) review._editId = editingId;
