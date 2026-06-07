@@ -158,7 +158,7 @@ function renderCounters(counts, total) {
 
   return `
     <section class="stat-section">
-      <h2 class="section-title">Всего потреблено</h2>
+      <h2 class="section-title">Всего</h2>
       <div class="stat-total">
         <span class="stat-total-num" data-target="${total}">0</span>
         <span class="stat-total-label">тайтлов</span>
