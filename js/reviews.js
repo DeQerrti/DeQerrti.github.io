@@ -10,8 +10,11 @@ function isAdmin() {
 
 async function loadReviews() {
   const data = await fetchReviews();
-  if (data.length) {
-    renderReviews(data);
+  // Показываем только записи с отзывом или оценкой
+  // Записи без preview и grade — это планируемые игры, им не место здесь
+  const withReview = data.filter(r => r.preview || r.grade);
+  if (withReview.length) {
+    renderReviews(withReview);
   } else {
     document.getElementById("tab-reviews").innerHTML =
       `<div class="state-box">
