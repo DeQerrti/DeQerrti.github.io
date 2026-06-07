@@ -355,13 +355,21 @@ async function saveReview() {
   const btn    = document.getElementById("btn-save");
   const status = document.getElementById("status");
 
-  const title = document.getElementById("f-title").value.trim();
-  const url   = document.getElementById("f-url").value.trim();
-  if (!title || !url) {
-    status.className = "status err";
-    status.textContent = "Заполни название и ссылку";
-    return;
-  }
+  const title   = document.getElementById("f-title").value.trim();
+const url     = document.getElementById("f-url").value.trim();
+const preview = document.getElementById("f-preview").value.trim();
+const hasContent = preview || selectedGrade;
+
+if (!title) {
+  status.className = "status err";
+  status.textContent = "Заполни название";
+  return;
+}
+if (hasContent && !url) {
+  status.className = "status err";
+  status.textContent = "Заполни ссылку на источник";
+  return;
+}
 
   const url2    = document.getElementById("f-url2").value.trim()    || null;
   const source2 = document.getElementById("f-source2").value        || null;
