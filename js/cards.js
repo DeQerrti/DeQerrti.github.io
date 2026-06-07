@@ -23,7 +23,6 @@ function normTitle(s) {
   return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
 }
 
-// Ищет отзыв по названию тайтла, возвращает { grade, score } или null
 function findReviewForTitle(title) {
   if (!cache.reviews?.length || !title) return null;
   const norm  = normTitle(title);
@@ -34,7 +33,6 @@ function findReviewForTitle(title) {
   return grade ? { grade, score } : null;
 }
 
-// Инлайн-плашка оценки внутри карточки
 function gradeInlineHtml(info) {
   if (!info) return "";
   return `<span class="card-grade-inline" style="color:${info.grade.color}">${esc(info.grade.name)}</span>`;
@@ -48,7 +46,6 @@ function fmtDate(d) {
     .toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
 }
 
-// Форматирует строку даты "YYYY-MM-DD" в "8 мая"
 function fmtDateStr(str) {
   if (!str) return null;
   const d = new Date(str);
@@ -67,6 +64,7 @@ function nowCard(entry, index) {
   const done  = entry.progress ?? 0;
   const total = m.type === "ANIME" ? (m.episodes || 0) : (m.chapters || 0);
   const unit  = m.type === "ANIME" ? "эп." : "гл.";
+  const year  = m.startDate?.year || "";
 
   return `<a href="${esc(m.siteUrl)}" target="_blank" rel="noopener" class="card"
       style="animation-delay:${Math.min(index * 25, 600)}ms">
@@ -76,6 +74,7 @@ function nowCard(entry, index) {
       <div class="card-title">${esc(t)}</div>
       <div class="card-meta">
         <span class="progress-line">${done}${total ? " / " + total : ""} ${unit}</span>
+        ${year ? `<span>${esc(String(year))}</span>` : ""}
       </div>
     </div>
   </a>`;
@@ -178,14 +177,11 @@ function manualCard(r, index) {
   const typeLabels = { game: "Игра", vn: "Визуальная новелла" };
   const tagLabel = typeLabels[r.type] || r.type || "—";
 
-  // Формируем badge в зависимости от статуса
   let watchBadge = "";
   if (r.status === "current" && r.date_start) {
-    // В процессе — только дата начала с префиксом "с"
     const s = fmtDateStr(r.date_start);
     if (s) watchBadge = `с ${s}`;
   } else if (r.status === "completed") {
-    // Завершено — начало → конец, или только конец если одинаковые/нет начала
     const startStr = r.date_start ? fmtDateStr(r.date_start) : null;
     const endStr   = r.date_end   ? fmtDateStr(r.date_end)   : null;
     if (endStr && startStr && r.date_start !== r.date_end) {
@@ -196,7 +192,6 @@ function manualCard(r, index) {
       watchBadge = startStr;
     }
   }
-  // planning — badge не показываем
 
   const editId = r.id ?? encodeURIComponent(r.title);
   const pencil = (document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui=")))
