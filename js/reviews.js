@@ -10,8 +10,6 @@ function isAdmin() {
 
 async function loadReviews() {
   const data = await fetchReviews();
-  // Показываем только записи с отзывом или оценкой
-  // Записи без preview и grade — это планируемые игры, им не место здесь
   const withReview = data.filter(r => r.preview || r.grade);
   if (withReview.length) {
     renderReviews(withReview);
@@ -68,8 +66,10 @@ function reviewCard(r, i) {
     ? `<div class="review-waifu"><span class="review-waifu-label">Фавориты:</span> <span>${esc(r.favorites)}</span></div>`
     : "";
 
-  const dateStr = r.date
-    ? new Date(r.date).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
+  // Поддерживаем и новые поля date_end/date_start, и старое date
+  const dateRaw = r.date_end || r.date_start || r.date || null;
+  const dateStr = dateRaw
+    ? new Date(dateRaw).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
 
   const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
