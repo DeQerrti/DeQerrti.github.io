@@ -48,6 +48,14 @@ function fmtDate(d) {
     .toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
 }
 
+// Форматирует строку даты "YYYY-MM-DD" в "8 мая"
+function fmtDateStr(str) {
+  if (!str) return null;
+  const d = new Date(str);
+  if (isNaN(d)) return null;
+  return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+}
+
 // ── Карточки ───────────────────────────────────
 
 // Аниме/манга в процессе (AniList)
@@ -165,17 +173,30 @@ function tagHtml(tag) {
 }
 
 // Игра / визуальная новелла / другие ручные записи из reviews.json
-// Оборачиваем в review-card-wrap чтобы показывать карандаш редактирования (только для tasteid_ui)
 function manualCard(r, index) {
   const info = findReviewForTitle(r.title);
   const typeLabels = { game: "Игра", vn: "Визуальная новелла" };
   const tagLabel = typeLabels[r.type] || r.type || "—";
 
+  // Формируем badge в зависимости от статуса
   let watchBadge = "";
-  if (r.date) {
-    const d = new Date(r.date);
-    watchBadge = d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  if (r.status === "current" && r.date_start) {
+    // В процессе — только дата начала с префиксом "с"
+    const s = fmtDateStr(r.date_start);
+    if (s) watchBadge = `с ${s}`;
+  } else if (r.status === "completed") {
+    // Завершено — начало → конец, или только конец если одинаковые/нет начала
+    const startStr = r.date_start ? fmtDateStr(r.date_start) : null;
+    const endStr   = r.date_end   ? fmtDateStr(r.date_end)   : null;
+    if (endStr && startStr && r.date_start !== r.date_end) {
+      watchBadge = `${startStr} → ${endStr}`;
+    } else if (endStr) {
+      watchBadge = endStr;
+    } else if (startStr) {
+      watchBadge = startStr;
+    }
   }
+  // planning — badge не показываем
 
   const editId = r.id ?? encodeURIComponent(r.title);
   const pencil = (typeof TASTEID_UI !== "undefined" && TASTEID_UI)
