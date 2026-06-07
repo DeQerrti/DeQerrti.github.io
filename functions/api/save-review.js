@@ -3,7 +3,6 @@ export async function onRequest(context) {
   if (request.method !== "POST") {
     return new Response("Method Not Allowed", { status: 405 });
   }
-
   // Проверяем авторизацию
   const cookie = request.headers.get("cookie") || "";
   const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
@@ -11,14 +10,12 @@ export async function onRequest(context) {
   if (token !== env.ADMIN_PASSWORD?.trim()) {
     return json({ error: "Не авторизован" }, 401);
   }
-
   let review;
   try {
     review = await request.json();
   } catch {
     return json({ error: "Bad JSON" }, 400);
   }
-
   // Валидация — URL обязателен только если есть превью или оценка
   const hasContent = review.preview || review.grade;
   if (!review.title) {
@@ -27,25 +24,25 @@ export async function onRequest(context) {
   if (hasContent && !review.url) {
     return json({ error: "Нужна ссылка на источник" }, 400);
   }
-
   const repo    = env.GITHUB_REPO;
   const ghToken = env.GITHUB_TOKEN;
   const apiUrl  = `https://api.github.com/repos/${repo}/contents/reviews.json`;
-
   try {
-    const getRes   = await fetch(apiUrl, {
+    const getRes = await fetch(apiUrl, {
       headers: {
         Authorization: `Bearer ${ghToken}`,
         Accept: "application/vnd.github+json"
       }
     });
+    if (!getRes.ok) {
+      const errText = await getRes.text();
+      return json({ error: `GitHub GET failed: ${getRes.status} — ${errText}` }, 500);
+    }
     const fileData = await getRes.json();
     const sha      = fileData.sha;
-
     // Читаем UTF-8 безопасно
     const raw   = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
     let current = JSON.parse(new TextDecoder().decode(raw));
-
     const isEdit = review._editId !== undefined && review._editId !== null;
     if (isEdit) {
       const editId = review._editId;
@@ -62,17 +59,13 @@ export async function onRequest(context) {
       review.id   = maxId + 1;
       current.unshift(review);
     }
-
     current.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-
     // Пишем UTF-8 безопасно
     const encoded = new TextEncoder().encode(JSON.stringify(current, null, 2));
     const updated = btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
-
     const message = isEdit
       ? `review: edit "${review.title}"`
       : `review: add "${review.title}"`;
-
     const putRes = await fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -82,18 +75,15 @@ export async function onRequest(context) {
       },
       body: JSON.stringify({ message, content: updated, sha }),
     });
-
     if (!putRes.ok) {
       const err = await putRes.json();
-      return json({ error: err.message }, 500);
+      return json({ error: `GitHub PUT failed: ${putRes.status} — ${err.message}` }, 500);
     }
-
     return json({ ok: true });
   } catch (e) {
     return json({ error: e.message }, 500);
   }
 }
-
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
