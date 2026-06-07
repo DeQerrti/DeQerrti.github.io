@@ -101,6 +101,36 @@
     "id": 6
   },
   {
+    "title": "Pragmata",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mlflcikrss25",
+    "type": "game",
+    "status": "completed",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2026",
+    "format": null,
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/cobxnx.webp",
+    "date_start": "2026-05-06",
+    "date_end": "2026-05-09",
+    "favorites": "Диана, Хью",
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Рояли в кустах",
+      "Живые герои",
+      "Без кринжа",
+      "Чистый кайф",
+      "Топ боёвка",
+      "Лор важнее сюжета",
+      "Слабая режиссура"
+    ],
+    "id": 9
+  },
+  {
     "id": 1,
     "title": "Houseki no Kuni",
     "url": "https://teletype.in/@tknovas/LandoftheLustrous",
@@ -209,35 +239,5 @@
       "Серая мораль",
       "Философия"
     ]
-  },
-  {
-    "title": "Pragmata",
-    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mlflcikrss25",
-    "type": "game",
-    "status": "planning",
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2026",
-    "format": null,
-    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/cobxnx.webp",
-    "date_start": null,
-    "date_end": null,
-    "favorites": "Диана, Хью",
-    "preview": null,
-    "grade": "attrakcion",
-    "tags": [
-      "Топ визуал",
-      "Осты в тему",
-      "Затягивает сразу",
-      "Рояли в кустах",
-      "Живые герои",
-      "Без кринжа",
-      "Чистый кайф",
-      "Топ боёвка",
-      "Лор важнее сюжета",
-      "Слабая режиссура"
-    ],
-    "id": 9
   }
 ]
