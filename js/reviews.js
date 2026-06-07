@@ -38,17 +38,17 @@ function sourceBtnHtml(url, source) {
   if (!url) return "";
   const label = SOURCE_LABELS[source] || source || "Подробнее";
   if (source === "bluesky") {
-    return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
-      <span class="source-dot-bluesky"></span>${label} →
+    return `<a href="${esc(url)}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
+      <span class="source-dot-bluesky"></span>${esc(label)} →
     </a>`;
   }
   if (source === "teletype") {
-    return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-teletype">
-      <span class="source-dot-teletype"></span>${label} →
+    return `<a href="${esc(url)}" target="_blank" rel="noopener" class="review-source-link source-teletype">
+      <span class="source-dot-teletype"></span>${esc(label)} →
     </a>`;
   }
-  return `<a href="${url}" target="_blank" rel="noopener" class="review-source-link source-other">
-    <span class="source-dot-other"></span>${label} →
+  return `<a href="${esc(url)}" target="_blank" rel="noopener" class="review-source-link source-other">
+    <span class="source-dot-other"></span>${esc(label)} →
   </a>`;
 }
 
@@ -62,7 +62,7 @@ function reviewCard(r, i) {
     : "";
 
   const waifuHtml = r.favorites
-    ? `<div class="review-waifu"><span class="review-waifu-label">Фавориты:</span> <span>${r.favorites}</span></div>`
+    ? `<div class="review-waifu"><span class="review-waifu-label">Фавориты:</span> <span>${esc(r.favorites)}</span></div>`
     : "";
 
   const dateStr = r.date
@@ -78,7 +78,7 @@ function reviewCard(r, i) {
   const gradeHtml = grade
     ? `<div class="review-grade-bar">
         <div class="grade-square" style="background:${grade.color}"></div>
-        <div class="grade-chip" style="--gc:${grade.color}" data-tip="${grade.desc}">${grade.name}</div>
+        <div class="grade-chip" style="--gc:${grade.color}" data-tip="${esc(grade.desc)}">${esc(grade.name)}</div>
         ${sourceButtons}
       </div>`
     : `<div class="review-grade-bar">
@@ -100,19 +100,19 @@ function reviewCard(r, i) {
 
       <div class="review-top">
         <div class="review-cover">
-          <img src="${r.cover || PH_TALL}" alt="${r.title}" loading="lazy" onerror="this.src='${PH_TALL}'">
+          <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
         </div>
         <div class="review-body">
-          <div class="review-title">${r.title}</div>
+          <div class="review-title">${esc(r.title)}</div>
 
           <div class="review-meta-row">
-            ${formatYear ? `<span class="review-format">${formatYear}</span>` : ""}
+            ${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}
           </div>
-          ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${dateStr}</span></div>` : ""}
+          ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
 
           ${waifuHtml}
 
-          <div class="review-preview">${r.preview || ""}</div>
+          <div class="review-preview">${esc(r.preview || "")}</div>
         </div>
       </div>
 
