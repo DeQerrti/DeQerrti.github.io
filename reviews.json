@@ -397,6 +397,25 @@
     "id": 17
   },
   {
+    "title": "Fate/strange Fake",
+    "url": "",
+    "type": "novel",
+    "status": "current",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2015",
+    "format": null,
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx50006-SzwC3M73aM2X.jpg",
+    "date_start": "2026-03-22",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 18
+  },
+  {
     "id": 2,
     "title": "The Day of the Jackal",
     "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
