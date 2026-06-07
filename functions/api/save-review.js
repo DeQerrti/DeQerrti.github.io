@@ -16,7 +16,6 @@ export async function onRequest(context) {
   } catch {
     return json({ error: "Bad JSON" }, 400);
   }
-  // Валидация — URL обязателен только если есть превью или оценка
   const hasContent = review.preview || review.grade;
   if (!review.title) {
     return json({ error: "Нужно название" }, 400);
@@ -41,7 +40,6 @@ export async function onRequest(context) {
     }
     const fileData = await getRes.json();
     const sha      = fileData.sha;
-    // Читаем UTF-8 безопасно
     const raw   = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
     let current = JSON.parse(new TextDecoder().decode(raw));
     const isEdit = review._editId !== undefined && review._editId !== null;
@@ -60,8 +58,12 @@ export async function onRequest(context) {
       review.id   = maxId + 1;
       current.unshift(review);
     }
-    current.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-    // Пишем UTF-8 безопасно
+    // Сортируем по date_end → date_start → date (поддержка старых записей)
+    current.sort((a, b) => {
+      const da = new Date(b.date_end || b.date_start || b.date || 0);
+      const db = new Date(a.date_end || a.date_start || a.date || 0);
+      return da - db;
+    });
     const encoded = new TextEncoder().encode(JSON.stringify(current, null, 2));
     const updated = btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
     const message = isEdit
