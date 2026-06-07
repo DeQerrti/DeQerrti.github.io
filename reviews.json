@@ -546,5 +546,34 @@
       "Абсолют синема"
     ],
     "id": 20
+  },
+  {
+    "title": "Zenless Zone Zero",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mbo5ny4isc2e",
+    "type": "game",
+    "status": "current",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2024",
+    "format": "Гача",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/coc0vc.jpg",
+    "date_start": "2024-07-02",
+    "date_end": null,
+    "favorites": null,
+    "preview": "Ни одна гача с точки зрения сюжета, режиссуры и геймплея не переплюнет полноценный ААА одиночный проект, пока что. Это почти всегда салат из всего понемногу и в совокупности по всем аспектам мид тир. Который иногда попадает в твои фетиши, а потому ощущается выше.",
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Живые герои",
+      "Крутой протагонист",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Жесть",
+      "Чистый кайф",
+      "Хорни вайб",
+      "Топ боёвка"
+    ],
+    "id": 21
   }
 ]
