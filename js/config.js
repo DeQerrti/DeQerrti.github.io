@@ -38,7 +38,7 @@ const GRADES = {
   brak:         { color: "#c0392b", name: "Брак",          desc: "Технически или сценарно несостоятельно" },
   fon:          { color: "#6b7280", name: "Фоновый шум",   desc: "Стерильно и вторично" },
   attrakcion:   { color: "#d4a017", name: "Аттракцион",    desc: "Ярко, бодро, на один вечер" },
-  vyskazyvanie: { color: "#2d8a4e", name: "Высказывание",  desc: "Достойная работа с посылом" },
+  vyskazyvanie: { color: "#2d8a4e", name: "Отлично",       desc: "Достойная работа с посылом" },
   etalon:       { color: "#2563a8", name: "Эталон",        desc: "Почти безупречное исполнение" },
   rezonans:     { color: "#7c3aed", name: "Резонанс",      desc: "Личный фаворит. То, что откликнулось" }
 };
