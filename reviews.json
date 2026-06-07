@@ -1,16 +1,45 @@
 [
   {
+    "title": "Saya no Uta",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmxzc6q3ks2e",
+    "type": "game",
+    "status": "completed",
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2003",
+    "format": "Визуальная новелла",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co25zj.webp",
+    "date_start": null,
+    "date_end": "2026-05-29",
+    "favorites": "Сая",
+    "preview": "В преддверии выхода коллаборации между Морименс и Сая но Ута, решил ознакомиться с оригинальной новеллой. И мне, в принципе, понравилось, хоть и ожидал я большего, исходя из того, что слышал о ней ранее...",
+    "grade": "attrakcion",
+    "tags": [
+      "Осты в тему",
+      "Затягивает сразу",
+      "Стеклище",
+      "Жесть",
+      "Философия",
+      "Хорни вайб",
+      "Серая мораль",
+      "Специфичный стиль"
+    ],
+    "id": 5
+  },
+  {
     "title": "Yunyun Syndrome!? Rhythm Psychosis",
     "url": "",
     "type": "game",
-    "status": "planning",
+    "status": "current",
     "source": "bluesky",
     "url2": null,
     "source2": null,
     "year": "2026",
     "format": null,
     "cover": "https://byrutgame.org/uploads/posts/2026-03/7a07f8b53f_yunyun-syndrome-rhythm-psychosis-poster.jpg",
-    "date": "2026-06-07",
+    "date_start": "2026-05-10",
+    "date_end": null,
     "favorites": null,
     "preview": null,
     "grade": null,
@@ -126,33 +155,5 @@
       "Серая мораль",
       "Философия"
     ]
-  },
-  {
-    "title": "Saya no Uta",
-    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmxzc6q3ks2e",
-    "type": "game",
-    "status": "completed",
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2003",
-    "format": "Визуальная новелла",
-    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co25zj.webp",
-    "date_start": null,
-    "date_end": "2026-05-29",
-    "favorites": "Сая",
-    "preview": "В преддверии выхода коллаборации между Морименс и Сая но Ута, решил ознакомиться с оригинальной новеллой. И мне, в принципе, понравилось, хоть и ожидал я большего, исходя из того, что слышал о ней ранее...",
-    "grade": "attrakcion",
-    "tags": [
-      "Осты в тему",
-      "Затягивает сразу",
-      "Стеклище",
-      "Жесть",
-      "Философия",
-      "Хорни вайб",
-      "Серая мораль",
-      "Специфичный стиль"
-    ],
-    "id": 5
   }
 ]
