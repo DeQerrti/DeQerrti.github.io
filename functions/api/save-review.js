@@ -31,7 +31,8 @@ export async function onRequest(context) {
     const getRes = await fetch(apiUrl, {
       headers: {
         Authorization: `Bearer ${ghToken}`,
-        Accept: "application/vnd.github+json"
+        Accept: "application/vnd.github+json",
+        "User-Agent": "TasteID-App"
       }
     });
     if (!getRes.ok) {
@@ -72,6 +73,7 @@ export async function onRequest(context) {
         Authorization: `Bearer ${ghToken}`,
         Accept: "application/vnd.github+json",
         "Content-Type": "application/json",
+        "User-Agent": "TasteID-App"
       },
       body: JSON.stringify({ message, content: updated, sha }),
     });
