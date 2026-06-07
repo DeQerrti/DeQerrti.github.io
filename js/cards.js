@@ -73,8 +73,8 @@ function nowCard(entry, index) {
     <div class="card-body">
       <div class="card-title">${esc(t)}</div>
       <div class="card-meta">
-        <span class="progress-line">${done}${total ? " / " + total : ""} ${unit}</span>
         ${year ? `<span>${esc(String(year))}</span>` : ""}
+        <span class="progress-line">${done}${total ? " / " + total : ""} ${unit}</span>
       </div>
     </div>
   </a>`;
