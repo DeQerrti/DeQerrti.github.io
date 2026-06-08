@@ -1296,6 +1296,36 @@
     "id": 49
   },
   {
+    "title": "Inglourious Basterds",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2009",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/7sfbEnaARXDDhKm0CZ7D7uc2sbo.jpg",
+    "date_start": null,
+    "date_end": "2019-07-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "До титров",
+      "Живые герои",
+      "Топ антагонист",
+      "Почти без кринжа",
+      "Жесть",
+      "Чистый кайф"
+    ],
+    "id": 64
+  },
+  {
     "title": "Joker",
     "url": "",
     "type": "movie",
