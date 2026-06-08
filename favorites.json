@@ -1,5 +1,12 @@
 [
   {
+    "name": "Meme Oshino",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22552-CZz1T3AjRyVd.png",
+    "from": "Bakemonogatari",
+    "id": 9
+  },
+  {
     "name": "Deishuu Kaiki",
     "type": "character",
     "image": "https://shikimori.io/uploads/poster/characters/53641/main-3cef22717608b25088cdb4d0c78a7998.webp",
