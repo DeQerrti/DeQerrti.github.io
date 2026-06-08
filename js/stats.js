@@ -11,11 +11,9 @@ async function loadStats() {
   box.innerHTML = `<div class="state-box"><div class="spinner"></div>Считаем…</div>`;
 
   try {
-    // Убеждаемся что все данные загружены
     await fetchReviews();
 
     if (!cache.now) {
-      // Загружаем данные now если ещё не были загружены
       await new Promise(resolve => {
         const orig = window.renderNow;
         window.renderNow = (data) => { orig(data); resolve(); };
@@ -36,7 +34,6 @@ function renderStats() {
   const d   = cache.now || {};
   const reviews = cache.reviews || [];
 
-  // ── Собираем всё просмотренное ────────────────
   const alCompleted     = d.alCompleted     || [];
   const traktMovies     = d.traktMovies     || [];
   const traktShows      = d.traktShows      || [];
@@ -46,26 +43,22 @@ function renderStats() {
   const alAnime = alCompleted.filter(e => e.media?.type === "ANIME");
   const alManga = alCompleted.filter(e => e.media?.type === "MANGA" && !NOVEL_FORMATS.includes(e.media?.format));
   const alNovel = alCompleted.filter(e => NOVEL_FORMATS.includes(e.media?.format));
-
   const manualGames = manualCompleted.filter(r => r.type === "game" || r.type === "vn");
-  const manualOther = manualCompleted.filter(r => !["game","vn","anime","manga","novel","movie","show"].includes(r.type));
 
-  // ── Общие счётчики ────────────────────────────
   const counts = [
-    { label: "Аниме",    val: alAnime.length,    icon: "◈" },
-    { label: "Манга",    val: alManga.length,     icon: "◈" },
-    { label: "Ранобе",   val: alNovel.length,     icon: "◈" },
-    { label: "Фильмы",   val: traktMovies.length, icon: "◈" },
-    { label: "Сериалы",  val: traktShows.length,  icon: "◈" },
-    { label: "Книги",    val: booksCompleted.length, icon: "◈" },
-    { label: "Игры",     val: manualGames.length, icon: "◈" },
+    { label: "Аниме",   val: alAnime.length },
+    { label: "Манга",   val: alManga.length },
+    { label: "Ранобе",  val: alNovel.length },
+    { label: "Фильмы",  val: traktMovies.length },
+    { label: "Сериалы", val: traktShows.length },
+    { label: "Книги",   val: booksCompleted.length },
+    { label: "Игры",    val: manualGames.length },
   ].filter(c => c.val > 0);
 
   const total = counts.reduce((s, c) => s + c.val, 0);
 
   // ── По годам просмотра ─────────────────────────
   const watchYears = {};
-
   for (const e of alCompleted) {
     const y = e.completedAt?.year;
     if (y) watchYears[y] = (watchYears[y] || 0) + 1;
@@ -92,7 +85,6 @@ function renderStats() {
 
   // ── По годам выхода ────────────────────────────
   const releaseYears = {};
-
   for (const e of alCompleted) {
     const y = e.media?.startDate?.year;
     if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
@@ -114,13 +106,13 @@ function renderStats() {
     if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
   }
 
-  // ── Оценки из reviews.json ─────────────────────
+  // ── Оценки ─────────────────────────────────────
   const gradeCounts = {};
   for (const r of reviews) {
     if (r.grade) gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
   }
 
-  // ── Теги из reviews.json ───────────────────────
+  // ── Теги ───────────────────────────────────────
   const tagCounts = {};
   for (const r of reviews) {
     for (const tag of (r.tags || [])) {
@@ -131,8 +123,6 @@ function renderStats() {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 20);
 
-  // ══ RENDER ════════════════════════════════════
-
   box.innerHTML = `
     ${renderCounters(counts, total)}
     ${renderDonut(counts, total)}
@@ -142,7 +132,6 @@ function renderStats() {
     ${renderTagCloud(topTags)}
   `;
 
-  // Инициализация SVG-анимаций после вставки в DOM
   animateCounters();
   animateBars();
 }
@@ -168,31 +157,14 @@ function renderCounters(counts, total) {
   `;
 }
 
-// ── Пончик — доля по типам ──────────────────────
+// ── Пончик ─────────────────────────────────────
 function renderDonut(counts, total) {
   if (!total) return "";
 
   const colors = ["#8b1a1a","#c0392b","#d4a017","#2d8a4e","#2563a8","#7c3aed","#706860"];
-  let offset = 0;
   const r = 80, cx = 100, cy = 100;
   const circumference = 2 * Math.PI * r;
 
-  const segments = counts.map((c, i) => {
-    const pct  = c.val / total;
-    const dash = pct * circumference;
-    const gap  = circumference - dash;
-    const seg  = `<circle class="donut-seg" cx="${cx}" cy="${cy}" r="${r}"
-      fill="none" stroke="${colors[i % colors.length]}" stroke-width="18"
-      stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}"
-      stroke-dashoffset="${(-offset * circumference / (2 * Math.PI * r) * circumference + circumference / 4).toFixed(2)}"
-      transform="rotate(${offset * 360 / (2*Math.PI*r) - 90 + (offset === 0 ? 0 : 0)} ${cx} ${cy})"
-      style="transform-origin:${cx}px ${cy}px; transform: rotate(${-90 + offset * 360}deg)"
-    />`;
-    offset += pct;
-    return seg;
-  });
-
-  // Легенда
   const legend = counts.map((c, i) => `
     <div class="donut-legend-item">
       <span class="donut-dot" style="background:${colors[i % colors.length]}"></span>
@@ -202,9 +174,8 @@ function renderDonut(counts, total) {
     </div>
   `).join("");
 
-  // Правильный пончик через stroke-dashoffset
   let accum = 0;
-  const segs2 = counts.map((c, i) => {
+  const segs = counts.map((c, i) => {
     const pct  = c.val / total;
     const dash = pct * circumference;
     const seg  = `<circle cx="${cx}" cy="${cy}" r="${r}"
@@ -222,7 +193,7 @@ function renderDonut(counts, total) {
       <h2 class="section-title">Разбивка по типам</h2>
       <div class="stat-donut-wrap">
         <svg viewBox="0 0 200 200" class="stat-donut-svg">
-          ${segs2}
+          ${segs}
           <text x="${cx}" y="${cy - 6}" text-anchor="middle" class="donut-center-num">${total}</text>
           <text x="${cx}" y="${cy + 14}" text-anchor="middle" class="donut-center-label">всего</text>
         </svg>
@@ -232,32 +203,18 @@ function renderDonut(counts, total) {
   `;
 }
 
-// ── Барчарт по годам просмотра ──────────────────
+// ── Барчарты по годам ──────────────────────────
 function renderWatchYearChart(yearData) {
-  return renderBarChart(
-    "По годам просмотра",
-    "watch-bars",
-    yearData,
-    "year-bar-watch"
-  );
+  return renderBarChart("По годам просмотра", "watch-bars", yearData, "year-bar-watch");
 }
-
-// ── Барчарт по годам выхода ─────────────────────
 function renderReleaseYearChart(yearData) {
-  return renderBarChart(
-    "По годам выхода",
-    "release-bars",
-    yearData,
-    "year-bar-release"
-  );
+  return renderBarChart("По годам выхода", "release-bars", yearData, "year-bar-release");
 }
 
 function renderBarChart(title, id, yearData, barClass) {
   const sorted = Object.entries(yearData).sort((a, b) => a[0] - b[0]);
   if (!sorted.length) return "";
-
   const max = Math.max(...sorted.map(([,v]) => v));
-
   const bars = sorted.map(([year, val]) => {
     const pct = max ? (val / max * 100) : 0;
     return `
@@ -270,7 +227,6 @@ function renderBarChart(title, id, yearData, barClass) {
       </div>
     `;
   }).join("");
-
   return `
     <section class="stat-section">
       <h2 class="section-title">${esc(title)}</h2>
@@ -279,14 +235,13 @@ function renderBarChart(title, id, yearData, barClass) {
   `;
 }
 
-// ── Оценки ─────────────────────────────────────
+// ── Оценки — от лучшего к худшему ─────────────
 function renderGradeChart(gradeCounts) {
   const total = Object.values(gradeCounts).reduce((s, v) => s + v, 0);
   if (!total) return "";
-
   const max = Math.max(...Object.values(gradeCounts));
 
-  const bars = GRADE_ORDER.map(key => {
+  const bars = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"].map(key => {
     const g   = GRADES[key];
     if (!g) return "";
     const val = gradeCounts[key] || 0;
@@ -313,16 +268,14 @@ function renderGradeChart(gradeCounts) {
 // ── Облако тегов ────────────────────────────────
 function renderTagCloud(topTags) {
   if (!topTags.length) return "";
-
   const max = topTags[0][1];
   const items = topTags.map(([tag, cnt]) => {
     const info  = TAGS_MAP[tag];
     const cls   = info ? TAG_CAT_CLASS[info.cat] : "rtag-special";
     const scale = 0.8 + (cnt / max) * 0.7;
-    return `<span class="rtag ${cls} stat-tag" style="font-size:${(scale).toFixed(2)}rem"
+    return `<span class="rtag ${cls} stat-tag" style="font-size:${scale.toFixed(2)}rem"
       data-tip="${esc(info?.tip || "")}">${esc(tag)} <span class="stat-tag-cnt">${cnt}</span></span>`;
   }).join("");
-
   return `
     <section class="stat-section">
       <h2 class="section-title">Частые теги в отзывах</h2>
@@ -335,12 +288,10 @@ function renderTagCloud(topTags) {
 function animateCounters() {
   document.querySelectorAll("[data-target]").forEach(el => {
     const target = parseInt(el.dataset.target);
-    const dur    = 800;
-    const start  = performance.now();
+    const dur = 800, start = performance.now();
     function tick(now) {
       const t = Math.min((now - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - t, 3);
-      el.textContent = Math.round(ease * target);
+      el.textContent = Math.round((1 - Math.pow(1 - t, 3)) * target);
       if (t < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -348,13 +299,11 @@ function animateCounters() {
 }
 
 function animateBars() {
-  // Вертикальные бары (годы просмотра/выхода)
   setTimeout(() => {
     document.querySelectorAll(".year-bar").forEach(el => {
       el.style.transition = "height .6s cubic-bezier(.4,0,.2,1)";
       el.style.height = el.dataset.pct + "%";
     });
-    // Горизонтальные бары (оценки)
     document.querySelectorAll(".grade-row-bar").forEach(el => {
       el.style.transition = "width .6s cubic-bezier(.4,0,.2,1)";
       el.style.width = el.dataset.pct + "%";
