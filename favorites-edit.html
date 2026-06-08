@@ -170,7 +170,6 @@ select option { background: var(--bg2); }
 }
 .select-wrap select { padding-right: 2rem; }
 
-/* Поле подтипа — скрыто по умолчанию */
 .field-subtype { display: none; }
 .field-subtype.visible { display: block; }
 
@@ -231,7 +230,40 @@ select option { background: var(--bg2); }
 .divider-title::before { content: ''; display: inline-block; width: 16px; height: 1px; background: var(--red); }
 .divider-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
 
+/* ── Список записей ── */
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3rem 0 1.25rem;
+  gap: 1rem;
+}
+.list-header .divider-title {
+  margin: 0;
+  flex: 1;
+}
+
+.btn-save-order {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .7rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--green-hi);
+  background: rgba(106,184,122,.08);
+  border: 1px solid rgba(106,184,122,.3);
+  border-radius: 2px;
+  padding: .35rem .85rem;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  display: none;
+}
+.btn-save-order:hover { background: rgba(106,184,122,.18); border-color: var(--green-hi); }
+.btn-save-order.visible { display: block; }
+.btn-save-order:disabled { opacity: .4; cursor: not-allowed; }
+
 .entries-list { display: flex; flex-direction: column; gap: .5rem; }
+
 .entry-row {
   display: flex;
   align-items: center;
@@ -243,6 +275,32 @@ select option { background: var(--bg2); }
   transition: border-color .15s;
 }
 .entry-row:hover { border-color: var(--border2); }
+
+/* Кнопки порядка */
+.entry-order-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.btn-order {
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 1px;
+  color: var(--text-dim);
+  font-size: .6rem;
+  width: 20px; height: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .12s;
+  line-height: 1;
+  padding: 0;
+}
+.btn-order:hover { border-color: var(--red-dim); color: var(--red-hi); }
+.btn-order:disabled { opacity: .2; cursor: default; }
+
 .entry-avatar {
   width: 36px; height: 36px;
   border-radius: 50%;
@@ -275,10 +333,19 @@ select option { background: var(--bg2); }
   padding: .25rem .6rem;
   cursor: pointer;
   transition: all .15s;
-  text-decoration: none;
   white-space: nowrap;
 }
 .entry-edit:hover { border-color: var(--red-dim); color: var(--red-hi); }
+
+.order-hint {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem;
+  color: var(--text-dim);
+  text-align: center;
+  margin-top: .75rem;
+  display: none;
+}
+.order-hint.visible { display: block; }
 </style>
 </head>
 <body>
@@ -341,13 +408,19 @@ select option { background: var(--bg2); }
   <button class="btn-save" id="btn-save" onclick="saveEntry()">Сохранить</button>
   <div class="status-msg" id="status"></div>
 
-  <div class="divider-title" id="list-title" style="display:none">Все записи</div>
+  <div class="list-header" id="list-header" style="display:none">
+    <div class="divider-title">Все записи</div>
+    <button class="btn-save-order" id="btn-save-order" onclick="saveOrder()">✦ Сохранить порядок</button>
+  </div>
   <div class="entries-list" id="entries-list"></div>
+  <div class="order-hint" id="order-hint">Используй ↑↓ для изменения порядка, затем нажми «Сохранить порядок»</div>
 
 </main>
 
 <script>
-let editingId = null;
+let editingId  = null;
+let listData   = [];   // текущий порядок записей
+let orderDirty = false;
 
 const SUBTYPE_LABELS = {
   actor: "Актёр", director: "Режиссёр", author: "Автор",
@@ -395,47 +468,97 @@ function fillForm(r) {
   onTypeChange();
 }
 
+// ── Перемещение записи ──────────────────────────
+function moveEntry(idx, dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= listData.length) return;
+  [listData[idx], listData[newIdx]] = [listData[newIdx], listData[idx]];
+  orderDirty = true;
+  renderList();
+}
+
+// ── Рендер списка ───────────────────────────────
+function renderList() {
+  const list = document.getElementById("entries-list");
+  list.innerHTML = listData.map((r, idx) => {
+    const typeLabel = r.type === "person"
+      ? (SUBTYPE_LABELS[r.subtype] || "Персона")
+      : "Персонаж";
+    return `
+    <div class="entry-row">
+      <div class="entry-order-btns">
+        <button class="btn-order" onclick="moveEntry(${idx}, -1)" ${idx === 0 ? "disabled" : ""} title="Вверх">▲</button>
+        <button class="btn-order" onclick="moveEntry(${idx}, 1)"  ${idx === listData.length - 1 ? "disabled" : ""} title="Вниз">▼</button>
+      </div>
+      <img class="entry-avatar" src="${esc(r.image || "")}" onerror="this.style.display='none'" alt="">
+      <div class="entry-name">${esc(r.name)}</div>
+      ${r.from ? `<div class="entry-type">${esc(r.from)}</div>` : ""}
+      <div class="entry-type">${esc(typeLabel)}</div>
+      <button class="entry-edit" onclick="startEdit(${r.id})">✎ Изменить</button>
+    </div>`;
+  }).join("");
+
+  // Показываем кнопку сохранения порядка только если что-то сдвинули
+  const btn = document.getElementById("btn-save-order");
+  const hint = document.getElementById("order-hint");
+  btn.classList.toggle("visible", orderDirty);
+  hint.classList.toggle("visible", listData.length > 1);
+}
+
 async function loadList() {
   try {
-    const res  = await fetch("/favorites.json?_=" + Date.now());
+    const res = await fetch("/favorites.json?_=" + Date.now());
     if (!res.ok) return;
     const data = await res.json();
     if (!data.length) return;
 
-    document.getElementById("list-title").style.display = "flex";
-    const list = document.getElementById("entries-list");
-    list.innerHTML = data.map(r => {
-      const typeLabel = r.type === "person"
-        ? (SUBTYPE_LABELS[r.subtype] || "Персона")
-        : "Персонаж";
-      return `
-      <div class="entry-row">
-        <img class="entry-avatar" src="${esc(r.image || "")}" onerror="this.style.display='none'" alt="">
-        <div class="entry-name">${esc(r.name)}</div>
-        ${r.from ? `<div class="entry-type">${esc(r.from)}</div>` : ""}
-        <div class="entry-type">${esc(typeLabel)}</div>
-        <button class="entry-edit" onclick="startEdit(${r.id})">✎ Изменить</button>
-      </div>`;
-    }).join("");
+    listData   = data;
+    orderDirty = false;
+    document.getElementById("list-header").style.display = "flex";
+    renderList();
   } catch {}
 }
 
 async function startEdit(id) {
+  const entry = listData.find(r => r.id === id);
+  if (!entry) return;
+  editingId = entry.id;
+  fillForm(entry);
+  document.getElementById("edit-banner").style.display = "flex";
+  document.getElementById("edit-name-hint").textContent = entry.name;
+  document.getElementById("page-subtitle").textContent = "Редактировать запись";
+  document.getElementById("btn-save").textContent = "Сохранить изменения";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ── Сохранить порядок ───────────────────────────
+async function saveOrder() {
+  const btn = document.getElementById("btn-save-order");
+  btn.disabled = true;
+  btn.textContent = "Сохраняем…";
+
   try {
-    const res   = await fetch("/favorites.json?_=" + Date.now());
-    const data  = await res.json();
-    const entry = data.find(r => r.id === id);
-    if (!entry) return;
-    editingId = entry.id;
-    fillForm(entry);
-    document.getElementById("edit-banner").style.display = "flex";
-    document.getElementById("edit-name-hint").textContent = entry.name;
-    document.getElementById("page-subtitle").textContent = "Редактировать запись";
-    document.getElementById("btn-save").textContent = "Сохранить изменения";
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const res  = await fetch("/api/save-favorite", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ _reorder: listData.map(r => r.id) }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      orderDirty = false;
+      btn.classList.remove("visible");
+      document.getElementById("order-hint").classList.remove("visible");
+      setStatus("ok", "✦ Порядок сохранён. Сайт обновится через ~30 секунд.");
+    } else {
+      setStatus("err", "Ошибка: " + (data.error || "неизвестная"));
+    }
   } catch (e) {
-    setStatus("err", "Не удалось загрузить: " + e.message);
+    setStatus("err", "Ошибка сети: " + e.message);
   }
+
+  btn.disabled = false;
+  btn.textContent = "✦ Сохранить порядок";
 }
 
 async function saveEntry() {
@@ -447,15 +570,12 @@ async function saveEntry() {
   const entry = {
     name,
     type,
-    image:   document.getElementById("f-image").value.trim() || null,
-    from:    document.getElementById("f-from").value.trim()  || null,
+    image: document.getElementById("f-image").value.trim() || null,
+    from:  document.getElementById("f-from").value.trim()  || null,
   };
-
-  // subtype только для персон
   if (type === "person") {
     entry.subtype = document.getElementById("f-subtype").value || null;
   }
-
   if (editingId !== null) entry._editId = editingId;
 
   btn.disabled = true;
