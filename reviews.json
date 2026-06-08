@@ -725,6 +725,33 @@
     "id": 22
   },
   {
+    "title": "Spiritfarer",
+    "url": "",
+    "type": "game",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2020",
+    "format": "Игра",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co2fe7.jpg",
+    "date_start": null,
+    "date_end": "2025-12-11",
+    "favorites": null,
+    "preview": "Стелла, становится духовным наставником, чья работа заключается в перевозке душ умерших людей в загробную жизнь",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ рисовка",
+      "Осты в тему",
+      "Стеклище",
+      "Живые герои",
+      "Без кринжа",
+      "Философия"
+    ],
+    "id": 91
+  },
+  {
     "title": "Wuthering Waves",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mdq42y67ac2b",
     "type": "gacha",
