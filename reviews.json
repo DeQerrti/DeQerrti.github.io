@@ -1078,6 +1078,35 @@
     "id": 48
   },
   {
+    "title": "Jojo Rabbit",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/7GsM4mtM0worCtIVeiQt28HieeN.jpg",
+    "date_start": null,
+    "date_end": "2022-04-08",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Стеклище",
+      "Чеховские ружья",
+      "До титров",
+      "Живые герои",
+      "Философия",
+      "Чистый кайф"
+    ],
+    "id": 60
+  },
+  {
     "title": "They Shall Not Grow Old",
     "url": "",
     "type": "movie",
