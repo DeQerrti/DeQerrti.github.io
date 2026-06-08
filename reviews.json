@@ -914,6 +914,32 @@
     "id": 41
   },
   {
+    "title": "Corpus Christi",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/6VZlm8sEwxkE3L5nXxz17QLj1sF.jpg",
+    "date_start": null,
+    "date_end": "2023-08-08",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Живые герои",
+      "Крутой протагонист",
+      "Сюжет удивил",
+      "Философия",
+      "Без кринжа"
+    ],
+    "id": 57
+  },
+  {
     "title": "Vinland Saga",
     "url": "",
     "type": "anime",
