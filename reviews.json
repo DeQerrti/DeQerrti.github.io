@@ -664,6 +664,7 @@
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mbttyoi6uc2t",
     "type": "movie",
     "status": "completed",
+    "favorite": true,
     "source": "bluesky",
     "url2": null,
     "source2": null,
