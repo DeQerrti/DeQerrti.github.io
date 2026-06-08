@@ -316,6 +316,7 @@
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mjz65giwhc23",
     "type": "gacha",
     "status": "current",
+    "favorite": true,
     "source": "bluesky",
     "url2": null,
     "source2": null,
