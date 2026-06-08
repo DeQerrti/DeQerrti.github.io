@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════
 //  STATS — вкладка Статистика
-//  Зависит от: config.js, api.js, cards.js, now.js
+//  Читает только из reviews.json
+//  Зависит от: config.js, api.js, cards.js
 // ══════════════════════════════════════════════
 
 async function loadStats() {
@@ -12,15 +13,6 @@ async function loadStats() {
 
   try {
     await fetchReviews();
-
-    if (!cache.now) {
-      await new Promise(resolve => {
-        const orig = window.renderNow;
-        window.renderNow = (data) => { orig(data); resolve(); };
-        loadNow();
-      });
-    }
-
     renderStats();
   } catch (err) {
     box.innerHTML = `<div class="state-box">Ошибка: ${esc(err.message)}</div>`;
@@ -30,54 +22,42 @@ async function loadStats() {
 }
 
 function renderStats() {
-  const box = document.getElementById("tab-stats");
-  const d   = cache.now || {};
+  const box     = document.getElementById("tab-stats");
   const reviews = cache.reviews || [];
 
-  const alCompleted     = d.alCompleted     || [];
-  const traktMovies     = d.traktMovies     || [];
-  const traktShows      = d.traktShows      || [];
-  const booksCompleted  = d.booksCompleted  || [];
-  const manualCompleted = d.manualCompleted || [];
+  const completed = reviews.filter(r =>
+    r.status === "completed" || (!r.status && (r.preview || r.grade))
+  );
 
-  const alAnime = alCompleted.filter(e => e.media?.type === "ANIME");
-  const alManga = alCompleted.filter(e => e.media?.type === "MANGA" && !NOVEL_FORMATS.includes(e.media?.format));
-  const alNovel = alCompleted.filter(e => NOVEL_FORMATS.includes(e.media?.format));
-  const manualGames = manualCompleted.filter(r => r.type === "game" || r.type === "vn");
+  // ── Счётчики по типам ──────────────────────────
+  const TYPE_LABELS = {
+    anime:   "Аниме",
+    manga:   "Манга",
+    manhwa:  "Манхва",
+    manhua:  "Маньхуа",
+    novel:   "Ранобэ",
+    movie:   "Фильмы",
+    show:    "Сериалы",
+    dorama:  "Дорамы",
+    book:    "Книги",
+    game:    "Игры",
+  };
 
-  const counts = [
-    { label: "Аниме",   val: alAnime.length },
-    { label: "Манга",   val: alManga.length },
-    { label: "Ранобе",  val: alNovel.length },
-    { label: "Фильмы",  val: traktMovies.length },
-    { label: "Сериалы", val: traktShows.length },
-    { label: "Книги",   val: booksCompleted.length },
-    { label: "Игры",    val: manualGames.length },
-  ].filter(c => c.val > 0);
+  const typeCounts = {};
+  for (const r of completed) {
+    const t = r.type || "anime";
+    typeCounts[t] = (typeCounts[t] || 0) + 1;
+  }
+
+  const counts = Object.entries(TYPE_LABELS)
+    .map(([key, label]) => ({ label, val: typeCounts[key] || 0 }))
+    .filter(c => c.val > 0);
 
   const total = counts.reduce((s, c) => s + c.val, 0);
 
   // ── По годам просмотра ─────────────────────────
   const watchYears = {};
-  for (const e of alCompleted) {
-    const y = e.completedAt?.year;
-    if (y) watchYears[y] = (watchYears[y] || 0) + 1;
-  }
-  for (const e of traktMovies) {
-    const y = e.last_watched_at ? new Date(e.last_watched_at).getFullYear() : null;
-    if (y) watchYears[y] = (watchYears[y] || 0) + 1;
-  }
-  for (const e of traktShows) {
-    const y = e.last_watched_at ? new Date(e.last_watched_at).getFullYear() : null;
-    if (y) watchYears[y] = (watchYears[y] || 0) + 1;
-  }
-  for (const b of booksCompleted) {
-    const reads = b.user_book_reads || [];
-    const fin   = reads[reads.length - 1]?.finished_at;
-    const y     = fin ? new Date(fin).getFullYear() : null;
-    if (y) watchYears[y] = (watchYears[y] || 0) + 1;
-  }
-  for (const r of manualCompleted) {
+  for (const r of completed) {
     const raw = r.date_end || r.date_start || r.date;
     const y   = raw ? new Date(raw).getFullYear() : null;
     if (y) watchYears[y] = (watchYears[y] || 0) + 1;
@@ -85,23 +65,7 @@ function renderStats() {
 
   // ── По годам выхода ────────────────────────────
   const releaseYears = {};
-  for (const e of alCompleted) {
-    const y = e.media?.startDate?.year;
-    if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
-  }
-  for (const e of traktMovies) {
-    const y = parseInt(e._year);
-    if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
-  }
-  for (const e of traktShows) {
-    const y = parseInt(e._year);
-    if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
-  }
-  for (const b of booksCompleted) {
-    const y = b.book?.release_year || b.release_year;
-    if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
-  }
-  for (const r of manualCompleted) {
+  for (const r of completed) {
     const y = parseInt(r.year);
     if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
   }
@@ -136,7 +100,7 @@ function renderStats() {
   animateBars();
 }
 
-// ── Счётчики ──────────────────────────────────
+// ── Счётчики ───────────────────────────────────
 function renderCounters(counts, total) {
   const items = counts.map(c => `
     <div class="stat-counter">
@@ -145,23 +109,20 @@ function renderCounters(counts, total) {
     </div>
   `).join("");
 
-  return `
-    <section class="stat-section">
-      <h2 class="section-title">Всего</h2>
-      <div class="stat-total">
-        <span class="stat-total-num" data-target="${total}">0</span>
-        <span class="stat-total-label">тайтлов</span>
-      </div>
-      <div class="stat-counters">${items}</div>
-    </section>
-  `;
+  return `<section class="stat-section">
+    <h2 class="section-title">Всего</h2>
+    <div class="stat-total">
+      <span class="stat-total-num" data-target="${total}">0</span>
+      <span class="stat-total-label">тайтлов</span>
+    </div>
+    <div class="stat-counters">${items}</div>
+  </section>`;
 }
 
 // ── Пончик ─────────────────────────────────────
 function renderDonut(counts, total) {
   if (!total) return "";
-
-  const colors = ["#8b1a1a","#c0392b","#d4a017","#2d8a4e","#2563a8","#7c3aed","#706860"];
+  const colors = ["#8b1a1a","#c0392b","#d4a017","#2d8a4e","#2563a8","#7c3aed","#706860","#4a8c5c","#b87333","#5a7a9a"];
   const r = 80, cx = 100, cy = 100;
   const circumference = 2 * Math.PI * r;
 
@@ -182,60 +143,53 @@ function renderDonut(counts, total) {
       fill="none" stroke="${colors[i % colors.length]}" stroke-width="16"
       stroke-dasharray="${dash.toFixed(2)} ${(circumference - dash).toFixed(2)}"
       stroke-dashoffset="${(circumference - accum * circumference).toFixed(2)}"
-      style="transform:rotate(-90deg);transform-origin:${cx}px ${cy}px"
-    />`;
+      style="transform:rotate(-90deg);transform-origin:${cx}px ${cy}px"/>`;
     accum += pct;
     return seg;
   }).join("");
 
-  return `
-    <section class="stat-section">
-      <h2 class="section-title">Разбивка по типам</h2>
-      <div class="stat-donut-wrap">
-        <svg viewBox="0 0 200 200" class="stat-donut-svg">
-          ${segs}
-          <text x="${cx}" y="${cy - 6}" text-anchor="middle" class="donut-center-num">${total}</text>
-          <text x="${cx}" y="${cy + 14}" text-anchor="middle" class="donut-center-label">всего</text>
-        </svg>
-        <div class="donut-legend">${legend}</div>
-      </div>
-    </section>
-  `;
+  return `<section class="stat-section">
+    <h2 class="section-title">Разбивка по типам</h2>
+    <div class="stat-donut-wrap">
+      <svg viewBox="0 0 200 200" class="stat-donut-svg">
+        ${segs}
+        <text x="${cx}" y="${cy - 6}" text-anchor="middle" class="donut-center-num">${total}</text>
+        <text x="${cx}" y="${cy + 14}" text-anchor="middle" class="donut-center-label">всего</text>
+      </svg>
+      <div class="donut-legend">${legend}</div>
+    </div>
+  </section>`;
 }
 
 // ── Барчарты по годам ──────────────────────────
 function renderWatchYearChart(yearData) {
-  return renderBarChart("По годам просмотра", "watch-bars", yearData, "year-bar-watch");
+  return renderBarChart("По годам просмотра", "watch-bars", yearData);
 }
 function renderReleaseYearChart(yearData) {
-  return renderBarChart("По годам выхода", "release-bars", yearData, "year-bar-release");
+  return renderBarChart("По годам выхода", "release-bars", yearData);
 }
 
-function renderBarChart(title, id, yearData, barClass) {
+function renderBarChart(title, id, yearData) {
   const sorted = Object.entries(yearData).sort((a, b) => a[0] - b[0]);
   if (!sorted.length) return "";
   const max = Math.max(...sorted.map(([,v]) => v));
   const bars = sorted.map(([year, val]) => {
     const pct = max ? (val / max * 100) : 0;
-    return `
-      <div class="year-bar-wrap">
-        <div class="year-bar-track">
-          <div class="year-bar ${barClass}" data-pct="${pct.toFixed(1)}" style="height:0%"></div>
-        </div>
-        <div class="year-bar-val">${val}</div>
-        <div class="year-bar-label">${esc(String(year))}</div>
+    return `<div class="year-bar-wrap">
+      <div class="year-bar-track">
+        <div class="year-bar" data-pct="${pct.toFixed(1)}" style="height:0%"></div>
       </div>
-    `;
+      <div class="year-bar-val">${val}</div>
+      <div class="year-bar-label">${esc(String(year))}</div>
+    </div>`;
   }).join("");
-  return `
-    <section class="stat-section">
-      <h2 class="section-title">${esc(title)}</h2>
-      <div class="year-bars-wrap" id="${id}">${bars}</div>
-    </section>
-  `;
+  return `<section class="stat-section">
+    <h2 class="section-title">${esc(title)}</h2>
+    <div class="year-bars-wrap" id="${id}">${bars}</div>
+  </section>`;
 }
 
-// ── Оценки — от лучшего к худшему ─────────────
+// ── Оценки ─────────────────────────────────────
 function renderGradeChart(gradeCounts) {
   const total = Object.values(gradeCounts).reduce((s, v) => s + v, 0);
   if (!total) return "";
@@ -246,23 +200,19 @@ function renderGradeChart(gradeCounts) {
     if (!g) return "";
     const val = gradeCounts[key] || 0;
     const pct = max ? (val / max * 100) : 0;
-    return `
-      <div class="grade-row">
-        <div class="grade-row-label" style="color:${g.color}">${esc(g.name)}</div>
-        <div class="grade-row-track">
-          <div class="grade-row-bar" data-pct="${pct.toFixed(1)}" style="width:0%;background:${g.color}"></div>
-        </div>
-        <div class="grade-row-val">${val}</div>
+    return `<div class="grade-row">
+      <div class="grade-row-label" style="color:${g.color}">${esc(g.name)}</div>
+      <div class="grade-row-track">
+        <div class="grade-row-bar" data-pct="${pct.toFixed(1)}" style="width:0%;background:${g.color}"></div>
       </div>
-    `;
+      <div class="grade-row-val">${val}</div>
+    </div>`;
   }).join("");
 
-  return `
-    <section class="stat-section">
-      <h2 class="section-title">Шкала послевкусия</h2>
-      <div class="grade-bars">${bars}</div>
-    </section>
-  `;
+  return `<section class="stat-section">
+    <h2 class="section-title">Шкала послевкусия</h2>
+    <div class="grade-bars">${bars}</div>
+  </section>`;
 }
 
 // ── Облако тегов ────────────────────────────────
@@ -276,15 +226,13 @@ function renderTagCloud(topTags) {
     return `<span class="rtag ${cls} stat-tag" style="font-size:${scale.toFixed(2)}rem"
       data-tip="${esc(info?.tip || "")}">${esc(tag)} <span class="stat-tag-cnt">${cnt}</span></span>`;
   }).join("");
-  return `
-    <section class="stat-section">
-      <h2 class="section-title">Частые теги в отзывах</h2>
-      <div class="stat-tag-cloud">${items}</div>
-    </section>
-  `;
+  return `<section class="stat-section">
+    <h2 class="section-title">Частые теги в отзывах</h2>
+    <div class="stat-tag-cloud">${items}</div>
+  </section>`;
 }
 
-// ── Анимации ────────────────────────────────────
+// ── Анимации ───────────────────────────────────
 function animateCounters() {
   document.querySelectorAll("[data-target]").forEach(el => {
     const target = parseInt(el.dataset.target);
