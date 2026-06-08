@@ -1,5 +1,12 @@
 [
   {
+    "name": "Deishuu Kaiki",
+    "type": "character",
+    "image": "https://shikimori.io/uploads/poster/characters/53641/main-3cef22717608b25088cdb4d0c78a7998.webp",
+    "from": "Bakemonogatari",
+    "id": 8
+  },
+  {
     "name": "Kiritsugu Emiya",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b10010-fNspzan5MzNk.png",
