@@ -41,6 +41,7 @@ function renderStats() {
     dorama:  "Дорамы",
     book:    "Книги",
     game:    "Игры",
+    gacha:   "Гача",
   };
 
   const typeCounts = {};
