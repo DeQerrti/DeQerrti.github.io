@@ -1218,6 +1218,37 @@
     "id": 52
   },
   {
+    "title": "Farewell My Concubine",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1993",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/iJ99VEPZ8aZTGm18DN6RfZCxYwk.jpg",
+    "date_start": null,
+    "date_end": "2020-07-08",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Живые герои",
+      "До титров",
+      "Стеклище",
+      "Без кринжа",
+      "Чистый кайф",
+      "Жесть",
+      "Философия",
+      "Серая мораль",
+      "Топ визуал",
+      "Осты в тему"
+    ],
+    "id": 66
+  },
+  {
     "title": "1917",
     "url": "",
     "type": "movie",
