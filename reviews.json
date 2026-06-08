@@ -1067,6 +1067,34 @@
     "id": 61
   },
   {
+    "title": "Tengoku Daimakyou",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2023",
+    "format": "1 сезон (13 серий)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx155783-YosKbsmZzuDE.jpg",
+    "date_start": null,
+    "date_end": "2023-08-10",
+    "favorites": null,
+    "preview": "Из-за неизвестного катаклизма вся человеческая цивилизация пришла в упадок. Те немногие, кому посчастливилось остаться в живых, обречены на суровое существование в реалиях постапокалипсиса со всеми вытекающими: нехваткой воды, продовольствия, энергии и всех остальных благ, которые в один момент канули в небытие",
+    "grade": "attrakcion",
+    "tags": [
+      "Долгая раскачка",
+      "Стеклище",
+      "Чеховские ружья",
+      "Проседает",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Философия"
+    ],
+    "id": 75
+  },
+  {
     "title": "Corpus Christi",
     "url": "",
     "type": "movie",
