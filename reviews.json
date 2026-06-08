@@ -786,6 +786,32 @@
     "id": 21
   },
   {
+    "title": "Dune",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2021,2024",
+    "format": "(2 фильма)",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+    "date_start": null,
+    "date_end": "2024-06-10",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Оригинальный сеттинг",
+      "Картонные чары",
+      "Чистый кайф"
+    ],
+    "id": 41
+  },
+  {
     "title": "Vinland Saga",
     "url": "",
     "type": "anime",
