@@ -1,5 +1,12 @@
 [
   {
+    "name": "Bondrewd",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b122463-p4o7qOTJ2Lba.jpg",
+    "from": "Made in Abyss",
+    "id": 10
+  },
+  {
     "name": "Meme Oshino",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22552-CZz1T3AjRyVd.png",
