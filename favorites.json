@@ -1,5 +1,40 @@
 [
   {
+    "name": "Phosphophyllite",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b123385-ild8gXk13xcO.png",
+    "from": "Houseki no Kuni",
+    "id": 1
+  },
+  {
+    "name": "Kiritsugu Emiya",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b10010-fNspzan5MzNk.png",
+    "from": "Fate/Zero",
+    "id": 7
+  },
+  {
+    "name": "Ken Kaneki",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b87275-mb13EWZBdbh3.png",
+    "from": "Tokyo Ghoul",
+    "id": 2
+  },
+  {
+    "name": "Deishuu Kaiki",
+    "type": "character",
+    "image": "https://shikimori.io/uploads/poster/characters/53641/main-3cef22717608b25088cdb4d0c78a7998.webp",
+    "from": "Bakemonogatari",
+    "id": 8
+  },
+  {
+    "name": "Meme Oshino",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22552-CZz1T3AjRyVd.png",
+    "from": "Bakemonogatari",
+    "id": 9
+  },
+  {
     "name": "Nadeko Sengoku",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22050-RUw3vyGYdr9W.jpg",
@@ -7,12 +42,113 @@
     "id": 28
   },
   {
-    "name": "Jouji Nakata",
+    "name": "Eto",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90231-7ZeFK1DbrAxw.jpg",
+    "from": "Tokyo Ghoul",
+    "id": 3
+  },
+  {
+    "name": "Nobunaga Oda",
+    "type": "character",
+    "image": "https://shikimori.io/uploads/poster/characters/137864/main-6433208a49694a1e1bf0e59bf582e2b9.webp",
+    "from": "Fate/type Redline",
+    "id": 6
+  },
+  {
+    "name": "Bondrewd",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b122463-p4o7qOTJ2Lba.jpg",
+    "from": "Made in Abyss",
+    "id": 10
+  },
+  {
+    "name": "Gen Urobuchi",
     "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95091-idoMaN26z80B.png",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n105308-AGdgHFIC2YSV.jpg",
+    "from": null,
+    "subtype": "author",
+    "id": 5
+  },
+  {
+    "name": "Satoshi Kon",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n99580-ZgK1XeUTVziv.png",
+    "from": null,
+    "subtype": "director",
+    "id": 4
+  },
+  {
+    "name": "Masaaki Yuasa",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100068-6DCiwXuyBESm.png",
+    "from": null,
+    "subtype": "director",
+    "id": 20
+  },
+  {
+    "name": "Shinichirou Watanabe",
+    "type": "person",
+    "image": "https://shikimori.io/uploads/poster/people/2009/main-ad33108424db383b68852e60ffd01efe.webp",
+    "from": null,
+    "subtype": "director",
+    "id": 15
+  },
+  {
+    "name": "Akiyuki Shinbou",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100089-SFwZPtWrncoa.png",
+    "from": null,
+    "subtype": "director",
+    "id": 16
+  },
+  {
+    "name": "Hiroyuki Sawano",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n103509-IzuF5bIsiQnH.jpg",
+    "from": null,
+    "subtype": "composer",
+    "id": 12
+  },
+  {
+    "name": "Susumu Hirasawa",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100750-9SE7NIZv6UmH.jpg",
+    "from": null,
+    "subtype": "composer",
+    "id": 14
+  },
+  {
+    "name": "Yuki Kajiura",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100077-EQO5m2lkmUQk.jpg",
+    "from": null,
+    "subtype": "composer",
+    "id": 17
+  },
+  {
+    "name": "Takehito Koyasu",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95160-jWevcH7BmfE1.jpg",
     "from": null,
     "subtype": "seiyuu",
-    "id": 27
+    "id": 11
+  },
+  {
+    "name": "Kenjirou Tsuda",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95591-WQGdD3ubbeoq.jpg",
+    "from": null,
+    "subtype": "seiyuu",
+    "id": 13
+  },
+  {
+    "name": "Toshiyuki Morikawa",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95006-hoLuiZANeD3Q.png",
+    "from": null,
+    "subtype": "seiyuu",
+    "id": 18
   },
   {
     "name": "Aoi Yuuki",
@@ -21,6 +157,14 @@
     "from": null,
     "subtype": "seiyuu",
     "id": 26
+  },
+  {
+    "name": "Jouji Nakata",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95091-idoMaN26z80B.png",
+    "from": null,
+    "subtype": "seiyuu",
+    "id": 27
   },
   {
     "name": "Kana Hanazawa",
@@ -63,155 +207,11 @@
     "id": 21
   },
   {
-    "name": "Masaaki Yuasa",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100068-6DCiwXuyBESm.png",
-    "from": null,
-    "subtype": "director",
-    "id": 20
-  },
-  {
     "name": "Daisuke Ono",
     "type": "person",
     "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95212-wX1M4LJN96q2.png",
     "from": null,
     "subtype": "seiyuu",
     "id": 19
-  },
-  {
-    "name": "Toshiyuki Morikawa",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95006-hoLuiZANeD3Q.png",
-    "from": null,
-    "subtype": "seiyuu",
-    "id": 18
-  },
-  {
-    "name": "Yuki Kajiura",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100077-EQO5m2lkmUQk.jpg",
-    "from": null,
-    "subtype": "composer",
-    "id": 17
-  },
-  {
-    "name": "Akiyuki Shinbou",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100089-SFwZPtWrncoa.png",
-    "from": null,
-    "subtype": "director",
-    "id": 16
-  },
-  {
-    "name": "Shinichirou Watanabe",
-    "type": "person",
-    "image": "https://shikimori.io/uploads/poster/people/2009/main-ad33108424db383b68852e60ffd01efe.webp",
-    "from": null,
-    "subtype": "director",
-    "id": 15
-  },
-  {
-    "name": "Susumu Hirasawa",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n100750-9SE7NIZv6UmH.jpg",
-    "from": null,
-    "subtype": "composer",
-    "id": 14
-  },
-  {
-    "name": "Kenjirou Tsuda",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95591-WQGdD3ubbeoq.jpg",
-    "from": null,
-    "subtype": "seiyuu",
-    "id": 13
-  },
-  {
-    "name": "Hiroyuki Sawano",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n103509-IzuF5bIsiQnH.jpg",
-    "from": null,
-    "subtype": "composer",
-    "id": 12
-  },
-  {
-    "name": "Takehito Koyasu",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95160-jWevcH7BmfE1.jpg",
-    "from": null,
-    "subtype": "seiyuu",
-    "id": 11
-  },
-  {
-    "name": "Bondrewd",
-    "type": "character",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b122463-p4o7qOTJ2Lba.jpg",
-    "from": "Made in Abyss",
-    "id": 10
-  },
-  {
-    "name": "Meme Oshino",
-    "type": "character",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22552-CZz1T3AjRyVd.png",
-    "from": "Bakemonogatari",
-    "id": 9
-  },
-  {
-    "name": "Deishuu Kaiki",
-    "type": "character",
-    "image": "https://shikimori.io/uploads/poster/characters/53641/main-3cef22717608b25088cdb4d0c78a7998.webp",
-    "from": "Bakemonogatari",
-    "id": 8
-  },
-  {
-    "name": "Kiritsugu Emiya",
-    "type": "character",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b10010-fNspzan5MzNk.png",
-    "from": "Fate/Zero",
-    "id": 7
-  },
-  {
-    "name": "Nobunaga Oda",
-    "type": "character",
-    "image": "https://shikimori.io/uploads/poster/characters/137864/main-6433208a49694a1e1bf0e59bf582e2b9.webp",
-    "from": "Fate/type Redline",
-    "id": 6
-  },
-  {
-    "name": "Gen Urobuchi",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n105308-AGdgHFIC2YSV.jpg",
-    "from": null,
-    "subtype": "author",
-    "id": 5
-  },
-  {
-    "name": "Satoshi Kon",
-    "type": "person",
-    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n99580-ZgK1XeUTVziv.png",
-    "from": null,
-    "subtype": "director",
-    "id": 4
-  },
-  {
-    "name": "Eto",
-    "type": "character",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90231-7ZeFK1DbrAxw.jpg",
-    "from": "Tokyo Ghoul",
-    "id": 3
-  },
-  {
-    "name": "Ken Kaneki",
-    "type": "character",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b87275-mb13EWZBdbh3.png",
-    "from": "Tokyo Ghoul",
-    "id": 2
-  },
-  {
-    "name": "Phosphophyllite",
-    "type": "character",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b123385-ild8gXk13xcO.png",
-    "from": "Houseki no Kuni",
-    "id": 1
   }
 ]
