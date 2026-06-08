@@ -726,7 +726,6 @@ async function saveReview() {
   const hasContent = preview || selectedGrade;
 
   if (!title) { setStatus("err", "Заполни название"); return; }
-  if (hasContent && !url) { setStatus("err", "Заполни ссылку на источник"); return; }
 
   const url2    = document.getElementById("f-url2").value.trim() || null;
   const source2 = document.getElementById("f-source2").value     || null;
