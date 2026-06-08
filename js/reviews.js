@@ -29,12 +29,25 @@ async function loadReviews() {
   }
 }
 
+// ── Порядок фильтров ───────────────────────────
+const TYPE_FILTER_ORDER   = ["anime","manga","movie","show","game","gacha","book","ranobe"];
+const GRADE_FILTER_ORDER  = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
+const SOURCE_FILTER_ORDER = ["teletype","bluesky"];
+
+function sortByOrder(arr, order) {
+  return [...arr].sort((a, b) => {
+    const ai = order.indexOf(a);
+    const bi = order.indexOf(b);
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
+}
+
 function renderReviews(reviews) {
-  const types   = [...new Set(reviews.map(r => r.type).filter(Boolean))];
-  const grades  = [...new Set(reviews.map(r => r.grade).filter(Boolean))];
-  const sources = [...new Set(
+  const types   = sortByOrder([...new Set(reviews.map(r => r.type).filter(Boolean))],   TYPE_FILTER_ORDER);
+  const grades  = sortByOrder([...new Set(reviews.map(r => r.grade).filter(Boolean))],  GRADE_FILTER_ORDER);
+  const sources = sortByOrder([...new Set(
     reviews.flatMap(r => [r.source, r.source2]).filter(Boolean)
-  )];
+  )], SOURCE_FILTER_ORDER);
 
   const adminBtn = isAdmin()
     ? `<a href="/add" class="admin-add-btn">+ Добавить отзыв</a>`
