@@ -1691,6 +1691,32 @@
     "id": 66
   },
   {
+    "title": "Hotaru no Haka",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1988",
+    "format": "Фильм",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx578-vU6XcOlb1XFU.jpg",
+    "date_start": null,
+    "date_end": "2020-06-24",
+    "favorites": null,
+    "preview": "В последние дни Второй Мировой войны 14-летний Сэйта и его 4-летняя сестра Сэцуко теряют мать во время американской бомбёжки Кобэ. Их отец, служивший в Императорском флоте Японии, также погибает. Сирот принимает к себе тётка, но относится к детям плохо, и через некоторое время они убегают.",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Осты в тему",
+      "Стеклище",
+      "До титров",
+      "Живые герои",
+      "Без кринжа"
+    ],
+    "id": 90
+  },
+  {
     "title": "1917",
     "url": "",
     "type": "movie",
