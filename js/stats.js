@@ -241,7 +241,7 @@ function renderGradeChart(gradeCounts) {
   if (!total) return "";
   const max = Math.max(...Object.values(gradeCounts));
 
-  const bars = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"].map(key => {
+  const bars = GRADE_ORDER.map(key => {
     const g   = GRADES[key];
     if (!g) return "";
     const val = gradeCounts[key] || 0;
