@@ -996,6 +996,34 @@
     "id": 50
   },
   {
+    "title": "Hacksaw Ridge",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2016",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/fnOMP6mjmOmZwmlC1n0K7ivrzt1.jpg",
+    "date_start": null,
+    "date_end": "2019-08-14",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "До титров",
+      "Живые герои",
+      "Крутой протагонист",
+      "Без кринжа",
+      "Философия",
+      "Чистый кайф",
+      "Серая мораль"
+    ],
+    "id": 51
+  },
+  {
     "title": "Head Full of Honey",
     "url": "",
     "type": "anime",
