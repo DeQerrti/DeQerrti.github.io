@@ -124,6 +124,7 @@ const PERSON_SUBTYPE_LABELS = {
   author:   "Автор",
   seiyuu:   "Сэйю",
   artist:   "Художник",
+  composer: "Композитор",
 };
 
 // Карточка персонажа или персоны (из favorites.json)
