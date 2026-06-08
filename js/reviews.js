@@ -3,10 +3,16 @@
 //  Зависит от: config.js, api.js
 // ══════════════════════════════════════════════
 
-// Проверяем авторизацию по куке — только у тебя она есть
 function isAdmin() {
   return document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui="));
 }
+
+// ── Состояние фильтров ─────────────────────────
+const rvState = {
+  type:   "all",
+  grade:  "all",
+  source: "all",
+};
 
 async function loadReviews() {
   const data = await fetchReviews();
@@ -17,24 +23,102 @@ async function loadReviews() {
     document.getElementById("tab-reviews").innerHTML =
       `<div class="state-box">
         <div style="font-size:1.5rem;margin-bottom:.75rem">✦</div>
-        Отзывов пока нет.<br>
-        <span style="font-size:.85rem;margin-top:.5rem;display:block;font-style:italic">
-          Добавь записи в reviews.json
-        </span>
+        Отзывов пока нет.
       </div>`;
   }
 }
 
 function renderReviews(reviews) {
-  document.getElementById("tab-reviews").innerHTML = `
+  // Собираем доступные значения для фильтров из реальных данных
+  const types   = [...new Set(reviews.map(r => r.type).filter(Boolean))];
+  const grades  = [...new Set(reviews.map(r => r.grade).filter(Boolean))];
+  const sources = [...new Set(
+    reviews.flatMap(r => [r.source, r.source2]).filter(Boolean)
+  )];
+
+  const box = document.getElementById("tab-reviews");
+  box.innerHTML = `
+    <div class="rv-filters">
+      ${renderRvFilterGroup("type",   "Тип",      types,   TYPE_LABELS,  rvState.type)}
+      ${renderRvFilterGroup("grade",  "Оценка",   grades,  gradeLabels(), rvState.grade)}
+      ${renderRvFilterGroup("source", "Источник", sources, SOURCE_LABELS, rvState.source)}
+    </div>
     <section class="group">
-      <h2 class="section-title">Отзывы</h2>
-      <div class="reviews-grid">
-        ${reviews.map((r, i) => reviewCard(r, i)).join("")}
-      </div>
+      <div class="reviews-grid" id="rv-grid"></div>
     </section>`;
+
+  bindRvFilters(reviews);
+  applyRvFilters(reviews);
 }
 
+// Лейблы оценок для фильтра
+function gradeLabels() {
+  const out = {};
+  for (const [key, g] of Object.entries(GRADES)) out[key] = g.name;
+  return out;
+}
+
+// Рендер одной группы кнопок-фильтров
+function renderRvFilterGroup(field, title, values, labelsMap, active) {
+  if (!values.length) return "";
+  const btns = [
+    `<button class="rv-filter-btn${active === "all" ? " active" : ""}" data-field="${field}" data-val="all">Все</button>`,
+    ...values.map(v => {
+      const label = labelsMap[v] || v;
+      return `<button class="rv-filter-btn${active === v ? " active" : ""}" data-field="${field}" data-val="${esc(v)}">${esc(label)}</button>`;
+    })
+  ].join("");
+  return `<div class="rv-filter-group">
+    <span class="rv-filter-label">${esc(title)}</span>
+    ${btns}
+  </div>`;
+}
+
+function bindRvFilters(reviews) {
+  document.querySelectorAll(".rv-filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const field = btn.dataset.field;
+      const val   = btn.dataset.val;
+      rvState[field] = val;
+
+      // Обновляем активную кнопку в группе
+      document.querySelectorAll(`.rv-filter-btn[data-field="${field}"]`)
+        .forEach(b => b.classList.toggle("active", b.dataset.val === val));
+
+      applyRvFilters(reviews);
+    });
+  });
+}
+
+function applyRvFilters(reviews) {
+  let filtered = reviews;
+
+  if (rvState.type !== "all") {
+    filtered = filtered.filter(r => r.type === rvState.type);
+  }
+  if (rvState.grade !== "all") {
+    filtered = filtered.filter(r => r.grade === rvState.grade);
+  }
+  if (rvState.source !== "all") {
+    filtered = filtered.filter(r =>
+      r.source === rvState.source || r.source2 === rvState.source
+    );
+  }
+
+  const grid = document.getElementById("rv-grid");
+  if (!grid) return;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="state-box" style="padding:3rem 1rem;grid-column:1/-1">
+      Ничего не найдено
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((r, i) => reviewCard(r, i)).join("");
+}
+
+// ── Карточка отзыва ────────────────────────────
 function sourceBtnHtml(url, source) {
   if (!url) return "";
   const label = SOURCE_LABELS[source] || source || "Подробнее";
@@ -66,7 +150,6 @@ function reviewCard(r, i) {
     ? `<div class="review-waifu"><span class="review-waifu-label">Фавориты:</span> <span>${esc(r.favorites)}</span></div>`
     : "";
 
-  // Поддерживаем и новые поля date_end/date_start, и старое date
   const dateRaw = r.date_end || r.date_start || r.date || null;
   const dateStr = dateRaw
     ? new Date(dateRaw).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
@@ -89,7 +172,6 @@ function reviewCard(r, i) {
         ${sourceButtons}
       </div>`;
 
-  // Кнопка карандаша — только для админа
   const editId  = r.id ?? encodeURIComponent(r.title);
   const editBtn = isAdmin()
     ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
@@ -100,25 +182,20 @@ function reviewCard(r, i) {
     <div class="review-card"
         style="animation-delay:${Math.min(i * 40, 600)}ms;
                border-top: 2px solid ${grade ? grade.color + "66" : "var(--border2)"}">
-
       <div class="review-top">
         <div class="review-cover">
           <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
         </div>
         <div class="review-body">
           <div class="review-title">${esc(r.title)}</div>
-
           <div class="review-meta-row">
             ${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}
           </div>
           ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
-
           ${waifuHtml}
-
           <div class="review-preview">${esc(r.preview || "")}</div>
         </div>
       </div>
-
       ${tagsHtml}
       ${gradeHtml}
     </div>
