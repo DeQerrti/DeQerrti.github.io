@@ -1,7 +1,8 @@
 // ══════════════════════════════════════════════
 //  FAVORITES — вкладка Любимое
 //  Зависит от: config.js, api.js, cards.js
-//  Читает reviews.json — показывает записи с favorite: true
+//  Тайтлы — из reviews.json по флагу favorite: true
+//  Персонажи и персоны — из favorites.json
 // ══════════════════════════════════════════════
 
 async function loadFavorites() {
@@ -12,10 +13,17 @@ async function loadFavorites() {
   try {
     await fetchReviews();
 
-    const all = cache.reviews || [];
-    const favorites = all.filter(r => r.favorite === true);
+    const [favData] = await Promise.all([
+      fetch("/favorites.json?_=" + Date.now())
+        .then(r => r.ok ? r.json() : [])
+        .catch(() => [])
+    ]);
 
-    cache.fav = { favorites };
+    const titles     = (cache.reviews || []).filter(r => r.favorite === true);
+    const characters = favData.filter(r => r.type === "character");
+    const persons    = favData.filter(r => r.type === "person");
+
+    cache.fav = { titles, characters, persons };
     renderFavorites(cache.fav);
 
   } catch (err) {
@@ -29,25 +37,45 @@ async function loadFavorites() {
   }
 }
 
-function renderFavorites({ favorites }) {
+function renderFavorites({ titles, characters, persons }) {
   const box = document.getElementById("tab-favorites");
+  let html  = "";
 
-  if (!favorites.length) {
-    box.innerHTML = `<div class="state-box">Любимое пока пусто</div>`;
-    return;
+  // ── Тайтлы ──────────────────────────────────
+  if (titles.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Тайтлы</h2>
+      <div class="grid-now">
+        ${titles.map((r, i) => favTitleCard(r, i)).join("")}
+      </div>
+    </section>`;
   }
 
-  const cards = favorites.map((r, i) => favManualCard(r, i)).join("");
-
-  box.innerHTML = `
-    <section class="group">
-      <h2 class="section-title">Любимое</h2>
-      <div class="grid-now">${cards}</div>
+  // ── Персонажи ────────────────────────────────
+  if (characters.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Персонажи</h2>
+      <div class="grid-chars">
+        ${characters.map((r, i) => favPersonCard(r, i)).join("")}
+      </div>
     </section>`;
+  }
+
+  // ── Персоны ──────────────────────────────────
+  if (persons.length) {
+    html += `<section class="group">
+      <h2 class="section-title">Персоны</h2>
+      <div class="grid-chars">
+        ${persons.map((r, i) => favPersonCard(r, i)).join("")}
+      </div>
+    </section>`;
+  }
+
+  box.innerHTML = html || `<div class="state-box">Любимое пока пусто</div>`;
 }
 
-// Карточка любимой записи из reviews.json
-function favManualCard(r, index) {
+// Карточка тайтла (из reviews.json)
+function favTitleCard(r, index) {
   const info = findReviewForTitle(r.title);
   const typeLabels = {
     anime: "Аниме", manga: "Манга", manhwa: "Манхва", manhua: "Маньхуа",
@@ -70,6 +98,22 @@ function favManualCard(r, index) {
             ${gradeInlineHtml(info)}
           </div>`
         : ""}
+    </div>
+  </a>`;
+}
+
+// Карточка персонажа или персоны (из favorites.json)
+function favPersonCard(r, index) {
+  const img = r.image || PH_SQ;
+  const sub = r.from ? `<div class="card-meta"><span>${esc(r.from)}</span></div>` : "";
+
+  return `<a href="${esc(r.url || "#")}" target="_blank" rel="noopener"
+      class="card card-char"
+      style="animation-delay:${Math.min(index * 25, 500)}ms">
+    <img src="${esc(img)}" alt="${esc(r.name)}" loading="lazy" onerror="this.src='${PH_SQ}'">
+    <div class="card-body">
+      <div class="card-title">${esc(r.name)}</div>
+      ${sub}
     </div>
   </a>`;
 }
