@@ -1,5 +1,13 @@
 [
   {
+    "name": "Gen Urobuchi",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n105308-AGdgHFIC2YSV.jpg",
+    "from": null,
+    "subtype": "author",
+    "id": 5
+  },
+  {
     "name": "Satoshi Kon",
     "type": "person",
     "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n99580-ZgK1XeUTVziv.png",
