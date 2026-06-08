@@ -581,20 +581,22 @@
     "id": 3
   },
   {
-    "id": 4,
     "title": "Tokyo Ghoul",
     "url": "https://teletype.in/@tknovas/TokyoGhoul",
     "type": "manga",
+    "status": "completed",
+    "favorite": false,
     "source": "teletype",
     "url2": "https://bsky.app/profile/ktnovas.bsky.social/post/3mcbusf4ho22w",
     "source2": "bluesky",
     "year": "2011",
     "format": "Манга (14 томов)",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx63327-glC9cDxYBja9.png",
-    "date": "2026-02-10",
+    "date_start": "2026-01-12",
+    "date_end": "2026-02-10",
     "favorites": null,
     "preview": "История Канеки - это медленный демонтаж личности. Его постоянно ломают, пока он сам не перестаёт понимать, где заканчивается человек и начинается гуль. Манга не предлагает простых ответов и сознательно оставляет читателя в состоянии моральной неопределённости.",
-    "grade": null,
+    "grade": "vyskazyvanie",
     "tags": [
       "Топ рисовка",
       "Затягивает сразу",
@@ -607,7 +609,8 @@
       "Жесть",
       "Серая мораль",
       "Философия"
-    ]
+    ],
+    "id": 4
   },
   {
     "title": "Arknights: Endfield",
