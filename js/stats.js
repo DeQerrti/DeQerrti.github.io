@@ -25,6 +25,11 @@ function renderStats() {
   const box     = document.getElementById("tab-stats");
   const reviews = cache.reviews || [];
 
+  // Все записи с оценкой — независимо от статуса
+  // (гача в процессе тоже считается, раз уже оценена)
+  const withGrade = reviews.filter(r => r.grade);
+
+  // Для архивной статистики (по годам просмотра) — только завершённые
   const completed = reviews.filter(r =>
     r.status === "completed" || (!r.status && (r.preview || r.grade))
   );
@@ -45,7 +50,7 @@ function renderStats() {
   };
 
   const typeCounts = {};
-  for (const r of completed) {
+  for (const r of withGrade) {
     const t = r.type || "anime";
     typeCounts[t] = (typeCounts[t] || 0) + 1;
   }
@@ -56,7 +61,7 @@ function renderStats() {
 
   const total = counts.reduce((s, c) => s + c.val, 0);
 
-  // ── По годам просмотра ─────────────────────────
+  // ── По годам просмотра (только завершённые) ────
   const watchYears = {};
   for (const r of completed) {
     const raw = r.date_end || r.date_start || r.date;
@@ -64,20 +69,20 @@ function renderStats() {
     if (y) watchYears[y] = (watchYears[y] || 0) + 1;
   }
 
-  // ── По годам выхода ────────────────────────────
+  // ── По годам выхода (все с оценкой) ───────────
   const releaseYears = {};
-  for (const r of completed) {
+  for (const r of withGrade) {
     const y = parseInt(r.year);
     if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
   }
 
-  // ── Оценки ─────────────────────────────────────
+  // ── Оценки (все с оценкой) ─────────────────────
   const gradeCounts = {};
-  for (const r of reviews) {
-    if (r.grade) gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
+  for (const r of withGrade) {
+    gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
   }
 
-  // ── Теги ───────────────────────────────────────
+  // ── Теги (все записи) ──────────────────────────
   const tagCounts = {};
   for (const r of reviews) {
     for (const tag of (r.tags || [])) {
@@ -123,7 +128,7 @@ function renderCounters(counts, total) {
 // ── Пончик ─────────────────────────────────────
 function renderDonut(counts, total) {
   if (!total) return "";
-  const colors = ["#8b1a1a","#c0392b","#d4a017","#2d8a4e","#2563a8","#7c3aed","#706860","#4a8c5c","#b87333","#5a7a9a"];
+  const colors = ["#8b1a1a","#c0392b","#d4a017","#2d8a4e","#2563a8","#7c3aed","#706860","#4a8c5c","#b87333","#5a7a9a","#a05070"];
   const r = 80, cx = 100, cy = 100;
   const circumference = 2 * Math.PI * r;
 
@@ -216,7 +221,7 @@ function renderGradeChart(gradeCounts) {
   </section>`;
 }
 
-// ── Облако тегов ────────────────────────────────
+// ── Облако тегов ───────────────────────────────
 function renderTagCloud(topTags) {
   if (!topTags.length) return "";
   const max = topTags[0][1];
