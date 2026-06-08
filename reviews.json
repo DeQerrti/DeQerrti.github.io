@@ -59,6 +59,38 @@
     "id": 2
   },
   {
+    "title": "Houseki no Kuni",
+    "url": "https://teletype.in/@tknovas/LandoftheLustrous",
+    "type": "manga",
+    "status": "completed",
+    "favorite": true,
+    "source": "teletype",
+    "url2": "https://bsky.app/profile/ktnovas.bsky.social/post/3mhg2ovut6c2b",
+    "source2": "bluesky",
+    "year": "2012",
+    "format": "Манга (13 томов)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx74489-5HtDCFfut8Be.jpg",
+    "date_start": "2026-06-08",
+    "date_end": "2026-06-08",
+    "favorites": "Фосфофиллит, Питапат",
+    "preview": "Харуко Итикава под маской уютного мира скрывает экзистенциальный ужас, который редко встретишь даже в самых мрачных хоррорах. Это не линейное приключение, а постепенное погружение в экзистенциальный распад, где каждый шаг вперёд означает потерю части прошлого.",
+    "grade": "rezonans",
+    "tags": [
+      "Топ рисовка",
+      "Специфичный стиль",
+      "Затягивает сразу",
+      "Стеклище",
+      "Чеховские ружья",
+      "Крутой протагонист",
+      "Оригинальный сеттинг",
+      "Без кринжа",
+      "Жесть",
+      "Серая мораль",
+      "Философия"
+    ],
+    "id": 1
+  },
+  {
     "title": "Saya no Uta",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmxzc6q3ks2e",
     "type": "game",
@@ -315,35 +347,6 @@
       "Абсолют синема"
     ],
     "id": 13
-  },
-  {
-    "id": 1,
-    "title": "Houseki no Kuni",
-    "url": "https://teletype.in/@tknovas/LandoftheLustrous",
-    "type": "manga",
-    "source": "teletype",
-    "url2": "https://bsky.app/profile/ktnovas.bsky.social/post/3mhg2ovut6c2b",
-    "source2": "bluesky",
-    "year": "2012",
-    "format": "Манга (13 томов)",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx74489-5HtDCFfut8Be.jpg",
-    "date": "2026-04-06",
-    "favorites": "Фосфофиллит, Питапат",
-    "preview": "Харуко Итикава под маской уютного мира скрывает экзистенциальный ужас, который редко встретишь даже в самых мрачных хоррорах. Это не линейное приключение, а постепенное погружение в экзистенциальный распад, где каждый шаг вперёд означает потерю части прошлого.",
-    "grade": "rezonans",
-    "tags": [
-      "Топ рисовка",
-      "Специфичный стиль",
-      "Затягивает сразу",
-      "Стеклище",
-      "Чеховские ружья",
-      "Крутой протагонист",
-      "Оригинальный сеттинг",
-      "Без кринжа",
-      "Жесть",
-      "Серая мораль",
-      "Философия"
-    ]
   },
   {
     "title": "Fate/strange Fake",
