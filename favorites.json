@@ -1,5 +1,12 @@
 [
   {
+    "name": "Ken Kaneki",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b87275-mb13EWZBdbh3.png",
+    "from": "Tokyo Ghoul",
+    "id": 2
+  },
+  {
     "name": "Phosphophyllite",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b123385-ild8gXk13xcO.png",
