@@ -53,6 +53,22 @@ function fmtDateStr(str) {
   return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
 }
 
+// ── Все типы на русском ─────────────────────────
+const TYPE_LABELS = {
+  anime:   "Аниме",
+  manga:   "Манга",
+  manhwa:  "Манхва",
+  manhua:  "Маньхуа",
+  novel:   "Ранобэ",
+  movie:   "Фильм",
+  show:    "Сериал",
+  dorama:  "Дорама",
+  book:    "Книга",
+  game:    "Игра",
+  gacha:   "Гача",
+  vn:      "Визуальная новелла",
+};
+
 // ── Карточки ───────────────────────────────────
 
 // Аниме/манга в процессе (AniList)
@@ -171,11 +187,10 @@ function tagHtml(tag) {
   return `<span class="rtag ${cls}" data-tip="${esc(tip)}">${esc(tag)}</span>`;
 }
 
-// Игра / визуальная новелла / другие ручные записи из reviews.json
+// Все ручные записи из reviews.json (игры, гача, дорамы и т.д.)
 function manualCard(r, index) {
-  const info = findReviewForTitle(r.title);
-  const typeLabels = { game: "Игра", vn: "Визуальная новелла" };
-  const tagLabel = typeLabels[r.type] || r.type || "—";
+  const info     = findReviewForTitle(r.title);
+  const tagLabel = TYPE_LABELS[r.type] || r.type || "—";
 
   let watchBadge = "";
   if (r.status === "current" && r.date_start) {
