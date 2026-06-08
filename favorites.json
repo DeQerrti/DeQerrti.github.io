@@ -1,5 +1,13 @@
 [
   {
+    "name": "Satoshi Kon",
+    "type": "person",
+    "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n99580-ZgK1XeUTVziv.png",
+    "from": null,
+    "subtype": "director",
+    "id": 4
+  },
+  {
     "name": "Eto",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90231-7ZeFK1DbrAxw.jpg",
