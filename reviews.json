@@ -32,34 +32,6 @@
     "id": 26
   },
   {
-    "title": "The Day of the Jackal",
-    "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
-    "type": "show",
-    "status": "completed",
-    "favorite": false,
-    "source": "teletype",
-    "url2": null,
-    "source2": null,
-    "year": "2024",
-    "format": "Сериал (1 сезон)",
-    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/tYLecM3WSEjlkKhkGiH5G68Dprm.jpg",
-    "date_start": "2026-06-08",
-    "date_end": "2026-06-08",
-    "favorites": "Шакал",
-    "preview": "Сериал о мире где грань между солдатом, агентом и киллером исчезает, а самые опасные люди никогда не нажимают на спусковой крючок. На поверхности всё выглядит как классический триллер: загадочный наёмный убийца по прозвищу Шакал выполняет почти невозможные заказы...",
-    "grade": "vyskazyvanie",
-    "tags": [
-      "Топ визуал",
-      "Осты в тему",
-      "Затягивает сразу",
-      "До титров",
-      "Проседает",
-      "Крутой протагонист",
-      "Серая мораль"
-    ],
-    "id": 2
-  },
-  {
     "title": "Houseki no Kuni",
     "url": "https://teletype.in/@tknovas/LandoftheLustrous",
     "type": "manga",
@@ -579,6 +551,34 @@
       "Чистый кайф"
     ],
     "id": 25
+  },
+  {
+    "title": "The Day of the Jackal",
+    "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
+    "type": "show",
+    "status": "completed",
+    "favorite": false,
+    "source": "teletype",
+    "url2": null,
+    "source2": null,
+    "year": "2024",
+    "format": "Сериал (1 сезон)",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/tYLecM3WSEjlkKhkGiH5G68Dprm.jpg",
+    "date_start": null,
+    "date_end": "2026-03-11",
+    "favorites": "Шакал",
+    "preview": "Сериал о мире где грань между солдатом, агентом и киллером исчезает, а самые опасные люди никогда не нажимают на спусковой крючок. На поверхности всё выглядит как классический триллер: загадочный наёмный убийца по прозвищу Шакал выполняет почти невозможные заказы...",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "До титров",
+      "Проседает",
+      "Крутой протагонист",
+      "Серая мораль"
+    ],
+    "id": 2
   },
   {
     "id": 4,
