@@ -13,11 +13,9 @@ async function loadFavorites() {
   try {
     await fetchReviews();
 
-    const [favData] = await Promise.all([
-      fetch("/favorites.json?_=" + Date.now())
-        .then(r => r.ok ? r.json() : [])
-        .catch(() => [])
-    ]);
+    const favData = await fetch("/favorites.json?_=" + Date.now())
+      .then(r => r.ok ? r.json() : [])
+      .catch(() => []);
 
     const titles     = (cache.reviews || []).filter(r => r.favorite === true);
     const characters = favData.filter(r => r.type === "character");
@@ -38,43 +36,53 @@ async function loadFavorites() {
 }
 
 function renderFavorites({ titles, characters, persons }) {
-  const box = document.getElementById("tab-favorites");
-  let html  = "";
+  const box   = document.getElementById("tab-favorites");
+  const admin = isAdmin();
+  let html    = "";
 
   // ── Тайтлы ──────────────────────────────────
-  if (titles.length) {
-    html += `<section class="group">
+  html += `<section class="group">
+    <div class="section-header">
       <h2 class="section-title">Тайтлы</h2>
-      <div class="grid-now">
-        ${titles.map((r, i) => favTitleCard(r, i)).join("")}
-      </div>
-    </section>`;
-  }
+      ${admin ? `<a href="/add" class="admin-add-btn">+ Добавить</a>` : ""}
+    </div>
+    <div class="grid-now">
+      ${titles.length
+        ? titles.map((r, i) => favTitleCard(r, i)).join("")
+        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">Пока пусто</div>`}
+    </div>
+  </section>`;
 
   // ── Персонажи ────────────────────────────────
-  if (characters.length) {
-    html += `<section class="group">
+  html += `<section class="group">
+    <div class="section-header">
       <h2 class="section-title">Персонажи</h2>
-      <div class="grid-chars">
-        ${characters.map((r, i) => favPersonCard(r, i)).join("")}
-      </div>
-    </section>`;
-  }
+      ${admin ? `<a href="/favorites-edit" class="admin-add-btn">+ Добавить</a>` : ""}
+    </div>
+    <div class="grid-chars">
+      ${characters.length
+        ? characters.map((r, i) => favPersonCard(r, i)).join("")
+        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">Пока пусто</div>`}
+    </div>
+  </section>`;
 
   // ── Персоны ──────────────────────────────────
-  if (persons.length) {
-    html += `<section class="group">
+  html += `<section class="group">
+    <div class="section-header">
       <h2 class="section-title">Персоны</h2>
-      <div class="grid-chars">
-        ${persons.map((r, i) => favPersonCard(r, i)).join("")}
-      </div>
-    </section>`;
-  }
+      ${admin ? `<a href="/favorites-edit" class="admin-add-btn">+ Добавить</a>` : ""}
+    </div>
+    <div class="grid-chars">
+      ${persons.length
+        ? persons.map((r, i) => favPersonCard(r, i)).join("")
+        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">Пока пусто</div>`}
+    </div>
+  </section>`;
 
-  box.innerHTML = html || `<div class="state-box">Любимое пока пусто</div>`;
+  box.innerHTML = html;
 }
 
-// Карточка тайтла (из reviews.json)
+// Карточка тайтла (из reviews.json с favorite: true)
 function favTitleCard(r, index) {
   const info = findReviewForTitle(r.title);
   const typeLabels = {
@@ -86,20 +94,27 @@ function favTitleCard(r, index) {
   const tagClass = ["anime","manga","novel","movie","show"].includes(r.type)
     ? `tag-${r.type}` : "tag-manual";
 
-  return `<a href="${esc(r.url || "#")}" target="_blank" rel="noopener" class="card"
-      style="animation-delay:${Math.min(index * 25, 600)}ms">
-    <span class="type-tag ${tagClass}">${esc(tagLabel)}</span>
-    <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
-    <div class="card-body">
-      <div class="card-title">${esc(r.title)}</div>
-      ${r.year || info
-        ? `<div class="card-meta">
-            ${r.year ? `<span>${esc(String(r.year))}</span>` : ""}
-            ${gradeInlineHtml(info)}
-          </div>`
-        : ""}
-    </div>
-  </a>`;
+  const editId  = r.id ?? encodeURIComponent(r.title);
+  const editBtn = isAdmin()
+    ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
+    : "";
+
+  return `<div class="review-card-wrap" style="animation-delay:${Math.min(index * 25, 600)}ms">
+    ${editBtn}
+    <a href="${esc(r.url || "#")}" target="_blank" rel="noopener" class="card" style="animation-delay:0ms">
+      <span class="type-tag ${tagClass}">${esc(tagLabel)}</span>
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+      <div class="card-body">
+        <div class="card-title">${esc(r.title)}</div>
+        ${r.year || info
+          ? `<div class="card-meta">
+              ${r.year ? `<span>${esc(String(r.year))}</span>` : ""}
+              ${gradeInlineHtml(info)}
+            </div>`
+          : ""}
+      </div>
+    </a>
+  </div>`;
 }
 
 // Карточка персонажа или персоны (из favorites.json)
