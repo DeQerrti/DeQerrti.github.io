@@ -1299,6 +1299,35 @@
     "id": 50
   },
   {
+    "title": "Pathologic 2",
+    "url": "",
+    "type": "game",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": "Игра",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co1ndy.jpg",
+    "date_start": null,
+    "date_end": "2020-02-08",
+    "favorites": null,
+    "preview": null,
+    "grade": "rezonans",
+    "tags": [
+      "Осты в тему",
+      "Затягивает сразу",
+      "До титров",
+      "Оригинальный сеттинг",
+      "Без кринжа",
+      "Жесть",
+      "Философия",
+      "Серая мораль"
+    ],
+    "id": 68
+  },
+  {
     "title": "Hacksaw Ridge",
     "url": "",
     "type": "movie",
