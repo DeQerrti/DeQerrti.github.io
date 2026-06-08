@@ -779,6 +779,33 @@
     "id": 47
   },
   {
+    "title": "Baldur's Gate 3",
+    "url": "",
+    "type": "game",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2023",
+    "format": "Игра",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co670h.jpg",
+    "date_start": null,
+    "date_end": "2025-05-10",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Долгая раскачка",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Лор важнее сюжета"
+    ],
+    "id": 72
+  },
+  {
     "title": "Clair Obscur: Expedition 33",
     "url": "",
     "type": "game",
