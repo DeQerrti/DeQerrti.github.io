@@ -203,6 +203,43 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
 }
 .select-wrap select { padding-right: 2rem; }
 
+/* ══ CHECKBOX (Любимое) ══════════════════════════ */
+.checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .7rem .85rem;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color .2s;
+  user-select: none;
+}
+.checkbox-wrap:hover { border-color: var(--red-dim); }
+.checkbox-wrap.checked { border-color: rgba(139,26,26,.5); background: rgba(139,26,26,.08); }
+
+.checkbox-wrap input[type="checkbox"] {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  appearance: auto;
+  -webkit-appearance: auto;
+  accent-color: var(--red-hi);
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  border: none;
+}
+.checkbox-wrap .checkbox-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem;
+  color: var(--text);
+  letter-spacing: .05em;
+  text-transform: none;
+  margin-bottom: 0;
+}
+.checkbox-wrap.checked .checkbox-label { color: var(--text-hi); }
+
 /* ══ HINT ════════════════════════════════════════ */
 .hint {
   font-family: 'DM Sans', sans-serif;
@@ -393,18 +430,18 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
       <label>Тип</label>
       <div class="select-wrap">
         <select id="f-type">
-  <option value="anime">Аниме</option>
-  <option value="manga">Манга</option>
-  <option value="manhwa">Манхва</option>
-  <option value="manhua">Маньхуа</option>
-  <option value="novel">Ранобэ</option>
-  <option value="movie">Фильм</option>
-  <option value="show">Сериал</option>
-  <option value="dorama">Дорама</option>
-  <option value="book">Книга</option>
-  <option value="game">Игра</option>
-  <option value="gacha">Гача</option>
-</select>
+          <option value="anime">Аниме</option>
+          <option value="manga">Манга</option>
+          <option value="manhwa">Манхва</option>
+          <option value="manhua">Маньхуа</option>
+          <option value="novel">Ранобэ</option>
+          <option value="movie">Фильм</option>
+          <option value="show">Сериал</option>
+          <option value="dorama">Дорама</option>
+          <option value="book">Книга</option>
+          <option value="game">Игра</option>
+          <option value="gacha">Гача</option>
+        </select>
       </div>
     </div>
     <div class="field">
@@ -426,6 +463,13 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
       <input type="text" id="f-cover" placeholder="https://..." oninput="previewCover(this.value)">
       <img id="cover-img" class="cover-preview">
     </div>
+    <div class="field full">
+      <label style="margin-bottom:.5rem">Дополнительно</label>
+      <label class="checkbox-wrap" id="fav-wrap" onclick="toggleFavorite()">
+        <input type="checkbox" id="f-favorite" onclick="event.stopPropagation()">
+        <span class="checkbox-label">★ Добавить в Любимое</span>
+      </label>
+    </div>
   </div>
   <div class="hint">
     <b style="color:var(--text)">Планирую</b> — появится в разделе «Планирую» без отзыва. &nbsp;
@@ -434,9 +478,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   </div>
 
   <!-- Даты — показываются в зависимости от статуса -->
-  <div id="dates-section">
-    <!-- Заполняется динамически через updateDateFields() -->
-  </div>
+  <div id="dates-section"></div>
 
   <!-- Источник 1 -->
   <h2 class="section-title">Источник 1</h2>
@@ -524,13 +566,22 @@ const TAGS_MAP = {
   "Дырявый сеттинг":"chars","Топ антагонист":"chars","Слабый ГГ":"chars",
   "Без кринжа":"special","Почти без кринжа":"special","Много кринжа":"special","Жесть":"special",
   "Философия":"special","Чистый кайф":"special","Серая мораль":"special","Хорни вайб":"special","Автобой":"special",
-  "Душный гринд":"special","Мета-дрочево":"special","Топ боёвка":"special","Вайфугейминг":"special","Сюжет удивил":"special","Скипал диалоги":"special",
-  "Лор важнее сюжета":"special","Слабая режиссура":"special","Абсолют синема":"special",
+  "Душный гринд":"special","Мета-дрочево":"special","Топ боёвка":"special","Вайфугейминг":"special",
+  "Сюжет удивил":"special","Скипал диалоги":"special","Лор важнее сюжета":"special",
+  "Слабая режиссура":"special","Абсолют синема":"special",
 };
 
 let selectedGrade = null;
 let selectedTags  = new Set();
 let editingId     = null;
+
+// ── Чекбокс Любимое ────────────────────────────
+function toggleFavorite() {
+  const cb   = document.getElementById("f-favorite");
+  const wrap = document.getElementById("fav-wrap");
+  cb.checked = !cb.checked;
+  wrap.classList.toggle("checked", cb.checked);
+}
 
 // ── Даты в зависимости от статуса ──────────────
 function updateDateFields() {
@@ -538,7 +589,6 @@ function updateDateFields() {
   const section = document.getElementById("dates-section");
   const today   = new Date().toISOString().slice(0, 10);
 
-  // Сохраняем текущие значения если поля уже есть
   const prevStart = document.getElementById("f-date-start")?.value || today;
   const prevEnd   = document.getElementById("f-date-end")?.value   || today;
 
@@ -623,10 +673,14 @@ function fillForm(r) {
   document.getElementById("f-url2").value      = r.url2      || "";
   document.getElementById("f-source2").value   = r.source2   || "";
 
-  // Сначала рендерим поля дат под нужный статус
-  updateDateFields();
+  // Чекбокс Любимое
+  const cb   = document.getElementById("f-favorite");
+  const wrap = document.getElementById("fav-wrap");
+  cb.checked = r.favorite === true;
+  wrap.classList.toggle("checked", cb.checked);
 
-  // Потом заполняем значения
+  // Поля дат
+  updateDateFields();
   const today = new Date().toISOString().slice(0, 10);
   const startEl = document.getElementById("f-date-start");
   const endEl   = document.getElementById("f-date-end");
@@ -659,6 +713,13 @@ function resetToNew() {
   document.getElementById("f-source2").value = "";
   document.getElementById("f-type").value    = "anime";
   document.getElementById("f-status").value  = "planning";
+
+  // Сброс чекбокса
+  const cb   = document.getElementById("f-favorite");
+  const wrap = document.getElementById("fav-wrap");
+  cb.checked = false;
+  wrap.classList.remove("checked");
+
   document.getElementById("preview-out").textContent = "Здесь появится превью…";
   document.getElementById("cover-img").style.display = "none";
   selectedGrade = null;
@@ -730,7 +791,6 @@ async function saveReview() {
   const url2    = document.getElementById("f-url2").value.trim() || null;
   const source2 = document.getElementById("f-source2").value     || null;
 
-  // Читаем даты в зависимости от статуса
   const dateStart = document.getElementById("f-date-start")?.value || null;
   const dateEnd   = document.getElementById("f-date-end")?.value   || null;
 
@@ -739,6 +799,7 @@ async function saveReview() {
     url,
     type:       document.getElementById("f-type").value,
     status,
+    favorite:   document.getElementById("f-favorite").checked || false,
     source:     document.getElementById("f-source").value,
     url2,
     source2:    url2 ? source2 : null,
