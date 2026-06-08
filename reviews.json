@@ -1505,6 +1505,37 @@
     "id": 62
   },
   {
+    "title": "Hellblade: Senua's Sacrifice",
+    "url": "",
+    "type": "game",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2017",
+    "format": "Игра",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co2l7l.jpg",
+    "date_start": null,
+    "date_end": "2019-04-10",
+    "favorites": null,
+    "preview": null,
+    "grade": "rezonans",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Чеховские ружья",
+      "До титров",
+      "Крутой протагонист",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Философия",
+      "Чистый кайф"
+    ],
+    "id": 70
+  },
+  {
     "title": "Parasite",
     "url": "",
     "type": "movie",
