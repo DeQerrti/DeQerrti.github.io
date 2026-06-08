@@ -4,13 +4,13 @@
 // ══════════════════════════════════════════════
 
 const TIER_ROWS = [
-  { key: "rezonans",     label: "Резонанс",      color: "#7c3aed" },
+  { key: "rezonans",     label: "Резонанс",     color: "#7c3aed" },
   { key: "etalon",       label: "Эталон",        color: "#2563a8" },
-  { key: "vyskazyvanie", label: "Отлично",       color: "#2d8a4e" },
+  { key: "vyskazyvanie", label: "Высказывание",  color: "#2d8a4e" },
   { key: "attrakcion",   label: "Аттракцион",    color: "#d4a017" },
   { key: "fon",          label: "Фоновый шум",   color: "#6b7280" },
-  { key: "brak",         label: "Брак",          color: "#c0392b" },
   { key: "razocharo",    label: "Разочарование", color: "#8B6914" },
+  { key: "brak",         label: "Брак",          color: "#c0392b" },
 ];
 
 // Тип тайтла из reviews.json
@@ -183,7 +183,6 @@ function tlRender() {
             style="animation-delay:${Math.min(i * 18, 400)}ms">
           <img src="${esc(src)}" alt="${esc(r.title)}" loading="lazy"
             onerror="this.src='https://placehold.co/72x108/111114/4a4540?text=?'">
-          <div class="tl-type-tag">${esc(tlTypeLabel(type))}</div>
         </div>`;
       }
     }
