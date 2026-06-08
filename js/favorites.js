@@ -84,7 +84,7 @@ function renderFavorites({ titles, characters, persons }) {
 
 // Карточка тайтла (из reviews.json с favorite: true)
 function favTitleCard(r, index) {
-  const info = findReviewForTitle(r.title);
+  const info = findReviewForTitle(r.title, r.type);
   const typeLabels = {
     anime: "Аниме", manga: "Манга", manhwa: "Манхва", manhua: "Маньхуа",
     novel: "Ранобэ", movie: "Фильм", show: "Сериал", dorama: "Дорама",
