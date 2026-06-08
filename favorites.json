@@ -1,5 +1,12 @@
 [
   {
+    "name": "Nadeko Sengoku",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22050-RUw3vyGYdr9W.jpg",
+    "from": null,
+    "id": 28
+  },
+  {
     "name": "Jouji Nakata",
     "type": "person",
     "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n95091-idoMaN26z80B.png",
