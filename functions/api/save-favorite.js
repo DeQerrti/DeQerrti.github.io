@@ -19,13 +19,74 @@ export async function onRequest(context) {
     return json({ error: "Bad JSON" }, 400);
   }
 
-  if (!entry.name) {
-    return json({ error: "Нужно имя" }, 400);
-  }
-
   const repo    = env.GITHUB_REPO;
   const ghToken = env.GITHUB_TOKEN;
   const apiUrl  = `https://api.github.com/repos/${repo}/contents/favorites.json`;
+
+  // ── Перестановка порядка ───────────────────────
+  if (Array.isArray(entry._reorder)) {
+    const newOrder = entry._reorder; // массив id в новом порядке
+
+    try {
+      const getRes = await fetch(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${ghToken}`,
+          Accept: "application/vnd.github+json",
+          "User-Agent": "TasteID-App"
+        }
+      });
+      if (!getRes.ok) {
+        const errText = await getRes.text();
+        return json({ error: `GitHub GET failed: ${getRes.status} — ${errText}` }, 500);
+      }
+
+      const fileData = await getRes.json();
+      const sha      = fileData.sha;
+      const raw      = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
+      const current  = JSON.parse(new TextDecoder().decode(raw));
+
+      // Перестраиваем массив согласно новому порядку id
+      // Записи которых нет в newOrder — добавляем в конец (на всякий случай)
+      const byId    = Object.fromEntries(current.map(r => [String(r.id), r]));
+      const reordered = newOrder
+        .map(id => byId[String(id)])
+        .filter(Boolean);
+
+      // Добавляем записи которые не попали в newOrder
+      const inNew = new Set(newOrder.map(String));
+      for (const r of current) {
+        if (!inNew.has(String(r.id))) reordered.push(r);
+      }
+
+      const encoded = new TextEncoder().encode(JSON.stringify(reordered, null, 2));
+      const updated = btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
+
+      const putRes = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${ghToken}`,
+          Accept: "application/vnd.github+json",
+          "Content-Type": "application/json",
+          "User-Agent": "TasteID-App"
+        },
+        body: JSON.stringify({ message: "favorites: reorder", content: updated, sha }),
+      });
+
+      if (!putRes.ok) {
+        const err = await putRes.json();
+        return json({ error: `GitHub PUT failed: ${putRes.status} — ${err.message}` }, 500);
+      }
+
+      return json({ ok: true });
+    } catch (e) {
+      return json({ error: e.message }, 500);
+    }
+  }
+
+  // ── Добавление / редактирование записи ────────
+  if (!entry.name) {
+    return json({ error: "Нужно имя" }, 400);
+  }
 
   try {
     // Читаем текущий favorites.json (или создаём пустой если не существует)
@@ -36,10 +97,8 @@ export async function onRequest(context) {
         "User-Agent": "TasteID-App"
       }
     });
-
     let current = [];
     let sha     = null;
-
     if (getRes.ok) {
       const fileData = await getRes.json();
       sha = fileData.sha;
@@ -51,7 +110,6 @@ export async function onRequest(context) {
     }
 
     const isEdit = entry._editId !== undefined && entry._editId !== null;
-
     if (isEdit) {
       const editId = entry._editId;
       delete entry._editId;
