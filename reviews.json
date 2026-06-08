@@ -32,38 +32,6 @@
     "id": 26
   },
   {
-    "title": "Tokyo Ghoul:re",
-    "url": "https://teletype.in/@tknovas/TokyoGhoulre",
-    "type": "manga",
-    "status": "completed",
-    "favorite": true,
-    "source": "teletype",
-    "url2": "https://bsky.app/profile/ktnovas.bsky.social/post/3mekrn7ycj22h",
-    "source2": "bluesky",
-    "year": "2014",
-    "format": "Манга (16 томов)",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85611-Asb0BNP23NsJ.png",
-    "date_start": "2026-06-08",
-    "date_end": "2026-06-08",
-    "favorites": "Это, Чёрный бог смерти",
-    "preview": "Если первая часть была историей о личной трагедии, то вторая - это история о последствиях этой трагедии для всего мира. Продолжение не просто расширяет масштаб повествования - оно меняет саму оптику.",
-    "grade": "etalon",
-    "tags": [
-      "Топ рисовка",
-      "Затягивает сразу",
-      "Стеклище",
-      "Чеховские ружья",
-      "Живые герои",
-      "Крутой протагонист",
-      "Дырявый сеттинг",
-      "Почти без кринжа",
-      "Жесть",
-      "Серая мораль",
-      "Философия"
-    ],
-    "id": 3
-  },
-  {
     "title": "Saya no Uta",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmxzc6q3ks2e",
     "type": "game",
@@ -579,6 +547,38 @@
       "Серая мораль"
     ],
     "id": 2
+  },
+  {
+    "title": "Tokyo Ghoul:re",
+    "url": "https://teletype.in/@tknovas/TokyoGhoulre",
+    "type": "manga",
+    "status": "completed",
+    "favorite": true,
+    "source": "teletype",
+    "url2": "https://bsky.app/profile/ktnovas.bsky.social/post/3mekrn7ycj22h",
+    "source2": "bluesky",
+    "year": "2014",
+    "format": "Манга (16 томов)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx85611-Asb0BNP23NsJ.png",
+    "date_start": "2026-02-11",
+    "date_end": "2026-02-14",
+    "favorites": "Это, Чёрный бог смерти",
+    "preview": "Если первая часть была историей о личной трагедии, то вторая - это история о последствиях этой трагедии для всего мира. Продолжение не просто расширяет масштаб повествования - оно меняет саму оптику.",
+    "grade": "etalon",
+    "tags": [
+      "Топ рисовка",
+      "Затягивает сразу",
+      "Стеклище",
+      "Чеховские ружья",
+      "Живые герои",
+      "Крутой протагонист",
+      "Дырявый сеттинг",
+      "Почти без кринжа",
+      "Жесть",
+      "Серая мораль",
+      "Философия"
+    ],
+    "id": 3
   },
   {
     "id": 4,
