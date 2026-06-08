@@ -170,6 +170,10 @@ select option { background: var(--bg2); }
 }
 .select-wrap select { padding-right: 2rem; }
 
+/* Поле подтипа — скрыто по умолчанию */
+.field-subtype { display: none; }
+.field-subtype.visible { display: block; }
+
 .avatar-preview {
   width: 80px; height: 80px;
   object-fit: cover;
@@ -213,7 +217,6 @@ select option { background: var(--bg2); }
 .status-msg.ok  { color: var(--green-hi); }
 .status-msg.err { color: #d88; }
 
-/* ── Список существующих записей ─────────────── */
 .divider-title {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
@@ -304,9 +307,21 @@ select option { background: var(--bg2); }
     <div class="field">
       <label>Тип</label>
       <div class="select-wrap">
-        <select id="f-type">
+        <select id="f-type" onchange="onTypeChange()">
           <option value="character">Персонаж</option>
           <option value="person">Персона</option>
+        </select>
+      </div>
+    </div>
+    <div class="field full field-subtype" id="field-subtype">
+      <label>Роль персоны</label>
+      <div class="select-wrap">
+        <select id="f-subtype">
+          <option value="actor">Актёр</option>
+          <option value="director">Режиссёр</option>
+          <option value="author">Автор</option>
+          <option value="seiyuu">Сэйю</option>
+          <option value="artist">Художник</option>
         </select>
       </div>
     </div>
@@ -314,10 +329,6 @@ select option { background: var(--bg2); }
       <label>Ссылка на изображение</label>
       <input type="text" id="f-image" placeholder="https://..." oninput="previewAvatar(this.value)">
       <img id="avatar-img" class="avatar-preview">
-    </div>
-    <div class="field full">
-      <label>Ссылка (AniList, MAL и т.д.)</label>
-      <input type="text" id="f-url" placeholder="https://anilist.co/character/52/">
     </div>
     <div class="field full">
       <label>Из чего (необязательно)</label>
@@ -329,7 +340,6 @@ select option { background: var(--bg2); }
   <button class="btn-save" id="btn-save" onclick="saveEntry()">Сохранить</button>
   <div class="status-msg" id="status"></div>
 
-  <!-- Список существующих -->
   <div class="divider-title" id="list-title" style="display:none">Все записи</div>
   <div class="entries-list" id="entries-list"></div>
 
@@ -337,6 +347,16 @@ select option { background: var(--bg2); }
 
 <script>
 let editingId = null;
+
+const SUBTYPE_LABELS = {
+  actor: "Актёр", director: "Режиссёр", author: "Автор",
+  seiyuu: "Сэйю", artist: "Художник"
+};
+
+function onTypeChange() {
+  const isPerson = document.getElementById("f-type").value === "person";
+  document.getElementById("field-subtype").classList.toggle("visible", isPerson);
+}
 
 function previewAvatar(url) {
   const img = document.getElementById("avatar-img");
@@ -356,19 +376,22 @@ function resetToNew() {
   document.getElementById("page-subtitle").textContent = "Персонажи и персоны";
   document.getElementById("btn-save").textContent = "Сохранить";
   history.replaceState(null, "", "favorites-edit.html");
-  ["f-name","f-image","f-url","f-from"].forEach(id => document.getElementById(id).value = "");
+  ["f-name","f-image","f-from"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("f-type").value = "character";
+  document.getElementById("f-subtype").value = "actor";
   document.getElementById("avatar-img").style.display = "none";
+  document.getElementById("field-subtype").classList.remove("visible");
   setStatus("", "");
 }
 
 function fillForm(r) {
-  document.getElementById("f-name").value  = r.name  || "";
-  document.getElementById("f-image").value = r.image || "";
-  document.getElementById("f-url").value   = r.url   || "";
-  document.getElementById("f-from").value  = r.from  || "";
-  document.getElementById("f-type").value  = r.type  || "character";
+  document.getElementById("f-name").value    = r.name    || "";
+  document.getElementById("f-image").value   = r.image   || "";
+  document.getElementById("f-from").value    = r.from    || "";
+  document.getElementById("f-type").value    = r.type    || "character";
+  document.getElementById("f-subtype").value = r.subtype || "actor";
   previewAvatar(r.image || "");
+  onTypeChange();
 }
 
 async function loadList() {
@@ -380,21 +403,26 @@ async function loadList() {
 
     document.getElementById("list-title").style.display = "flex";
     const list = document.getElementById("entries-list");
-    list.innerHTML = data.map(r => `
+    list.innerHTML = data.map(r => {
+      const typeLabel = r.type === "person"
+        ? (SUBTYPE_LABELS[r.subtype] || "Персона")
+        : "Персонаж";
+      return `
       <div class="entry-row">
         <img class="entry-avatar" src="${esc(r.image || "")}" onerror="this.style.display='none'" alt="">
         <div class="entry-name">${esc(r.name)}</div>
         ${r.from ? `<div class="entry-type">${esc(r.from)}</div>` : ""}
-        <div class="entry-type">${r.type === "person" ? "Персона" : "Персонаж"}</div>
+        <div class="entry-type">${esc(typeLabel)}</div>
         <button class="entry-edit" onclick="startEdit(${r.id})">✎ Изменить</button>
-      </div>`).join("");
+      </div>`;
+    }).join("");
   } catch {}
 }
 
 async function startEdit(id) {
   try {
-    const res  = await fetch("/favorites.json?_=" + Date.now());
-    const data = await res.json();
+    const res   = await fetch("/favorites.json?_=" + Date.now());
+    const data  = await res.json();
     const entry = data.find(r => r.id === id);
     if (!entry) return;
     editingId = entry.id;
@@ -414,13 +442,18 @@ async function saveEntry() {
   const name = document.getElementById("f-name").value.trim();
   if (!name) { setStatus("err", "Заполни имя"); return; }
 
+  const type = document.getElementById("f-type").value;
   const entry = {
     name,
-    type:  document.getElementById("f-type").value,
-    image: document.getElementById("f-image").value.trim() || null,
-    url:   document.getElementById("f-url").value.trim()   || null,
-    from:  document.getElementById("f-from").value.trim()  || null,
+    type,
+    image:   document.getElementById("f-image").value.trim() || null,
+    from:    document.getElementById("f-from").value.trim()  || null,
   };
+
+  // subtype только для персон
+  if (type === "person") {
+    entry.subtype = document.getElementById("f-subtype").value || null;
+  }
 
   if (editingId !== null) entry._editId = editingId;
 
