@@ -2257,6 +2257,33 @@
     "id": 32
   },
   {
+    "title": "Steins;Gate",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2011",
+    "format": "(1 сезон)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9253-tIUXF2gfU8Sg.jpg",
+    "date_start": null,
+    "date_end": "2018-02-13",
+    "favorites": null,
+    "preview": "Сняв в Акихабаре квартиру, самопровозглашённый сумасшедший учёный Окабэ Ринтаро устроил там «лабораторию» и в компании своей подруги детства Сины Маюри и хакера-отаку Хасиды Итару изобретает «гаджеты будущего».",
+    "grade": "attrakcion",
+    "tags": [
+      "Осты в тему",
+      "Сюжетные дыры",
+      "Чеховские ружья",
+      "Проседает",
+      "Почти без кринжа",
+      "Философия"
+    ],
+    "id": 87
+  },
+  {
     "title": "Watchmen",
     "url": "",
     "type": "movie",
