@@ -2289,6 +2289,37 @@
     "id": 31
   },
   {
+    "title": "Casshern Sins",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2008",
+    "format": "(1 сезон)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx4981-V6MbMiJUqdvP.jpg",
+    "date_start": null,
+    "date_end": "2018-06-13",
+    "favorites": null,
+    "preview": "В отдалённом будущем, где киборги и люди борются друг с другом за выживание на разрушенной войной планете, просыпается существо в белом костюме. Его зовут Кассян, и он ничего не помнит о своём прошлом.",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ рисовка",
+      "Специфичный стиль",
+      "Осты в тему",
+      "Стеклище",
+      "Чеховские ружья",
+      "Живые герои",
+      "Оригинальный сеттинг",
+      "Без кринжа",
+      "Философия",
+      "Жесть"
+    ],
+    "id": 89
+  },
+  {
     "title": "Psycho-Pass",
     "url": "",
     "type": "anime",
@@ -2545,37 +2576,6 @@
       "Чистый кайф"
     ],
     "id": 46
-  },
-  {
-    "title": "Casshern Sins",
-    "url": "",
-    "type": "anime",
-    "status": "planning",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2008",
-    "format": "(1 сезон)",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx4981-V6MbMiJUqdvP.jpg",
-    "date_start": null,
-    "date_end": null,
-    "favorites": null,
-    "preview": "В отдалённом будущем, где киборги и люди борются друг с другом за выживание на разрушенной войной планете, просыпается существо в белом костюме. Его зовут Кассян, и он ничего не помнит о своём прошлом.",
-    "grade": "vyskazyvanie",
-    "tags": [
-      "Топ рисовка",
-      "Специфичный стиль",
-      "Осты в тему",
-      "Стеклище",
-      "Чеховские ружья",
-      "Живые герои",
-      "Оригинальный сеттинг",
-      "Без кринжа",
-      "Философия",
-      "Жесть"
-    ],
-    "id": 89
   },
   {
     "title": "Nippon Sangoku",
