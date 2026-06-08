@@ -24,24 +24,31 @@ async function loadReviews() {
       `<div class="state-box">
         <div style="font-size:1.5rem;margin-bottom:.75rem">✦</div>
         Отзывов пока нет.
+        ${isAdmin() ? `<div style="margin-top:1.5rem"><a href="/add" class="admin-add-btn">+ Добавить отзыв</a></div>` : ""}
       </div>`;
   }
 }
 
 function renderReviews(reviews) {
-  // Собираем доступные значения для фильтров из реальных данных
   const types   = [...new Set(reviews.map(r => r.type).filter(Boolean))];
   const grades  = [...new Set(reviews.map(r => r.grade).filter(Boolean))];
   const sources = [...new Set(
     reviews.flatMap(r => [r.source, r.source2]).filter(Boolean)
   )];
 
+  const adminBtn = isAdmin()
+    ? `<a href="/add" class="admin-add-btn">+ Добавить отзыв</a>`
+    : "";
+
   const box = document.getElementById("tab-reviews");
   box.innerHTML = `
-    <div class="rv-filters">
-      ${renderRvFilterGroup("type",   "Тип",      types,   TYPE_LABELS,  rvState.type)}
-      ${renderRvFilterGroup("grade",  "Оценка",   grades,  gradeLabels(), rvState.grade)}
-      ${renderRvFilterGroup("source", "Источник", sources, SOURCE_LABELS, rvState.source)}
+    <div class="rv-toolbar">
+      <div class="rv-filters">
+        ${renderRvFilterGroup("type",   "Тип",      types,   TYPE_LABELS,  rvState.type)}
+        ${renderRvFilterGroup("grade",  "Оценка",   grades,  gradeLabels(), rvState.grade)}
+        ${renderRvFilterGroup("source", "Источник", sources, SOURCE_LABELS, rvState.source)}
+      </div>
+      ${adminBtn}
     </div>
     <section class="group">
       <div class="reviews-grid" id="rv-grid"></div>
@@ -81,7 +88,6 @@ function bindRvFilters(reviews) {
       const val   = btn.dataset.val;
       rvState[field] = val;
 
-      // Обновляем активную кнопку в группе
       document.querySelectorAll(`.rv-filter-btn[data-field="${field}"]`)
         .forEach(b => b.classList.toggle("active", b.dataset.val === val));
 
