@@ -788,6 +788,50 @@ section.group { margin-bottom: 3.5rem; }
   .tl-label-name { font-size: .78rem; }
   .tl-poster { width: 52px; }
 }
+  /* ══ REVIEW FILTERS ══════════════════════════════ */
+.rv-filters {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  margin-bottom: 2rem;
+  padding: 1.1rem 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+.rv-filter-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.rv-filter-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  min-width: 70px;
+  flex-shrink: 0;
+}
+.rv-filter-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem;
+  padding: .22rem .65rem;
+  border-radius: 1px;
+  border: 1px solid var(--border2);
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all .15s;
+  letter-spacing: .03em;
+}
+.rv-filter-btn:hover { color: var(--text); border-color: var(--border2); }
+.rv-filter-btn.active {
+  background: rgba(139,26,26,.15);
+  border-color: var(--red);
+  color: var(--text-hi);
+}
 </style>
 </head>
 <body>
