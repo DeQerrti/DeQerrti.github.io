@@ -757,6 +757,32 @@
     "id": 20
   },
   {
+    "title": "Joker: Folie à Deux",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2024",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/aciP8Km0waTLXEYf5ybFK5CSUxl.jpg",
+    "date_start": null,
+    "date_end": "2024-07-23",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Сюжетные дыры",
+      "Рояли в кустах",
+      "Проседает"
+    ],
+    "id": 44
+  },
+  {
     "title": "Zenless Zone Zero",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mbo5ny4isc2e",
     "type": "gacha",
