@@ -4,39 +4,60 @@
 // ══════════════════════════════════════════════
 
 const TIER_ROWS = [
-  { key: "rezonans",     label: "Резонанс",     color: "#7c3aed" },
-  { key: "etalon",       label: "Эталон",        color: "#2563a8" },
-  { key: "vyskazyvanie", label: "Высказывание",  color: "#2d8a4e" },
-  { key: "attrakcion",   label: "Аттракцион",    color: "#d4a017" },
-  { key: "fon",          label: "Фоновый шум",   color: "#6b7280" },
-  { key: "razocharo",    label: "Разочарование", color: "#8B6914" },
-  { key: "brak",         label: "Брак",          color: "#c0392b" },
+  { key: "rezonans",     label: "Резонанс",       color: "#7c3aed" },
+  { key: "etalon",       label: "Эталон",          color: "#2563a8" },
+  { key: "vyskazyvanie", label: "Отлично",         color: "#2d8a4e" },
+  { key: "attrakcion",   label: "Аттракцион",      color: "#d4a017" },
+  { key: "fon",          label: "Фоновый шум",     color: "#6b7280" },
+  { key: "razocharo",    label: "Разочарование",   color: "#8B6914" },
+  { key: "brak",         label: "Брак",            color: "#c0392b" },
 ];
 
-// Тип тайтла из reviews.json
+// Полный маппинг типов на русский — единый для всего сайта
+const TL_TYPE_LABELS = {
+  anime:   "Аниме",
+  manga:   "Манга",
+  manhwa:  "Манхва",
+  manhua:  "Маньхуа",
+  novel:   "Ранобэ",
+  movie:   "Фильм",
+  show:    "Сериал",
+  dorama:  "Дорама",
+  book:    "Книга",
+  game:    "Игра",
+  gacha:   "Гача",
+  vn:      "Визуальная новелла",
+};
+
+// Фильтры — только те типы что реально есть в данных
+const TL_FILTERS = [
+  ["all",    "Всё"],
+  ["anime",  "Аниме"],
+  ["manga",  "Манга"],
+  ["novel",  "Ранобэ"],
+  ["movie",  "Фильмы"],
+  ["show",   "Сериалы"],
+  ["book",   "Книги"],
+  ["game",   "Игры"],
+  ["gacha",  "Гача"],
+];
+
 function tlInferType(r) {
   return r.type || "anime";
 }
 
 function tlTypeLabel(type) {
-  return {
-    anime: "Аниме", manga: "Манга", novel: "Ранобе",
-    movie: "Фильм", show: "Сериал", book: "Книга",
-    game: "Игра", vn: "Визуал. новелла"
-  }[type] || type || "—";
+  return TL_TYPE_LABELS[type] || type || "—";
 }
 
 // ── Загрузка постера ───────────────────────────
 async function tlFetchPoster(r) {
-  // Ручная обложка — приоритет
   if (r.cover) return r.cover;
 
   const type = tlInferType(r);
 
-  // Игры/VN без cover — плейсхолдер
-  if (type === "game" || type === "vn") return null;
+  if (["game", "vn", "gacha", "book"].includes(type)) return null;
 
-  // Аниме / манга / ранобе → AniList
   if (!type || type === "anime" || type === "manga" || type === "novel") {
     try {
       const d = await gql(`query($t:String){Media(search:$t,type:ANIME){coverImage{large}}}`, { t: r.title });
@@ -48,8 +69,7 @@ async function tlFetchPoster(r) {
     } catch {}
   }
 
-  // Фильмы / сериалы → TMDb
-  if (type === "movie" || type === "show") {
+  if (type === "movie" || type === "show" || type === "dorama") {
     try {
       const endpoint = type === "movie" ? "movie" : "tv";
       const res = await tmdbFetch(`/search/${endpoint}?query=${encodeURIComponent(r.title)}&language=en-US`);
@@ -58,7 +78,6 @@ async function tlFetchPoster(r) {
     } catch {}
   }
 
-  // Последняя попытка — multi-поиск TMDb
   try {
     const res = await tmdbFetch(`/search/multi?query=${encodeURIComponent(r.title)}&language=en-US`);
     const hit = res.results?.find(x => x.poster_path);
@@ -70,7 +89,7 @@ async function tlFetchPoster(r) {
 
 // ── Состояние вкладки ──────────────────────────
 const tlState = {
-  items: [],       // { review, poster }
+  items:  [],
   filter: "all",
   loaded: false,
 };
@@ -82,7 +101,6 @@ async function loadTierlist() {
 
   const box = document.getElementById("tab-tierlist");
 
-  // Если уже загружено — просто перерисовываем
   if (tlState.loaded) {
     tlRender();
     loading.tierlist = false;
@@ -93,6 +111,7 @@ async function loadTierlist() {
 
   try {
     await fetchReviews();
+    // Берём все записи с оценкой — независимо от статуса
     const reviews = (cache.reviews || []).filter(r => r.grade);
 
     if (!reviews.length) {
@@ -101,7 +120,6 @@ async function loadTierlist() {
       return;
     }
 
-    // Сразу показываем без постеров
     tlState.items = reviews.map(r => ({ review: r, poster: r.cover || null }));
     tlState.loaded = true;
     tlRender();
@@ -124,7 +142,7 @@ async function loadTierlist() {
   }
 }
 
-// ── Рендер ────────────────────────────────────
+// ── Рендер ─────────────────────────────────────
 function tlRender() {
   const box = document.getElementById("tab-tierlist");
 
@@ -132,7 +150,6 @@ function tlRender() {
     ? tlState.items
     : tlState.items.filter(item => tlInferType(item.review) === tlState.filter);
 
-  // Группировка по грейду
   const byGrade = {};
   for (const item of filtered) {
     const g = item.review.grade;
@@ -198,20 +215,9 @@ function tlRender() {
   tlBindTooltip();
 }
 
-// ── Фильтры ───────────────────────────────────
+// ── Фильтры ────────────────────────────────────
 function tlFiltersHtml() {
-  const types = [
-    ["all",   "Всё"],
-    ["anime", "Аниме"],
-    ["manga", "Манга"],
-    ["novel", "Ранобе"],
-    ["movie", "Фильмы"],
-    ["show",  "Сериалы"],
-    ["book",  "Книги"],
-    ["game",  "Игры"],
-    ["vn",    "Визуальные новеллы"],
-  ];
-  const btns = types.map(([val, label]) =>
+  const btns = TL_FILTERS.map(([val, label]) =>
     `<button class="tl-filter${tlState.filter === val ? " active" : ""}" data-tl-type="${val}">${label}</button>`
   ).join("");
   return `<div class="tl-filters">${btns}</div>`;
@@ -226,7 +232,7 @@ function tlBindFilters() {
   });
 }
 
-// ── Тултип ────────────────────────────────────
+// ── Тултип ─────────────────────────────────────
 function tlTooltipHtml() {
   return `<div class="tl-tooltip" id="tl-tooltip">
     <div class="tl-tt-title" id="tl-tt-title"></div>
@@ -237,7 +243,7 @@ function tlTooltipHtml() {
 }
 
 function tlBindTooltip() {
-  const tip    = document.getElementById("tl-tooltip");
+  const tip = document.getElementById("tl-tooltip");
   if (!tip) return;
 
   document.querySelectorAll(".tl-poster").forEach(card => {
@@ -266,7 +272,7 @@ function tlMoveTip(e, tip) {
   tip.style.top  = y + "px";
 }
 
-// ── Патч постеров без перерисовки ─────────────
+// ── Патч постеров без перерисовки ──────────────
 function tlPatchPosters(items) {
   for (const item of items) {
     if (!item.poster) continue;
