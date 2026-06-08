@@ -1326,6 +1326,35 @@
     "id": 43
   },
   {
+    "title": "The Dark Knight",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2008",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/r3UKPGdQC5mPiA9bE9otM9CN4lW.jpg",
+    "date_start": null,
+    "date_end": "2019-05-08",
+    "favorites": null,
+    "preview": null,
+    "grade": "rezonans",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "До титров",
+      "Живые герои",
+      "Топ антагонист",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 62
+  },
+  {
     "title": "Parasite",
     "url": "",
     "type": "movie",
