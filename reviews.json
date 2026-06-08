@@ -757,6 +757,28 @@
     "id": 20
   },
   {
+    "title": "Milana",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2011",
+    "format": "Документальный",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/4Gns8WIwUnDh3qZwYKfJH6XIPmN.jpg",
+    "date_start": null,
+    "date_end": "2025-07-10",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Живые герои"
+    ],
+    "id": 47
+  },
+  {
     "title": "Joker: Folie à Deux",
     "url": "",
     "type": "movie",
