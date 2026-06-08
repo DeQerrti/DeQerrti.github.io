@@ -19,20 +19,6 @@ const TYPE_COLORS = {
   gacha:   "#c0a020",   // жёлтый светлее
 };
 
-const TYPE_LABELS = {
-  anime:   "Аниме",
-  manga:   "Манга",
-  manhwa:  "Манхва",
-  manhua:  "Маньхуа",
-  novel:   "Ранобэ",
-  movie:   "Фильмы",
-  show:    "Сериалы",
-  dorama:  "Дорамы",
-  book:    "Книги",
-  game:    "Игры",
-  gacha:   "Гача",
-};
-
 async function loadStats() {
   if (loading.stats) return;
   loading.stats = true;
