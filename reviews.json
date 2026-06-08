@@ -34,8 +34,9 @@
   {
     "title": "The Day of the Jackal",
     "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
-    "type": "movie",
+    "type": "show",
     "status": "completed",
+    "favorite": false,
     "source": "teletype",
     "url2": null,
     "source2": null,
