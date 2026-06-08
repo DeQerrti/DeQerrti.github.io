@@ -876,6 +876,28 @@
     "id": 30
   },
   {
+    "title": "King Richard",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2021",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/2dfujXrxePtYJPiPHj1HkAFQvpu.jpg",
+    "date_start": null,
+    "date_end": "2022-07-13",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Живые герои"
+    ],
+    "id": 42
+  },
+  {
     "title": "Mousou Dairinin",
     "url": "",
     "type": "anime",
