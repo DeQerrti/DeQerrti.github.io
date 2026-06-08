@@ -973,6 +973,29 @@
     "id": 48
   },
   {
+    "title": "They Shall Not Grow Old",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2018",
+    "format": "Документальный",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/yMGfJeTXUdIjOqjS0jJfjgYEuYC.jpg",
+    "date_start": null,
+    "date_end": "2022-03-17",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Стеклище",
+      "Живые герои"
+    ],
+    "id": 53
+  },
+  {
     "title": "The Wolf House",
     "url": "",
     "type": "movie",
