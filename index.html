@@ -698,7 +698,7 @@ section.group { margin-bottom: 3.5rem; }
 
 /* ── Постер в тир-листе ── */
 .tl-poster {
-  width: 66px;
+  width: 100px;
   flex-shrink: 0;
   position: relative;
   cursor: default;
@@ -711,7 +711,7 @@ section.group { margin-bottom: 3.5rem; }
 .tl-poster::before {
   content: '';
   position: absolute; top: 0; left: 0;
-  width: 7px; height: 7px;
+  width: 9px; height: 9px;
   border-top: 1px solid var(--tl-color, var(--red-dim));
   border-left: 1px solid var(--tl-color, var(--red-dim));
   z-index: 4; pointer-events: none;
@@ -720,10 +720,10 @@ section.group { margin-bottom: 3.5rem; }
 }
 .tl-poster:hover {
   border-color: var(--tl-color, var(--border2));
-  transform: translateY(-4px) scale(1.06);
+  transform: translateY(-5px) scale(1.05);
   z-index: 20;
 }
-.tl-poster:hover::before { opacity: 1; width: 10px; height: 10px; }
+.tl-poster:hover::before { opacity: 1; width: 13px; height: 13px; }
 
 .tl-poster img {
   width: 100%;
@@ -734,21 +734,6 @@ section.group { margin-bottom: 3.5rem; }
   transition: filter .25s;
 }
 .tl-poster:hover img { filter: grayscale(0) brightness(.98); }
-
-.tl-type-tag {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  font-family: 'DM Sans', sans-serif;
-  font-size: .44rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: rgba(240,236,230,.65);
-  background: rgba(10,10,12,.88);
-  padding: .18rem .25rem;
-  text-align: center;
-  backdrop-filter: blur(4px);
-  z-index: 3;
-}
 
 /* ── Тултип тир-листа ── */
 .tl-tooltip {
