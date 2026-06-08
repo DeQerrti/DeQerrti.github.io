@@ -1,5 +1,12 @@
 [
   {
+    "name": "Nobunaga Oda",
+    "type": "character",
+    "image": "https://shikimori.io/uploads/poster/characters/137864/main-6433208a49694a1e1bf0e59bf582e2b9.webp",
+    "from": "Fate/type Redline",
+    "id": 6
+  },
+  {
     "name": "Gen Urobuchi",
     "type": "person",
     "image": "https://s4.anilist.co/file/anilistcdn/staff/large/n105308-AGdgHFIC2YSV.jpg",
