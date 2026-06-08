@@ -898,6 +898,36 @@
     "id": 42
   },
   {
+    "title": "Joker",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+    "date_start": null,
+    "date_end": "2019-06-14",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Чеховские ружья",
+      "Живые герои",
+      "Крутой протагонист",
+      "Жесть",
+      "Философия",
+      "Чистый кайф"
+    ],
+    "id": 43
+  },
+  {
     "title": "Mousou Dairinin",
     "url": "",
     "type": "anime",
