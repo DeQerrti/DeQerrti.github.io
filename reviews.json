@@ -1002,6 +1002,30 @@
     "id": 29
   },
   {
+    "title": "12 Angry Men",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1957",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/zhG3vKWyDRaZYoaww1UVAi29T9h.jpg",
+    "date_start": null,
+    "date_end": "2023-04-14",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Живые герои",
+      "Без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 65
+  },
+  {
     "title": "Green Book",
     "url": "",
     "type": "movie",
