@@ -122,14 +122,21 @@
     "url2": null,
     "source2": null,
     "year": "2026",
-    "format": null,
+    "format": "Ритм игра",
     "cover": "https://byrutgame.org/uploads/posts/2026-03/7a07f8b53f_yunyun-syndrome-rhythm-psychosis-poster.jpg",
     "date_start": "2026-05-10",
     "date_end": null,
     "favorites": null,
-    "preview": null,
-    "grade": null,
-    "tags": [],
+    "preview": "Ритмическое приключение, наполненное гипнотическими мелодиями и кислотными визуальными эффектами, маскирующее психоделический опыт под интерфейс операционной системы",
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Специфичный стиль",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Крутой протагонист",
+      "Чистый кайф"
+    ],
     "id": 6
   },
   {
