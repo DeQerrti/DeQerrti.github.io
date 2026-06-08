@@ -827,6 +827,38 @@
     "id": 44
   },
   {
+    "title": "Narcos",
+    "url": "",
+    "type": "show",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2015-2017",
+    "format": "(3 сезона)",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/vymSK4vGr33fPSp3RfzyJedYGAI.jpg",
+    "date_start": null,
+    "date_end": "2024-07-08",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Осты в тему",
+      "Затягивает сразу",
+      "Стеклище",
+      "Чеховские ружья",
+      "До титров",
+      "Проседает",
+      "Живые герои",
+      "Крутой протагонист",
+      "Топ антагонист",
+      "Жесть",
+      "Чистый кайф"
+    ],
+    "id": 56
+  },
+  {
     "title": "Zenless Zone Zero",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mbo5ny4isc2e",
     "type": "gacha",
