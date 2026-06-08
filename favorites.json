@@ -1,5 +1,12 @@
 [
   {
+    "name": "Eto",
+    "type": "character",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90231-7ZeFK1DbrAxw.jpg",
+    "from": "Tokyo Ghoul",
+    "id": 3
+  },
+  {
     "name": "Ken Kaneki",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b87275-mb13EWZBdbh3.png",
