@@ -934,36 +934,6 @@
     "id": 69
   },
   {
-    "title": "Mushoku Tensei",
-    "url": "",
-    "type": "anime",
-    "status": "completed",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2021-2024",
-    "format": "(1-2 сезоны)",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx108465-1ANspF1EWyFx.jpg",
-    "date_start": null,
-    "date_end": "2024-11-20",
-    "favorites": null,
-    "preview": "Переродившись в новом мире в младенчестве, Рудеус воспользуется каждой возможностью, чтобы прожить жизнь, о которой всегда мечтал. Вооружившись новыми друзьями, недавно приобретенными магическими способностями",
-    "grade": "attrakcion",
-    "tags": [
-      "Топ визуал",
-      "Осты в тему",
-      "Чеховские ружья",
-      "Оригинальный сеттинг",
-      "Почти без кринжа",
-      "Жесть",
-      "Чистый кайф",
-      "Хорни вайб",
-      "Лор важнее сюжета"
-    ],
-    "id": 81
-  },
-  {
     "title": "American Made",
     "url": "",
     "type": "movie",
@@ -1512,6 +1482,36 @@
       "Живые герои"
     ],
     "id": 53
+  },
+  {
+    "title": "Mushoku Tensei",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2021-2024",
+    "format": "(1-2 сезоны)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx108465-1ANspF1EWyFx.jpg",
+    "date_start": null,
+    "date_end": "2021-12-20",
+    "favorites": null,
+    "preview": "Переродившись в новом мире в младенчестве, Рудеус воспользуется каждой возможностью, чтобы прожить жизнь, о которой всегда мечтал. Вооружившись новыми друзьями, недавно приобретенными магическими способностями",
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Осты в тему",
+      "Чеховские ружья",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Жесть",
+      "Чистый кайф",
+      "Хорни вайб",
+      "Лор важнее сюжета"
+    ],
+    "id": 81
   },
   {
     "title": "Heike Monogatari",
