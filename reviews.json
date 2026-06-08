@@ -914,6 +914,37 @@
     "id": 41
   },
   {
+    "title": "Harakiri",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1962",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/zK7HsOC7QxW1ldKIeFG8YJ5F2Eb.jpg",
+    "date_start": null,
+    "date_end": "2024-01-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ визуал",
+      "Специфичный стиль",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Стеклище",
+      "До титров",
+      "Живые герои",
+      "Без кринжа",
+      "Жесть",
+      "Философия"
+    ],
+    "id": 61
+  },
+  {
     "title": "Corpus Christi",
     "url": "",
     "type": "movie",
