@@ -759,7 +759,7 @@
   {
     "title": "Milana",
     "url": "",
-    "type": "anime",
+    "type": "movie",
     "status": "completed",
     "favorite": false,
     "source": "bluesky",
@@ -768,7 +768,7 @@
     "year": "2011",
     "format": "Документальный",
     "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/4Gns8WIwUnDh3qZwYKfJH6XIPmN.jpg",
-    "date_start": null,
+    "date_start": "2026-06-08",
     "date_end": "2025-07-10",
     "favorites": null,
     "preview": null,
