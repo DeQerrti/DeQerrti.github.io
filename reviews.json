@@ -1364,6 +1364,30 @@
     "id": 68
   },
   {
+    "title": "Muse Dash",
+    "url": "",
+    "type": "game",
+    "status": "current",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2018",
+    "format": "Ритм игра",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co6h43.jpg",
+    "date_start": "2020-01-08",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ визуал",
+      "Топ боёвка",
+      "Чистый кайф"
+    ],
+    "id": 71
+  },
+  {
     "title": "Hacksaw Ridge",
     "url": "",
     "type": "movie",
