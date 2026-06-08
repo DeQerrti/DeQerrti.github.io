@@ -779,6 +779,36 @@
     "id": 47
   },
   {
+    "title": "Kingdom Come: Deliverance II",
+    "url": "",
+    "type": "game",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2025",
+    "format": "Игра",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co8qmv.jpg",
+    "date_start": null,
+    "date_end": "2025-05-22",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Долгая раскачка",
+      "Стеклище",
+      "Рояли в кустах",
+      "Проседает",
+      "Живые герои",
+      "Почти без кринжа",
+      "Жесть",
+      "Серая мораль",
+      "Лор важнее сюжета"
+    ],
+    "id": 74
+  },
+  {
     "title": "Lies of P",
     "url": "",
     "type": "game",
