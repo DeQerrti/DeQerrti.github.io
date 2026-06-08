@@ -4,6 +4,35 @@
 //  Зависит от: config.js, api.js, cards.js
 // ══════════════════════════════════════════════
 
+// ── Цвета по типам ─────────────────────────────
+const TYPE_COLORS = {
+  anime:   "#8b1a1a",   // бардовый
+  manga:   "#1a4a8b",   // синий
+  manhwa:  "#2563a8",   // синий светлее
+  manhua:  "#4a7abf",   // синий ещё светлее
+  novel:   "#5a2d8a",   // фиолетовый
+  book:    "#8a4abf",   // фиолетовый светлее
+  movie:   "#1a6b3a",   // зелёный
+  show:    "#2d8a52",   // зелёный светлее
+  dorama:  "#4aab6e",   // зелёный ещё светлее
+  game:    "#8b6914",   // жёлтый тёмный
+  gacha:   "#c0a020",   // жёлтый светлее
+};
+
+const TYPE_LABELS = {
+  anime:   "Аниме",
+  manga:   "Манга",
+  manhwa:  "Манхва",
+  manhua:  "Маньхуа",
+  novel:   "Ранобэ",
+  movie:   "Фильмы",
+  show:    "Сериалы",
+  dorama:  "Дорамы",
+  book:    "Книги",
+  game:    "Игры",
+  gacha:   "Гача",
+};
+
 async function loadStats() {
   if (loading.stats) return;
   loading.stats = true;
@@ -25,30 +54,12 @@ function renderStats() {
   const box     = document.getElementById("tab-stats");
   const reviews = cache.reviews || [];
 
-  // Все записи с оценкой — независимо от статуса
-  // (гача в процессе тоже считается, раз уже оценена)
   const withGrade = reviews.filter(r => r.grade);
-
-  // Для архивной статистики (по годам просмотра) — только завершённые
   const completed = reviews.filter(r =>
     r.status === "completed" || (!r.status && (r.preview || r.grade))
   );
 
   // ── Счётчики по типам ──────────────────────────
-  const TYPE_LABELS = {
-    anime:   "Аниме",
-    manga:   "Манга",
-    manhwa:  "Манхва",
-    manhua:  "Маньхуа",
-    novel:   "Ранобэ",
-    movie:   "Фильмы",
-    show:    "Сериалы",
-    dorama:  "Дорамы",
-    book:    "Книги",
-    game:    "Игры",
-    gacha:   "Гача",
-  };
-
   const typeCounts = {};
   for (const r of withGrade) {
     const t = r.type || "anime";
@@ -56,33 +67,39 @@ function renderStats() {
   }
 
   const counts = Object.entries(TYPE_LABELS)
-    .map(([key, label]) => ({ label, val: typeCounts[key] || 0 }))
+    .map(([key, label]) => ({ key, label, val: typeCounts[key] || 0, color: TYPE_COLORS[key] || "#666" }))
     .filter(c => c.val > 0);
 
   const total = counts.reduce((s, c) => s + c.val, 0);
 
-  // ── По годам просмотра (только завершённые) ────
-  const watchYears = {};
+  // ── По годам просмотра — разбивка по типам ─────
+  const watchYearsByType = {};
   for (const r of completed) {
     const raw = r.date_end || r.date_start || r.date;
     const y   = raw ? new Date(raw).getFullYear() : null;
-    if (y) watchYears[y] = (watchYears[y] || 0) + 1;
+    if (!y) continue;
+    const t = r.type || "anime";
+    if (!watchYearsByType[y]) watchYearsByType[y] = {};
+    watchYearsByType[y][t] = (watchYearsByType[y][t] || 0) + 1;
   }
 
-  // ── По годам выхода (все с оценкой) ───────────
-  const releaseYears = {};
+  // ── По годам выхода — разбивка по типам ────────
+  const releaseYearsByType = {};
   for (const r of withGrade) {
     const y = parseInt(r.year);
-    if (y) releaseYears[y] = (releaseYears[y] || 0) + 1;
+    if (!y) continue;
+    const t = r.type || "anime";
+    if (!releaseYearsByType[y]) releaseYearsByType[y] = {};
+    releaseYearsByType[y][t] = (releaseYearsByType[y][t] || 0) + 1;
   }
 
-  // ── Оценки (все с оценкой) ─────────────────────
+  // ── Оценки ─────────────────────────────────────
   const gradeCounts = {};
   for (const r of withGrade) {
     gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
   }
 
-  // ── Теги (все записи) ──────────────────────────
+  // ── Теги ───────────────────────────────────────
   const tagCounts = {};
   for (const r of reviews) {
     for (const tag of (r.tags || [])) {
@@ -96,21 +113,21 @@ function renderStats() {
   box.innerHTML = `
     ${renderCounters(counts, total)}
     ${renderDonut(counts, total)}
-    ${renderWatchYearChart(watchYears)}
-    ${renderReleaseYearChart(releaseYears)}
+    ${renderStackedBarChart("По годам просмотра", "watch-bars", watchYearsByType)}
+    ${renderStackedBarChart("По годам выхода",    "release-bars", releaseYearsByType)}
     ${renderGradeChart(gradeCounts)}
     ${renderTagCloud(topTags)}
   `;
 
   animateCounters();
-  animateBars();
+  animateStackedBars();
 }
 
 // ── Счётчики ───────────────────────────────────
 function renderCounters(counts, total) {
   const items = counts.map(c => `
     <div class="stat-counter">
-      <div class="stat-counter-val" data-target="${c.val}">0</div>
+      <div class="stat-counter-val" data-target="${c.val}" style="color:${c.color}">0</div>
       <div class="stat-counter-label">${esc(c.label)}</div>
     </div>
   `).join("");
@@ -128,13 +145,12 @@ function renderCounters(counts, total) {
 // ── Пончик ─────────────────────────────────────
 function renderDonut(counts, total) {
   if (!total) return "";
-  const colors = ["#8b1a1a","#c0392b","#d4a017","#2d8a4e","#2563a8","#7c3aed","#706860","#4a8c5c","#b87333","#5a7a9a","#a05070"];
   const r = 80, cx = 100, cy = 100;
   const circumference = 2 * Math.PI * r;
 
-  const legend = counts.map((c, i) => `
+  const legend = counts.map(c => `
     <div class="donut-legend-item">
-      <span class="donut-dot" style="background:${colors[i % colors.length]}"></span>
+      <span class="donut-dot" style="background:${c.color}"></span>
       <span class="donut-legend-label">${esc(c.label)}</span>
       <span class="donut-legend-val">${c.val}</span>
       <span class="donut-legend-pct">${Math.round(c.val / total * 100)}%</span>
@@ -142,11 +158,11 @@ function renderDonut(counts, total) {
   `).join("");
 
   let accum = 0;
-  const segs = counts.map((c, i) => {
+  const segs = counts.map(c => {
     const pct  = c.val / total;
     const dash = pct * circumference;
     const seg  = `<circle cx="${cx}" cy="${cy}" r="${r}"
-      fill="none" stroke="${colors[i % colors.length]}" stroke-width="16"
+      fill="none" stroke="${c.color}" stroke-width="16"
       stroke-dasharray="${dash.toFixed(2)} ${(circumference - dash).toFixed(2)}"
       stroke-dashoffset="${(circumference - accum * circumference).toFixed(2)}"
       style="transform:rotate(-90deg);transform-origin:${cx}px ${cy}px"/>`;
@@ -167,28 +183,43 @@ function renderDonut(counts, total) {
   </section>`;
 }
 
-// ── Барчарты по годам ──────────────────────────
-function renderWatchYearChart(yearData) {
-  return renderBarChart("По годам просмотра", "watch-bars", yearData);
-}
-function renderReleaseYearChart(yearData) {
-  return renderBarChart("По годам выхода", "release-bars", yearData);
-}
+// ── Стековые барчарты по годам ─────────────────
+// yearsByType: { year: { type: count } }
+function renderStackedBarChart(title, id, yearsByType) {
+  const years = Object.keys(yearsByType).sort((a, b) => a - b);
+  if (!years.length) return "";
 
-function renderBarChart(title, id, yearData) {
-  const sorted = Object.entries(yearData).sort((a, b) => a[0] - b[0]);
-  if (!sorted.length) return "";
-  const max = Math.max(...sorted.map(([,v]) => v));
-  const bars = sorted.map(([year, val]) => {
-    const pct = max ? (val / max * 100) : 0;
+  // Максимум — сумма всех типов за год
+  const totals = years.map(y => Object.values(yearsByType[y]).reduce((s, v) => s + v, 0));
+  const max = Math.max(...totals);
+
+  const bars = years.map((year, yi) => {
+    const yearTotal = totals[yi];
+    const pct = max ? (yearTotal / max * 100) : 0;
+
+    // Сегменты стека — каждый тип своим цветом
+    // Высота каждого сегмента пропорциональна его доле от yearTotal
+    const segments = Object.entries(TYPE_LABELS)
+      .map(([key]) => ({ key, val: yearsByType[year][key] || 0, color: TYPE_COLORS[key] || "#666" }))
+      .filter(s => s.val > 0)
+      .map(s => {
+        const segPct = yearTotal ? (s.val / yearTotal * 100).toFixed(2) : 0;
+        return `<div class="year-bar-seg"
+          style="height:${segPct}%;background:${s.color}"
+          title="${TYPE_LABELS[s.key] || s.key}: ${s.val}"></div>`;
+      }).join("");
+
     return `<div class="year-bar-wrap">
       <div class="year-bar-track">
-        <div class="year-bar" data-pct="${pct.toFixed(1)}" style="height:0%"></div>
+        <div class="year-bar-stack" data-pct="${pct.toFixed(1)}" style="height:0%">
+          ${segments}
+        </div>
       </div>
-      <div class="year-bar-val">${val}</div>
+      <div class="year-bar-val">${yearTotal}</div>
       <div class="year-bar-label">${esc(String(year))}</div>
     </div>`;
   }).join("");
+
   return `<section class="stat-section">
     <h2 class="section-title">${esc(title)}</h2>
     <div class="year-bars-wrap" id="${id}">${bars}</div>
@@ -252,9 +283,9 @@ function animateCounters() {
   });
 }
 
-function animateBars() {
+function animateStackedBars() {
   setTimeout(() => {
-    document.querySelectorAll(".year-bar").forEach(el => {
+    document.querySelectorAll(".year-bar-stack").forEach(el => {
       el.style.transition = "height .6s cubic-bezier(.4,0,.2,1)";
       el.style.height = el.dataset.pct + "%";
     });
