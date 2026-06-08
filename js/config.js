@@ -31,7 +31,7 @@ function esc(s) {
 }
 
 // ── Шкала послевкусия ──────────────────────────
-const GRADE_ORDER = ["razocharo","brak","fon","attrakcion","vyskazyvanie","etalon","rezonans"];
+const GRADE_ORDER = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
 
 const GRADES = {
   razocharo:    { color: "#8B6914", name: "Разочарование", desc: "Хороший старт, перечеркнутый бездарным финалом" },
