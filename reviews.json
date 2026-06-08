@@ -152,6 +152,36 @@
     "id": 5
   },
   {
+    "title": "Vinland Saga",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mmlcef724s25",
+    "type": "manga",
+    "status": "current",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2005",
+    "format": "1 том",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30642-0mjRDkf4THpo.jpg",
+    "date_start": "2026-05-24",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ рисовка",
+      "Затягивает сразу",
+      "Стеклище",
+      "Живые герои",
+      "Крутой протагонист",
+      "Почти без кринжа",
+      "Жесть",
+      "Философия",
+      "Серая мораль"
+    ],
+    "id": 27
+  },
+  {
     "title": "ALLfiring",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mlxw2unljc2e",
     "type": "game",
