@@ -1239,6 +1239,33 @@
     "id": 43
   },
   {
+    "title": "Parasite",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+    "date_start": null,
+    "date_end": "2019-03-08",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Затягивает сразу",
+      "Стеклище",
+      "Чеховские ружья",
+      "До титров",
+      "Почти без кринжа",
+      "Жесть"
+    ],
+    "id": 58
+  },
+  {
     "title": "Mousou Dairinin",
     "url": "",
     "type": "anime",
