@@ -908,6 +908,36 @@
     "id": 34
   },
   {
+    "title": "Shigurui",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2007",
+    "format": "(12 эпизодов)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx2216-90YquKJllawX.jpg",
+    "date_start": null,
+    "date_end": "2018-07-12",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ рисовка",
+      "Топ визуал",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Стеклище",
+      "Чеховские ружья",
+      "До титров",
+      "Жесть",
+      "Философия"
+    ],
+    "id": 38
+  },
+  {
     "title": "Fate/Zero",
     "url": "",
     "type": "anime",
