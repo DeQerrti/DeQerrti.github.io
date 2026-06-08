@@ -1677,6 +1677,31 @@
     "id": 33
   },
   {
+    "title": "Come and See",
+    "url": "",
+    "type": "movie",
+    "status": "completed",
+    "favorite": true,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1985",
+    "format": "Фильм",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/4NtAQrQFnmyKWJyhARELGRjukjz.jpg",
+    "date_start": null,
+    "date_end": "2018-03-15",
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Жесть",
+      "Без кринжа",
+      "Живые герои",
+      "Стеклище"
+    ],
+    "id": 67
+  },
+  {
     "title": "Hunter x Hunter",
     "url": "",
     "type": "anime",
