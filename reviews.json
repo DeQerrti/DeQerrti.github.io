@@ -1059,7 +1059,7 @@
     "year": "2021,2024",
     "format": "(2 фильма)",
     "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
-    "date_start": "2026-06-08",
+    "date_start": null,
     "date_end": "2024-06-10",
     "favorites": null,
     "preview": null,
