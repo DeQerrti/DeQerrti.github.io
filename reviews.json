@@ -2801,6 +2801,34 @@
     "id": 45
   },
   {
+    "title": "Tengen Toppa Gurren Lagann",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2007",
+    "format": "(1 сезон)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx2001-XwRnjzGeFWRQ.png",
+    "date_start": "2026-06-09",
+    "date_end": "2017-03-18",
+    "favorites": null,
+    "preview": "В далёком будущем человечество живёт общинами глубоко под землёй в пещерах, не зная о мире на поверхности, о небе и звёздах. В одной из таких общин живут Симон и его друг Камина. Вместе они называют себя «Гуррен-Дан» (досл. «Бригада Гуррен»). Камина мечтает покинуть пещеры и выбраться на поверхность, в существование которой верят немногие.",
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Специфичный стиль",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Чеховские ружья",
+      "До титров",
+      "Чистый кайф"
+    ],
+    "id": 98
+  },
+  {
     "title": "The Intouchables",
     "url": "",
     "type": "movie",
@@ -2846,34 +2874,6 @@
       "Проседает"
     ],
     "id": 92
-  },
-  {
-    "title": "Tengen Toppa Gurren Lagann",
-    "url": "",
-    "type": "anime",
-    "status": "completed",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2007",
-    "format": "(1 сезон)",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx2001-XwRnjzGeFWRQ.png",
-    "date_start": null,
-    "date_end": "2016-03-18",
-    "favorites": null,
-    "preview": "В далёком будущем человечество живёт общинами глубоко под землёй в пещерах, не зная о мире на поверхности, о небе и звёздах. В одной из таких общин живут Симон и его друг Камина. Вместе они называют себя «Гуррен-Дан» (досл. «Бригада Гуррен»). Камина мечтает покинуть пещеры и выбраться на поверхность, в существование которой верят немногие.",
-    "grade": "attrakcion",
-    "tags": [
-      "Топ визуал",
-      "Специфичный стиль",
-      "Осты в тему",
-      "Затягивает сразу",
-      "Чеховские ружья",
-      "До титров",
-      "Чистый кайф"
-    ],
-    "id": 98
   },
   {
     "title": "Nippon Sangoku",
