@@ -98,7 +98,7 @@ header::after {
 /* ══ NAV — ИСПРАВЛЕНА ПРОКРУТКА ══════════════════ */
 nav {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 0;
   padding: 0;
   border-bottom: 1px solid var(--border);
@@ -113,11 +113,11 @@ nav {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
-nav::-webkit-scrollbar { display: none; 
-                       @media (max-width: 700px) {
+nav::-webkit-scrollbar { display: none; }
+
+@media (max-width: 700px) {
   nav { justify-content: flex-start; }
 }
-                       }
 
 .tab-btn {
   font-family: 'Cormorant Garamond', serif;
