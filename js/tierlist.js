@@ -1,33 +1,12 @@
 // ══════════════════════════════════════════════
 //  TIERLIST — вкладка Тир-лист
 //  Зависит от: config.js, api.js, cards.js
+//  TIER_ROWS и TL_TYPE_LABELS теперь из config.js
 // ══════════════════════════════════════════════
 
-const TIER_ROWS = [
-  { key: "rezonans",     label: "Резонанс",       color: "#7c3aed" },
-  { key: "etalon",       label: "Эталон",          color: "#2563a8" },
-  { key: "vyskazyvanie", label: "Отлично",         color: "#2d8a4e" },
-  { key: "attrakcion",   label: "Аттракцион",      color: "#d4a017" },
-  { key: "fon",          label: "Фоновый шум",     color: "#6b7280" },
-  { key: "brak",         label: "Брак",            color: "#c0392b" },
-  { key: "razocharo",    label: "Разочарование",   color: "#8B6914" },
-];
-
-// Полный маппинг типов на русский — единый для всего сайта
-const TL_TYPE_LABELS = {
-  anime:   "Аниме",
-  manga:   "Манга",
-  manhwa:  "Манхва",
-  manhua:  "Маньхуа",
-  novel:   "Ранобэ",
-  movie:   "Фильм",
-  show:    "Сериал",
-  dorama:  "Дорама",
-  book:    "Книга",
-  game:    "Игра",
-  gacha:   "Гача",
-  vn:      "Визуальная новелла",
-};
+// TL_TYPE_LABELS — то же самое что TYPE_LABELS в config.js
+// просто алиас для обратной совместимости если где-то используется
+const TL_TYPE_LABELS = TYPE_LABELS;
 
 // Фильтры — только те типы что реально есть в данных
 const TL_FILTERS = [
@@ -47,7 +26,7 @@ function tlInferType(r) {
 }
 
 function tlTypeLabel(type) {
-  return TL_TYPE_LABELS[type] || type || "—";
+  return TYPE_LABELS[type] || type || "—";
 }
 
 // ── Загрузка постера ───────────────────────────
@@ -111,7 +90,6 @@ async function loadTierlist() {
 
   try {
     await fetchReviews();
-    // Берём все записи с оценкой — независимо от статуса
     const reviews = (cache.reviews || []).filter(r => r.grade);
 
     if (!reviews.length) {
@@ -124,7 +102,6 @@ async function loadTierlist() {
     tlState.loaded = true;
     tlRender();
 
-    // Догружаем постеры батчами фоново
     const BATCH = 6;
     for (let i = 0; i < tlState.items.length; i += BATCH) {
       const chunk = tlState.items.slice(i, i + BATCH);
@@ -247,19 +224,52 @@ function tlBindTooltip() {
   if (!tip) return;
 
   document.querySelectorAll(".tl-poster").forEach(card => {
+    // Desktop: hover
     card.addEventListener("mouseenter", e => {
-      document.getElementById("tl-tt-title").textContent = card.dataset.tlTitle;
-      document.getElementById("tl-tt-grade").textContent = card.dataset.tlGrade;
-      document.getElementById("tl-tt-grade").style.color = card.dataset.tlColor;
-      document.getElementById("tl-tt-desc").textContent  = card.dataset.tlDesc;
-      const meta = [card.dataset.tlType, card.dataset.tlYear].filter(Boolean).join(" · ");
-      document.getElementById("tl-tt-meta").textContent  = meta;
-      tip.classList.add("visible");
+      tlShowTip(card, tip);
       tlMoveTip(e, tip);
     });
     card.addEventListener("mousemove", e => tlMoveTip(e, tip));
     card.addEventListener("mouseleave", () => tip.classList.remove("visible"));
+
+    // Mobile: tap to show/hide tooltip
+    card.addEventListener("touchstart", e => {
+      e.preventDefault();
+      const alreadyVisible = tip.classList.contains("visible")
+        && tip.dataset.activeCard === card.dataset.tlTitle;
+      tip.classList.remove("visible");
+      if (!alreadyVisible) {
+        tlShowTip(card, tip);
+        tip.dataset.activeCard = card.dataset.tlTitle;
+        // позиционируем по центру карточки
+        const rect = card.getBoundingClientRect();
+        let x = rect.left + rect.width / 2 - 110;
+        let y = rect.top - (tip.offsetHeight || 110) - 8;
+        x = Math.max(8, Math.min(x, window.innerWidth - 228));
+        y = y < 8 ? rect.bottom + 8 : y;
+        tip.style.left = x + "px";
+        tip.style.top  = (y + window.scrollY) + "px";
+        tip.style.position = "absolute";
+      }
+    }, { passive: false });
   });
+
+  // закрыть тултип тапом по пустому месту
+  document.addEventListener("touchstart", e => {
+    if (!e.target.closest(".tl-poster") && !e.target.closest(".tl-tooltip")) {
+      tip.classList.remove("visible");
+    }
+  });
+}
+
+function tlShowTip(card, tip) {
+  document.getElementById("tl-tt-title").textContent = card.dataset.tlTitle;
+  document.getElementById("tl-tt-grade").textContent = card.dataset.tlGrade;
+  document.getElementById("tl-tt-grade").style.color = card.dataset.tlColor;
+  document.getElementById("tl-tt-desc").textContent  = card.dataset.tlDesc;
+  const meta = [card.dataset.tlType, card.dataset.tlYear].filter(Boolean).join(" · ");
+  document.getElementById("tl-tt-meta").textContent  = meta;
+  tip.classList.add("visible");
 }
 
 function tlMoveTip(e, tip) {
@@ -268,6 +278,7 @@ function tlMoveTip(e, tip) {
   const tw = tip.offsetWidth || 220, th = tip.offsetHeight || 100;
   if (x + tw > window.innerWidth)  x = e.clientX - tw - m;
   if (y + th > window.innerHeight) y = e.clientY - th - m;
+  tip.style.position = "fixed";
   tip.style.left = x + "px";
   tip.style.top  = y + "px";
 }
