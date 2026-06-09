@@ -17,7 +17,10 @@ async function loadFavorites() {
       .then(r => r.ok ? r.json() : [])
       .catch(() => []);
 
-    const titles     = (cache.reviews || []).filter(r => r.favorite === true);
+    const titles = (cache.reviews || [])
+      .filter(r => r.favorite === true)
+      .sort((a, b) => (a.fav_order ?? 9999) - (b.fav_order ?? 9999));
+
     const characters = favData.filter(r => r.type === "character");
     const persons    = favData.filter(r => r.type === "person");
 
@@ -44,7 +47,7 @@ function renderFavorites({ titles, characters, persons }) {
   html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">Тайтлы</h2>
-      ${admin ? `<a href="/add" class="admin-add-btn">+ Добавить</a>` : ""}
+      ${admin ? `<a href="/reviews-order" class="admin-add-btn">⇅ Порядок</a><a href="/add" class="admin-add-btn">+ Добавить</a>` : ""}
     </div>
     <div class="grid-now">
       ${titles.length
@@ -131,7 +134,6 @@ const PERSON_SUBTYPE_LABELS = {
 function favPersonCard(r, index) {
   const img = r.image || PH_SQ;
 
-  // Для персоны показываем роль, для персонажа — из чего
   const subLine = r.type === "person"
     ? (PERSON_SUBTYPE_LABELS[r.subtype] || "Персона")
     : (r.from || "");
