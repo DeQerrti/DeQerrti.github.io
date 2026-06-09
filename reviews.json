@@ -2284,7 +2284,7 @@
     "year": "2011-2012",
     "format": "(2 сезона)",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx11741-oEy1fJHYm2zJ.jpg",
-    "date_start": "2026-06-08",
+    "date_start": null,
     "date_end": "2018-06-14",
     "favorites": null,
     "preview": null,
@@ -2305,8 +2305,8 @@
       "Философия",
       "Серая мораль"
     ],
-    "id": 31,
-    "fav_order": 19
+    "fav_order": 19,
+    "id": 31
   },
   {
     "title": "Casshern Sins",
