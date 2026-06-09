@@ -935,14 +935,19 @@ section.group { margin-bottom: 3.5rem; }
 <script src="js/tierlist.js"></script>
 
 <script>
+let _navInit = true;
+
 function switchTab(tabId, btn) {
   document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
   document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
   document.getElementById(tabId).classList.remove("hidden");
   btn.classList.add("active");
 
-  // Прокручиваем активную вкладку в видимую зону навигации
-  btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+  // Скроллим вкладку в видимую зону только при ручном переключении,
+  // не при первом рендере — иначе nav уезжает от Главной
+  if (!_navInit) {
+    btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+  }
 
   if (tabId === "tab-now")       loadNow();
   if (tabId === "tab-favorites") loadFavorites();
@@ -950,7 +955,10 @@ function switchTab(tabId, btn) {
   if (tabId === "tab-stats")     loadStats();
   if (tabId === "tab-tierlist")  loadTierlist();
 }
+
+// Первый вызов — инициализация, не скроллим nav
 document.querySelector(".tab-btn.active").click();
+_navInit = false;
 </script>
 
 </body>
