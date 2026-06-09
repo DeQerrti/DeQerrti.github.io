@@ -3,14 +3,6 @@
 //  Менять только здесь, больше нигде
 // ══════════════════════════════════════════════
 
-const AL_USERNAME    = "Qerrti";
-const TRAKT_USERNAME = "Qerrti";
-const TRAKT_CLIENT   = "f9e52841369f43c4d8f0f4ab92033469eb89c2959c1005cb493749d29b8ee19c";
-
-const AL       = "https://graphql.anilist.co";
-const TRAKT    = "https://api.trakt.tv";
-const TMDB_IMG = "https://image.tmdb.org/t/p";
-
 const PH_TALL = "https://placehold.co/300x420/28211a/6b5e4a?text=?";
 const PH_SQ   = "https://placehold.co/300x300/28211a/6b5e4a?text=?";
 
