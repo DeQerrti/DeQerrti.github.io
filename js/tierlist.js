@@ -9,8 +9,8 @@ const TIER_ROWS = [
   { key: "vyskazyvanie", label: "Отлично",         color: "#2d8a4e" },
   { key: "attrakcion",   label: "Аттракцион",      color: "#d4a017" },
   { key: "fon",          label: "Фоновый шум",     color: "#6b7280" },
-  { key: "razocharo",    label: "Разочарование",   color: "#8B6914" },
   { key: "brak",         label: "Брак",            color: "#c0392b" },
+  { key: "razocharo",    label: "Разочарование",   color: "#8B6914" },
 ];
 
 // Полный маппинг типов на русский — единый для всего сайта
