@@ -2137,7 +2137,7 @@
     "year": "2004",
     "format": "(1 сезон)",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx323-ZGkUcJOn4ngy.png",
-    "date_start": "2026-06-08",
+    "date_start": null,
     "date_end": "2019-01-10",
     "favorites": null,
     "preview": null,
@@ -2150,8 +2150,8 @@
       "Жесть",
       "Философия"
     ],
-    "id": 35,
-    "fav_order": 15
+    "fav_order": 15,
+    "id": 35
   },
   {
     "title": "Serial Experiments Lain",
