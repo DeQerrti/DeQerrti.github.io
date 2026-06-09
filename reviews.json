@@ -1225,7 +1225,7 @@
     "year": "2023",
     "format": "(2 сезон)",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx136430-gsBsJjA7hGh9.jpg",
-    "date_start": "2026-06-08",
+    "date_start": null,
     "date_end": "2023-06-22",
     "favorites": null,
     "preview": null,
@@ -1242,8 +1242,8 @@
       "Философия",
       "Серая мораль"
     ],
-    "id": 29,
-    "fav_order": 14
+    "fav_order": 14,
+    "id": 29
   },
   {
     "title": "12 Angry Men",
