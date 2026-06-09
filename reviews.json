@@ -1857,7 +1857,7 @@
     "year": "2015",
     "format": "Документальный",
     "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/l02W63OGQKYugJrs3Uw8nA9gii4.jpg",
-    "date_start": "2026-06-08",
+    "date_start": null,
     "date_end": "2020-02-12",
     "favorites": null,
     "preview": null,
