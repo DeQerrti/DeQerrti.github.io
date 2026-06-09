@@ -99,7 +99,7 @@ function favTitleCard(r, index) {
 
   return `<div class="review-card-wrap" style="animation-delay:${Math.min(index * 25, 600)}ms">
     ${editBtn}
-    <a href="${esc(r.url || "#")}" target="_blank" rel="noopener" class="card" style="animation-delay:0ms">
+    <div class="card" style="animation-delay:0ms">
       <span class="type-tag ${tagClass}">${esc(tagLabel)}</span>
       <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
       <div class="card-body">
@@ -111,7 +111,7 @@ function favTitleCard(r, index) {
             </div>`
           : ""}
       </div>
-    </a>
+    </div>
   </div>`;
 }
 
