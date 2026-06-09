@@ -113,7 +113,11 @@ nav {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
-nav::-webkit-scrollbar { display: none; }
+nav::-webkit-scrollbar { display: none; 
+                       @media (max-width: 700px) {
+  nav { justify-content: flex-start; }
+}
+                       }
 
 .tab-btn {
   font-family: 'Cormorant Garamond', serif;
