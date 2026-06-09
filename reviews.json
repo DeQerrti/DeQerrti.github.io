@@ -2553,6 +2553,33 @@
     "fav_order": 6
   },
   {
+    "title": "One Punch Man",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2015",
+    "format": "(1 сезон)",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21087-B5DHjqZ3kW4b.jpg",
+    "date_start": null,
+    "date_end": "2017-12-12",
+    "favorites": null,
+    "preview": "Вы устали от запоминания суператак и бесконечных доспехов, но душа просит адреналина и драк? Тогда эта новая экшен-комедия от студии Madhouse для вас!\nГлавный герой не размахивает мечом, не выкрикивает боевой клич и вообще не отличается ничем, особенно героическим. Всё в этом молодом человеке по",
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Топ рисовка",
+      "Осты в тему",
+      "Затягивает сразу",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 95
+  },
+  {
     "title": "Ergo Proxy",
     "url": "",
     "type": "anime",
