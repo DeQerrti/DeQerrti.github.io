@@ -20,8 +20,6 @@ const NOVEL_FORMATS = ["NOVEL", "LIGHT_NOVEL"];
 const cache = {};
 
 // ── Экранирование HTML ─────────────────────────
-// Защита от XSS: все данные из внешних API
-// нужно прогонять через эту функцию перед вставкой в innerHTML
 function esc(s) {
   return String(s ?? "")
     .replace(/&/g, "&amp;")
@@ -30,23 +28,94 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
-// ── Шкала послевкусия ──────────────────────────
-const GRADE_ORDER = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
+// ══════════════════════════════════════════════
+//  ЕДИНЫЙ ИСТОЧНИК ПРАВДЫ ДЛЯ ОЦЕНОК
+//  Всё остальное (GRADE_ORDER, цвета для тир-листа,
+//  stats, cards) выводится отсюда автоматически
+// ══════════════════════════════════════════════
 
-const GRADES = {
-  razocharo:    { color: "#8B6914", name: "Разочарование", desc: "Хороший старт, перечеркнутый бездарным финалом" },
-  brak:         { color: "#c0392b", name: "Брак",          desc: "Технически или сценарно несостоятельно" },
-  fon:          { color: "#6b7280", name: "Фоновый шум",   desc: "Стерильно и вторично" },
-  attrakcion:   { color: "#d4a017", name: "Аттракцион",    desc: "Ярко, бодро, на один вечер" },
-  vyskazyvanie: { color: "#2d8a4e", name: "Отлично",       desc: "Достойная работа с посылом" },
-  etalon:       { color: "#2563a8", name: "Эталон",        desc: "Почти безупречное исполнение" },
-  rezonans:     { color: "#7c3aed", name: "Резонанс",      desc: "Личный фаворит. То, что откликнулось" }
-};
+const GRADES_DEF = [
+  {
+    key:   "rezonans",
+    name:  "Резонанс",
+    desc:  "Личный фаворит. То, что откликнулось",
+    color: "#7c3aed",
+  },
+  {
+    key:   "etalon",
+    name:  "Эталон",
+    desc:  "Почти безупречное исполнение",
+    color: "#2563a8",
+  },
+  {
+    key:   "vyskazyvanie",
+    name:  "Отлично",
+    desc:  "Достойная работа с посылом",
+    color: "#2d8a4e",
+  },
+  {
+    key:   "attrakcion",
+    name:  "Аттракцион",
+    desc:  "Ярко, бодро, на один вечер",
+    color: "#d4a017",
+  },
+  {
+    key:   "fon",
+    name:  "Фоновый шум",
+    desc:  "Стерильно и вторично",
+    color: "#6b7280",
+  },
+  {
+    key:   "brak",
+    name:  "Брак",
+    desc:  "Технически или сценарно несостоятельно",
+    color: "#c0392b",
+  },
+  {
+    key:   "razocharo",
+    name:  "Разочарование",
+    desc:  "Хороший старт, перечеркнутый бездарным финалом",
+    color: "#8B6914",
+  },
+];
 
+// Производные структуры — не редактировать вручную
+// ──────────────────────────────────────────────
+
+// { rezonans: { key, name, desc, color }, ... }
+const GRADES = Object.fromEntries(GRADES_DEF.map(g => [g.key, g]));
+
+// ["rezonans", "etalon", ...] — порядок от лучшего к худшему
+const GRADE_ORDER = GRADES_DEF.map(g => g.key);
+
+// Используется в тир-листе: { key, label, color }[]
+const TIER_ROWS = GRADES_DEF.map(g => ({
+  key:   g.key,
+  label: g.name,
+  color: g.color,
+}));
+
+// Числовой скор оценки (1 = лучший)
 function gradeScore(key) {
   const idx = GRADE_ORDER.indexOf(key);
   return idx >= 0 ? idx + 1 : null;
 }
+
+// ── Типы медиа ─────────────────────────────────
+const TYPE_LABELS = {
+  anime:   "Аниме",
+  manga:   "Манга",
+  manhwa:  "Манхва",
+  manhua:  "Маньхуа",
+  novel:   "Ранобэ",
+  movie:   "Фильм",
+  show:    "Сериал",
+  dorama:  "Дорама",
+  book:    "Книга",
+  game:    "Игра",
+  gacha:   "Гача",
+  vn:      "Визуальная новелла",
+};
 
 // ── Теги ───────────────────────────────────────
 const TAGS_MAP = {
