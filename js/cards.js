@@ -48,7 +48,6 @@ function tagHtml(tag) {
 function manualCard(r, index) {
   const info     = findReviewForTitle(r.title, r.type);
   const tagLabel = TYPE_LABELS[r.type] || r.type || "—";
-
   let watchBadge = "";
   if (r.status === "current" && r.date_start) {
     const s = fmtDateStr(r.date_start);
@@ -64,15 +63,13 @@ function manualCard(r, index) {
       watchBadge = startStr;
     }
   }
-
   const editId = r.id ?? encodeURIComponent(r.title);
   const pencil = (document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui=")))
     ? `<a href="add.html?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
     : "";
-
   return `<div class="review-card-wrap" style="animation-delay:${Math.min(index * 25, 600)}ms">
     ${pencil}
-    <a href="${esc(r.url || "#")}" target="_blank" rel="noopener" class="card" style="animation-delay:0ms">
+    <div class="card" style="animation-delay:0ms">
       <span class="type-tag tag-manual">${esc(tagLabel)}</span>
       ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
       <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
@@ -85,6 +82,6 @@ function manualCard(r, index) {
             </div>`
           : ""}
       </div>
-    </a>
+    </div>
   </div>`;
 }
