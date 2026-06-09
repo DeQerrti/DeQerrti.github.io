@@ -87,13 +87,8 @@ function renderFavorites({ titles, characters, persons }) {
 
 // Карточка тайтла (из reviews.json с favorite: true)
 function favTitleCard(r, index) {
-  const info = findReviewForTitle(r.title, r.type);
-  const typeLabels = {
-    anime: "Аниме", manga: "Манга", manhwa: "Манхва", manhua: "Маньхуа",
-    novel: "Ранобэ", movie: "Фильм", show: "Сериал", dorama: "Дорама",
-    book: "Книга", game: "Игра", gacha: "Гача"
-  };
-  const tagLabel = typeLabels[r.type] || r.type || "—";
+  const info     = findReviewForTitle(r.title, r.type);
+  const tagLabel = TYPE_LABELS[r.type] || r.type || "—";
   const tagClass = ["anime","manga","novel","movie","show"].includes(r.type)
     ? `tag-${r.type}` : "tag-manual";
 
