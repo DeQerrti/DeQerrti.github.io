@@ -2410,7 +2410,7 @@
     "year": "2011",
     "format": "Аниме (1 сезон)",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx11061-y5gsT1hoHuHw.png",
-    "date_start": "2026-06-08",
+    "date_start": null,
     "date_end": "2018-03-10",
     "favorites": null,
     "preview": null,
@@ -2429,8 +2429,8 @@
       "Чистый кайф",
       "Серая мораль"
     ],
-    "id": 32,
-    "fav_order": 22
+    "fav_order": 22,
+    "id": 32
   },
   {
     "title": "Steins;Gate",
