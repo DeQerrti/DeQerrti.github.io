@@ -2940,11 +2940,11 @@
     "year": "2011",
     "format": "Фильм",
     "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/1QU7HKgsQbGpzsJbJK4pAVQV9F5.jpg",
-    "date_start": null,
+    "date_start": "2026-06-10",
     "date_end": "2017-02-17",
     "favorites": null,
     "preview": null,
-    "grade": "attrakcion",
+    "grade": "vyskazyvanie",
     "tags": [
       "Живые герои",
       "Чистый кайф"
