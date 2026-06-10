@@ -958,6 +958,26 @@
     "fav_order": 0
   },
   {
+    "title": "Cheolhyeolgeomga Sanyanggaeui Hoegwi",
+    "url": "",
+    "type": "manhwa",
+    "status": "current",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2023",
+    "format": null,
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx163824-KiablxybJD6i.jpg",
+    "date_start": "2025-03-10",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 106
+  },
+  {
     "title": "American Made",
     "url": "",
     "type": "movie",
@@ -1266,26 +1286,6 @@
       "Без кринжа"
     ],
     "id": 57
-  },
-  {
-    "title": "Cheolhyeolgeomga Sanyanggaeui Hoegwi",
-    "url": "",
-    "type": "manhwa",
-    "status": "current",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2023",
-    "format": null,
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx163824-KiablxybJD6i.jpg",
-    "date_start": "2023-07-10",
-    "date_end": null,
-    "favorites": null,
-    "preview": null,
-    "grade": null,
-    "tags": [],
-    "id": 106
   },
   {
     "title": "Oshi no Ko",
