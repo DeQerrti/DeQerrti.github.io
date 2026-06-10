@@ -764,6 +764,7 @@
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mdq42y67ac2b",
     "type": "gacha",
     "status": "current",
+    "favorite": false,
     "source": "bluesky",
     "url2": null,
     "source2": null,
@@ -774,7 +775,7 @@
     "date_end": null,
     "favorites": "Картефия, Фиби, Морни",
     "preview": "Ни одна гача с точки зрения сюжета, режиссуры и геймплея не переплюнет полноценный ААА одиночный проект, пока что. Это почти всегда салат из всего понемногу и в совокупности по всем аспектам мид тир. Который иногда попадает в твои фетиши, а потому ощущается выше.",
-    "grade": "etalon",
+    "grade": null,
     "tags": [
       "Топ визуал",
       "Осты в тему",
