@@ -1,5 +1,12 @@
 [
   {
+    "name": "Jinx",
+    "type": "character",
+    "image": "https://wiki.leagueoflegends.com/en-us/images/thumb/Jinx_OriginalTile.jpg/120px-Jinx_OriginalTile.jpg?47b26",
+    "from": "League of Legends",
+    "id": 30
+  },
+  {
     "name": "Aatrox",
     "type": "character",
     "image": "https://wiki.leagueoflegends.com/en-us/images/thumb/Aatrox_OriginalTile.jpg/120px-Aatrox_OriginalTile.jpg?422fb",
