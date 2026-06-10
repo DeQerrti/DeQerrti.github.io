@@ -1,5 +1,12 @@
 [
   {
+    "name": "Aatrox",
+    "type": "character",
+    "image": "https://wiki.leagueoflegends.com/en-us/images/thumb/Aatrox_OriginalTile.jpg/120px-Aatrox_OriginalTile.jpg?422fb",
+    "from": "League of Legends",
+    "id": 29
+  },
+  {
     "name": "Phosphophyllite",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b123385-ild8gXk13xcO.png",
