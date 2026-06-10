@@ -56,6 +56,13 @@
     "id": 28
   },
   {
+    "name": "Jinx",
+    "type": "character",
+    "image": "https://wiki.leagueoflegends.com/en-us/images/Jinx_OriginalTile.jpg?47b26",
+    "from": "League of Legends",
+    "id": 30
+  },
+  {
     "name": "Eto",
     "type": "character",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90231-7ZeFK1DbrAxw.jpg",
@@ -227,12 +234,5 @@
     "from": null,
     "subtype": "seiyuu",
     "id": 19
-  },
-  {
-    "name": "Jinx",
-    "type": "character",
-    "image": "https://wiki.leagueoflegends.com/en-us/images/Jinx_OriginalTile.jpg?47b26",
-    "from": "League of Legends",
-    "id": 30
   }
 ]
