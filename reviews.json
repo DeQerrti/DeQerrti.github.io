@@ -1990,6 +1990,26 @@
     "fav_order": 1
   },
   {
+    "title": "Fate/type Redline",
+    "url": "",
+    "type": "manga",
+    "status": "current",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": null,
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx113981-ekewYcS9nTdJ.jpg",
+    "date_start": "2020-01-23",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 103
+  },
+  {
     "title": "Muse Dash",
     "url": "",
     "type": "game",
