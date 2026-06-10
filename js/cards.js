@@ -27,11 +27,22 @@ function gradeInlineHtml(info) {
   return `<span class="card-grade-inline" style="color:${info.grade.color}">${esc(info.grade.name)}</span>`;
 }
 
-function fmtDateStr(str) {
+function fmtDateStr(str, short = false) {
   if (!str) return null;
   const d = new Date(str);
   if (isNaN(d)) return null;
-  return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  const currentYear = new Date().getFullYear();
+  if (d.getFullYear() === currentYear) {
+    return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  } else {
+    if (short) {
+      const dd = String(d.getDate()).padStart(2, "0");
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const yy = String(d.getFullYear()).slice(2);
+      return `${dd}.${mm}.${yy}`;
+    }
+    return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short", year: "numeric" });
+  }
 }
 
 // ── Карточки ───────────────────────────────────
@@ -48,13 +59,14 @@ function tagHtml(tag) {
 function manualCard(r, index) {
   const info     = findReviewForTitle(r.title, r.type);
   const tagLabel = TYPE_LABELS[r.type] || r.type || "—";
+
   let watchBadge = "";
   if (r.status === "current" && r.date_start) {
-    const s = fmtDateStr(r.date_start);
+    const s = fmtDateStr(r.date_start, true);
     if (s) watchBadge = `с ${s}`;
   } else if (r.status === "completed") {
-    const startStr = r.date_start ? fmtDateStr(r.date_start) : null;
-    const endStr   = r.date_end   ? fmtDateStr(r.date_end)   : null;
+    const startStr = r.date_start ? fmtDateStr(r.date_start, true) : null;
+    const endStr   = r.date_end   ? fmtDateStr(r.date_end,   true) : null;
     if (endStr && startStr && r.date_start !== r.date_end) {
       watchBadge = `${startStr} → ${endStr}`;
     } else if (endStr) {
@@ -63,10 +75,12 @@ function manualCard(r, index) {
       watchBadge = startStr;
     }
   }
+
   const editId = r.id ?? encodeURIComponent(r.title);
   const pencil = (document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui=")))
     ? `<a href="add.html?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
     : "";
+
   return `<div class="review-card-wrap" style="animation-delay:${Math.min(index * 25, 600)}ms">
     ${pencil}
     <div class="card" style="animation-delay:0ms">
