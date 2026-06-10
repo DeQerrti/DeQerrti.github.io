@@ -32,6 +32,35 @@
     "id": 26
   },
   {
+    "title": "Dorohedoro 2",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mnx472ufxk2n",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2026",
+    "format": "2 сезон",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx173172-404XnuOS0DhR.jpg",
+    "date_start": null,
+    "date_end": "2026-06-10",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Топ визуал",
+      "Специфичный стиль",
+      "Затягивает сразу",
+      "Рояли в кустах",
+      "Чеховские ружья",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Жесть"
+    ],
+    "id": 110
+  },
+  {
     "title": "Re:Zero",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mnvvhphpck2l",
     "type": "anime",
@@ -3050,35 +3079,6 @@
       "Проседает"
     ],
     "id": 92
-  },
-  {
-    "title": "Dorohedoro",
-    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mnx472ufxk2n",
-    "type": "anime",
-    "status": "completed",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2026",
-    "format": "2 сезон",
-    "cover": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx173172-404XnuOS0DhR.jpg",
-    "date_start": null,
-    "date_end": null,
-    "favorites": null,
-    "preview": null,
-    "grade": "attrakcion",
-    "tags": [
-      "Топ визуал",
-      "Специфичный стиль",
-      "Затягивает сразу",
-      "Рояли в кустах",
-      "Чеховские ружья",
-      "Оригинальный сеттинг",
-      "Почти без кринжа",
-      "Жесть"
-    ],
-    "id": 110
   },
   {
     "title": "Nippon Sangoku",
