@@ -762,6 +762,32 @@
     "id": 22
   },
   {
+    "title": "Frankenstein",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1818",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=414&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F18780509%2Fe353c2cafc8293db69a5771436ffc8a8779c26ab.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2025-12-18",
+    "favorites": null,
+    "preview": "Виктор Франкенштейн, странный, но гениальный учёный, открывает способ вдохнуть жизнь в неодушевлённую материю. Так рождается Монстр: ужасное, восьмифутовое существо, обладающее мускулами, скоростью и интеллектом. Отвержение Франкенштейном своего ужасного творения повергает его в пучину отчаяния, и жизнь Франкенштейна навсегда меняется.",
+    "grade": "attrakcion",
+    "tags": [
+      "Стеклище",
+      "Чеховские ружья",
+      "Проседает",
+      "Без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 113
+  },
+  {
     "title": "Spiritfarer",
     "url": "",
     "type": "game",
