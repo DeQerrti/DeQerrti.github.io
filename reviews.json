@@ -1468,6 +1468,32 @@
     "id": 127
   },
   {
+    "title": "Ssaumdokak",
+    "url": "",
+    "type": "manhwa",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": "225 глав",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b121991-hwrVszteyodi.jpg",
+    "date_start": null,
+    "date_end": "2024-09-30",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Топ рисовка",
+      "Специфичный стиль",
+      "Проседает",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 154
+  },
+  {
     "title": "American Made",
     "url": "",
     "type": "movie",
