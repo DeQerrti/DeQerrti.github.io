@@ -2483,6 +2483,32 @@
     "id": 139
   },
   {
+    "title": "I Am a Hero",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2009",
+    "format": "22 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx44440-oLFibAj4TvM7.jpg",
+    "date_start": null,
+    "date_end": "2023-01-07",
+    "favorites": null,
+    "preview": null,
+    "grade": "fon",
+    "tags": [
+      "Жесть",
+      "Философия",
+      "Проседает",
+      "Сюжетные дыры",
+      "Рояли в кустах"
+    ],
+    "id": 163
+  },
+  {
     "title": "Made in Abyss",
     "url": "",
     "type": "anime",
