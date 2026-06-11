@@ -32,32 +32,6 @@
     "id": 26
   },
   {
-    "title": "I Am Nujood, Age 10 and Divorced",
-    "url": "",
-    "type": "book",
-    "status": "completed",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "2009",
-    "format": null,
-    "cover": "https://production-img.hardcover.app/enlarge?height=416&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F29610060%2F208f1031bf2e58a83215c6a74bd43f7b96edbb2e.jpeg&width=270",
-    "date_start": null,
-    "date_end": "2026-06-11",
-    "favorites": null,
-    "preview": "Реальная история йеменской девочки Нуджуд Али, которую в 9 лет насильно выдали замуж за мужчину втрое старше. В 2008 году она самостоятельно пришла в суд и добилась развода — первый подобный случай в Йемене.",
-    "grade": "vyskazyvanie",
-    "tags": [
-      "Стеклище",
-      "До титров",
-      "Живые герои",
-      "Крутой протагонист",
-      "Почти без кринжа"
-    ],
-    "id": 122
-  },
-  {
     "title": "Dorohedoro 2",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mnx472ufxk2n",
     "type": "anime",
@@ -1313,6 +1287,32 @@
     "grade": null,
     "tags": [],
     "id": 106
+  },
+  {
+    "title": "I Am Nujood, Age 10 and Divorced",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2009",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=416&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F29610060%2F208f1031bf2e58a83215c6a74bd43f7b96edbb2e.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2025-01-02",
+    "favorites": null,
+    "preview": "Реальная история йеменской девочки Нуджуд Али, которую в 9 лет насильно выдали замуж за мужчину втрое старше. В 2008 году она самостоятельно пришла в суд и добилась развода — первый подобный случай в Йемене.",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Стеклище",
+      "До титров",
+      "Живые герои",
+      "Крутой протагонист",
+      "Почти без кринжа"
+    ],
+    "id": 122
   },
   {
     "title": "The Call of Cthulhu",
