@@ -32,6 +32,26 @@
     "id": 26
   },
   {
+    "title": "Tsugumi Project",
+    "url": "",
+    "type": "manga",
+    "status": "onhold",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": null,
+    "cover": "https://cover.cdnlibs.org/uploads/cover/tsugumi-project/cover/c07811b6-c450-4d32-99d6-cf72bd0800a4.jpg",
+    "date_start": "2026-06-11",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 194
+  },
+  {
     "title": "Myeolmang Ihuui Segye",
     "url": "",
     "type": "manhwa",
