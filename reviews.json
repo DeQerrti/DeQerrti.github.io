@@ -1335,6 +1335,34 @@
     "id": 122
   },
   {
+    "title": "Jujutsu Kaisen",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2018",
+    "format": "30 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx101517-H3TdM3g5ZUe9.jpg",
+    "date_start": null,
+    "date_end": "2024-12-31",
+    "favorites": null,
+    "preview": null,
+    "grade": "fon",
+    "tags": [
+      "Топ рисовка",
+      "Сюжетные дыры",
+      "Рояли в кустах",
+      "Проседает",
+      "Картонные чары",
+      "Дырявый сеттинг",
+      "Почти без кринжа"
+    ],
+    "id": 159
+  },
+  {
     "title": "The Call of Cthulhu",
     "url": "",
     "type": "book",
