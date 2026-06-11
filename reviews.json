@@ -5251,7 +5251,7 @@
   {
     "title": "Hurejasik",
     "url": "",
-    "type": "anime",
+    "type": "manhwa",
     "status": "completed",
     "favorite": false,
     "source": "bluesky",
@@ -5260,7 +5260,7 @@
     "year": "2014",
     "format": "5 томов",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b86964-vTdn1Esqw3va.jpg",
-    "date_start": null,
+    "date_start": "2026-06-11",
     "date_end": "2018-05-11",
     "favorites": null,
     "preview": null,
