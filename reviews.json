@@ -2287,6 +2287,30 @@
     "id": 57
   },
   {
+    "title": "Holyland",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2000",
+    "format": "18 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx33285-yjuQDsJCNFjb.jpg",
+    "date_start": null,
+    "date_end": "2023-07-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Жесть",
+      "Философия",
+      "Чистый кайф"
+    ],
+    "id": 175
+  },
+  {
     "title": "The Boxer",
     "url": "",
     "type": "manhwa",
