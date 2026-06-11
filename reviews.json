@@ -788,6 +788,33 @@
     "id": 113
   },
   {
+    "title": "The Stranger in the Woods",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2017",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=399&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fexternal_data%2F43332007%2Fe4199b01b3869c96864fa203b8eec13bf7537f0f.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2025-12-11",
+    "favorites": null,
+    "preview": "Эта книга - реальная, никак не дополненная и не измененная история настоящего отшельника. Написанная с глубоким уважением к выбору человека, который создал свой собственный невероятный мир и был в нём по-настоящему счастлив.",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Затягивает сразу",
+      "До титров",
+      "Живые герои",
+      "Крутой протагонист",
+      "Без кринжа",
+      "Философия"
+    ],
+    "id": 114
+  },
+  {
     "title": "Spiritfarer",
     "url": "",
     "type": "game",
