@@ -967,6 +967,28 @@
     "id": 111
   },
   {
+    "title": "The Gadfly",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1897",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=405&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F336595%2F1758827-L.jpg&width=270",
+    "date_start": null,
+    "date_end": "2025-11-13",
+    "favorites": null,
+    "preview": "Артур Бертон — молод, полон свободолюбивых идей и романтических иллюзий. Пережив предательство товарищей и любимой женщины — потеряв все, он исчезает, чтобы вернуться совсем иным, с чужим именем и внешностью. Но под маской возмужавшего, насмешливого и едкого Овода — все тот же порывистый Артур, по-прежнему верный прекрасным идеалам своей юности.",
+    "grade": "attrakcion",
+    "tags": [
+      "Почти без кринжа"
+    ],
+    "id": 118
+  },
+  {
     "title": "Wuthering Waves",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mdq42y67ac2b",
     "type": "gacha",
