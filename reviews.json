@@ -32,6 +32,26 @@
     "id": 26
   },
   {
+    "title": "Kim Bujang",
+    "url": "",
+    "type": "manhwa",
+    "status": "onhold",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2021",
+    "format": null,
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx141626-2AQM2uUYS8wC.jpg",
+    "date_start": "2026-06-11",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 204
+  },
+  {
     "title": "Blue Lock",
     "url": "",
     "type": "manga",
