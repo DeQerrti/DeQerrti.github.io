@@ -1516,6 +1516,36 @@
     "id": 44
   },
   {
+    "title": "The Sunlit Man",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2023",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=411&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F30607198%2F28184332798c392429b246efd09dd2d21ed5f52e.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-07-11",
+    "favorites": null,
+    "preview": "Беглец скитается между мирами, нигде не задерживаясь дольше нескольких дней - иначе его настигнет враг. На очередной планете он вынужден остановиться и встать на защиту людей, которых видит впервые. Часть космера Сандерсона, насыщенная отсылками для давних читателей цикла.",
+    "grade": "attrakcion",
+    "tags": [
+      "Затягивает сразу",
+      "Рояли в кустах",
+      "Чеховские ружья",
+      "До титров",
+      "Проседает",
+      "Крутой протагонист",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 134
+  },
+  {
     "title": "Narcos",
     "url": "",
     "type": "show",
