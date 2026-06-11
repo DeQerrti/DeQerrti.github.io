@@ -4,6 +4,17 @@
 //  Зависит от: config.js, api.js, cards.js
 // ══════════════════════════════════════════════
 const loading = {};
+
+// ── Сохранение состояния секций ────────────────
+const COLLAPSE_KEY = "tasteid_collapsed";
+function getCollapsed() {
+  try { return new Set(JSON.parse(localStorage.getItem(COLLAPSE_KEY)) || []); }
+  catch { return new Set(); }
+}
+function saveCollapsed(set) {
+  localStorage.setItem(COLLAPSE_KEY, JSON.stringify([...set]));
+}
+
 async function loadNow() {
   if (cache.now)   { renderNow(cache.now); return; }
   if (loading.now) return;
@@ -29,36 +40,88 @@ async function loadNow() {
     loading.now = false;
   }
 }
+
+function makeSection(id, title, items, collapsed) {
+  const isCollapsed = collapsed.has(id);
+  return `
+    <section class="group now-section" data-section="${esc(id)}">
+      <div class="now-section-header" onclick="toggleSection('${esc(id)}')">
+        <h2 class="section-title" style="margin-bottom:0;cursor:pointer;user-select:none">
+          ${esc(title)}
+          <span class="section-count">${items.length}</span>
+        </h2>
+        <span class="section-chevron${isCollapsed ? " collapsed" : ""}">▾</span>
+      </div>
+      <div class="now-section-body${isCollapsed ? " hidden" : ""}">
+        <div class="grid-now" style="margin-top:1.5rem">
+          ${items.map((r, i) => manualCard(r, i)).join("")}
+        </div>
+      </div>
+    </section>`;
+}
+
+function toggleSection(id) {
+  const collapsed = getCollapsed();
+  const section = document.querySelector(`.now-section[data-section="${id}"]`);
+  if (!section) return;
+  const body    = section.querySelector(".now-section-body");
+  const chevron = section.querySelector(".section-chevron");
+  if (collapsed.has(id)) {
+    collapsed.delete(id);
+    body.classList.remove("hidden");
+    chevron.classList.remove("collapsed");
+  } else {
+    collapsed.add(id);
+    body.classList.add("hidden");
+    chevron.classList.add("collapsed");
+  }
+  saveCollapsed(collapsed);
+}
+
 function renderNow({ current, onhold, planning, completed }) {
   const box = document.getElementById("tab-now");
-  let html = "";
-  // ── В процессе ─────────────────────────────────
-  if (current.length) {
-    html += `<section class="group">
-      <h2 class="section-title">В процессе</h2>
-      <div class="grid-now">
-        ${current.map((r, i) => manualCard(r, i)).join("")}
-      </div>
-    </section>`;
-  }
-  // ── Отложено ───────────────────────────────────
-  if (onhold.length) {
-    html += `<section class="group">
-      <h2 class="section-title">Отложено</h2>
-      <div class="grid-now">
-        ${onhold.map((r, i) => manualCard(r, i)).join("")}
-      </div>
-    </section>`;
-  }
-  // ── Планирую ───────────────────────────────────
-  if (planning.length) {
-    html += `<section class="group">
-      <h2 class="section-title">Планирую</h2>
-      <div class="grid-now">
-        ${planning.map((r, i) => manualCard(r, i)).join("")}
-      </div>
-    </section>`;
-  }
+  const collapsed = getCollapsed();
+  let html = `<style>
+    .now-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .35rem 0;
+      cursor: pointer;
+    }
+    .now-section-header:hover .section-title { color: var(--text-hi); }
+    .now-section-header:hover .section-chevron { color: var(--text); }
+
+    .section-count {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .65rem;
+      font-weight: 400;
+      font-style: normal;
+      color: var(--text-dim);
+      letter-spacing: .05em;
+      margin-left: .1rem;
+      align-self: flex-end;
+      padding-bottom: .1rem;
+    }
+
+    .section-chevron {
+      font-size: .85rem;
+      color: var(--text-dim);
+      transition: transform .22s ease, color .2s;
+      flex-shrink: 0;
+      line-height: 1;
+      padding-bottom: 2px;
+    }
+    .section-chevron.collapsed { transform: rotate(-90deg); }
+
+    .now-section-body.hidden { display: none; }
+  </style>`;
+
+  if (current.length)  html += makeSection("current",  "В процессе", current,  collapsed);
+  if (onhold.length)   html += makeSection("onhold",   "Отложено",   onhold,   collapsed);
+  if (planning.length) html += makeSection("planning",  "Планирую",   planning, collapsed);
+
   // ── Архив — группируем по году ─────────────────
   if (completed.length) {
     const sorted = [...completed].sort((a, b) => {
@@ -73,17 +136,30 @@ function renderNow({ current, onhold, planning, completed }) {
       if (!byYear[y]) byYear[y] = [];
       byYear[y].push(r);
     }
-    let archiveHtml = "";
+
+    const isCollapsed = collapsed.has("archive");
+    let archiveInner = "";
     for (const year of Object.keys(byYear).sort((a, b) => b - a)) {
-      archiveHtml += `<div class="year-divider">${esc(String(year))}</div>
+      archiveInner += `<div class="year-divider">${esc(String(year))}</div>
         <div class="grid-now">
           ${byYear[year].map((r, i) => manualCard(r, i)).join("")}
         </div>`;
     }
-    html += `<section class="group">
-      <h2 class="section-title">Архив</h2>
-      ${archiveHtml}
-    </section>`;
+
+    html += `
+      <section class="group now-section" data-section="archive">
+        <div class="now-section-header" onclick="toggleSection('archive')">
+          <h2 class="section-title" style="margin-bottom:0;cursor:pointer;user-select:none">
+            Архив
+            <span class="section-count">${completed.length}</span>
+          </h2>
+          <span class="section-chevron${isCollapsed ? " collapsed" : ""}">▾</span>
+        </div>
+        <div class="now-section-body${isCollapsed ? " hidden" : ""}">
+          ${archiveInner}
+        </div>
+      </section>`;
   }
+
   box.innerHTML = html || `<div class="state-box">Список пуст</div>`;
 }
