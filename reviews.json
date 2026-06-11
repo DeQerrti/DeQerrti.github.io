@@ -1590,6 +1590,33 @@
     "id": 154
   },
   {
+    "title": "Green Blood",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2011",
+    "format": "5 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx66099-bqd6Hb4D5MBA.jpg",
+    "date_start": null,
+    "date_end": "2024-08-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Топ рисовка",
+      "Специфичный стиль",
+      "Стеклище",
+      "Жесть",
+      "Чистый кайф",
+      "Серая мораль"
+    ],
+    "id": 178
+  },
+  {
     "title": "American Made",
     "url": "",
     "type": "movie",
