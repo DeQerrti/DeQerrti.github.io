@@ -1635,6 +1635,34 @@
     "id": 128
   },
   {
+    "title": "For Whom the Bell Tolls",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1940",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=425&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Feditions%2F13000935%2F7489798711593207.jpg&width=270",
+    "date_start": null,
+    "date_end": "2024-02-29",
+    "favorites": null,
+    "preview": "Американский доброволец получает задание взорвать мост в тылу франкистов во время Гражданской войны в Испании. За три дня - любовь, предательство, страх и размышления о смерти. Роман о том, что судьба каждого человека неотделима от судьбы всех остальных.",
+    "grade": "etalon",
+    "tags": [
+      "Затягивает сразу",
+      "Стеклище",
+      "До титров",
+      "Живые герои",
+      "Без кринжа",
+      "Философия",
+      "Жесть"
+    ],
+    "id": 129
+  },
+  {
     "title": "Harakiri",
     "url": "",
     "type": "movie",
