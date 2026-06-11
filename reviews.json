@@ -32,6 +32,26 @@
     "id": 26
   },
   {
+    "title": "Kijin Gentoushou",
+    "url": "",
+    "type": "manga",
+    "status": "onhold",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2021",
+    "format": null,
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b139499-A1SDhd9MTY6P.jpg",
+    "date_start": "2026-06-11",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 212
+  },
+  {
     "title": "Kusuriya no Hitorigoto",
     "url": "",
     "type": "manga",
