@@ -1122,6 +1122,33 @@
     "id": 74
   },
   {
+    "title": "The Divine Comedy",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1320",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=446&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F13043033%2F2aa47f6a47cb028dd5fafac0f5b8ffd81dd01d79.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2025-05-15",
+    "favorites": null,
+    "preview": "настоящая средневековая энциклопедия научных, политических, философских, моральных, богословских знаний.\nЭто аллегорическое описание человеческой души с ее пороками, страстями, радостями и добродетелями. Это живые человеческие образы и яркие психологические ситуации.\nВот уже семь веков бессмертное произведение великого Данте вдохновляет поэтов,",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Затягивает сразу",
+      "До титров",
+      "Проседает",
+      "Оригинальный сеттинг",
+      "Без кринжа",
+      "Философия"
+    ],
+    "id": 120
+  },
+  {
     "title": "Lies of P",
     "url": "",
     "type": "game",
