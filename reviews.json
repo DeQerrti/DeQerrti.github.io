@@ -1542,6 +1542,28 @@
     "id": 127
   },
   {
+    "title": "Ogeha",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2015",
+    "format": "3 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/nx96821-K4GtBzpRybGD.jpg",
+    "date_start": null,
+    "date_end": "2024-10-16",
+    "favorites": null,
+    "preview": null,
+    "grade": "fon",
+    "tags": [
+      "Жесть"
+    ],
+    "id": 177
+  },
+  {
     "title": "Ssaumdokak",
     "url": "",
     "type": "manhwa",
