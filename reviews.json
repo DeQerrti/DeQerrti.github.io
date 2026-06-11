@@ -842,6 +842,30 @@
     "id": 91
   },
   {
+    "title": "A Clergyman's Daughter",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1935",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=414&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F13589059%2F6212ee8cfbd44dddbde2f8dd470590ef89f1fadc.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2025-12-06",
+    "favorites": null,
+    "preview": null,
+    "grade": "fon",
+    "tags": [
+      "Серая мораль",
+      "Чистый кайф",
+      "Проседает"
+    ],
+    "id": 115
+  },
+  {
     "title": "Sensou Kyoushitsu",
     "url": "",
     "type": "manga",
