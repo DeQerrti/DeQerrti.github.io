@@ -2640,6 +2640,28 @@
     "fav_order": 21
   },
   {
+    "title": "Gekiryuuchi",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2007",
+    "format": "3 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx45010-auyKUTnrkdBU.jpg",
+    "date_start": null,
+    "date_end": "2022-08-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "fon",
+    "tags": [
+      "Жесть"
+    ],
+    "id": 169
+  },
+  {
     "title": "Shadows House",
     "url": "",
     "type": "anime",
