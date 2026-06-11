@@ -4359,6 +4359,30 @@
     "id": 95
   },
   {
+    "title": "Saiteihen no Otoko",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2011",
+    "format": "3 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx84387-IYQZjF8rEj67.png",
+    "date_start": null,
+    "date_end": "2017-08-23",
+    "favorites": null,
+    "preview": null,
+    "grade": "fon",
+    "tags": [
+      "Жесть",
+      "Серая мораль",
+      "Хорни вайб"
+    ],
+    "id": 172
+  },
+  {
     "title": "91 Days",
     "url": "",
     "type": "anime",
