@@ -1604,6 +1604,31 @@
     "id": 41
   },
   {
+    "title": "Roma soy yo",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2022",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=413&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Feditions%2F30715991%2F0e4d56d8-9faa-4cae-aee9-dde873063118-romasoyyo.jpg&width=270",
+    "date_start": null,
+    "date_end": "2024-04-20",
+    "favorites": null,
+    "preview": "23 летний Гай Юлий Цезарь берётся обвинить в суде могущественного сенатора-коррупционера Долабеллу - дело, которое никто не считает выигрышным. Исторический роман о том, как начиналось восхождение человека, изменившего Рим.",
+    "grade": "attrakcion",
+    "tags": [
+      "Сюжетные дыры",
+      "Проседает",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 131
+  },
+  {
     "title": "1984",
     "url": "",
     "type": "book",
