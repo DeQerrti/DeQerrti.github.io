@@ -1816,6 +1816,31 @@
     "id": 133
   },
   {
+    "title": "BLAME!",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1997",
+    "format": "10 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30149-YetcNrfacNVj.jpg",
+    "date_start": null,
+    "date_end": "2024-05-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Топ рисовка",
+      "Специфичный стиль",
+      "Оригинальный сеттинг",
+      "Без кринжа"
+    ],
+    "id": 170
+  },
+  {
     "title": "Roma soy yo",
     "url": "",
     "type": "book",
