@@ -1749,6 +1749,36 @@
     "fav_order": 4
   },
   {
+    "title": "The First Law",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2006",
+    "format": "Трилогия",
+    "cover": "https://production-img.hardcover.app/enlarge?height=366&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F30391522%2F1a14618fb2c476f52eafcb1d8375894f5159be89.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-01-03",
+    "favorites": null,
+    "preview": "Циничный инквизитор, трусоватый аристократ и полудикий северянин оказываются втянуты в игру древнего мага - на фоне войн, осад и политических интриг умирающей империи. Мрачное фэнтези, беспощадно деконструирующее жанровые клише: герои здесь не те, кем кажутся, а победа неотличима от поражения.",
+    "grade": "attrakcion",
+    "tags": [
+      "Затягивает сразу",
+      "Рояли в кустах",
+      "Стеклище",
+      "Чеховские ружья",
+      "Проседает",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Жесть",
+      "Чистый кайф"
+    ],
+    "id": 132
+  },
+  {
     "title": "Genshin Impact",
     "url": "",
     "type": "gacha",
