@@ -1364,6 +1364,31 @@
     "id": 124
   },
   {
+    "title": "The Magus",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1965",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=416&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fexternal_data%2F60825272%2F83385601b99e05cb690ff8be7411be0fc9548dfe.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-12-05",
+    "favorites": null,
+    "preview": "Молодой британец приезжает учителем на греческий остров и попадает в паутину изощрённых психологических игр, которые устраивает для него загадочный богатый затворник. Граница между реальностью, театром и манипуляцией стирается — и герой никак не может понять, кто режиссёр и в чём смысл спектакля.",
+    "grade": "etalon",
+    "tags": [
+      "Затягивает сразу",
+      "Чеховские ружья",
+      "Почти без кринжа",
+      "Философия"
+    ],
+    "id": 125
+  },
+  {
     "title": "Arcane 2",
     "url": "https://t.me/Llolre/486",
     "type": "show",
