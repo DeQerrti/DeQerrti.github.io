@@ -2761,6 +2761,28 @@
     "id": 42
   },
   {
+    "title": "Gosu",
+    "url": "",
+    "type": "manhwa",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2015",
+    "format": "16 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b86640-CkvGMkcKAoa3.png",
+    "date_start": null,
+    "date_end": "2022-07-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Чистый кайф"
+    ],
+    "id": 173
+  },
+  {
     "title": "The Grand Budapest Hotel",
     "url": "",
     "type": "movie",
