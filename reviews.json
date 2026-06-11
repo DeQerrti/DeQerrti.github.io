@@ -2631,6 +2631,29 @@
     "id": 163
   },
   {
+    "title": "Heads",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2002",
+    "format": "4 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/nx32179-dXimVq3ycbG3.jpg",
+    "date_start": null,
+    "date_end": "2022-10-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Жесть",
+      "Философия"
+    ],
+    "id": 171
+  },
+  {
     "title": "Made in Abyss",
     "url": "",
     "type": "anime",
