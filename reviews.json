@@ -1490,6 +1490,33 @@
     "id": 55
   },
   {
+    "title": "Tress of the Emerald Sea",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2023",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=410&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fexternal_data%2F60564134%2Ffc31b11ae8f367e5717cf7916e557846dbc356f7.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-07-25",
+    "favorites": null,
+    "preview": "Простая девушка с тихого островка отправляется в опасное плавание по морю из ядовитых спор, чтобы спасти любимого, похищенного ведьмой. Сказочная история в духе классических приключений - светлая и остроумная, с рассказчиком, который явно что-то скрывает.",
+    "grade": "attrakcion",
+    "tags": [
+      "Рояли в кустах",
+      "Чеховские ружья",
+      "Живые герои",
+      "Оригинальный сеттинг",
+      "Чистый кайф",
+      "Почти без кринжа"
+    ],
+    "id": 136
+  },
+  {
     "title": "Joker: Folie à Deux",
     "url": "",
     "type": "movie",
