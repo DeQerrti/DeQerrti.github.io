@@ -5115,7 +5115,7 @@
   {
     "title": "Hideout",
     "url": "",
-    "type": "anime",
+    "type": "manga",
     "status": "completed",
     "favorite": false,
     "source": "bluesky",
@@ -5124,7 +5124,7 @@
     "year": "2010",
     "format": "1 том",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/28361.jpg",
-    "date_start": null,
+    "date_start": "2026-06-11",
     "date_end": "2018-07-11",
     "favorites": null,
     "preview": null,
