@@ -2322,6 +2322,35 @@
     "id": 29
   },
   {
+    "title": "Helck",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2014",
+    "format": "12 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/nx86720-hMyIB05OrKRC.jpg",
+    "date_start": null,
+    "date_end": "2023-06-14",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Затягивает сразу",
+      "Чеховские ружья",
+      "Стеклище",
+      "До титров",
+      "Живые герои",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 166
+  },
+  {
     "title": "Na Honjaman Level Up",
     "url": "",
     "type": "manhwa",
