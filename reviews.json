@@ -2145,6 +2145,34 @@
     "id": 29
   },
   {
+    "title": "Warbreaker",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2009",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=410&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F28188510%2Fd2bfa4645e6a05879e663f2b72264dc150610210.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2023-05-17",
+    "favorites": null,
+    "preview": "Две принцессы, два бога, один город на пороге войны - и магия, работающая на цвете и жизненной силе. Младшую сестру отправляют вместо старшей замуж к богу-королю, которого все боятся, а за политическими интригами скрывается нечто куда более древнее и опасное.",
+    "grade": "attrakcion",
+    "tags": [
+      "Затягивает сразу",
+      "Рояли в кустах",
+      "Чеховские ружья",
+      "До титров",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 140
+  },
+  {
     "title": "12 Angry Men",
     "url": "",
     "type": "movie",
