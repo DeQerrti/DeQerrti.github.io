@@ -2892,6 +2892,32 @@
     "id": 52
   },
   {
+    "title": "Pandora Hearts",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2006",
+    "format": "24 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx33031-LzNWgqS69qAj.jpg",
+    "date_start": null,
+    "date_end": "2021-07-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Сюжетные дыры",
+      "Рояли в кустах",
+      "Стеклище",
+      "Чеховские ружья",
+      "Проседает"
+    ],
+    "id": 165
+  },
+  {
     "title": "Odd Taxi",
     "url": "",
     "type": "anime",
