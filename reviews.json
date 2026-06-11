@@ -1604,6 +1604,37 @@
     "id": 41
   },
   {
+    "title": "1984",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1948",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=441&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F29258002%2Ffb69559e-7c34-40cb-8518-3ef4898b830c.jpg&width=270",
+    "date_start": null,
+    "date_end": "2024-03-11",
+    "favorites": null,
+    "preview": "Чиновник министерства правды в тоталитарном государстве втайне ненавидит режим и решается на бунт — любовь и крамольные мысли против всевидящего Большого Брата. Роман, подаривший языку слова «двоемыслие», «мыслепреступление» и «комната 101».",
+    "grade": "etalon",
+    "tags": [
+      "Затягивает сразу",
+      "Рояли в кустах",
+      "Чеховские ружья",
+      "Стеклище",
+      "До титров",
+      "Оригинальный сеттинг",
+      "Топ антагонист",
+      "Почти без кринжа",
+      "Жесть",
+      "Философия"
+    ],
+    "id": 128
+  },
+  {
     "title": "Harakiri",
     "url": "",
     "type": "movie",
