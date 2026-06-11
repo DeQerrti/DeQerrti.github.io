@@ -1945,6 +1945,31 @@
     "id": 138
   },
   {
+    "title": "The Emperor's Soul",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2012",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=432&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fbook_mappings%2F7333103%2Fa5cdfb9aef3a85408913dbc601b2f16801482e3c.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2023-09-15",
+    "favorites": null,
+    "preview": "Художница-фальсификатор попадает в тюрьму и получает предложение, от которого нельзя отказаться: воссоздать душу умирающего императора за сто дней. Камерная, медитативная повесть о природе личности, памяти и искусства",
+    "grade": "attrakcion",
+    "tags": [
+      "Оригинальный сеттинг",
+      "До титров",
+      "Чистый кайф",
+      "Без кринжа"
+    ],
+    "id": 141
+  },
+  {
     "title": "Genshin Impact",
     "url": "",
     "type": "gacha",
