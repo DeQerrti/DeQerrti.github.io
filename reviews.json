@@ -789,6 +789,33 @@
     "id": 91
   },
   {
+    "title": "Peak",
+    "url": "",
+    "type": "manhwa",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2011",
+    "format": "7 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/41237.jpg",
+    "date_start": null,
+    "date_end": "2025-11-20",
+    "favorites": null,
+    "preview": "Меня долгое время не затягивало, но в целом сюжет неплохой. Из-за некоторых моментов можно прослезиться.\nРисовка кайф, особенно для 2011 года всё прям красиво прорисовано, одна из красивейших манхв.",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ рисовка",
+      "Долгая раскачка",
+      "Живые герои",
+      "Без кринжа",
+      "Философия",
+      "Жесть"
+    ],
+    "id": 111
+  },
+  {
     "title": "Wuthering Waves",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mdq42y67ac2b",
     "type": "gacha",
