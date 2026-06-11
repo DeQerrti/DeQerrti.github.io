@@ -575,6 +575,32 @@
     "id": 25
   },
   {
+    "title": "Jujutsu Kaisen Modulo",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2025",
+    "format": "3 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx198372-uSHMdqSTQ3xo.jpg",
+    "date_start": null,
+    "date_end": "2026-03-12",
+    "favorites": null,
+    "preview": null,
+    "grade": "fon",
+    "tags": [
+      "Топ рисовка",
+      "Рояли в кустах",
+      "Проседает",
+      "Картонные чары",
+      "Дырявый сеттинг"
+    ],
+    "id": 160
+  },
+  {
     "title": "The Day of the Jackal",
     "url": "https://teletype.in/@tknovas/TheDayoftheJackal",
     "type": "show",
