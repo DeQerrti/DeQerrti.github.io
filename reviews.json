@@ -1339,6 +1339,31 @@
     "id": 123
   },
   {
+    "title": "The Shadow over Innsmouth",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1971",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=405&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fbook_mappings%2F7332114%2F97e600f8279befbb88a9b4ddd9823b65d712fbdb.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-12-06",
+    "favorites": null,
+    "preview": "Путешественник заезжает в угасающий портовый городок и обнаруживает, что его жители давно заключили сделку с чем-то, что живёт в море, — и что сам он связан с этим местом куда теснее, чем хотел бы.",
+    "grade": "attrakcion",
+    "tags": [
+      "Оригинальный сеттинг",
+      "Жесть",
+      "Философия",
+      "Чистый кайф"
+    ],
+    "id": 124
+  },
+  {
     "title": "Arcane 2",
     "url": "https://t.me/Llolre/486",
     "type": "show",
@@ -3411,31 +3436,6 @@
       "Проседает"
     ],
     "id": 92
-  },
-  {
-    "title": "The Shadow over Innsmouth",
-    "url": "",
-    "type": "book",
-    "status": "planning",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "1971",
-    "format": null,
-    "cover": "https://production-img.hardcover.app/enlarge?height=405&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fbook_mappings%2F7332114%2F97e600f8279befbb88a9b4ddd9823b65d712fbdb.jpeg&width=270",
-    "date_start": null,
-    "date_end": null,
-    "favorites": null,
-    "preview": "Путешественник заезжает в угасающий портовый городок и обнаруживает, что его жители давно заключили сделку с чем-то, что живёт в море, — и что сам он связан с этим местом куда теснее, чем хотел бы.",
-    "grade": "attrakcion",
-    "tags": [
-      "Оригинальный сеттинг",
-      "Жесть",
-      "Философия",
-      "Чистый кайф"
-    ],
-    "id": 124
   },
   {
     "title": "Nippon Sangoku",
