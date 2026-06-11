@@ -2138,6 +2138,32 @@
     "id": 57
   },
   {
+    "title": "The Boxer",
+    "url": "",
+    "type": "manhwa",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2019",
+    "format": "13 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b119174-nFMZSHbrDDbt.png",
+    "date_start": null,
+    "date_end": "2023-07-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Топ рисовка",
+      "Затягивает сразу",
+      "До титров",
+      "Чистый кайф",
+      "Без кринжа"
+    ],
+    "id": 157
+  },
+  {
     "title": "Oshi no Ko",
     "url": "",
     "type": "anime",
