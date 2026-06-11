@@ -2483,6 +2483,30 @@
     "id": 139
   },
   {
+    "title": "Akira",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1982",
+    "format": "6 томов",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30664-JJq9tosQvlpW.jpg",
+    "date_start": null,
+    "date_end": "2023-03-09",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Философия",
+      "Жесть",
+      "Слитый финал"
+    ],
+    "id": 164
+  },
+  {
     "title": "I Am a Hero",
     "url": "",
     "type": "manga",
