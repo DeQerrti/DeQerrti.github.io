@@ -3016,6 +3016,28 @@
     "id": 51
   },
   {
+    "title": "Mushihime",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2013",
+    "format": "3 тома",
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx95719-bDO5mESqNoec.jpg",
+    "date_start": null,
+    "date_end": "2019-08-11",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Жесть"
+    ],
+    "id": 150
+  },
+  {
     "title": "Head Full of Honey",
     "url": "",
     "type": "movie",
