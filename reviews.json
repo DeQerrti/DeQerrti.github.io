@@ -32,6 +32,26 @@
     "id": 26
   },
   {
+    "title": "Blue Lock",
+    "url": "",
+    "type": "manga",
+    "status": "onhold",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2018",
+    "format": null,
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx106130-yPNeuSu75ey1.jpg",
+    "date_start": "2026-06-11",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 203
+  },
+  {
     "title": "Chamgyoyuk",
     "url": "",
     "type": "manhwa",
