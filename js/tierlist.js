@@ -1,12 +1,8 @@
 // ══════════════════════════════════════════════
 //  TIERLIST — вкладка Тир-лист
 //  Зависит от: config.js, api.js, cards.js
-//  TIER_ROWS и TL_TYPE_LABELS теперь из config.js
+//  TIER_ROWS и TYPE_LABELS теперь из config.js
 // ══════════════════════════════════════════════
-
-// TL_TYPE_LABELS — то же самое что TYPE_LABELS в config.js
-// просто алиас для обратной совместимости если где-то используется
-const TL_TYPE_LABELS = TYPE_LABELS;
 
 // Фильтры — только те типы что реально есть в данных
 const TL_FILTERS = [
@@ -29,43 +25,6 @@ function tlInferType(r) {
 
 function tlTypeLabel(type) {
   return TYPE_LABELS[type] || type || "—";
-}
-
-// ── Загрузка постера ───────────────────────────
-async function tlFetchPoster(r) {
-  if (r.cover) return r.cover;
-
-  const type = tlInferType(r);
-
-  if (["game", "vn", "gacha", "book"].includes(type)) return null;
-
-  if (!type || type === "anime" || type === "manga" || type === "novel") {
-    try {
-      const d = await gql(`query($t:String){Media(search:$t,type:ANIME){coverImage{large}}}`, { t: r.title });
-      if (d?.Media?.coverImage?.large) return d.Media.coverImage.large;
-    } catch {}
-    try {
-      const d = await gql(`query($t:String){Media(search:$t,type:MANGA){coverImage{large}}}`, { t: r.title });
-      if (d?.Media?.coverImage?.large) return d.Media.coverImage.large;
-    } catch {}
-  }
-
-  if (type === "movie" || type === "show" || type === "dorama") {
-    try {
-      const endpoint = type === "movie" ? "movie" : "tv";
-      const res = await tmdbFetch(`/search/${endpoint}?query=${encodeURIComponent(r.title)}&language=en-US`);
-      const hit = res.results?.[0];
-      if (hit?.poster_path) return tmdbPoster(hit.poster_path);
-    } catch {}
-  }
-
-  try {
-    const res = await tmdbFetch(`/search/multi?query=${encodeURIComponent(r.title)}&language=en-US`);
-    const hit = res.results?.find(x => x.poster_path);
-    if (hit?.poster_path) return tmdbPoster(hit.poster_path);
-  } catch {}
-
-  return null;
 }
 
 // ── Состояние вкладки ──────────────────────────
@@ -103,16 +62,6 @@ async function loadTierlist() {
     tlState.items = reviews.map(r => ({ review: r, poster: r.cover || null }));
     tlState.loaded = true;
     tlRender();
-
-    const BATCH = 6;
-    for (let i = 0; i < tlState.items.length; i += BATCH) {
-      const chunk = tlState.items.slice(i, i + BATCH);
-      await Promise.all(chunk.map(async item => {
-        if (item.poster) return;
-        item.poster = await tlFetchPoster(item.review);
-      }));
-      tlPatchPosters(tlState.items.slice(i, i + BATCH));
-    }
 
   } catch (err) {
     box.innerHTML = `<div class="state-box">Ошибка: ${esc(err.message)}</div>`;
@@ -283,15 +232,4 @@ function tlMoveTip(e, tip) {
   tip.style.position = "fixed";
   tip.style.left = x + "px";
   tip.style.top  = y + "px";
-}
-
-// ── Патч постеров без перерисовки ──────────────
-function tlPatchPosters(items) {
-  for (const item of items) {
-    if (!item.poster) continue;
-    const card = document.querySelector(`.tl-poster[data-tl-title="${CSS.escape(item.review.title)}"]`);
-    if (!card) continue;
-    const img = card.querySelector("img");
-    if (img && img.src.includes("placehold.co")) img.src = item.poster;
-  }
 }
