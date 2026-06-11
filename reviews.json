@@ -4831,7 +4831,7 @@
   {
     "title": "Dungeon Seeker",
     "url": "",
-    "type": "anime",
+    "type": "manga",
     "status": "completed",
     "favorite": false,
     "source": "bluesky",
@@ -4840,7 +4840,7 @@
     "year": "2016",
     "format": "4 тома",
     "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx97999-jzfu4DylGQFG.jpg",
-    "date_start": null,
+    "date_start": "2026-06-11",
     "date_end": "2019-04-25",
     "favorites": null,
     "preview": null,
