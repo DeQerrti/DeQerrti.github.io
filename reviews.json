@@ -1891,6 +1891,33 @@
     "id": 132
   },
   {
+    "title": "The Rithmatist",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2013",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=422&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fexternal_data%2F36901832%2F68117b40a0f4a4b9cf73a410a4de8eb661e1a966.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2023-12-14",
+    "favorites": null,
+    "preview": "В альтернативной Америке существует магия рифматики - искусство оживлять меловые чертежи, которым владеют лишь избранные. Обычный студент, страстно мечтающий стать рифматистом, оказывается втянут в расследование исчезновений учеников. Янг-эдалт с оригинальной магической системой и детективной интригой.",
+    "grade": "attrakcion",
+    "tags": [
+      "Затягивает сразу",
+      "Рояли в кустах",
+      "До титров",
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 137
+  },
+  {
     "title": "Genshin Impact",
     "url": "",
     "type": "gacha",
