@@ -1315,6 +1315,30 @@
     "id": 106
   },
   {
+    "title": "The Call of Cthulhu",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1926",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=431&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fexternal_data%2F26903847%2F9c2811e93a3bd561cbd584348f17c1dc833ebb9a.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-12-06",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Оригинальный сеттинг",
+      "Почти без кринжа",
+      "Чистый кайф"
+    ],
+    "id": 123
+  },
+  {
     "title": "Arcane 2",
     "url": "https://t.me/Llolre/486",
     "type": "show",
