@@ -1604,6 +1604,32 @@
     "id": 41
   },
   {
+    "title": "Дочь своего отца",
+    "url": "",
+    "type": "anime",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2021",
+    "format": null,
+    "cover": "https://knizhnik.org/covers/page-46574-doch-svoego-otcza.jpg",
+    "date_start": null,
+    "date_end": "2024-05-15",
+    "favorites": null,
+    "preview": "Мемуары дочери Бориса Немцова - о детстве рядом с политиком, о том, как отец формировал её взгляды, и о жизни после его убийства у стен Кремля в 2015 году.",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Затягивает сразу",
+      "Стеклище",
+      "До титров",
+      "Живые герои",
+      "Чистый кайф"
+    ],
+    "id": 133
+  },
+  {
     "title": "Roma soy yo",
     "url": "",
     "type": "book",
