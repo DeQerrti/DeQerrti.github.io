@@ -2835,6 +2835,28 @@
     "id": 152
   },
   {
+    "title": "Gyakusatsu Happy End",
+    "url": "",
+    "type": "manga",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2017",
+    "format": null,
+    "cover": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx129006-IWwgyXSpk673.jpg",
+    "date_start": null,
+    "date_end": "2020-07-15",
+    "favorites": null,
+    "preview": null,
+    "grade": "attrakcion",
+    "tags": [
+      "Жесть"
+    ],
+    "id": 153
+  },
+  {
     "title": "Farewell My Concubine",
     "url": "",
     "type": "movie",
