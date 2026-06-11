@@ -1426,6 +1426,28 @@
     "id": 109
   },
   {
+    "title": "Смерть Ивана Ильича",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1886",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=441&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F30889271%2Fb5f951b23f7e594928bc83a435809f4aedf3c395.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-11-14",
+    "favorites": null,
+    "preview": "Успешный судейский чиновник заболевает и медленно умирает - и перед лицом смерти впервые задаётся вопросом, правильно ли он прожил жизнь. Безжалостная повесть о самообмане, одиночестве и том, что большинство людей называют благополучием.",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Философия"
+    ],
+    "id": 126
+  },
+  {
     "title": "American Made",
     "url": "",
     "type": "movie",
