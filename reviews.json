@@ -1,33 +1,5 @@
 [
   {
-    "title": "The Wind-Up Bird Chronicle",
-    "url": "",
-    "type": "book",
-    "status": "completed",
-    "favorite": false,
-    "source": "bluesky",
-    "url2": null,
-    "source2": null,
-    "year": "1994",
-    "format": null,
-    "cover": "https://production-img.hardcover.app/enlarge?height=405&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Feditions%2F30387653%2F7f3a72c2-328a-494c-bfea-0c884f8fcf47.jpg&width=270",
-    "date_start": null,
-    "date_end": "2026-11-05",
-    "favorites": null,
-    "preview": "Ужас Второй мировой войны и судьба нашего современника в Японии, письма, мистические сны, воспоминания, журнальные статьи, закодированные файлы - цельное полотно, сотканное из невероятных событий, тонкой иронии и неподражаемой интонации Харуки Мураками.",
-    "grade": null,
-    "tags": [
-      "Чеховские ружья",
-      "Проседает",
-      "Живые герои",
-      "Почти без кринжа",
-      "Жесть",
-      "Философия",
-      "Чистый кайф"
-    ],
-    "id": 119
-  },
-  {
     "title": "Morimens",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mnn37gtzts2g",
     "type": "gacha",
@@ -1041,6 +1013,34 @@
       "Почти без кринжа"
     ],
     "id": 118
+  },
+  {
+    "title": "The Wind-Up Bird Chronicle",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1994",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=405&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Feditions%2F30387653%2F7f3a72c2-328a-494c-bfea-0c884f8fcf47.jpg&width=270",
+    "date_start": null,
+    "date_end": "2025-11-05",
+    "favorites": null,
+    "preview": "Ужас Второй мировой войны и судьба нашего современника в Японии, письма, мистические сны, воспоминания, журнальные статьи, закодированные файлы - цельное полотно, сотканное из невероятных событий, тонкой иронии и неподражаемой интонации Харуки Мураками.",
+    "grade": null,
+    "tags": [
+      "Чеховские ружья",
+      "Проседает",
+      "Живые герои",
+      "Почти без кринжа",
+      "Жесть",
+      "Философия",
+      "Чистый кайф"
+    ],
+    "id": 119
   },
   {
     "title": "Wuthering Waves",
