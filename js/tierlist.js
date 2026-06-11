@@ -19,6 +19,8 @@ const TL_FILTERS = [
   ["book",   "Книги"],
   ["game",   "Игры"],
   ["gacha",  "Гача"],
+  ["manhwa", "Манхва"],
+  ["manhua", "Маньхуа"],
 ];
 
 function tlInferType(r) {
