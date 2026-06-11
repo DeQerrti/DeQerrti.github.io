@@ -914,6 +914,32 @@
     "id": 112
   },
   {
+    "title": "The Plague",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1947",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=447&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F2707798%2F7be060fefe972fcc6c85a3a65649d64d2517ad03.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2025-11-23",
+    "favorites": null,
+    "preview": "Холодная хроника эпидемии чумы в курортном алжирском городке превращается в трагическую и пугающую притчу о смертельной опасности, пробуждающей в человеческой душе все лучшее - или худшее.",
+    "grade": "attrakcion",
+    "tags": [
+      "Стеклище",
+      "Серая мораль",
+      "Философия",
+      "Жесть",
+      "Без кринжа"
+    ],
+    "id": 117
+  },
+  {
     "title": "Peak",
     "url": "",
     "type": "manhwa",
