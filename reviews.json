@@ -1448,6 +1448,26 @@
     "id": 126
   },
   {
+    "title": "The Fall of the House of Usher",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "1839",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=360&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fexternal_data%2F32815976%2F937a0243b122b6082abc6bd0337767cecef6eda2.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2024-10-18",
+    "favorites": null,
+    "preview": "Рассказчик приезжает навестить больного друга в мрачный родовой замок — и становится свидетелем того, как угасающий род Эшеров тянет за собой в пропасть и живых, и мёртвых, и сам дом.",
+    "grade": "fon",
+    "tags": [],
+    "id": 127
+  },
+  {
     "title": "American Made",
     "url": "",
     "type": "movie",
