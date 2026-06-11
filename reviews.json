@@ -1918,6 +1918,33 @@
     "id": 137
   },
   {
+    "title": "Elantris",
+    "url": "",
+    "type": "book",
+    "status": "completed",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2005",
+    "format": null,
+    "cover": "https://production-img.hardcover.app/enlarge?height=437&type=webp&url=https%3A%2F%2Fassets.hardcover.app%2Fedition%2F30769393%2Fad110a295160ddfaf3ad12d1ee06f8193bb09d2e.jpeg&width=270",
+    "date_start": null,
+    "date_end": "2023-11-16",
+    "favorites": null,
+    "preview": "Когда-то жители города Элантрис были богами - наделёнными магией и бессмертием. Потом что-то сломалось: теперь они живые мертвецы, заперты в гниющем городе и не могут даже умереть. Дебютный роман Сандерсона - о политике, вере и попытке починить то, что кажется непоправимым.",
+    "grade": "attrakcion",
+    "tags": [
+      "Чистый кайф",
+      "Философия",
+      "Жесть",
+      "Почти без кринжа",
+      "Затягивает сразу",
+      "До титров"
+    ],
+    "id": 138
+  },
+  {
     "title": "Genshin Impact",
     "url": "",
     "type": "gacha",
