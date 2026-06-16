@@ -1,0 +1,156 @@
+[
+  {
+    "id": "reverse1999",
+    "title": "Reverse: 1999",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co74f8.jpg",
+    "tierlists": [
+      {
+        "id": "reverse1999-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "Резонанс",
+            "color": "#7c3aed",
+            "chars": [
+              { "name": "Хэарон", "img": "https://deqerrti.github.io/chars/reverse/chaeron.png" },
+              { "name": "Корвус", "img": "https://deqerrti.github.io/chars/reverse/corvus.png" }
+            ]
+          },
+          {
+            "name": "Топ",
+            "color": "#2563a8",
+            "chars": [
+              { "name": "Вертумн", "img": "https://deqerrti.github.io/chars/reverse/vertin.png" }
+            ]
+          },
+          {
+            "name": "Хорошо",
+            "color": "#2d8a4e",
+            "chars": []
+          },
+          {
+            "name": "Средне",
+            "color": "#d4a017",
+            "chars": []
+          },
+          {
+            "name": "Слабо",
+            "color": "#6b7280",
+            "chars": []
+          }
+        ]
+      },
+      {
+        "id": "reverse1999-story",
+        "label": "Как персонаж в сюжете",
+        "tiers": [
+          {
+            "name": "Резонанс",
+            "color": "#7c3aed",
+            "chars": [
+              { "name": "Хэарон", "img": "https://deqerrti.github.io/chars/reverse/chaeron.png" }
+            ]
+          },
+          {
+            "name": "Топ",
+            "color": "#2563a8",
+            "chars": []
+          },
+          {
+            "name": "Хорошо",
+            "color": "#2d8a4e",
+            "chars": []
+          },
+          {
+            "name": "Средне",
+            "color": "#d4a017",
+            "chars": []
+          },
+          {
+            "name": "Слабо",
+            "color": "#6b7280",
+            "chars": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dna",
+    "title": "Duet Night Abyss",
+    "cover": "https://deqerrti.github.io/chars/dna/cover.jpg",
+    "tierlists": [
+      {
+        "id": "dna-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "Резонанс",
+            "color": "#7c3aed",
+            "chars": [
+              { "name": "Zhang'er", "img": "https://deqerrti.github.io/chars/dna/zhanger.png" }
+            ]
+          },
+          {
+            "name": "Топ",
+            "color": "#2563a8",
+            "chars": []
+          },
+          {
+            "name": "Хорошо",
+            "color": "#2d8a4e",
+            "chars": []
+          },
+          {
+            "name": "Средне",
+            "color": "#d4a017",
+            "chars": []
+          },
+          {
+            "name": "Слабо",
+            "color": "#6b7280",
+            "chars": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "morimens",
+    "title": "Morimens",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8m3r.webp",
+    "tierlists": [
+      {
+        "id": "morimens-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "Резонанс",
+            "color": "#7c3aed",
+            "chars": []
+          },
+          {
+            "name": "Топ",
+            "color": "#2563a8",
+            "chars": []
+          },
+          {
+            "name": "Хорошо",
+            "color": "#2d8a4e",
+            "chars": []
+          },
+          {
+            "name": "Средне",
+            "color": "#d4a017",
+            "chars": []
+          },
+          {
+            "name": "Слабо",
+            "color": "#6b7280",
+            "chars": []
+          }
+        ]
+      }
+    ]
+  }
+]
