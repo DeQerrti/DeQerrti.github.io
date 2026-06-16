@@ -12,6 +12,7 @@ const rvState = {
   type:   "all",
   grade:  "all",
   source: "all",
+  search: "",
 };
 
 async function loadReviews() {
@@ -30,7 +31,7 @@ async function loadReviews() {
 }
 
 // ── Порядок фильтров ───────────────────────────
-const TYPE_FILTER_ORDER   = ["anime","manga","movie","show","game","gacha","book","ranobe"];
+const TYPE_FILTER_ORDER   = ["anime","manga","manhwa","manhua","movie","show","dorama","game","gacha","book","novel"];
 const GRADE_FILTER_ORDER  = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
 const SOURCE_FILTER_ORDER = ["teletype","bluesky"];
 
@@ -57,7 +58,18 @@ function renderReviews(reviews) {
   box.innerHTML = `
     <div class="rv-toolbar">
       <div class="rv-filters">
-        ${renderRvFilterGroup("type",   "Тип",      types,   TYPE_LABELS,  rvState.type)}
+        <div class="rv-filter-group">
+          <span class="rv-filter-label">Поиск</span>
+          <input
+            type="text"
+            id="rv-search"
+            class="rv-search-input"
+            placeholder="Название…"
+            autocomplete="off"
+            value="${esc(rvState.search)}"
+          >
+        </div>
+        ${renderRvFilterGroup("type",   "Тип",      types,   TYPE_LABELS,   rvState.type)}
         ${renderRvFilterGroup("grade",  "Оценка",   grades,  gradeLabels(), rvState.grade)}
         ${renderRvFilterGroup("source", "Источник", sources, SOURCE_LABELS, rvState.source)}
       </div>
@@ -66,6 +78,13 @@ function renderReviews(reviews) {
     <section class="group">
       <div class="reviews-grid" id="rv-grid"></div>
     </section>`;
+
+  // Поиск
+  const searchInput = document.getElementById("rv-search");
+  searchInput.addEventListener("input", () => {
+    rvState.search = searchInput.value.trim().toLowerCase();
+    applyRvFilters(reviews);
+  });
 
   bindRvFilters(reviews);
   applyRvFilters(reviews);
@@ -121,6 +140,11 @@ function applyRvFilters(reviews) {
   if (rvState.source !== "all") {
     filtered = filtered.filter(r =>
       r.source === rvState.source || r.source2 === rvState.source
+    );
+  }
+  if (rvState.search) {
+    filtered = filtered.filter(r =>
+      r.title.toLowerCase().includes(rvState.search)
     );
   }
 
