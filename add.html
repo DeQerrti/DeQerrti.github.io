@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="/js/config.js"></script>
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 :root {
@@ -550,28 +551,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
 </main>
 
 <script>
-const GRADES = {
-  razocharo:    { color: "#8B6914", name: "Разочарование" },
-  brak:         { color: "#c0392b", name: "Брак" },
-  fon:          { color: "#6b7280", name: "Фоновый шум" },
-  attrakcion:   { color: "#d4a017", name: "Аттракцион" },
-  vyskazyvanie: { color: "#2d8a4e", name: "Отлично" },
-  etalon:       { color: "#2563a8", name: "Эталон" },
-  rezonans:     { color: "#7c3aed", name: "Резонанс" },
-};
-
-const TAGS_MAP = {
-  "Топ рисовка":"visual","Топ визуал":"visual","Специфичный стиль":"visual","Слабая картинка":"visual","Осты в тему":"visual",
-  "Затягивает сразу":"plot","Долгая раскачка":"plot","Сюжетные дыры":"plot","Рояли в кустах":"plot","Стеклище":"plot",
-  "Чеховские ружья":"plot","Слитый финал":"plot","До титров":"plot","Проседает":"plot",
-  "Живые герои":"chars","Картонные чары":"chars","Крутой протагонист":"chars","Оригинальный сеттинг":"chars",
-  "Дырявый сеттинг":"chars","Топ антагонист":"chars","Слабый ГГ":"chars",
-  "Без кринжа":"special","Почти без кринжа":"special","Много кринжа":"special","Жесть":"special",
-  "Философия":"special","Чистый кайф":"special","Серая мораль":"special","Хорни вайб":"special","Автобой":"special",
-  "Душный гринд":"special","Мета-дрочево":"special","Топ боёвка":"special","Вайфугейминг":"special",
-  "Сюжет удивил":"special","Скипал диалоги":"special","Лор важнее сюжета":"special",
-  "Слабая режиссура":"special","Абсолют синема":"special",
-};
+// GRADES, GRADE_ORDER, TAGS_MAP приходят из /js/config.js
 
 let selectedGrade = null;
 let selectedTags  = new Set();
@@ -629,14 +609,16 @@ function updateDateFields() {
   }
 }
 
-// ── оценки ─────────────────────────────────────
+// ── Оценки — из GRADE_ORDER + GRADES (config.js) ──
 const gradesGrid = document.getElementById("grades-grid");
-for (const [key, g] of Object.entries(GRADES)) {
+for (const key of GRADE_ORDER) {
+  const g = GRADES[key];
   const btn = document.createElement("button");
   btn.className = "grade-btn";
   btn.textContent = g.name;
   btn.style.color = g.color;
   btn.style.borderColor = g.color + "55";
+  btn.title = g.desc || "";
   btn.dataset.key = key;
   btn.onclick = () => {
     selectedGrade = selectedGrade === key ? null : key;
@@ -646,13 +628,14 @@ for (const [key, g] of Object.entries(GRADES)) {
   gradesGrid.appendChild(btn);
 }
 
-// ── теги ───────────────────────────────────────
+// ── Теги — из TAGS_MAP (config.js) ─────────────
 const tagsGrid = document.getElementById("tags-grid");
-for (const [tag] of Object.entries(TAGS_MAP)) {
+for (const [tag, meta] of Object.entries(TAGS_MAP)) {
   const btn = document.createElement("span");
   btn.className = "tag-toggle";
   btn.textContent = tag;
   btn.dataset.tag = tag;
+  btn.title = meta.tip || "";
   btn.onclick = () => {
     if (selectedTags.has(tag)) { selectedTags.delete(tag); btn.classList.remove("active"); }
     else { selectedTags.add(tag); btn.classList.add("active"); }
@@ -786,7 +769,6 @@ async function saveReview() {
   const url     = document.getElementById("f-url").value.trim();
   const preview = document.getElementById("f-preview").value.trim();
   const status  = document.getElementById("f-status").value;
-  const hasContent = preview || selectedGrade;
 
   if (!title) { setStatus("err", "Заполни название"); return; }
 
