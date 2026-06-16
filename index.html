@@ -858,7 +858,26 @@ section.group { margin-bottom: 3.5rem; }
   border-color: var(--red);
   color: var(--text-hi);
 }
-
+.rv-search-input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem;
+  padding: .28rem .75rem;
+  border-radius: 1px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text-hi);
+  outline: none;
+  width: 180px;
+  transition: border-color .2s, background .2s;
+  letter-spacing: .02em;
+}
+.rv-search-input:focus {
+  border-color: var(--red);
+  background: var(--bg2);
+}
+.rv-search-input::placeholder {
+  color: var(--text-dim);
+}
 /* ══ ADMIN ADD BUTTON ════════════════════════════ */
 .section-header {
   display: flex;
