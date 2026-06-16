@@ -927,6 +927,65 @@ section.group { margin-bottom: 3.5rem; }
   border: 1px solid var(--border);
   border-radius: 2px;
 }
+  /* ══ TIERLIST MODE TOGGLE ════════════════════════ */
+.tl-mode-toggle {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.8rem;
+}
+.tl-mode-btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  padding: .55rem 1.4rem;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.tl-mode-btn:hover { color: var(--text); border-color: var(--border2); }
+.tl-mode-btn.active {
+  color: var(--text-hi);
+  border-color: var(--red);
+  background: var(--surface2);
+}
+
+/* ── Переключатель тир-листов внутри игры ── */
+.tl-char-lists {
+  display: flex;
+  gap: .4rem;
+  margin-bottom: 1.4rem;
+  flex-wrap: wrap;
+}
+.tl-list-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 1px;
+  padding: .3rem .85rem;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.tl-list-btn:hover { color: var(--text); border-color: var(--border2); }
+.tl-list-btn.active {
+  color: var(--text-hi);
+  border-color: var(--red-dim);
+  background: var(--surface2);
+}
+
+/* Постеры персонажей — квадратные (1/1 вместо 2/3) */
+.tl-poster img.char-img {
+  aspect-ratio: 1/1;
+}
 </style>
 </head>
 <body>
