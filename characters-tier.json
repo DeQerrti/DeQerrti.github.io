@@ -698,5 +698,425 @@
         ]
       }
     ]
+  },
+  {
+    "id": "neuralcloud",
+    "title": "Neural Cloud",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5udo.webp",
+    "folder": "Neural Cloud",
+    "tierlists": [
+      {
+        "id": "neuralcloud-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "Фавориты",
+            "color": "#7c3aed",
+            "chars": [
+              {
+                "name": "Florence",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Florence.png"
+              },
+              {
+                "name": "Undine",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Undine.png"
+              },
+              {
+                "name": "Python",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Python.png"
+              },
+              {
+                "name": "Olivia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Olivia.png"
+              },
+              {
+                "name": "Imhotep",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Imhotep.png"
+              }
+            ]
+          },
+          {
+            "name": "Нравится",
+            "color": "#2563a8",
+            "chars": [
+              {
+                "name": "ENIAC",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/ENIAC.png"
+              },
+              {
+                "name": "Lind",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Lind.png"
+              },
+              {
+                "name": "Erika",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Erika.png"
+              },
+              {
+                "name": "Belladonna",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Belladonna.png"
+              },
+              {
+                "name": "Jiangyu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Jiangyu.png"
+              },
+              {
+                "name": "Panakeia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Panakeia.png"
+              },
+              {
+                "name": "Kimie",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Kimie.png"
+              },
+              {
+                "name": "Hatsuchiri",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Hatsuchiri.png"
+              },
+              {
+                "name": "Shale",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Shale.png"
+              },
+              {
+                "name": "Kurisu Makise",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Kurisu%20Makise.png"
+              },
+              {
+                "name": "Nanaka",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Nanaka.png"
+              }
+            ]
+          },
+          {
+            "name": "Хорошо",
+            "color": "#2d8a4e",
+            "chars": [
+              {
+                "name": "Centaureissi - Unbound Wings",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Centaureissi%20-%20Unbound%20Wings.png"
+              },
+              {
+                "name": "Evelyn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Evelyn.png"
+              },
+              {
+                "name": "Clotho",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Clotho.png"
+              },
+              {
+                "name": "Kuro",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Kuro.png"
+              },
+              {
+                "name": "Dupin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Dupin.png"
+              },
+              {
+                "name": "Helix",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Helix.png"
+              },
+              {
+                "name": "Chanzhi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Chanzhi.png"
+              },
+              {
+                "name": "Rise",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Rise.png"
+              },
+              {
+                "name": "Luna",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Luna.png"
+              },
+              {
+                "name": "Mai",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Mai.png"
+              },
+              {
+                "name": "Sakuya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Sakuya.png"
+              },
+              {
+                "name": "Clukay",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Clukay.png"
+              },
+              {
+                "name": "Sueyoi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Sueyoi.png"
+              },
+              {
+                "name": "Croque",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Croque.png"
+              },
+              {
+                "name": "Angela",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Angela.png"
+              },
+              {
+                "name": "Zangyin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Zangyin.png"
+              },
+              {
+                "name": "Antonina",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Antonina.png"
+              },
+              {
+                "name": "Banxsy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Banxsy.png"
+              },
+              {
+                "name": "Nora",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Nora.png"
+              },
+              {
+                "name": "Penumbra",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Penumbra.png"
+              },
+              {
+                "name": "Yelena",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Yelena.png"
+              },
+              {
+                "name": "Aki",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Aki.png"
+              }
+            ]
+          },
+          {
+            "name": "Средне",
+            "color": "#d4a017",
+            "chars": [
+              {
+                "name": "Earhart",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Earhart.png"
+              },
+              {
+                "name": "Inferno Sol",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Inferno%20Sol.png"
+              },
+              {
+                "name": "Fern",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Fern.png"
+              },
+              {
+                "name": "Cascadia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Cascadia.png"
+              },
+              {
+                "name": "Ksenia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Ksenia.png"
+              },
+              {
+                "name": "Centaureissi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Centaureissi.png"
+              },
+              {
+                "name": "Sol",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Sol.png"
+              },
+              {
+                "name": "Tony",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Tony.png"
+              },
+              {
+                "name": "Xinghuan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Xinghuan.png"
+              },
+              {
+                "name": "Yanny",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Yanny.png"
+              },
+              {
+                "name": "Rintaro Okabe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Rintaro%20Okabe.png"
+              },
+              {
+                "name": "Bonee",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Bonee.png"
+              },
+              {
+                "name": "Hannah",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Hannah.png"
+              },
+              {
+                "name": "Fresnel",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Fresnel.png"
+              },
+              {
+                "name": "Lam",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Lam.png"
+              },
+              {
+                "name": "Octogen",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Octogen.png"
+              },
+              {
+                "name": "Simo",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Simo.png"
+              },
+              {
+                "name": "Dushevnaya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Dushevnaya.png"
+              },
+              {
+                "name": "Sockdolager",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Sockdolager.png"
+              },
+              {
+                "name": "Groove",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Groove.png"
+              },
+              {
+                "name": "Horizon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Horizon.png"
+              },
+              {
+                "name": "Mayuri Shiina",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Mayuri%20Shiina.png"
+              },
+              {
+                "name": "Taisch",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Taisch.png"
+              },
+              {
+                "name": "Yuwang",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Yuwang.png"
+              },
+              {
+                "name": "Choco",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Choco.png"
+              },
+              {
+                "name": "Gin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Gin.png"
+              },
+              {
+                "name": "Eos",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Eos.png"
+              },
+              {
+                "name": "Persicaria - Shining Edge",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Persicaria%20-%20Shining%20Edge.png"
+              }
+            ]
+          },
+          {
+            "name": "Слабо",
+            "color": "#6b7280",
+            "chars": [
+              {
+                "name": "Hubble",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Hubble.png"
+              },
+              {
+                "name": "Salmon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Salmon.png"
+              },
+              {
+                "name": "Jiangyu 1",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Jiangyu%201.png"
+              },
+              {
+                "name": "Chelsea",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Chelsea.png"
+              },
+              {
+                "name": "Bonneville",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Bonneville.png"
+              },
+              {
+                "name": "Magnhilda",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Magnhilda.png"
+              },
+              {
+                "name": "Turing",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Turing.png"
+              },
+              {
+                "name": "Persicaria",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Persicaria.png"
+              },
+              {
+                "name": "Zion",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Zion.png"
+              },
+              {
+                "name": "Angelus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Angelus.png"
+              },
+              {
+                "name": "Jessie",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Jessie.png"
+              },
+              {
+                "name": "Max",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Max.png"
+              },
+              {
+                "name": "Uranus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Uranus.png"
+              },
+              {
+                "name": "Nascita",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Nascita.png"
+              },
+              {
+                "name": "Betty",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Betty.png"
+              },
+              {
+                "name": "Havoc",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Havoc.png"
+              },
+              {
+                "name": "Sangoma",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Sangoma.png"
+              },
+              {
+                "name": "Vee",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Vee.png"
+              },
+              {
+                "name": "Millau",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Millau.png"
+              },
+              {
+                "name": "Souchun",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Souchun.png"
+              },
+              {
+                "name": "Abigail",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Abigail.png"
+              },
+              {
+                "name": "Darkstar Hubble",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Darkstar%20Hubble.png"
+              },
+              {
+                "name": "Inola",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Inola.png"
+              },
+              {
+                "name": "Lewis",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Lewis.png"
+              },
+              {
+                "name": "Puzzle",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Puzzle.png"
+              },
+              {
+                "name": "De Lacey",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/De%20Lacey.png"
+              },
+              {
+                "name": "Willow",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Willow.png"
+              },
+              {
+                "name": "Daiyan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Daiyan.png"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
