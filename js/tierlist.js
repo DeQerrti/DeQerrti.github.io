@@ -22,6 +22,9 @@ const TL_FILTERS = [
 function tlInferType(r) { return r.type || "anime"; }
 function tlTypeLabel(type) { return TYPE_LABELS[type] || type || "—"; }
 
+// Высота постеров персонажей — сохраняется между переключениями
+let tlCharHeight = parseInt(localStorage.getItem("tl-char-height") || "200");
+
 const tlState = {
   mode:        "titles",
   filter:      "all",
@@ -193,18 +196,16 @@ function tlCharsHtml() {
     } else {
       for (let i = 0; i < chars.length; i++) {
         const ch = chars[i];
-        // tl-char-poster — отдельный класс без фиксированного aspect-ratio
-        tiersHtml += `<div class="tl-poster tl-char-poster"
+        tiersHtml += `<div class="tl-char-poster"
             data-tl-title="${esc(ch.name)}"
             data-tl-grade="${esc(tier.name)}"
             data-tl-color="${esc(tier.color)}"
             data-tl-desc=""
             data-tl-year=""
             data-tl-type="${esc(game.title)}"
-            style="animation-delay:${Math.min(i * 18, 400)}ms">
+            style="height:${tlCharHeight}px;animation-delay:${Math.min(i * 18, 400)}ms">
           <img src="${esc(ch.img)}" alt="${esc(ch.name)}" loading="lazy"
             onerror="this.src='https://placehold.co/100x150/111114/4a4540?text=?'">
-          <div class="tl-char-name">${esc(ch.name)}</div>
         </div>`;
       }
     }
@@ -216,11 +217,21 @@ function tlCharsHtml() {
     ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
     : "";
 
+  // Ползунок размера — только для персонажей
+  const slider = `<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem">
+    <span style="font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0">Размер</span>
+    <input type="range" min="80" max="500" value="${tlCharHeight}" step="10"
+      id="tl-char-size-slider"
+      style="flex:1;max-width:200px;accent-color:var(--red);cursor:pointer">
+    <span id="tl-char-size-val" style="font-family:'DM Sans',sans-serif;font-size:.65rem;color:var(--text-dim);min-width:36px">${tlCharHeight}px</span>
+  </div>`;
+
   return `<div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap">
     <div class="tl-filters" style="margin-bottom:0">${gameButtons}</div>
     ${adminBtn}
   </div>
   ${listButtons}
+  ${slider}
   ${tiersHtml}
   ${tlTooltipHtml()}`;
 }
@@ -273,6 +284,19 @@ function tlBindAll() {
     });
   });
 
+  // Ползунок размера
+  const slider = document.getElementById("tl-char-size-slider");
+  if (slider) {
+    slider.addEventListener("input", () => {
+      tlCharHeight = parseInt(slider.value);
+      localStorage.setItem("tl-char-height", tlCharHeight);
+      document.getElementById("tl-char-size-val").textContent = tlCharHeight + "px";
+      document.querySelectorAll(".tl-char-poster").forEach(el => {
+        el.style.height = tlCharHeight + "px";
+      });
+    });
+  }
+
   tlBindTooltip();
 }
 
@@ -280,7 +304,7 @@ function tlBindTooltip() {
   const tip = document.getElementById("tl-tooltip");
   if (!tip) return;
 
-  document.querySelectorAll(".tl-poster").forEach(card => {
+  document.querySelectorAll(".tl-poster, .tl-char-poster").forEach(card => {
     card.addEventListener("mouseenter", e => { tlShowTip(card, tip); tlMoveTip(e, tip); });
     card.addEventListener("mousemove",  e => tlMoveTip(e, tip));
     card.addEventListener("mouseleave", () => tip.classList.remove("visible"));
@@ -305,7 +329,7 @@ function tlBindTooltip() {
   });
 
   document.addEventListener("touchstart", e => {
-    if (!e.target.closest(".tl-poster") && !e.target.closest(".tl-tooltip")) {
+    if (!e.target.closest(".tl-poster") && !e.target.closest(".tl-char-poster") && !e.target.closest(".tl-tooltip")) {
       tip.classList.remove("visible");
     }
   });
