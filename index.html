@@ -986,11 +986,8 @@ section.group { margin-bottom: 3.5rem; }
 .tl-poster img.char-img {
   aspect-ratio: 1/1;
 }
-  /* ══ ПОСТЕРЫ ПЕРСОНАЖЕЙ В ТИР-ЛИСТЕ ════════════
-   Отдельный класс — без фиксированного aspect-ratio,
-   картинка показывается целиком              */
+  /* ══ ПОСТЕРЫ ПЕРСОНАЖЕЙ В ТИР-ЛИСТЕ ════════════ */
 .tl-char-poster {
-  height: 160px;
   width: auto;
   flex-shrink: 0;
   position: relative;
@@ -1017,7 +1014,6 @@ section.group { margin-bottom: 3.5rem; }
   z-index: 20;
 }
 .tl-char-poster:hover::before { opacity: 1; width: 13px; height: 13px; }
-
 .tl-char-poster img {
   height: 100%;
   width: auto;
@@ -1027,14 +1023,6 @@ section.group { margin-bottom: 3.5rem; }
   background: var(--surface2);
 }
 .tl-char-poster:hover img { filter: grayscale(0) brightness(.98); }
-
-.tl-char-name {
-  display: none;
-}
-
-@media (max-width: 600px) {
-  .tl-char-poster { height: 110px; }
-}
 </style>
 </head>
 <body>
