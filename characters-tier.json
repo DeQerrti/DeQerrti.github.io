@@ -1130,22 +1130,22 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "Топ",
+            "name": "A",
             "color": "#2563a8",
             "chars": []
           },
           {
-            "name": "Хорошо",
+            "name": "B",
             "color": "#2d8a4e",
             "chars": []
           },
           {
-            "name": "Средне",
+            "name": "C",
             "color": "#d4a017",
             "chars": []
           },
           {
-            "name": "Слабо",
+            "name": "D",
             "color": "#6b7280",
             "chars": []
           }
