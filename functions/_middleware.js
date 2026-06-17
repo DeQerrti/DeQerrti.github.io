@@ -2,11 +2,17 @@ export async function onRequest(context) {
   const { request, env, next } = context;
   const url = new URL(request.url);
 
-  // Защищаем только /add и /add.html
+  
   const isProtected =
     url.pathname === "/add" ||
     url.pathname === "/add/" ||
-    url.pathname === "/add.html";
+    url.pathname === "/add.html" ||
+    url.pathname === "/favorites-edit" ||
+    url.pathname === "/favorites-edit.html" ||
+    url.pathname === "/chars-edit" ||
+    url.pathname === "/chars-edit.html" ||
+    url.pathname === "/reviews-order" ||
+    url.pathname === "/reviews-order.html";
 
   if (!isProtected) return next();
 

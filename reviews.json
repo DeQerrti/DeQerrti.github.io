@@ -1,5 +1,25 @@
 [
   {
+    "title": "Ozark",
+    "url": "",
+    "type": "show",
+    "status": "current",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2017",
+    "format": null,
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/pCGyPVrI9Fzw6rE1Pvi4BIXF6ET.jpg",
+    "date_start": "2026-06-16",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": null,
+    "tags": [],
+    "id": 225
+  },
+  {
     "title": "Morimens",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mnn37gtzts2g",
     "type": "gacha",

@@ -1,6 +1,7 @@
 [
   {
     "id": "reverse1999",
+    "folder": "Reverse",
     "title": "Reverse: 1999",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co74f8.jpg",
     "tierlists": [
@@ -9,34 +10,150 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "Резонанс",
+            "name": "Фавориты",
             "color": "#7c3aed",
             "chars": [
-              { "name": "Хэарон", "img": "https://deqerrti.github.io/chars/reverse/chaeron.png" },
-              { "name": "Корвус", "img": "https://deqerrti.github.io/chars/reverse/corvus.png" }
+              {
+                "name": "Charon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charon.webp"
+              },
+              {
+                "name": "Corvus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Corvus.webp"
+              },
+              {
+                "name": "37",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/37.webp"
+              },
+              {
+                "name": "Yenisei",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Yenisei.webp"
+              },
+              {
+                "name": "Charlie skin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charlie%20to.webp"
+              }
             ]
           },
           {
-            "name": "Топ",
+            "name": "Нравится",
             "color": "#2563a8",
             "chars": [
-              { "name": "Вертумн", "img": "https://deqerrti.github.io/chars/reverse/vertin.png" }
+              {
+                "name": "Enigma",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Enigma.webp"
+              },
+              {
+                "name": "Sonetto",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sonetto.webp"
+              },
+              {
+                "name": "Melania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Melania.webp"
+              },
+              {
+                "name": "Flutterpage",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Flutterpage.webp"
+              },
+              {
+                "name": "6",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/6.webp"
+              }
             ]
           },
           {
             "name": "Хорошо",
             "color": "#2d8a4e",
-            "chars": []
+            "chars": [
+              {
+                "name": "Marcus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marcus.webp"
+              },
+              {
+                "name": "Matilda",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Matilda.webp"
+              },
+              {
+                "name": "Regulus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Regulus.webp"
+              },
+              {
+                "name": "Kakania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Kakania.webp"
+              },
+              {
+                "name": "Isolde",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Isolde.webp"
+              },
+              {
+                "name": "Charlie",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charlie.webp"
+              },
+              {
+                "name": "Medicine Pocket",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Medicine%20Pocket.webp"
+              }
+            ]
           },
           {
             "name": "Средне",
             "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "APPLe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/APPLe.webp"
+              },
+              {
+                "name": "Druvis III",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Druvis%20III.webp"
+              },
+              {
+                "name": "An-an Lee",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/An-an%20Lee.webp"
+              },
+              {
+                "name": "Diggers",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Diggers.webp"
+              },
+              {
+                "name": "Sotheby",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sotheby.webp"
+              },
+              {
+                "name": "Mesmer Jr",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Mesmer%20Jr.webp"
+              },
+              {
+                "name": "X",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/X.webp"
+              },
+              {
+                "name": "Pickles",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
+              }
+            ]
           },
           {
             "name": "Слабо",
             "color": "#6b7280",
-            "chars": []
+            "chars": [
+              {
+                "name": "Lucy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lucy.webp"
+              },
+              {
+                "name": "Lilya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lilya.webp"
+              },
+              {
+                "name": "Ms. Moissan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Moissan.webp"
+              },
+              {
+                "name": "Ms. Radio",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Radio.webp"
+              }
+            ]
           }
         ]
       },
@@ -45,26 +162,115 @@
         "label": "Как персонаж в сюжете",
         "tiers": [
           {
-            "name": "Резонанс",
+            "name": "Раскрытие",
             "color": "#7c3aed",
-            "chars": [
-              { "name": "Хэарон", "img": "https://deqerrti.github.io/chars/reverse/chaeron.png" }
-            ]
+            "chars": []
           },
           {
-            "name": "Топ",
+            "name": "Персонаж",
             "color": "#2563a8",
-            "chars": []
+            "chars": [
+              {
+                "name": "Sonetto",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sonetto.webp"
+              },
+              {
+                "name": "Regulus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Regulus.webp"
+              },
+              {
+                "name": "Druvis III",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Druvis%20III.webp"
+              }
+            ]
           },
           {
             "name": "Хорошо",
             "color": "#2d8a4e",
-            "chars": []
+            "chars": [
+              {
+                "name": "Kakania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Kakania.webp"
+              },
+              {
+                "name": "Matilda",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Matilda.webp"
+              },
+              {
+                "name": "Melania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Melania.webp"
+              },
+              {
+                "name": "Sotheby",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sotheby.webp"
+              },
+              {
+                "name": "37",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/37.webp"
+              },
+              {
+                "name": "Marcus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marcus.webp"
+              },
+              {
+                "name": "APPLe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/APPLe.webp"
+              },
+              {
+                "name": "Lilya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lilya.webp"
+              }
+            ]
           },
           {
-            "name": "Средне",
+            "name": "Функции",
             "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "Mesmer Jr",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Mesmer%20Jr.webp"
+              },
+              {
+                "name": "6",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/6.webp"
+              },
+              {
+                "name": "X",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/X.webp"
+              },
+              {
+                "name": "Ms. Moissan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Moissan.webp"
+              },
+              {
+                "name": "Ms. Radio",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Radio.webp"
+              },
+              {
+                "name": "Enigma",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Enigma.webp"
+              },
+              {
+                "name": "Lucy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lucy.webp"
+              },
+              {
+                "name": "Isolde",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Isolde.webp"
+              },
+              {
+                "name": "Diggers",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Diggers.webp"
+              },
+              {
+                "name": "Medicine Pocket",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Medicine%20Pocket.webp"
+              },
+              {
+                "name": "Pickles",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
+              }
+            ]
           },
           {
             "name": "Слабо",
@@ -77,8 +283,9 @@
   },
   {
     "id": "dna",
+    "folder": "DNA",
     "title": "Duet Night Abyss",
-    "cover": "https://deqerrti.github.io/chars/dna/cover.jpg",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7zjb.webp",
     "tierlists": [
       {
         "id": "dna-design",
@@ -87,9 +294,7 @@
           {
             "name": "Резонанс",
             "color": "#7c3aed",
-            "chars": [
-              { "name": "Zhang'er", "img": "https://deqerrti.github.io/chars/dna/zhanger.png" }
-            ]
+            "chars": []
           },
           {
             "name": "Топ",
@@ -117,6 +322,7 @@
   },
   {
     "id": "morimens",
+    "folder": "Morimens",
     "title": "Morimens",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8m3r.webp",
     "tierlists": [
@@ -125,29 +331,250 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "Резонанс",
+            "name": "Фавориты",
             "color": "#7c3aed",
-            "chars": []
-          },
-          {
-            "name": "Топ",
-            "color": "#2563a8",
-            "chars": []
+            "chars": [
+              {
+                "name": "Saya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Saya.png"
+              },
+              {
+                "name": "Vortice",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Vortice.png"
+              },
+              {
+                "name": "Murphy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Murphy.png"
+              },
+              {
+                "name": "Murphy Fauxborn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Murphy%20Fauxborn.png"
+              },
+              {
+                "name": "Ramona Timeworn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Ramona%20Timeworn.png"
+              },
+              {
+                "name": "Salvador",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Salvador.png"
+              },
+              {
+                "name": "Lily",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Lily.png"
+              },
+              {
+                "name": "Aigis",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Aigis.png"
+              },
+              {
+                "name": "Pollux",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Pollux.png"
+              },
+              {
+                "name": "Ramona",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Ramona.png"
+              }
+            ]
           },
           {
             "name": "Хорошо",
             "color": "#2d8a4e",
-            "chars": []
-          },
-          {
-            "name": "Средне",
-            "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "Horla",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Horla.png"
+              },
+              {
+                "name": "Xu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Xu.png"
+              },
+              {
+                "name": "Nymphaea",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Nymphaea.png"
+              },
+              {
+                "name": "Tulu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Tulu.png"
+              },
+              {
+                "name": "Lotan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Lotan.png"
+              },
+              {
+                "name": "Sanga",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Sanga.png"
+              },
+              {
+                "name": "Tawil",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Tawil.png"
+              },
+              {
+                "name": "Thais",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Thais.png"
+              },
+              {
+                "name": "Pandia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Pandia.png"
+              },
+              {
+                "name": "Pickman",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Pickman.png"
+              },
+              {
+                "name": "Nautila",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Nautila.png"
+              },
+              {
+                "name": "Karen",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Karen.png"
+              },
+              {
+                "name": "Tinct",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Tinct.png"
+              },
+              {
+                "name": "Uvhash",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Uvhash.png"
+              },
+              {
+                "name": "Sorel",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Sorel.png"
+              },
+              {
+                "name": "Ryker",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Ryker.png"
+              },
+              {
+                "name": "Ogier",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Ogier.png"
+              },
+              {
+                "name": "Mouchette",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Mouchette.png"
+              },
+              {
+                "name": "Leigh",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Leigh.png"
+              },
+              {
+                "name": "Kathigu-Ra",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Kathigu-Ra.png"
+              },
+              {
+                "name": "Liz",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Liz.png"
+              },
+              {
+                "name": "Helot",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Helot.png"
+              },
+              {
+                "name": "Helot Catena",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Helot%20Catena.png"
+              },
+              {
+                "name": "Hameln",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Hameln.png"
+              },
+              {
+                "name": "Goliath",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Goliath.png"
+              },
+              {
+                "name": "Doresain",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Doresain.png"
+              },
+              {
+                "name": "Faint",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Faint.png"
+              },
+              {
+                "name": "Jenkins",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Jenkins.png"
+              },
+              {
+                "name": "Clementine",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Clementine.png"
+              },
+              {
+                "name": "Doll Inferno",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Doll%20Inferno.png"
+              },
+              {
+                "name": "Corposant",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Corposant.png"
+              },
+              {
+                "name": "Doll",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Doll.png"
+              },
+              {
+                "name": "Castor",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Castor.png"
+              },
+              {
+                "name": "Celeste",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Celeste.png"
+              },
+              {
+                "name": "Aurita",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Aurita.png"
+              },
+              {
+                "name": "24",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/24.png"
+              },
+              {
+                "name": "Caecus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Caecus.png"
+              },
+              {
+                "name": "Agrippa",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Agrippa.png"
+              },
+              {
+                "name": "Alva",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Alva.png"
+              },
+              {
+                "name": "Arachne",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Arachne.png"
+              },
+              {
+                "name": "Winkle",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Winkle.png"
+              },
+              {
+                "name": "Faros",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Faros.png"
+              }
+            ]
           },
           {
             "name": "Слабо",
             "color": "#6b7280",
-            "chars": []
+            "chars": [
+              {
+                "name": "Miryam",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Miryam.png"
+              },
+              {
+                "name": "Casiah",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Casiah.png"
+              },
+              {
+                "name": "Wanda",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Wanda.png"
+              },
+              {
+                "name": "Daffodil",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Daffodil.png"
+              },
+              {
+                "name": "Erica",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Erica.png"
+              }
+            ]
           }
         ]
       }
