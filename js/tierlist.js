@@ -217,13 +217,13 @@ function tlCharsHtml() {
     ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
     : "";
 
-  // Ползунок размера — только для персонажей
+  // Ползунок размера — теперь до 1000px
   const slider = `<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem">
     <span style="font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0">Размер</span>
-    <input type="range" min="80" max="500" value="${tlCharHeight}" step="10"
+    <input type="range" min="80" max="1000" value="${tlCharHeight}" step="10"
       id="tl-char-size-slider"
       style="flex:1;max-width:200px;accent-color:var(--red);cursor:pointer">
-    <span id="tl-char-size-val" style="font-family:'DM Sans',sans-serif;font-size:.65rem;color:var(--text-dim);min-width:36px">${tlCharHeight}px</span>
+    <span id="tl-char-size-val" style="font-family:'DM Sans',sans-serif;font-size:.65rem;color:var(--text-dim);min-width:42px">${tlCharHeight}px</span>
   </div>`;
 
   return `<div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap">
@@ -351,6 +351,8 @@ function tlMoveTip(e, tip) {
   const tw = tip.offsetWidth || 220, th = tip.offsetHeight || 100;
   if (x + tw > window.innerWidth)  x = e.clientX - tw - m;
   if (y + th > window.innerHeight) y = e.clientY - th - m;
+  if (x < 4) x = 4;
+  if (y < 4) y = 4;
   tip.style.position = "fixed";
   tip.style.left = x + "px";
   tip.style.top  = y + "px";
