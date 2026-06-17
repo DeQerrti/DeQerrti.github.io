@@ -757,15 +757,6 @@ section.group { margin-bottom: 3.5rem; }
 }
 .tl-poster:hover img { filter: grayscale(0) brightness(.98); }
 
-/* Персонажи — свободный aspect-ratio */
-.tl-char-poster img {
-  aspect-ratio: unset;
-  object-fit: contain;
-  object-position: top center;
-  background: var(--surface2);
-}
-.tl-poster:hover img { filter: grayscale(0) brightness(.98); }
-
 /* ── Тултип тир-листа ── */
 .tl-tooltip {
   position: fixed;
@@ -999,7 +990,8 @@ section.group { margin-bottom: 3.5rem; }
    Отдельный класс — без фиксированного aspect-ratio,
    картинка показывается целиком              */
 .tl-char-poster {
-  width: 100px;
+  height: 160px;
+  width: auto;
   flex-shrink: 0;
   position: relative;
   cursor: default;
@@ -1008,8 +1000,6 @@ section.group { margin-bottom: 3.5rem; }
   border: 1px solid var(--border);
   transition: border-color .2s, transform .2s;
   animation: fadeUp .25s ease both;
-  display: flex;
-  flex-direction: column;
 }
 .tl-char-poster::before {
   content: '';
@@ -1028,12 +1018,9 @@ section.group { margin-bottom: 3.5rem; }
 }
 .tl-char-poster:hover::before { opacity: 1; width: 13px; height: 13px; }
 
-/* Картинка — полная высота без обрезки */
 .tl-char-poster img {
-  width: 100%;
-  height: auto;          /* ключевое — auto вместо aspect-ratio */
-  object-fit: contain;
-  object-position: top;
+  height: 100%;
+  width: auto;
   display: block;
   filter: grayscale(.15) brightness(.85);
   transition: filter .25s;
@@ -1041,24 +1028,12 @@ section.group { margin-bottom: 3.5rem; }
 }
 .tl-char-poster:hover img { filter: grayscale(0) brightness(.98); }
 
-/* Имя персонажа под картинкой */
 .tl-char-name {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .55rem;
-  color: var(--text-dim);
-  text-align: center;
-  padding: .25rem .3rem;
-  background: var(--surface);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
+  display: none;
 }
-.tl-char-poster:hover .tl-char-name { color: var(--text); }
 
-/* Мобильная версия */
 @media (max-width: 600px) {
-  .tl-char-poster { width: 72px; }
+  .tl-char-poster { height: 110px; }
 }
 </style>
 </head>
