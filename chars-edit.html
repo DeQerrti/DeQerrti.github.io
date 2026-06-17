@@ -522,7 +522,7 @@ function deleteChar(titleId, listId, ti, ci) {
 async function loadFolders() {
   if (foldersCache !== null) return foldersCache;
   try {
-    const res  = await fetch("/api/list-folders", { credentials: "include" });
+    const res = await fetch("/api/list-chars", { credentials: "include" });
     const json = await res.json();
     foldersCache = json.folders || [];
   } catch {
