@@ -1,6 +1,6 @@
 [
   {
-    "id": "reverse1999",
+    "id": "reverse1999", "folder": "Reverse",
     "title": "Reverse: 1999",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co74f8.jpg",
     "tierlists": [
@@ -76,7 +76,7 @@
     ]
   },
   {
-    "id": "dna",
+    "id": "dna", "folder": "DNA",
     "title": "Duet Night Abyss",
     "cover": "https://deqerrti.github.io/chars/dna/cover.jpg",
     "tierlists": [
@@ -116,7 +116,7 @@
     ]
   },
   {
-    "id": "morimens",
+    "id": "morimens", "folder": "Morimens",
     "title": "Morimens",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8m3r.webp",
     "tierlists": [
