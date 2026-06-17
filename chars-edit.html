@@ -235,9 +235,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
         <input type="text" id="nt-name" placeholder="Reverse: 1999">
       </div>
       <div class="field">
-        <label>ID (латиница, без пробелов) *</label>
-        <input type="text" id="nt-id" placeholder="reverse1999">
-      </div>
+  <label>ID (латиница, без пробелов) *</label>
+  <input type="text" id="nt-id" placeholder="reverse1999">
+  <div id="nt-id-hint" style="font-family:'DM Sans',sans-serif;font-size:.6rem;color:var(--text-dim);margin-top:.3rem;display:none">
+    ID нельзя менять у существующего тайтла — на него уже могут ссылаться сохранённые данные.
+  </div>
+</div>
       <div class="field">
         <label>Папка по умолчанию в chars/ *</label>
         <input type="text" id="nt-folder" placeholder="Reverse">
@@ -247,9 +250,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
         <input type="text" id="nt-cover" placeholder="https://...">
       </div>
       <div style="display:flex;gap:.5rem">
-        <button class="btn btn-primary" onclick="addTitle()">Добавить</button>
-        <button class="btn btn-ghost" onclick="toggleNewTitleForm(false)">Отмена</button>
-      </div>
+  <button class="btn btn-primary" id="nt-submit-btn" onclick="submitTitleForm()">Добавить</button>
+  <button class="btn btn-ghost" onclick="toggleNewTitleForm(false)">Отмена</button>
+</div>
     </div>
     <button class="btn btn-dashed" id="btn-add-title" onclick="toggleNewTitleForm(true)">+ Новый тайтл</button>
   </aside>
