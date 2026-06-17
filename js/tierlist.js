@@ -217,10 +217,17 @@ function tlCharsHtml() {
   }
   tiersHtml += `</div>`;
 
-  return `<div class="tl-filters">${gameButtons}</div>
-    ${listButtons}
-    ${tiersHtml}
-    ${tlTooltipHtml()}`;
+  const adminBtn = isAdmin()
+  ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
+  : "";
+
+return `<div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap">
+    <div class="tl-filters" style="margin-bottom:0">${gameButtons}</div>
+    ${adminBtn}
+  </div>
+  ${listButtons}
+  ${tiersHtml}
+  ${tlTooltipHtml()}`;
 }
 
 // ── Тултип ─────────────────────────────────────
