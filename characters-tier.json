@@ -336,9 +336,50 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "Резонанс",
+            "name": "Фавориты",
             "color": "#7c3aed",
-            "chars": []
+            "chars": [
+              {
+                "name": "Saya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Saya.png"
+              },
+              {
+                "name": "Vortice",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Vortice.png"
+              },
+              {
+                "name": "Murphy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Murphy.png"
+              },
+              {
+                "name": "Murphy Fauxborn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Murphy%20Fauxborn.png"
+              },
+              {
+                "name": "Ramona Timeworn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Ramona%20Timeworn.png"
+              },
+              {
+                "name": "Salvador",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Salvador.png"
+              },
+              {
+                "name": "Lily",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Lily.png"
+              },
+              {
+                "name": "Aigis",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Aigis.png"
+              },
+              {
+                "name": "Pollux",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Pollux.png"
+              },
+              {
+                "name": "Ramona",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Ramona.png"
+              }
+            ]
           },
           {
             "name": "Топ",
