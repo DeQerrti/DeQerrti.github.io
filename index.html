@@ -116,7 +116,6 @@ nav {
   backdrop-filter: blur(20px);
   overflow-x: auto;
   scrollbar-width: none;
-  /* Snap не даёт вкладкам застрять на полпути */
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
@@ -689,6 +688,9 @@ section.group { margin-bottom: 3.5rem; }
   color: var(--tl-color, var(--text-hi));
   text-align: center;
   line-height: 1.2;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 .tl-label-count {
   font-family: 'DM Sans', sans-serif;
@@ -757,7 +759,7 @@ section.group { margin-bottom: 3.5rem; }
 }
 .tl-poster:hover img { filter: grayscale(0) brightness(.98); }
 
-/* ── Тултип тир-листа ── */
+/* ── Тултип тир-листа — расширен и текст переносится ── */
 .tl-tooltip {
   position: fixed;
   background: var(--surface2);
@@ -766,8 +768,9 @@ section.group { margin-bottom: 3.5rem; }
   padding: .85rem 1.05rem;
   pointer-events: none;
   z-index: 9999;
-  max-width: 220px;
+  max-width: 260px;
   min-width: 160px;
+  width: max-content;
   box-shadow: 0 12px 40px rgba(0,0,0,.9);
   opacity: 0;
   transition: opacity .12s;
@@ -776,23 +779,32 @@ section.group { margin-bottom: 3.5rem; }
 .tl-tt-title {
   font-family: 'Playfair Display', serif;
   font-size: .92rem; font-weight: 700;
-  color: var(--text-hi); line-height: 1.25;
+  color: var(--text-hi); line-height: 1.3;
   margin-bottom: .28rem;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .tl-tt-grade {
   font-family: 'Cormorant Garamond', serif;
   font-size: .82rem; font-style: italic; font-weight: 600;
   margin-bottom: .2rem;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 .tl-tt-desc {
   font-family: 'Cormorant Garamond', serif;
   font-size: .78rem; color: var(--text-dim);
   font-style: italic; line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 .tl-tt-meta {
   font-family: 'DM Sans', sans-serif;
   font-size: .58rem; color: var(--text-dim);
   margin-top: .28rem; letter-spacing: .04em;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 /* ══ MOBILE TIERLIST — ИСПРАВЛЕНО ════════════════ */
@@ -804,7 +816,6 @@ section.group { margin-bottom: 3.5rem; }
   .tl-label-name { font-size: .72rem; }
   .tl-label-count { font-size: .5rem; }
 
-  /* постеры 70px вместо 52px — читаемо */
   .tl-poster { width: 70px; }
 
   .tl-cards {
@@ -997,6 +1008,8 @@ section.group { margin-bottom: 3.5rem; }
   border: 1px solid var(--border);
   transition: border-color .2s, transform .2s;
   animation: fadeUp .25s ease both;
+  /* Фон совпадает с фоном ряда — убирает "чёрные блоки" вокруг прозрачных PNG */
+  background: var(--surface);
 }
 .tl-char-poster::before {
   content: '';
@@ -1017,10 +1030,11 @@ section.group { margin-bottom: 3.5rem; }
 .tl-char-poster img {
   height: 100%;
   width: auto;
+  max-width: 100%;
   display: block;
   filter: grayscale(.15) brightness(.85);
   transition: filter .25s;
-  background: var(--surface2);
+  background: var(--surface);
 }
 .tl-char-poster:hover img { filter: grayscale(0) brightness(.98); }
 </style>
@@ -1069,8 +1083,6 @@ function switchTab(tabId, btn) {
   document.getElementById(tabId).classList.remove("hidden");
   btn.classList.add("active");
 
-  // Скроллим вкладку в видимую зону только при ручном переключении,
-  // не при первом рендере — иначе nav уезжает от Главной
   if (!_navInit) {
     btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
   }
@@ -1082,7 +1094,6 @@ function switchTab(tabId, btn) {
   if (tabId === "tab-tierlist")  loadTierlist();
 }
 
-// Первый вызов — инициализация, не скроллим nav
 document.querySelector(".tab-btn.active").click();
 _navInit = false;
 </script>
