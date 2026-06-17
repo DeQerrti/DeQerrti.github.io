@@ -757,6 +757,15 @@ section.group { margin-bottom: 3.5rem; }
 }
 .tl-poster:hover img { filter: grayscale(0) brightness(.98); }
 
+/* Персонажи — свободный aspect-ratio */
+.tl-char-poster img {
+  aspect-ratio: unset;
+  object-fit: contain;
+  object-position: top center;
+  background: var(--surface2);
+}
+.tl-poster:hover img { filter: grayscale(0) brightness(.98); }
+
 /* ── Тултип тир-листа ── */
 .tl-tooltip {
   position: fixed;
