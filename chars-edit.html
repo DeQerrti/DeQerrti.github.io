@@ -359,6 +359,7 @@ function renderSidebar() {
     <div class="title-item${t.id === activeId ? " active" : ""}" onclick="selectTitle('${esc(t.id)}')">
       <img class="title-item-cover" src="${esc(t.cover || "")}" alt="" onerror="this.style.display='none'">
       <div class="title-item-name">${esc(t.title)}</div>
+      <button class="title-item-edit" onclick="openEditTitleForm(event,'${esc(t.id)}')" title="Редактировать">✎</button>
       <button class="title-item-del" onclick="deleteTitle(event,'${esc(t.id)}')" title="Удалить">✕</button>
     </div>
   `).join("");
