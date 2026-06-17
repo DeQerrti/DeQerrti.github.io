@@ -660,18 +660,11 @@ section.group { margin-bottom: 3.5rem; }
   justify-content: center;
   padding: 1rem .7rem;
   border-right: 1px solid var(--border);
-  background: var(--surface);
+  background: color-mix(in srgb, var(--tl-color, #888) 22%, var(--surface));
   position: relative;
   overflow: hidden;
   gap: .3rem;
-}
-.tl-label::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--tl-color, #888);
-  opacity: .16;
-  pointer-events: none;
+
 }
 .tl-label-dot {
   width: 5px; height: 5px;
