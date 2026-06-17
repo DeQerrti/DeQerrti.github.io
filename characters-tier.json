@@ -292,29 +292,148 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "Резонанс",
-            "color": "#7c3aed",
-            "chars": []
-          },
-          {
-            "name": "Топ",
+            "name": "Нравится",
             "color": "#2563a8",
-            "chars": []
+            "chars": [
+              {
+                "name": "Tabethe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Tabethe.png"
+              },
+              {
+                "name": "Flora",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Flora.png"
+              },
+              {
+                "name": "Flora Skin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Flora%20Skin.png"
+              },
+              {
+                "name": "Rhythm",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Rhythm.png"
+              },
+              {
+                "name": "Lisbell",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Lisbell.png"
+              },
+              {
+                "name": "Fina",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Fina.png"
+              }
+            ]
           },
           {
             "name": "Хорошо",
             "color": "#2d8a4e",
-            "chars": []
+            "chars": [
+              {
+                "name": "Vita",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Vita.png"
+              },
+              {
+                "name": "Lynn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Lynn.png"
+              },
+              {
+                "name": "Berenica",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Berenica.png"
+              },
+              {
+                "name": "Mors",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Mors.png"
+              },
+              {
+                "name": "Outsider",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Outsider.png"
+              }
+            ]
           },
           {
             "name": "Средне",
             "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "Psyche",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Psyche.png"
+              },
+              {
+                "name": "Yale and Oliver",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Yale%20and%20Oliver.png"
+              },
+              {
+                "name": "Yuming",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Yuming.png"
+              },
+              {
+                "name": "Su Yi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Su%20Yi.png"
+              },
+              {
+                "name": "Kezhou",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Kezhou.png"
+              },
+              {
+                "name": "Phantasio",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Phantasio.png"
+              },
+              {
+                "name": "Randy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Randy.png"
+              },
+              {
+                "name": "Truffle and Filbert Skin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Truffle%20and%20Filbert%20Skin.png"
+              }
+            ]
           },
           {
             "name": "Слабо",
             "color": "#6b7280",
-            "chars": []
+            "chars": [
+              {
+                "name": "Hilda",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Hilda.png"
+              },
+              {
+                "name": "Zhiliu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Zhiliu.png"
+              },
+              {
+                "name": "Truffle and Filbert",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Truffle%20and%20Filbert.png"
+              },
+              {
+                "name": "Sibylle",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Sibylle.png"
+              },
+              {
+                "name": "Lady Nifle",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Lady%20Nifle.png"
+              },
+              {
+                "name": "Hellfire",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Hellfire.png"
+              },
+              {
+                "name": "Camilla",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Camilla.png"
+              },
+              {
+                "name": "Margie",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Margie.png"
+              },
+              {
+                "name": "Fushu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Fushu.png"
+              },
+              {
+                "name": "Daphne",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Daphne.png"
+              },
+              {
+                "name": "Rebecca",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/DNA/Rebecca.png"
+              }
+            ]
           }
         ]
       }
