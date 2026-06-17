@@ -1,6 +1,7 @@
 [
   {
-    "id": "reverse1999", "folder": "Reverse",
+    "id": "reverse1999",
+    "folder": "Reverse",
     "title": "Reverse: 1999",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co74f8.jpg",
     "tierlists": [
@@ -9,34 +10,150 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "Резонанс",
+            "name": "Фавориты",
             "color": "#7c3aed",
             "chars": [
-              { "name": "Хэарон", "img": "https://deqerrti.github.io/chars/reverse/chaeron.png" },
-              { "name": "Корвус", "img": "https://deqerrti.github.io/chars/reverse/corvus.png" }
+              {
+                "name": "Charon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charon.webp"
+              },
+              {
+                "name": "Corvus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Corvus.webp"
+              },
+              {
+                "name": "37",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/37.webp"
+              },
+              {
+                "name": "Yenisei",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Yenisei.webp"
+              },
+              {
+                "name": "Charlie skin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charlie%20to.webp"
+              }
             ]
           },
           {
-            "name": "Топ",
+            "name": "Нравится",
             "color": "#2563a8",
             "chars": [
-              { "name": "Вертумн", "img": "https://deqerrti.github.io/chars/reverse/vertin.png" }
+              {
+                "name": "Enigma",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Enigma.webp"
+              },
+              {
+                "name": "Sonetto",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sonetto.webp"
+              },
+              {
+                "name": "Melania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Melania.webp"
+              },
+              {
+                "name": "Flutterpage",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Flutterpage.webp"
+              },
+              {
+                "name": "6",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/6.webp"
+              }
             ]
           },
           {
             "name": "Хорошо",
             "color": "#2d8a4e",
-            "chars": []
+            "chars": [
+              {
+                "name": "Marcus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marcus.webp"
+              },
+              {
+                "name": "Matilda",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Matilda.webp"
+              },
+              {
+                "name": "Regulus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Regulus.webp"
+              },
+              {
+                "name": "Kakania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Kakania.webp"
+              },
+              {
+                "name": "Isolde",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Isolde.webp"
+              },
+              {
+                "name": "Charlie",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charlie.webp"
+              },
+              {
+                "name": "Medicine Pocket",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Medicine%20Pocket.webp"
+              }
+            ]
           },
           {
             "name": "Средне",
             "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "APPLe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/APPLe.webp"
+              },
+              {
+                "name": "Druvis III",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Druvis%20III.webp"
+              },
+              {
+                "name": "An-an Lee",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/An-an%20Lee.webp"
+              },
+              {
+                "name": "Diggers",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Diggers.webp"
+              },
+              {
+                "name": "Sotheby",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sotheby.webp"
+              },
+              {
+                "name": "Mesmer Jr",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Mesmer%20Jr.webp"
+              },
+              {
+                "name": "X",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/X.webp"
+              },
+              {
+                "name": "Pickles",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
+              }
+            ]
           },
           {
             "name": "Слабо",
             "color": "#6b7280",
-            "chars": []
+            "chars": [
+              {
+                "name": "Lucy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lucy.webp"
+              },
+              {
+                "name": "Lilya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lilya.webp"
+              },
+              {
+                "name": "Ms. Moissan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Moissan.webp"
+              },
+              {
+                "name": "Ms. Radio",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Radio.webp"
+              }
+            ]
           }
         ]
       },
@@ -48,7 +165,10 @@
             "name": "Резонанс",
             "color": "#7c3aed",
             "chars": [
-              { "name": "Хэарон", "img": "https://deqerrti.github.io/chars/reverse/chaeron.png" }
+              {
+                "name": "Хэарон",
+                "img": "https://deqerrti.github.io/chars/reverse/chaeron.png"
+              }
             ]
           },
           {
@@ -76,7 +196,8 @@
     ]
   },
   {
-    "id": "dna", "folder": "DNA",
+    "id": "dna",
+    "folder": "DNA",
     "title": "Duet Night Abyss",
     "cover": "https://deqerrti.github.io/chars/dna/cover.jpg",
     "tierlists": [
@@ -88,7 +209,10 @@
             "name": "Резонанс",
             "color": "#7c3aed",
             "chars": [
-              { "name": "Zhang'er", "img": "https://deqerrti.github.io/chars/dna/zhanger.png" }
+              {
+                "name": "Zhang'er",
+                "img": "https://deqerrti.github.io/chars/dna/zhanger.png"
+              }
             ]
           },
           {
@@ -116,7 +240,8 @@
     ]
   },
   {
-    "id": "morimens", "folder": "Morimens",
+    "id": "morimens",
+    "folder": "Morimens",
     "title": "Morimens",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co8m3r.webp",
     "tierlists": [
