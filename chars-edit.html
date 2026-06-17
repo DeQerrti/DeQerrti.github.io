@@ -89,6 +89,18 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
   background: var(--surface); align-content: flex-start; min-height: 90px; position: relative; }
 .tl-editor-cards.drag-over { background: rgba(139,26,26,.06); }
 
+/* ── Drop indicator — вертикальная красная черта ── */
+.drop-indicator {
+  width: 2px;
+  align-self: stretch;
+  min-height: 72px;
+  background: var(--red-hi);
+  border-radius: 2px;
+  flex-shrink: 0;
+  pointer-events: none;
+  opacity: .8;
+}
+
 .char-card { width: 72px; flex-shrink: 0; position: relative; cursor: grab;
   border-radius: 1px; overflow: hidden; border: 1px solid var(--border);
   transition: border-color .15s, transform .15s; background: var(--surface2); animation: fadeUp .2s ease both; }
@@ -251,7 +263,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-title" id="modal-title-label">Добавить персонажа</div>
 
-    <!-- Выбор папки — НОВОЕ -->
     <div id="folder-field">
       <span class="folder-select-label">Папка (источник)</span>
       <div class="folder-select-wrap">
@@ -261,17 +272,14 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
       </div>
     </div>
 
-    <!-- Галерея из папки -->
     <div class="gallery-status" id="gallery-status"></div>
     <div class="gallery-grid" id="gallery-grid"></div>
 
-    <!-- Имя — заполняется автоматически при выборе, можно изменить -->
     <div class="field">
       <label>Имя персонажа *</label>
       <input type="text" id="m-name" placeholder="Хэарон">
     </div>
 
-    <!-- Ручной ввод URL — фолбэк -->
     <span class="manual-toggle" onclick="toggleManual()">✎ Ввести URL вручную</span>
     <div class="manual-section" id="manual-section">
       <div class="field">
@@ -295,9 +303,41 @@ let activeId     = null;
 let activeListId = null;
 let pendingTier  = null;
 let dragSrc      = null;
-let selectedGalleryImg = null; // { name, url }
-let galleryCache = {};          // folder → [{name, url}]
-let foldersCache = null;        // null = не загружены, [...] = загружены
+let selectedGalleryImg = null;
+let galleryCache = {};
+let foldersCache = null;
+
+// ── Drop indicator ──────────────────────────────
+let dropIndicator = null;
+
+function clearDropIndicator() {
+  dropIndicator?.remove();
+  dropIndicator = null;
+}
+
+function getInsertIndex(zone, clientX, clientY) {
+  const cards = [...zone.querySelectorAll(".char-card:not(.dragging)")];
+  if (!cards.length) return 0;
+  for (let i = 0; i < cards.length; i++) {
+    const rect = cards[i].getBoundingClientRect();
+    if (clientY < rect.bottom) {
+      if (clientX < rect.left + rect.width / 2) return i;
+      const next = cards[i + 1];
+      if (!next || next.getBoundingClientRect().top > rect.top) return i + 1;
+    }
+  }
+  return cards.length;
+}
+
+function updateDropIndicator(zone, clientX, clientY) {
+  clearDropIndicator();
+  const idx   = getInsertIndex(zone, clientX, clientY);
+  const cards = [...zone.querySelectorAll(".char-card:not(.dragging)")];
+  dropIndicator = document.createElement("div");
+  dropIndicator.className = "drop-indicator";
+  const ref = idx < cards.length ? cards[idx] : zone.querySelector(".add-char-btn");
+  zone.insertBefore(dropIndicator, ref);
+}
 
 // ══ ЗАГРУЗКА ═══════════════════════════════════
 async function init() {
@@ -534,12 +574,9 @@ async function loadFolders() {
 async function onFolderChange() {
   const folder = document.getElementById("m-folder").value;
   if (!folder) return;
-
-  // Сбрасываем выбор из галереи при смене папки
   selectedGalleryImg = null;
   document.querySelectorAll(".gallery-item").forEach(i => i.classList.remove("selected"));
   document.getElementById("m-name").value = "";
-
   const title = pendingTier ? data.find(t => t.id === pendingTier.titleId) : null;
   await loadGallery(folder, title);
 }
@@ -577,7 +614,6 @@ async function loadGallery(folder, title) {
     return;
   }
 
-  // Имена уже добавленных персонажей в этом тайтле (все тир-листы)
   const usedNames = title
     ? new Set(title.tierlists.flatMap(l => l.tiers.flatMap(t => t.chars.map(c => c.name))))
     : new Set();
@@ -598,7 +634,7 @@ async function loadGallery(folder, title) {
   }).join("");
 }
 
-// ══ МОДАЛКА ══════════════════════════════════════
+// ══ МОДАЛКА ════════════════════════════════════
 async function openModal(titleId, listId, ti) {
   pendingTier = { titleId, listId, tierIdx: ti };
   selectedGalleryImg = null;
@@ -622,12 +658,10 @@ async function openModal(titleId, listId, ti) {
     return;
   }
 
-  // Заполняем дропдаун, дефолт — папка тайтла
   sel.innerHTML = folders
     .map(f => `<option value="${esc(f)}"${f === title?.folder ? " selected" : ""}>${esc(f)}</option>`)
     .join("");
 
-  // Загружаем галерею выбранной папки
   await loadGallery(sel.value, title);
   document.getElementById("m-name").focus();
 }
@@ -637,7 +671,6 @@ function selectGalleryItem(el) {
   el.classList.add("selected");
   selectedGalleryImg = { name: el.dataset.name, url: el.dataset.url };
   document.getElementById("m-name").value = el.dataset.name;
-  // Сбрасываем ручной ввод если был
   document.getElementById("m-img").value = "";
   document.getElementById("m-img-preview").style.display = "none";
 }
@@ -674,7 +707,6 @@ function confirmAddChar() {
   if (!name) { alert("Введи имя персонажа"); return; }
   if (!pendingTier) return;
 
-  // Приоритет: галерея → ручной ввод
   const img = selectedGalleryImg?.url || manualImg || "";
 
   const { titleId, listId, tierIdx } = pendingTier;
@@ -687,7 +719,7 @@ function confirmAddChar() {
   renderEditor();
 }
 
-// ══ DRAG & DROP ═════════════════════════════════
+// ══ DRAG & DROP — с позиционным индикатором ════
 function bindDragDrop() {
   document.querySelectorAll(".char-card").forEach(card => {
     card.addEventListener("dragstart", e => {
@@ -700,28 +732,47 @@ function bindDragDrop() {
     });
     card.addEventListener("dragend", () => {
       card.classList.remove("dragging");
+      clearDropIndicator();
       document.querySelectorAll(".tl-editor-cards").forEach(z => z.classList.remove("drag-over"));
     });
   });
 
   document.querySelectorAll(".tl-editor-cards").forEach(zone => {
-    zone.addEventListener("dragover", e => { e.preventDefault(); zone.classList.add("drag-over"); });
-    zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+    zone.addEventListener("dragover", e => {
+      e.preventDefault();
+      zone.classList.add("drag-over");
+      updateDropIndicator(zone, e.clientX, e.clientY);
+    });
+    zone.addEventListener("dragleave", e => {
+      if (!zone.contains(e.relatedTarget)) {
+        zone.classList.remove("drag-over");
+        clearDropIndicator();
+      }
+    });
     zone.addEventListener("drop", e => {
       e.preventDefault();
       zone.classList.remove("drag-over");
       if (!dragSrc) return;
+
+      const insertIdx   = getInsertIndex(zone, e.clientX, e.clientY);
       const destTitleId = zone.dataset.title;
       const destListId  = zone.dataset.list;
       const destTierIdx = parseInt(zone.dataset.tier);
+
       const srcTitle = data.find(t => t.id === dragSrc.titleId);
       const srcList  = srcTitle?.tierlists.find(l => l.id === dragSrc.listId);
       if (!srcList) return;
+
       const [moved] = srcList.tiers[dragSrc.tierIdx].chars.splice(dragSrc.charIdx, 1);
+
       const destTitle = data.find(t => t.id === destTitleId);
       const destList  = destTitle?.tierlists.find(l => l.id === destListId);
-      if (!destList) { srcList.tiers[dragSrc.tierIdx].chars.splice(dragSrc.charIdx, 0, moved); return; }
-      destList.tiers[destTierIdx].chars.push(moved);
+      if (!destList) {
+        srcList.tiers[dragSrc.tierIdx].chars.splice(dragSrc.charIdx, 0, moved);
+        return;
+      }
+
+      destList.tiers[destTierIdx].chars.splice(insertIdx, 0, moved);
       dragSrc = null;
       renderEditor();
     });
