@@ -1,7 +1,6 @@
 export async function onRequest(context) {
   const { request, env } = context;
 
-  // Проверяем авторизацию
   const cookie = request.headers.get("cookie") || "";
   const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
   const token  = auth?.split("=")[1]?.trim();
@@ -9,15 +8,16 @@ export async function onRequest(context) {
     return json({ error: "Не авторизован" }, 401);
   }
 
-  const url    = new URL(request.url);
-  const folder = url.searchParams.get("folder");
-  if (!folder) {
-    return json({ error: "Не указан параметр folder" }, 400);
-  }
-
+  const url     = new URL(request.url);
+  const folder  = url.searchParams.get("folder");
   const repo    = env.GITHUB_REPO;
   const ghToken = env.GITHUB_TOKEN;
-  const apiUrl  = `https://api.github.com/repos/${repo}/contents/chars/${folder}`;
+
+  // Без folder → возвращаем список подпапок из chars/
+  // С folder  → возвращаем картинки из chars/{folder}/
+  const apiUrl = folder
+    ? `https://api.github.com/repos/${repo}/contents/chars/${folder}`
+    : `https://api.github.com/repos/${repo}/contents/chars`;
 
   try {
     const res = await fetch(apiUrl, {
@@ -29,26 +29,29 @@ export async function onRequest(context) {
     });
 
     if (!res.ok) {
-      if (res.status === 404) {
-        return json({ files: [] });
-      }
+      if (res.status === 404) return json(folder ? { files: [] } : { folders: [] });
       const errText = await res.text();
       return json({ error: `GitHub GET failed: ${res.status} — ${errText}` }, 500);
     }
 
     const items = await res.json();
 
-    // Фильтруем только картинки, возвращаем имя и публичный URL
+    if (!folder) {
+      const folders = items
+        .filter(item => item.type === "dir")
+        .map(item => item.name)
+        .sort();
+      return json({ folders });
+    }
+
     const files = items
       .filter(item => item.type === "file" && /\.(png|jpg|jpeg|webp|gif)$/i.test(item.name))
       .map(item => ({
-        // Имя без расширения = имя персонажа
         name: item.name.replace(/\.[^.]+$/, ""),
-        // Публичный URL через GitHub Pages (deqerrti.github.io)
-        url: item.download_url,
+        url:  item.download_url,
       }));
-
     return json({ files });
+
   } catch (e) {
     return json({ error: e.message }, 500);
   }
