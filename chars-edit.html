@@ -376,10 +376,68 @@ function selectTitle(id) {
   renderEditor();
 }
 
+let editingTitleId = null; // null = создаём новый тайтл, иначе редактируем существующий
+
 function toggleNewTitleForm(show) {
   document.getElementById("new-title-form").classList.toggle("hidden", !show);
   document.getElementById("btn-add-title").style.display = show ? "none" : "";
-  if (show) document.getElementById("nt-name").focus();
+  if (!show) {
+    editingTitleId = null;
+    resetTitleForm();
+  } else {
+    document.getElementById("nt-name").focus();
+  }
+}
+
+function resetTitleForm() {
+  document.getElementById("nt-name").value   = "";
+  document.getElementById("nt-id").value     = "";
+  document.getElementById("nt-folder").value = "";
+  document.getElementById("nt-cover").value  = "";
+  document.getElementById("nt-id").disabled  = false;
+  document.getElementById("nt-id-hint").style.display = "none";
+  document.getElementById("nt-submit-btn").textContent = "Добавить";
+}
+
+function openEditTitleForm(e, id) {
+  e.stopPropagation();
+  const title = data.find(t => t.id === id);
+  if (!title) return;
+
+  editingTitleId = id;
+  document.getElementById("nt-name").value   = title.title;
+  document.getElementById("nt-id").value     = title.id;
+  document.getElementById("nt-folder").value = title.folder || "";
+  document.getElementById("nt-cover").value  = title.cover  || "";
+  document.getElementById("nt-id").disabled  = true;
+  document.getElementById("nt-id-hint").style.display = "block";
+  document.getElementById("nt-submit-btn").textContent = "Сохранить изменения";
+
+  document.getElementById("new-title-form").classList.remove("hidden");
+  document.getElementById("btn-add-title").style.display = "none";
+  document.getElementById("nt-name").focus();
+}
+
+function submitTitleForm() {
+  if (editingTitleId) saveTitleEdit();
+  else addTitle();
+}
+
+function saveTitleEdit() {
+  const name   = document.getElementById("nt-name").value.trim();
+  const folder = document.getElementById("nt-folder").value.trim();
+  const cover  = document.getElementById("nt-cover").value.trim();
+  if (!name || !folder) { alert("Заполни название и папку"); return; }
+
+  const title = data.find(t => t.id === editingTitleId);
+  if (!title) return;
+
+  title.title  = name;
+  title.folder = folder;
+  title.cover  = cover || "";
+
+  toggleNewTitleForm(false);
+  selectTitle(title.id);
 }
 
 function addTitle() {
@@ -399,10 +457,6 @@ function addTitle() {
     }]
   });
 
-  document.getElementById("nt-name").value   = "";
-  document.getElementById("nt-id").value     = "";
-  document.getElementById("nt-folder").value = "";
-  document.getElementById("nt-cover").value  = "";
   toggleNewTitleForm(false);
   selectTitle(id);
 }
