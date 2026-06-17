@@ -285,7 +285,7 @@
     "id": "dna",
     "folder": "DNA",
     "title": "Duet Night Abyss",
-    "cover": "https://deqerrti.github.io/chars/dna/cover.jpg",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co7zjb.webp",
     "tierlists": [
       {
         "id": "dna-design",
@@ -294,12 +294,7 @@
           {
             "name": "Резонанс",
             "color": "#7c3aed",
-            "chars": [
-              {
-                "name": "Zhang'er",
-                "img": "https://deqerrti.github.io/chars/dna/zhanger.png"
-              }
-            ]
+            "chars": []
           },
           {
             "name": "Топ",
