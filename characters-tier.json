@@ -10,7 +10,7 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "Фавориты",
+            "name": "S",
             "color": "#7c3aed",
             "chars": [
               {
@@ -36,7 +36,7 @@
             ]
           },
           {
-            "name": "Нравится",
+            "name": "A",
             "color": "#2563a8",
             "chars": [
               {
@@ -62,7 +62,7 @@
             ]
           },
           {
-            "name": "Хорошо",
+            "name": "B",
             "color": "#2d8a4e",
             "chars": [
               {
@@ -96,7 +96,7 @@
             ]
           },
           {
-            "name": "Средне",
+            "name": "C",
             "color": "#d4a017",
             "chars": [
               {
@@ -134,7 +134,7 @@
             ]
           },
           {
-            "name": "Слабо",
+            "name": "D",
             "color": "#6b7280",
             "chars": [
               {
@@ -1114,6 +1114,40 @@
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Daiyan.png"
               }
             ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "silverandblood",
+    "title": "Silver and Blood",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/coa06t.webp",
+    "folder": "Silver and Blood",
+    "tierlists": [
+      {
+        "id": "silverandblood-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "Топ",
+            "color": "#2563a8",
+            "chars": []
+          },
+          {
+            "name": "Хорошо",
+            "color": "#2d8a4e",
+            "chars": []
+          },
+          {
+            "name": "Средне",
+            "color": "#d4a017",
+            "chars": []
+          },
+          {
+            "name": "Слабо",
+            "color": "#6b7280",
+            "chars": []
           }
         ]
       }
