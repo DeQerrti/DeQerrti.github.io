@@ -1132,22 +1132,278 @@
           {
             "name": "A",
             "color": "#2563a8",
-            "chars": []
+            "chars": [
+              {
+                "name": "Sirene",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Sirene.png"
+              },
+              {
+                "name": "Transcendent Noah",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Transcendent%20Noah.png"
+              },
+              {
+                "name": "Seraphina",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Seraphina.png"
+              },
+              {
+                "name": "Incendiary Agares",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Incendiary%20Agares.png"
+              }
+            ]
           },
           {
             "name": "B",
             "color": "#2d8a4e",
-            "chars": []
+            "chars": [
+              {
+                "name": "Van Helsing",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Van%20Helsing.png"
+              },
+              {
+                "name": "Bella",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Bella.png"
+              },
+              {
+                "name": "Timeless Aiona",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Timeless%20Aiona.png"
+              },
+              {
+                "name": "Quinn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Quinn.png"
+              },
+              {
+                "name": "Acappella",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Acappella.png"
+              },
+              {
+                "name": "Piera",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Piera.png"
+              },
+              {
+                "name": "Selena",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Selena.png"
+              },
+              {
+                "name": "Julius",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Julius.png"
+              },
+              {
+                "name": "Theophane",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Theophane.png"
+              },
+              {
+                "name": "Thibault",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Thibault.png"
+              },
+              {
+                "name": "Agnes",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Agnes.png"
+              },
+              {
+                "name": "Cain",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Cain.png"
+              },
+              {
+                "name": "Albrecht",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Albrecht.png"
+              },
+              {
+                "name": "Gilrain",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Gilrain.png"
+              },
+              {
+                "name": "Friedrich",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Friedrich.png"
+              },
+              {
+                "name": "Darcias",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Darcias.png"
+              },
+              {
+                "name": "Agares",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Agares.png"
+              },
+              {
+                "name": "Alene",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Alene.png"
+              },
+              {
+                "name": "Baphomet",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Baphomet.png"
+              },
+              {
+                "name": "Noah",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Noah.png"
+              }
+            ]
           },
           {
             "name": "C",
             "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "Spectral Gilrain",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Spectral%20Gilrain.png"
+              },
+              {
+                "name": "Stella",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Stella.png"
+              },
+              {
+                "name": "Jinxed Selena",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Jinxed%20Selena.png"
+              },
+              {
+                "name": "Yggdrasill",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Yggdrasill.png"
+              },
+              {
+                "name": "Tris",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Tris.png"
+              },
+              {
+                "name": "Ami",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Ami.png"
+              },
+              {
+                "name": "Pasted image 20260602213102",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Pasted%20image%2020260602213102.png"
+              },
+              {
+                "name": "Clive",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Clive.png"
+              },
+              {
+                "name": "Gadric",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Gadric.png"
+              },
+              {
+                "name": "Clive Jr.",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Clive%20Jr..png"
+              },
+              {
+                "name": "Goldland",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Goldland.png"
+              },
+              {
+                "name": "Empousa",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Empousa.png"
+              }
+            ]
           },
           {
             "name": "D",
             "color": "#6b7280",
-            "chars": []
+            "chars": [
+              {
+                "name": "Starry-Eyed Aiona",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Starry-Eyed%20Aiona.png"
+              },
+              {
+                "name": "Transcendent Ami",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Transcendent%20Ami.png"
+              },
+              {
+                "name": "Transcendent Hati",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Transcendent%20Hati.png"
+              },
+              {
+                "name": "Hati",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Hati.png"
+              },
+              {
+                "name": "Lamia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Lamia.png"
+              },
+              {
+                "name": "Edina",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Edina.png"
+              },
+              {
+                "name": "Fanny",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Fanny.png"
+              },
+              {
+                "name": "Joan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Joan.png"
+              },
+              {
+                "name": "Livian",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Livian.png"
+              },
+              {
+                "name": "Ressa",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Ressa.png"
+              },
+              {
+                "name": "Dalcarlo",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Dalcarlo.png"
+              },
+              {
+                "name": "Genevieve",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Genevieve.png"
+              },
+              {
+                "name": "Aiona",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Aiona.png"
+              },
+              {
+                "name": "Valora",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Valora.png"
+              },
+              {
+                "name": "Fleeting Bella",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Fleeting%20Bella.png"
+              },
+              {
+                "name": "Cecia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Cecia.png"
+              },
+              {
+                "name": "Nicole",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Nicole.png"
+              },
+              {
+                "name": "Ottavia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Ottavia.png"
+              },
+              {
+                "name": "Letitia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Letitia.png"
+              },
+              {
+                "name": "Ethereal Joan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Ethereal%20Joan.png"
+              },
+              {
+                "name": "Alexi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Alexi.png"
+              },
+              {
+                "name": "Limine",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Limine.png"
+              },
+              {
+                "name": "Seth",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Seth.png"
+              },
+              {
+                "name": "Lucille",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Lucille.png"
+              },
+              {
+                "name": "Mass",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Mass.png"
+              },
+              {
+                "name": "Jestel",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Jestel.png"
+              },
+              {
+                "name": "Setti",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Silver%20and%20Blood/Setti.png"
+              }
+            ]
           }
         ]
       }
