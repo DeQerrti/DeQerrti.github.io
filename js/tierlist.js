@@ -5,7 +5,6 @@
 //  Зависит от: config.js, api.js, cards.js
 // ══════════════════════════════════════════════
 
-// ── Фильтры тайтлов ────────────────────────────
 const TL_FILTERS = [
   ["all",    "Всё"],
   ["anime",  "Аниме"],
@@ -23,7 +22,6 @@ const TL_FILTERS = [
 function tlInferType(r) { return r.type || "anime"; }
 function tlTypeLabel(type) { return TYPE_LABELS[type] || type || "—"; }
 
-// ── Общее состояние ────────────────────────────
 const tlState = {
   mode:        "titles",
   filter:      "all",
@@ -35,13 +33,10 @@ const tlState = {
   charsLoaded: false,
 };
 
-// ── Загрузка ───────────────────────────────────
 async function loadTierlist() {
   if (loading.tierlist) return;
   loading.tierlist = true;
-
   const box = document.getElementById("tab-tierlist");
-
   try {
     if (!tlState.loaded) {
       box.innerHTML = `<div class="state-box"><div class="spinner"></div>Загружаем…</div>`;
@@ -75,7 +70,6 @@ async function loadCharGames() {
   }
 }
 
-// ── Главный рендер ─────────────────────────────
 function tlRender() {
   const box = document.getElementById("tab-tierlist");
   box.innerHTML = tlModeToggleHtml()
@@ -83,7 +77,6 @@ function tlRender() {
   tlBindAll();
 }
 
-// ── Переключатель режима ───────────────────────
 function tlModeToggleHtml() {
   return `<div class="tl-mode-toggle">
     <button class="tl-mode-btn${tlState.mode === "titles" ? " active" : ""}" data-mode="titles">Тайтлы</button>
@@ -200,7 +193,8 @@ function tlCharsHtml() {
     } else {
       for (let i = 0; i < chars.length; i++) {
         const ch = chars[i];
-        tiersHtml += `<div class="tl-poster"
+        // tl-char-poster — отдельный класс без фиксированного aspect-ratio
+        tiersHtml += `<div class="tl-poster tl-char-poster"
             data-tl-title="${esc(ch.name)}"
             data-tl-grade="${esc(tier.name)}"
             data-tl-color="${esc(tier.color)}"
@@ -209,7 +203,8 @@ function tlCharsHtml() {
             data-tl-type="${esc(game.title)}"
             style="animation-delay:${Math.min(i * 18, 400)}ms">
           <img src="${esc(ch.img)}" alt="${esc(ch.name)}" loading="lazy"
-            onerror="this.src='https://placehold.co/72x108/111114/4a4540?text=?'">
+            onerror="this.src='https://placehold.co/100x150/111114/4a4540?text=?'">
+          <div class="tl-char-name">${esc(ch.name)}</div>
         </div>`;
       }
     }
@@ -218,10 +213,10 @@ function tlCharsHtml() {
   tiersHtml += `</div>`;
 
   const adminBtn = isAdmin()
-  ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
-  : "";
+    ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
+    : "";
 
-return `<div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap">
+  return `<div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap">
     <div class="tl-filters" style="margin-bottom:0">${gameButtons}</div>
     ${adminBtn}
   </div>
