@@ -162,29 +162,115 @@
         "label": "Как персонаж в сюжете",
         "tiers": [
           {
-            "name": "Резонанс",
+            "name": "Раскрытие",
             "color": "#7c3aed",
+            "chars": []
+          },
+          {
+            "name": "Персонаж",
+            "color": "#2563a8",
             "chars": [
               {
-                "name": "Хэарон",
-                "img": "https://deqerrti.github.io/chars/reverse/chaeron.png"
+                "name": "Sonetto",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sonetto.webp"
+              },
+              {
+                "name": "Regulus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Regulus.webp"
+              },
+              {
+                "name": "Druvis III",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Druvis%20III.webp"
               }
             ]
           },
           {
-            "name": "Топ",
-            "color": "#2563a8",
-            "chars": []
-          },
-          {
             "name": "Хорошо",
             "color": "#2d8a4e",
-            "chars": []
+            "chars": [
+              {
+                "name": "Kakania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Kakania.webp"
+              },
+              {
+                "name": "Matilda",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Matilda.webp"
+              },
+              {
+                "name": "Melania",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Melania.webp"
+              },
+              {
+                "name": "Sotheby",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sotheby.webp"
+              },
+              {
+                "name": "37",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/37.webp"
+              },
+              {
+                "name": "Marcus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marcus.webp"
+              },
+              {
+                "name": "APPLe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/APPLe.webp"
+              },
+              {
+                "name": "Lilya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lilya.webp"
+              }
+            ]
           },
           {
-            "name": "Средне",
+            "name": "Функции",
             "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "Mesmer Jr",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Mesmer%20Jr.webp"
+              },
+              {
+                "name": "6",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/6.webp"
+              },
+              {
+                "name": "X",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/X.webp"
+              },
+              {
+                "name": "Ms. Moissan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Moissan.webp"
+              },
+              {
+                "name": "Ms. Radio",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Radio.webp"
+              },
+              {
+                "name": "Enigma",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Enigma.webp"
+              },
+              {
+                "name": "Lucy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lucy.webp"
+              },
+              {
+                "name": "Isolde",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Isolde.webp"
+              },
+              {
+                "name": "Diggers",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Diggers.webp"
+              },
+              {
+                "name": "Medicine Pocket",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Medicine%20Pocket.webp"
+              },
+              {
+                "name": "Pickles",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
+              }
+            ]
           },
           {
             "name": "Слабо",
