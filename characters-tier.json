@@ -1476,18 +1476,288 @@
               {
                 "name": "Yixuan_Trails_of_Ink",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Yixuan_Trails_of_Ink.webp"
+              },
+              {
+                "name": "Banyue",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Banyue.webp"
+              },
+              {
+                "name": "Lighter",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Lighter.webp"
+              },
+              {
+                "name": "Ukinami_Yuzuha",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ukinami_Yuzuha.webp"
               }
             ]
           },
           {
             "name": "Средне",
             "color": "#d4a017",
-            "chars": []
+            "chars": [
+              {
+                "name": "Anby_Demara",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Anby_Demara.webp"
+              },
+              {
+                "name": "Anton_Ivanov",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Anton_Ivanov.webp"
+              },
+              {
+                "name": "Aria",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Aria.webp"
+              },
+              {
+                "name": "Aria_Discordant_Note",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Aria_Discordant_Note.webp"
+              },
+              {
+                "name": "Asaba_Harumasa",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Asaba_Harumasa.webp"
+              },
+              {
+                "name": "Belle",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Belle.webp"
+              },
+              {
+                "name": "Belle_Summer_Skies",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Belle_Summer_Skies.webp"
+              },
+              {
+                "name": "Ben_Bigger",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ben_Bigger.webp"
+              },
+              {
+                "name": "Billy_Kid",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Billy_Kid.webp"
+              },
+              {
+                "name": "Corin_Wickes",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Corin_Wickes.webp"
+              },
+              {
+                "name": "Dialyn",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Dialyn.webp"
+              },
+              {
+                "name": "Ellen_Joe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ellen_Joe.webp"
+              },
+              {
+                "name": "Ellen_Joe_On_Campus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ellen_Joe_On_Campus.webp"
+              },
+              {
+                "name": "Hoshimi_Miyabi_Dignified_Blossom",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Hoshimi_Miyabi_Dignified_Blossom.webp"
+              },
+              {
+                "name": "Hugo_Vlad",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Hugo_Vlad.webp"
+              },
+              {
+                "name": "Jane_Doe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Jane_Doe.webp"
+              },
+              {
+                "name": "Ju_Fufu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ju_Fufu.webp"
+              },
+              {
+                "name": "Koleda_Belobog",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Koleda_Belobog.webp"
+              },
+              {
+                "name": "Sunna",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Sunna.webp"
+              },
+              {
+                "name": "Soldier_0_-_Anby",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Soldier_0_-_Anby.webp"
+              },
+              {
+                "name": "Yixuan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Yixuan.webp"
+              },
+              {
+                "name": "Wise",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Wise.webp"
+              },
+              {
+                "name": "Seth_Lowell",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Seth_Lowell.webp"
+              },
+              {
+                "name": "Seed",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Seed.webp"
+              },
+              {
+                "name": "Soukaku",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Soukaku.webp"
+              },
+              {
+                "name": "Pyrois",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Pyrois.webp"
+              },
+              {
+                "name": "Ye_Shunguang_Touch_of_Dawnlight",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ye_Shunguang_Touch_of_Dawnlight.webp"
+              },
+              {
+                "name": "Wise_Oath_of_Skies",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Wise_Oath_of_Skies.webp"
+              },
+              {
+                "name": "Sunna_Afternoon_Tea_Break",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Sunna_Afternoon_Tea_Break.webp"
+              },
+              {
+                "name": "Starlight_-_Billy_Kid",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Starlight_-_Billy_Kid.webp"
+              },
+              {
+                "name": "Trigger",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Trigger.webp"
+              },
+              {
+                "name": "Wise_Peaceful_Waves",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Wise_Peaceful_Waves.webp"
+              },
+              {
+                "name": "Soldier_11",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Soldier_11.webp"
+              },
+              {
+                "name": "Promeia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Promeia.webp"
+              },
+              {
+                "name": "Qingyi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Qingyi.webp"
+              },
+              {
+                "name": "Norma_Hollowell",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Norma_Hollowell.webp"
+              },
+              {
+                "name": "Pan_Yinhu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Pan_Yinhu.webp"
+              },
+              {
+                "name": "Komano_Manato",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Komano_Manato.webp"
+              },
+              {
+                "name": "Nekomiya_Mana",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Nekomiya_Mana.webp"
+              },
+              {
+                "name": "Luciana_de_Montefio",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Luciana_de_Montefio.webp"
+              },
+              {
+                "name": "Zhu_Yuan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Zhu_Yuan.webp"
+              },
+              {
+                "name": "Zhao",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Zhao.webp"
+              }
+            ]
           },
           {
             "name": "Слабо",
             "color": "#6b7280",
-            "chars": []
+            "chars": [
+              {
+                "name": "Astra_Yao",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Astra_Yao.webp"
+              },
+              {
+                "name": "Astra_Yao_Chandelier",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Astra_Yao_Chandelier.webp"
+              },
+              {
+                "name": "Alexandrina_Sebastiane",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Alexandrina_Sebastiane.webp"
+              },
+              {
+                "name": "Alice_Thymefield_Sea_of_Thyme",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Alice_Thymefield_Sea_of_Thyme.webp"
+              },
+              {
+                "name": "Caesar_King",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Caesar_King.webp"
+              },
+              {
+                "name": "Grace_Howard",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Grace_Howard.webp"
+              },
+              {
+                "name": "Cissia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Cissia.webp"
+              },
+              {
+                "name": "Burnice_White",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Burnice_White.webp"
+              },
+              {
+                "name": "Orphie_Magnusson_%26_Magus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Orphie_Magnusson_%26_Magus.webp"
+              },
+              {
+                "name": "Evelyn_Chevalier",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Evelyn_Chevalier.webp"
+              },
+              {
+                "name": "Velina_Airgid",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Velina_Airgid.webp"
+              },
+              {
+                "name": "Ukinami_Yuzuha_Tanuki_in_Broad_Daylight",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ukinami_Yuzuha_Tanuki_in_Broad_Daylight.webp"
+              },
+              {
+                "name": "Velina_Airgid_Shade_of_Leisure",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Velina_Airgid_Shade_of_Leisure.webp"
+              },
+              {
+                "name": "Tsukishiro_Yanagi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Tsukishiro_Yanagi.webp"
+              },
+              {
+                "name": "Pulchra_Fellini",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Pulchra_Fellini.webp"
+              },
+              {
+                "name": "Jane_Doe_Nocturne_of_Light",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Jane_Doe_Nocturne_of_Light.webp"
+              },
+              {
+                "name": "Nangong_Yu_Rhapsody%27s_Muse",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Nangong_Yu_Rhapsody%27s_Muse.webp"
+              },
+              {
+                "name": "Piper_Wheel",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Piper_Wheel.webp"
+              },
+              {
+                "name": "Nicole_Demara",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Nicole_Demara.webp"
+              },
+              {
+                "name": "Nicole_Demara_Cunning_Cutie",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Nicole_Demara_Cunning_Cutie.webp"
+              },
+              {
+                "name": "Lucia_Elowen",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Lucia_Elowen.webp"
+              },
+              {
+                "name": "Yidhari_Murphy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Yidhari_Murphy.webp"
+              }
+            ]
           }
         ]
       }
