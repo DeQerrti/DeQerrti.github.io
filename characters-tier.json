@@ -1408,5 +1408,89 @@
         ]
       }
     ]
+  },
+  {
+    "id": "zenlesszonezero",
+    "title": "Zenless Zone Zero",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/coc9ib.jpg",
+    "folder": "Zenless Zone Zero",
+    "tierlists": [
+      {
+        "id": "zenlesszonezero-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "Топ",
+            "color": "#2563a8",
+            "chars": [
+              {
+                "name": "Vivian_Banshee",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Vivian_Banshee.webp"
+              },
+              {
+                "name": "Hoshimi_Miyabi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Hoshimi_Miyabi.webp"
+              },
+              {
+                "name": "Ye_Shunguang_Enlightened_Mind",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ye_Shunguang_Enlightened_Mind.webp"
+              },
+              {
+                "name": "Nangong_Yu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Nangong_Yu.webp"
+              },
+              {
+                "name": "Vivian_Banshee_Iris_of_the_Shore",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Vivian_Banshee_Iris_of_the_Shore.webp"
+              }
+            ]
+          },
+          {
+            "name": "Хорошо",
+            "color": "#2d8a4e",
+            "chars": [
+              {
+                "name": "Von_Lycaon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Von_Lycaon.webp"
+              },
+              {
+                "name": "Belle_Brilliance_of_Stars",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Belle_Brilliance_of_Stars.webp"
+              },
+              {
+                "name": "Alice_Thymefield",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Alice_Thymefield.webp"
+              },
+              {
+                "name": "Ye_Shunguang",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Ye_Shunguang.webp"
+              },
+              {
+                "name": "Belle_Delicate_Sunlight",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Belle_Delicate_Sunlight.webp"
+              },
+              {
+                "name": "Wise_Soaring_Crane",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Wise_Soaring_Crane.webp"
+              },
+              {
+                "name": "Yixuan_Trails_of_Ink",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Zenless%20Zone%20Zero/Yixuan_Trails_of_Ink.webp"
+              }
+            ]
+          },
+          {
+            "name": "Средне",
+            "color": "#d4a017",
+            "chars": []
+          },
+          {
+            "name": "Слабо",
+            "color": "#6b7280",
+            "chars": []
+          }
+        ]
+      }
+    ]
   }
 ]
