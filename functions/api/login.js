@@ -1,3 +1,5 @@
+import { json } from "../_shared.js";
+
 export async function onRequest(context) {
   const { request, env } = context;
 
@@ -23,7 +25,8 @@ export async function onRequest(context) {
     return json({ error: "Неверный пароль" }, 401);
   }
 
-  const cookieOpts = `Path=/; SameSite=Strict; Max-Age=604800`;
+  // Secure — лишним не будет, даже если Cloudflare и так форсит HTTPS
+  const cookieOpts = `Path=/; SameSite=Strict; Secure; Max-Age=604800`;
 
   // Cloudflare не поддерживает два Set-Cookie через запятую —
   // используем Headers.append чтобы добавить два отдельных заголовка
@@ -32,11 +35,4 @@ export async function onRequest(context) {
   headers.append("Set-Cookie", `tasteid_ui=1; ${cookieOpts}`);
 
   return new Response(JSON.stringify({ ok: true }), { status: 200, headers });
-}
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "Content-Type": "application/json" }
-  });
 }
