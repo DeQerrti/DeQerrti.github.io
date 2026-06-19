@@ -1762,5 +1762,273 @@
         ]
       }
     ]
+  },
+  {
+    "id": "wutheringwaves",
+    "title": "Wuthering Waves",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/coc8cm.jpg",
+    "folder": "Wuthering Waves",
+    "tierlists": [
+      {
+        "id": "wutheringwaves-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "S",
+            "color": "#7c3aed",
+            "chars": [
+              {
+                "name": "Hiyuki",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Hiyuki.webp"
+              },
+              {
+                "name": "Phoebe",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Phoebe.webp"
+              },
+              {
+                "name": "Cartethyia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Cartethyia.webp"
+              },
+              {
+                "name": "Chisa",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Chisa.webp"
+              },
+              {
+                "name": "Mornye",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Mornye.webp"
+              },
+              {
+                "name": "Phrolova",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Phrolova.webp"
+              },
+              {
+                "name": "Qiuyuan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Qiuyuan.webp"
+              }
+            ]
+          },
+          {
+            "name": "A",
+            "color": "#2563a8",
+            "chars": [
+              {
+                "name": "Denia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Denia.webp"
+              },
+              {
+                "name": "Sigrika",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Sigrika.webp"
+              },
+              {
+                "name": "Shorekeeper",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Shorekeeper.webp"
+              },
+              {
+                "name": "Augusta",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Augusta.webp"
+              },
+              {
+                "name": "Brant",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Brant.webp"
+              },
+              {
+                "name": "Carlotta",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Carlotta.webp"
+              },
+              {
+                "name": "Ciaccona",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Ciaccona.webp"
+              },
+              {
+                "name": "Jiyan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Jiyan.webp"
+              },
+              {
+                "name": "Lupa",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Lupa.webp"
+              },
+              {
+                "name": "Luuk_Herssen",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Luuk_Herssen.webp"
+              },
+              {
+                "name": "Male_Rover",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Male_Rover.webp"
+              },
+              {
+                "name": "Zani",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Zani.webp"
+              }
+            ]
+          },
+          {
+            "name": "B",
+            "color": "#2d8a4e",
+            "chars": [
+              {
+                "name": "Aemeath",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Aemeath.webp"
+              },
+              {
+                "name": "Iuno",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Iuno.webp"
+              },
+              {
+                "name": "Calcharo",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Calcharo.webp"
+              },
+              {
+                "name": "Buling",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Buling.webp"
+              },
+              {
+                "name": "Camellya",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Camellya.webp"
+              },
+              {
+                "name": "Danjin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Danjin.webp"
+              },
+              {
+                "name": "Galbrena",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Galbrena.webp"
+              },
+              {
+                "name": "Rebecca",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Rebecca.webp"
+              },
+              {
+                "name": "Roccia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Roccia.webp"
+              },
+              {
+                "name": "Xiangli_Yao",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Xiangli_Yao.webp"
+              },
+              {
+                "name": "Youhu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Youhu.webp"
+              },
+              {
+                "name": "Yuanwu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Yuanwu.webp"
+              }
+            ]
+          },
+          {
+            "name": "C",
+            "color": "#d4a017",
+            "chars": [
+              {
+                "name": "Yinlin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Yinlin.webp"
+              },
+              {
+                "name": "Zhezhi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Zhezhi.webp"
+              },
+              {
+                "name": "Verina",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Verina.webp"
+              },
+              {
+                "name": "Sanhua",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Sanhua.webp"
+              },
+              {
+                "name": "Perpetual_Spark_Male_Rover",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Perpetual_Spark_Male_Rover.webp"
+              },
+              {
+                "name": "Perpetual_Spark_Female_Rover",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Perpetual_Spark_Female_Rover.webp"
+              },
+              {
+                "name": "Peach_Blossom",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Peach_Blossom.webp"
+              },
+              {
+                "name": "Lynae",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Lynae.webp"
+              },
+              {
+                "name": "Lumi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Lumi.webp"
+              },
+              {
+                "name": "Lucilla",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Lucilla.webp"
+              },
+              {
+                "name": "Lingyang",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Lingyang.webp"
+              },
+              {
+                "name": "Jinhsi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Jinhsi.webp"
+              },
+              {
+                "name": "Jianxin",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Jianxin.webp"
+              },
+              {
+                "name": "Exorcistic_Adjuration",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Exorcistic_Adjuration.webp"
+              },
+              {
+                "name": "Encore",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Encore.webp"
+              },
+              {
+                "name": "Changli",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Changli.webp"
+              },
+              {
+                "name": "Chixia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Chixia.webp"
+              },
+              {
+                "name": "Baizhi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Baizhi.webp"
+              },
+              {
+                "name": "Yangyang",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Yangyang.webp"
+              },
+              {
+                "name": "Aalto",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Aalto.webp"
+              }
+            ]
+          },
+          {
+            "name": "D",
+            "color": "#6b7280",
+            "chars": [
+              {
+                "name": "Lucy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Lucy.webp"
+              },
+              {
+                "name": "Mortefi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Mortefi.webp"
+              },
+              {
+                "name": "Female_Rover",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Female_Rover.webp"
+              },
+              {
+                "name": "Taoqi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Taoqi.webp"
+              },
+              {
+                "name": "Cantarella",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Wuthering%20Waves/Cantarella.webp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
