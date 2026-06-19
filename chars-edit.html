@@ -359,7 +359,7 @@ async function init() {
 function renderSidebar() {
   const list = document.getElementById("title-list");
   list.innerHTML = data.map(t => `
-    <div class="title-item${t.id === activeId ? " active" : ""}" onclick="selectTitle('${esc(t.id)}')">
+    <div class="title-item${t.id === activeId ? " active" : ""}" draggable="true" data-title-id="${esc(t.id)}" onclick="selectTitle('${esc(t.id)}')">
       <img class="title-item-cover" src="${esc(t.cover || "")}" alt="" onerror="this.style.display='none'">
       <div class="title-item-name">${esc(t.title)}</div>
       <button class="title-item-edit" onclick="openEditTitleForm(event,'${esc(t.id)}')" title="Редактировать">✎</button>
