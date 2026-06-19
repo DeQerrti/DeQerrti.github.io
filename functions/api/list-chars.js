@@ -1,12 +1,10 @@
+import { json, requireAuth, githubGet } from "../_shared.js";
+
 export async function onRequest(context) {
   const { request, env } = context;
 
-  const cookie = request.headers.get("cookie") || "";
-  const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
-  const token  = auth?.split("=")[1]?.trim();
-  if (token !== env.ADMIN_PASSWORD?.trim()) {
-    return json({ error: "Не авторизован" }, 401);
-  }
+  const authError = requireAuth(request, env);
+  if (authError) return authError;
 
   const url     = new URL(request.url);
   const folder  = url.searchParams.get("folder");
@@ -15,18 +13,8 @@ export async function onRequest(context) {
 
   // Без folder → возвращаем список подпапок из chars/
   // С folder  → возвращаем картинки из chars/{folder}/
-  const apiUrl = folder
-    ? `https://api.github.com/repos/${repo}/contents/chars/${folder}`
-    : `https://api.github.com/repos/${repo}/contents/chars`;
-
   try {
-    const res = await fetch(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${ghToken}`,
-        Accept: "application/vnd.github+json",
-        "User-Agent": "TasteID-App",
-      },
-    });
+    const res = await githubGet(repo, folder ? `chars/${folder}` : "chars", ghToken);
 
     if (!res.ok) {
       if (res.status === 404) return json(folder ? { files: [] } : { folders: [] });
@@ -55,14 +43,4 @@ export async function onRequest(context) {
   } catch (e) {
     return json({ error: e.message }, 500);
   }
-}
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
 }
