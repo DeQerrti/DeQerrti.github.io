@@ -369,6 +369,54 @@ function renderSidebar() {
       <button class="title-item-del" onclick="deleteTitle(event,'${esc(t.id)}')" title="Удалить">✕</button>
     </div>
   `).join("");
+  bindTitleDrag();
+}
+
+function bindTitleDrag() {
+  let dragSrcId = null;
+  document.querySelectorAll(".title-item[draggable]").forEach(el => {
+    el.addEventListener("dragstart", e => {
+      dragSrcId = el.dataset.titleId;
+      el.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+    });
+    el.addEventListener("dragend", () => {
+      el.classList.remove("dragging");
+      document.querySelectorAll(".title-item").forEach(i =>
+        i.classList.remove("drag-over-up","drag-over-dn"));
+    });
+    el.addEventListener("dragover", e => {
+      e.preventDefault();
+      document.querySelectorAll(".title-item").forEach(i =>
+        i.classList.remove("drag-over-up","drag-over-dn"));
+      const rect = el.getBoundingClientRect();
+      const half = e.clientY < rect.top + rect.height / 2;
+      el.classList.add(half ? "drag-over-up" : "drag-over-dn");
+    });
+    el.addEventListener("dragleave", () => {
+      el.classList.remove("drag-over-up","drag-over-dn");
+    });
+    el.addEventListener("drop", e => {
+      e.preventDefault();
+      el.classList.remove("drag-over-up","drag-over-dn");
+      if (!dragSrcId || dragSrcId === el.dataset.titleId) return;
+
+      const rect = el.getBoundingClientRect();
+      const insertBefore = e.clientY < rect.top + rect.height / 2;
+
+      const fromIdx = data.findIndex(t => t.id === dragSrcId);
+      const toIdx   = data.findIndex(t => t.id === el.dataset.titleId);
+      if (fromIdx === -1 || toIdx === -1) return;
+
+      const [moved] = data.splice(fromIdx, 1);
+      const newIdx  = data.findIndex(t => t.id === el.dataset.titleId);
+      data.splice(insertBefore ? newIdx : newIdx + 1, 0, moved);
+
+      dragSrcId = null;
+      renderSidebar();
+    });
+  });
+}
 }
 
 function selectTitle(id) {
