@@ -1,16 +1,13 @@
+import { json, requireAuth, githubGet, githubPut, decodeGithubJson, encodeGithubJson } from "../_shared.js";
+
 export async function onRequest(context) {
   const { request, env } = context;
   if (request.method !== "POST") {
     return new Response("Method Not Allowed", { status: 405 });
   }
 
-  // Проверяем авторизацию
-  const cookie = request.headers.get("cookie") || "";
-  const auth   = cookie.split(";").find(c => c.trim().startsWith("tasteid_auth="));
-  const token  = auth?.split("=")[1]?.trim();
-  if (token !== env.ADMIN_PASSWORD?.trim()) {
-    return json({ error: "Не авторизован" }, 401);
-  }
+  const authError = requireAuth(request, env);
+  if (authError) return authError;
 
   let review;
   try {
@@ -21,7 +18,7 @@ export async function onRequest(context) {
 
   const repo    = env.GITHUB_REPO;
   const ghToken = env.GITHUB_TOKEN;
-  const apiUrl  = `https://api.github.com/repos/${repo}/contents/reviews.json`;
+  const path    = "reviews.json";
 
   // ── Перестановка порядка любимых тайтлов ──────
   // Приходит { _reorder_favorites: [id, id, id, ...] }
@@ -29,13 +26,7 @@ export async function onRequest(context) {
     const newOrder = review._reorder_favorites;
 
     try {
-      const getRes = await fetch(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${ghToken}`,
-          Accept: "application/vnd.github+json",
-          "User-Agent": "TasteID-App"
-        }
-      });
+      const getRes = await githubGet(repo, path, ghToken);
       if (!getRes.ok) {
         const errText = await getRes.text();
         return json({ error: `GitHub GET failed: ${getRes.status} — ${errText}` }, 500);
@@ -43,8 +34,7 @@ export async function onRequest(context) {
 
       const fileData = await getRes.json();
       const sha      = fileData.sha;
-      const raw      = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
-      const current  = JSON.parse(new TextDecoder().decode(raw));
+      const current  = decodeGithubJson(fileData);
 
       // Проставляем fav_order согласно новому порядку
       const orderMap = {};
@@ -57,19 +47,8 @@ export async function onRequest(context) {
         return r;
       });
 
-      const encoded = new TextEncoder().encode(JSON.stringify(updated, null, 2));
-      const content = btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
-
-      const putRes = await fetch(apiUrl, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${ghToken}`,
-          Accept: "application/vnd.github+json",
-          "Content-Type": "application/json",
-          "User-Agent": "TasteID-App"
-        },
-        body: JSON.stringify({ message: "favorites: reorder titles", content, sha }),
-      });
+      const content = encodeGithubJson(updated);
+      const putRes  = await githubPut(repo, path, content, sha, "favorites: reorder titles", ghToken);
 
       if (!putRes.ok) {
         const err = await putRes.json();
@@ -88,13 +67,7 @@ export async function onRequest(context) {
   }
 
   try {
-    const getRes = await fetch(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${ghToken}`,
-        Accept: "application/vnd.github+json",
-        "User-Agent": "TasteID-App"
-      }
-    });
+    const getRes = await githubGet(repo, path, ghToken);
     if (!getRes.ok) {
       const errText = await getRes.text();
       return json({ error: `GitHub GET failed: ${getRes.status} — ${errText}` }, 500);
@@ -102,8 +75,7 @@ export async function onRequest(context) {
 
     const fileData = await getRes.json();
     const sha      = fileData.sha;
-    const raw      = Uint8Array.from(atob(fileData.content.replace(/\n/g, "")), c => c.charCodeAt(0));
-    let current    = JSON.parse(new TextDecoder().decode(raw));
+    let current    = decodeGithubJson(fileData);
 
     const isEdit = review._editId !== undefined && review._editId !== null;
     if (isEdit) {
@@ -133,22 +105,12 @@ export async function onRequest(context) {
       return da - db;
     });
 
-    const encoded = new TextEncoder().encode(JSON.stringify(current, null, 2));
-    const content = btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
+    const content = encodeGithubJson(current);
     const message = isEdit
       ? `review: edit "${review.title}"`
       : `review: add "${review.title}"`;
 
-    const putRes = await fetch(apiUrl, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${ghToken}`,
-        Accept: "application/vnd.github+json",
-        "Content-Type": "application/json",
-        "User-Agent": "TasteID-App"
-      },
-      body: JSON.stringify({ message, content, sha }),
-    });
+    const putRes = await githubPut(repo, path, content, sha, message, ghToken);
 
     if (!putRes.ok) {
       const err = await putRes.json();
@@ -159,11 +121,4 @@ export async function onRequest(context) {
   } catch (e) {
     return json({ error: e.message }, 500);
   }
-}
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "Content-Type": "application/json" }
-  });
 }
