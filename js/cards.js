@@ -77,7 +77,7 @@ function manualCard(r, index) {
   }
 
   const editId = r.id ?? encodeURIComponent(r.title);
-  const pencil = (document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui=")))
+  const pencil = isAdmin()
     ? `<a href="add.html?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
     : "";
 
