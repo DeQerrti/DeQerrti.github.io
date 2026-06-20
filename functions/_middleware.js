@@ -17,7 +17,7 @@ export async function onRequest(context) {
 
   if (!isProtected) return next();
 
-  if (!checkAuth(request, env)) {
+  if (!(await checkAuth(request, env))) {
     return Response.redirect(new URL("/login.html", request.url), 302);
   }
 
