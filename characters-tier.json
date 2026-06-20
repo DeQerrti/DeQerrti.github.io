@@ -1204,6 +1204,30 @@
             "color": "#2563a8",
             "chars": [
               {
+                "name": "Belladonna",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Belladonna.png"
+              },
+              {
+                "name": "Erika",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Erika.webp"
+              },
+              {
+                "name": "Jiangyu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Jiangyu.webp"
+              },
+              {
+                "name": "Hatsuchiri",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Hatsuchiri.webp"
+              },
+              {
+                "name": "Kimie",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Kimie.webp"
+              },
+              {
+                "name": "Shale",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Shale.webp"
+              },
+              {
                 "name": "ENIAC",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/ENIAC.webp"
               },
@@ -1212,32 +1236,8 @@
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Lind.webp"
               },
               {
-                "name": "Erika",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Erika.webp"
-              },
-              {
-                "name": "Belladonna",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Belladonna.webp"
-              },
-              {
-                "name": "Jiangyu",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Jiangyu.webp"
-              },
-              {
                 "name": "Panakeia",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Panakeia.webp"
-              },
-              {
-                "name": "Kimie",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Kimie.webp"
-              },
-              {
-                "name": "Hatsuchiri",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Hatsuchiri.webp"
-              },
-              {
-                "name": "Shale",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Neural%20Cloud/Shale.webp"
               },
               {
                 "name": "Kurisu Makise",
