@@ -6,7 +6,7 @@ export async function onRequest(context) {
     return new Response("Method Not Allowed", { status: 405 });
   }
 
-  const authError = requireAuth(request, env);
+  const authError = await requireAuth(request, env);
   if (authError) return authError;
 
   let entry;
