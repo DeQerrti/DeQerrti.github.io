@@ -146,7 +146,7 @@ function tlTitlesHtml() {
 
   // Кнопка экспорта тайтлов
   html += `<div style="margin-top:1.2rem">
-    <button class="admin-add-btn" id="tl-export-titles-btn" onclick="tlExport('tl-titles-rows', 'titles')">📷 Сохранить как картинку</button>
+    <button class="admin-add-btn" id="tl-export-titles-btn" onclick="tlExport('tl-titles-rows', 'titles')">Сохранить как картинку</button>
   </div>`;
 
   return html;
@@ -223,7 +223,7 @@ function tlCharsHtml() {
     ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
     : "";
 
-  const exportBtn = `<button class="admin-add-btn" id="tl-export-btn" onclick="tlExport('tl-chars-rows', '${esc(game.title)}')">📷 Сохранить как картинку</button>`;
+  const exportBtn = `<button class="admin-add-btn" id="tl-export-btn" onclick="tlExport('tl-chars-rows', '${esc(game.title)}')">Сохранить как картинку</button>`;
 
   // Ползунок размера — теперь до 1000px
   const slider = `<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem">
@@ -407,6 +407,6 @@ async function tlExport(rowsId, label) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
     if (tip) tip.style.visibility = "";
-    if (btn) { btn.textContent = "📷 Сохранить как картинку"; btn.disabled = false; }
+    if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
   }
 }
