@@ -3,7 +3,7 @@ import { json, requireAuth, githubGet } from "../_shared.js";
 export async function onRequest(context) {
   const { request, env } = context;
 
-  const authError = requireAuth(request, env);
+  const authError = await requireAuth(request, env);
   if (authError) return authError;
 
   const url     = new URL(request.url);
