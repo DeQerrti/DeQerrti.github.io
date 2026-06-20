@@ -1,0 +1,24 @@
+# Cloudflare Pages читает этот файл автоматически и проставляет
+# заголовки кэширования при раздаче статики.
+
+# Картинки персонажей грузятся напрямую с raw.githubusercontent.com
+# (см. характерных URL в characters-tier.json), а не с этого домена —
+# поэтому правило кэша для /chars/* тут бессмысленно, его убрал.
+# GitHub сам кэширует их на 5 минут и обновляет по content-hash (etag),
+# так что подмена картинки с тем же именем подхватывается сама.
+
+# Иконки и манифест меняются ещё реже
+/icons/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/manifest.json
+  Cache-Control: public, max-age=86400
+
+# og-картинка для шеринга в соцсетях
+/og.jpg
+  Cache-Control: public, max-age=604800
+
+# JSON с данными — наоборот, без долгого кэша, чтобы изменения
+# из админки сразу видели обычные посетители (без cache-bust в коде)
+/*.json
+  Cache-Control: public, max-age=60, must-revalidate
