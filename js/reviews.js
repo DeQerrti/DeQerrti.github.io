@@ -3,10 +3,6 @@
 //  Зависит от: config.js, api.js
 // ══════════════════════════════════════════════
 
-function isAdmin() {
-  return document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui="));
-}
-
 // ── Состояние фильтров ─────────────────────────
 const rvState = {
   type:   "all",
