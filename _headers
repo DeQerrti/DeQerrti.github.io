@@ -1,0 +1,25 @@
+# Cloudflare Pages читает этот файл автоматически и проставляет
+# заголовки кэширования при раздаче статики.
+
+# Картинки персонажей — имя файла при правке не меняется, поэтому
+# можно кэшировать надолго. Если когда-нибудь переименуешь/заменишь
+# файл с тем же именем — просто добавь версию в имя (banner.webp?v=2
+# тут не сработает, см. примечание ниже).
+/chars/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+# Иконки и манифест меняются ещё реже
+/icons/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/manifest.json
+  Cache-Control: public, max-age=86400
+
+# og-картинка для шеринга в соцсетях
+/og.jpg
+  Cache-Control: public, max-age=604800
+
+# JSON с данными — наоборот, без долгого кэша, чтобы изменения
+# из админки сразу видели обычные посетители (без cache-bust в коде)
+/*.json
+  Cache-Control: public, max-age=60, must-revalidate
