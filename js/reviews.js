@@ -25,7 +25,7 @@ async function loadReviews() {
       `<div class="state-box">
         <div style="font-size:1.5rem;margin-bottom:.75rem">✦</div>
         Отзывов пока нет.
-        ${isAdmin() ? `<div style="margin-top:1.5rem"><a href="/add" class="admin-add-btn">+ Добавить отзыв</a></div>` : ""}
+        ${isAdmin() ? `<div style="margin-top:1.5rem"><a href="/add" class="admin-add-btn">Добавить</a></div>` : ""}
       </div>`;
   }
 }
@@ -51,7 +51,7 @@ function renderReviews(reviews) {
   )], SOURCE_FILTER_ORDER);
 
   const adminBtn = isAdmin()
-    ? `<a href="/add" class="admin-add-btn">+ Добавить отзыв</a>`
+    ? `<a href="/add" class="admin-add-btn">Добавить</a>`
     : "";
 
   const box = document.getElementById("tab-reviews");
