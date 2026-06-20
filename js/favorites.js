@@ -13,7 +13,7 @@ async function loadFavorites() {
   try {
     await fetchReviews();
 
-    const favData = await fetch("/favorites.json?_=" + Date.now())
+    const favData = await fetch("/favorites.json")
       .then(r => r.ok ? r.json() : [])
       .catch(() => []);
 
