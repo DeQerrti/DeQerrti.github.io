@@ -59,7 +59,7 @@ async function loadTierlist() {
 async function loadCharGames() {
   if (tlState.charsLoaded) return;
   try {
-    const res = await fetch("characters-tier.json?_=" + Date.now());
+    const res = await fetch("characters-tier.json");
     if (!res.ok) throw new Error("characters-tier.json не найден");
     tlState.charGames   = await res.json();
     tlState.charsLoaded = true;
