@@ -220,7 +220,7 @@ function tlCharsHtml() {
   tiersHtml += `</div>`;
 
   const adminBtn = isAdmin()
-    ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
+    ? `<a href="/chars-edit" class="admin-add-btn">Редактор</a>`
     : "";
 
   const exportBtn = `<button class="admin-add-btn" id="tl-export-btn" onclick="tlExport('tl-chars-rows', '${esc(game.title)}')">Сохранить как картинку</button>`;
