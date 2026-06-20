@@ -108,7 +108,7 @@ function tlTitlesHtml() {
     return html + `<div class="state-box" style="padding-top:2rem">Ничего не найдено</div>`;
   }
 
-  html += `<div class="tl-rows">`;
+  html += `<div class="tl-rows" id="tl-titles-rows">`;
   for (let ti = 0; ti < TIER_ROWS.length; ti++) {
     const tier  = TIER_ROWS[ti];
     const items = byGrade[tier.key] || [];
@@ -143,6 +143,12 @@ function tlTitlesHtml() {
     html += `</div></div>`;
   }
   html += `</div>` + tlTooltipHtml();
+
+  // Кнопка экспорта тайтлов
+  html += `<div style="margin-top:1.2rem">
+    <button class="admin-add-btn" id="tl-export-titles-btn" onclick="tlExport('tl-titles-rows', 'titles')">📷 Сохранить как картинку</button>
+  </div>`;
+
   return html;
 }
 
@@ -178,7 +184,7 @@ function tlCharsHtml() {
       </div>`
     : "";
 
-  let tiersHtml = `<div class="tl-rows">`;
+  let tiersHtml = `<div class="tl-rows" id="tl-chars-rows">`;
   for (let ti = 0; ti < list.tiers.length; ti++) {
     const tier  = list.tiers[ti];
     const chars = tier.chars || [];
@@ -217,6 +223,8 @@ function tlCharsHtml() {
     ? `<a href="/chars-edit" class="admin-add-btn">+ Редактор</a>`
     : "";
 
+  const exportBtn = `<button class="admin-add-btn" id="tl-export-btn" onclick="tlExport('tl-chars-rows', '${esc(game.title)}')">📷 Сохранить как картинку</button>`;
+
   // Ползунок размера — теперь до 1000px
   const slider = `<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem">
     <span style="font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0">Размер</span>
@@ -228,7 +236,7 @@ function tlCharsHtml() {
 
   return `<div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap">
     <div class="tl-filters" style="margin-bottom:0">${gameButtons}</div>
-    ${adminBtn}
+    <div style="display:flex;gap:.5rem;flex-shrink:0">${adminBtn}${exportBtn}</div>
   </div>
   ${listButtons}
   ${slider}
@@ -356,4 +364,49 @@ function tlMoveTip(e, tip) {
   tip.style.position = "fixed";
   tip.style.left = x + "px";
   tip.style.top  = y + "px";
+}
+
+// ══ ЭКСПОРТ ТИР-ЛИСТА В КАРТИНКУ ══════════════
+
+async function tlExport(rowsId, label) {
+  const btnId = rowsId === "tl-chars-rows" ? "tl-export-btn" : "tl-export-titles-btn";
+  const btn = document.getElementById(btnId);
+  if (btn) { btn.textContent = "⏳ Создаём…"; btn.disabled = true; }
+
+  // Скрываем тултип на время скриншота
+  const tip = document.getElementById("tl-tooltip");
+  if (tip) tip.style.visibility = "hidden";
+
+  try {
+    const rows = document.getElementById(rowsId);
+    if (!rows) throw new Error("Тир-лист не найден");
+
+    // Ждём загрузки всех изображений в этом контейнере
+    const imgs = Array.from(rows.querySelectorAll("img"));
+    await Promise.all(imgs.map(img =>
+      img.complete ? Promise.resolve() : new Promise(res => {
+        img.onload = img.onerror = res;
+      })
+    ));
+
+    const canvas = await html2canvas(rows, {
+      backgroundColor: "#0a0a0c",
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+    });
+
+    const link = document.createElement("a");
+    const safeName = label.replace(/[^a-zA-Zа-яА-Я0-9_\- ]/g, "").trim() || "tierlist";
+    link.download = `${safeName}-tierlist.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+  } catch (err) {
+    alert("Не удалось создать картинку 😢\n" + err.message);
+  } finally {
+    if (tip) tip.style.visibility = "";
+    if (btn) { btn.textContent = "📷 Сохранить как картинку"; btn.disabled = false; }
+  }
 }
