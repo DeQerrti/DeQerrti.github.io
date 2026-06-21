@@ -421,7 +421,12 @@ async function statsExport(year) {
     await Promise.all(toProxy.map(async ({ img, src }) => {
       try {
         const res = await fetch(`/api/proxy-image?url=${encodeURIComponent(src)}`);
-        if (!res.ok) return; // не получилось — оставляем как есть, html2canvas просто пропустит картинку
+        if (!res.ok) {
+          // не получилось — оставляем как есть, html2canvas просто пропустит картинку,
+          // но в консоль пишем, чтобы не гадать вслепую при следующей поломке источника
+          console.warn(`[statsExport] proxy-image не смог получить ${src}: ${res.status}`);
+          return;
+        }
         const blob = await res.blob();
         const dataUrl = await new Promise((resolve, reject) => {
           const reader = new FileReader();
