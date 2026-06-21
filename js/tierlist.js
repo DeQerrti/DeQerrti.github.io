@@ -379,6 +379,7 @@ async function tlExport(rowsId, label) {
 
   let animated = [];
   let prevAnimation = [];
+  let restoreImages = () => {};
 
   try {
     const rows = document.getElementById(rowsId);
@@ -397,6 +398,11 @@ async function tlExport(rowsId, label) {
         img.onload = img.onerror = res;
       })
     ));
+
+    // Обложки с внешних CDN (TMDB/IGDB/AniList и т.д.) без прокси
+    // html2canvas нарисует пустыми прямоугольниками — см. комментарий
+    // у proxyImagesToDataUrls() в config.js.
+    restoreImages = await proxyImagesToDataUrls(rows);
 
     // "Приземляем" CSS-анимации появления (fadeUp с animation-delay по индексу) —
     // если экспорт нажат сразу после открытия вкладки, поздние ряды/постеры
@@ -427,6 +433,7 @@ async function tlExport(rowsId, label) {
   } catch (err) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
+    restoreImages();
     animated.forEach((el, i) => { el.style.animation = prevAnimation[i]; });
     if (tip) tip.style.visibility = "";
     if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
