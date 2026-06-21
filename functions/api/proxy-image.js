@@ -80,13 +80,22 @@ export async function onRequest(context) {
   const rootHost  = hostParts.length > 2 ? hostParts.slice(-2).join(".") : parsed.hostname;
 
   async function tryFetch(headers) {
+    const controller = new AbortController();
+    // 6с с запасом достаточно для нормального CDN; если источник просто
+    // не отвечает (антибот вешает соединение, а не отбивает кодом),
+    // лучше быстро вернуть внятную ошибку, чем дать Cloudflare-edge
+    // самому оборвать всё по своему таймауту общей страницей 502.
+    const timer = setTimeout(() => controller.abort(), 6000);
     try {
       return await fetch(parsed.toString(), {
         headers,
+        signal: controller.signal,
         cf: { cacheTtl: 86400, cacheEverything: true },
       });
-    } catch {
-      return null;
+    } catch (e) {
+      return { __failed: true, reason: e.name === "AbortError" ? "timeout" : (e.message || "network error") };
+    } finally {
+      clearTimeout(timer);
     }
   }
 
@@ -107,15 +116,15 @@ export async function onRequest(context) {
   // Некоторые источники (или конкретно их анти-бот защита) режут запросы
   // с Cloudflare edge вне зависимости от Referer. Пробуем второй раз вовсе
   // без Referer — части CDN он наоборот мешает (трактуется как чужой сайт).
-  if (!upstream || !upstream.ok) {
+  if (upstream.__failed || !upstream.ok) {
     upstream = await tryFetch({
       "User-Agent": BROWSER_UA,
       "Accept": "image/*",
     });
   }
 
-  if (!upstream) {
-    return json({ error: "Не удалось получить изображение" }, 502);
+  if (upstream.__failed) {
+    return json({ error: `Не удалось получить изображение: ${upstream.reason}` }, 502);
   }
   if (!upstream.ok) {
     return json({ error: `Источник вернул ${upstream.status}` }, 502);
