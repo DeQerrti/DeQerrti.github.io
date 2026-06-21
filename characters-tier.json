@@ -1164,6 +1164,242 @@
     ]
   },
   {
+    "id": "marvelrivals",
+    "title": "Marvel Rivals",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/coc8al.jpg",
+    "folder": "Marvel Rivals",
+    "tierlists": [
+      {
+        "id": "marvelrivals-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "A",
+            "color": "#2563a8",
+            "chars": [
+              {
+                "name": "Gambit",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Gambit.webp"
+              },
+              {
+                "name": "Doctor_Strange",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Doctor_Strange.webp"
+              },
+              {
+                "name": "Adam_Warlock",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Adam_Warlock.webp"
+              },
+              {
+                "name": "Daredevil",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Daredevil.webp"
+              },
+              {
+                "name": "Invisible_Woman",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Invisible_Woman.webp"
+              },
+              {
+                "name": "Loki",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Loki.webp"
+              },
+              {
+                "name": "Black_Widow",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Black_Widow.webp"
+              },
+              {
+                "name": "Iron_Fist",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Iron_Fist.webp"
+              }
+            ]
+          },
+          {
+            "name": "B",
+            "color": "#2d8a4e",
+            "chars": [
+              {
+                "name": "Scarlet_Witch",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Scarlet_Witch.webp"
+              },
+              {
+                "name": "Rocket_Raccoon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Rocket_Raccoon.webp"
+              },
+              {
+                "name": "Black_Panther",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Black_Panther.webp"
+              },
+              {
+                "name": "Deadpool",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Deadpool.webp"
+              },
+              {
+                "name": "Captain_America",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Captain_America.webp"
+              },
+              {
+                "name": "Thor",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Thor.webp"
+              },
+              {
+                "name": "Star_Lord",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Star_Lord.webp"
+              },
+              {
+                "name": "Ultron",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Ultron.webp"
+              },
+              {
+                "name": "Venom",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Venom.webp"
+              },
+              {
+                "name": "The_Punisher",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/The_Punisher.webp"
+              },
+              {
+                "name": "Psylocke",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Psylocke.webp"
+              },
+              {
+                "name": "Spider_Man",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Spider_Man.webp"
+              },
+              {
+                "name": "Peni_Parker",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Peni_Parker.webp"
+              },
+              {
+                "name": "Namor",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Namor.webp"
+              },
+              {
+                "name": "Moon_Knight",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Moon_Knight.webp"
+              },
+              {
+                "name": "Mantis",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Mantis.webp"
+              },
+              {
+                "name": "Human_Torch",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Human_Torch.webp"
+              },
+              {
+                "name": "Hawkeye",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Hawkeye.webp"
+              },
+              {
+                "name": "Iron_Man",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Iron_Man.webp"
+              },
+              {
+                "name": "Jeff_The_Land_Shark",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Jeff_The_Land_Shark.webp"
+              },
+              {
+                "name": "Elsa_Bloodstone",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Elsa_Bloodstone.webp"
+              }
+            ]
+          },
+          {
+            "name": "C",
+            "color": "#d4a017",
+            "chars": [
+              {
+                "name": "Angela",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Angela.webp"
+              },
+              {
+                "name": "Black_Cat",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Black_Cat.webp"
+              },
+              {
+                "name": "Blade",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Blade.webp"
+              },
+              {
+                "name": "Cloak_And_Dagger",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Cloak_And_Dagger.webp"
+              },
+              {
+                "name": "Cyclops",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Cyclops.webp"
+              },
+              {
+                "name": "Wolverine",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Wolverine.webp"
+              },
+              {
+                "name": "White_Fox",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/White_Fox.webp"
+              },
+              {
+                "name": "The_Thing",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/The_Thing.webp"
+              },
+              {
+                "name": "Storm",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Storm.webp"
+              },
+              {
+                "name": "Phoenix",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Phoenix.webp"
+              },
+              {
+                "name": "Mister_Fantastic",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Mister_Fantastic.webp"
+              },
+              {
+                "name": "Winter_Soldier",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Winter_Soldier.webp"
+              },
+              {
+                "name": "Squirrel_Girl",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Squirrel_Girl.webp"
+              },
+              {
+                "name": "Rogue_Hero_Portrait",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Rogue_Hero_Portrait.webp"
+              },
+              {
+                "name": "Magik",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Magik.webp"
+              },
+              {
+                "name": "Luna_Snow",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Luna_Snow.webp"
+              },
+              {
+                "name": "Magneto",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Magneto.webp"
+              },
+              {
+                "name": "Hulk",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Hulk.webp"
+              },
+              {
+                "name": "Groot",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Groot.webp"
+              },
+              {
+                "name": "Devil_Dinosaur",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Devil_Dinosaur.webp"
+              },
+              {
+                "name": "Hela",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Hela.webp"
+              },
+              {
+                "name": "Emma_Frost",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Marvel%20Rivals/Emma_Frost.webp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "neuralcloud",
     "title": "Neural Cloud",
     "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5udo.webp",
