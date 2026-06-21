@@ -90,7 +90,6 @@ export async function onRequest(context) {
       return await fetch(parsed.toString(), {
         headers,
         signal: controller.signal,
-        cf: { cacheTtl: 86400, cacheEverything: true },
       });
     } catch (e) {
       return { __failed: true, reason: e.name === "AbortError" ? "timeout" : (e.message || "network error") };
