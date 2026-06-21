@@ -406,22 +406,35 @@ async function statsExport(year) {
 
     // Обложки тянутся с внешних CDN (TMDB/IGDB/AniList и т.д.), которые не
     // отдают CORS-заголовки — html2canvas не может прочитать их пиксели и
-    // рисует пустой прямоугольник вместо обложки. Прогоняем такие картинки
-    // через серверный прокси-эндпоинт с правильным Access-Control-Allow-Origin,
-    // а после скриншота возвращаем оригинальные src обратно.
-    //
-    // Важно: одного ACAO-заголовка от прокси недостаточно — браузер пометит
-    // canvas как "грязный", если у <img> не выставлен crossOrigin ДО загрузки.
-    // Без этого html2canvas с useCORS:true всё равно получит тот же чёрный
-    // прямоугольник, даже если сама картинка по сети уже подгрузилась.
+    // рисует пустой прямоугольник вместо обложки. Просто проставить прокси-
+    // адрес в src и выставить crossOrigin оказалось недостаточно надёжно —
+    // html2canvas не всегда корректно подхватывает CORS-режим уже загруженной
+    // <img>. Поэтому качаем такие картинки через прокси заранее сами
+    // (fetch), превращаем в data:-URL и подставляем его в src — у data:-URL
+    // в принципе нет источника, так что canvas с ним не "пачкается" вообще,
+    // независимо от поведения html2canvas. Оригинальные src возвращаем в finally.
     const imgs = Array.from(el.querySelectorAll("img"));
-    imgs.forEach(img => {
-      const src = img.getAttribute("src") || "";
-      if (!src || src.startsWith("data:") || src.startsWith(location.origin) || src.startsWith("/")) return;
-      proxied.push({ img, orig: src, prevCrossOrigin: img.getAttribute("crossorigin") });
-      img.crossOrigin = "anonymous";
-      img.src = `/api/proxy-image?url=${encodeURIComponent(src)}`;
-    });
+    const toProxy = imgs
+      .map(img => ({ img, src: img.getAttribute("src") || "" }))
+      .filter(({ src }) => src && !src.startsWith("data:") && !src.startsWith(location.origin) && !src.startsWith("/"));
+
+    await Promise.all(toProxy.map(async ({ img, src }) => {
+      try {
+        const res = await fetch(`/api/proxy-image?url=${encodeURIComponent(src)}`);
+        if (!res.ok) return; // не получилось — оставляем как есть, html2canvas просто пропустит картинку
+        const blob = await res.blob();
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload  = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+        proxied.push({ img, orig: src });
+        img.src = dataUrl;
+      } catch {
+        // сеть подвела — пропускаем эту картинку, остальной экспорт не должен падать из-за одной обложки
+      }
+    }));
 
     await Promise.all(imgs.map(img =>
       img.complete ? Promise.resolve() : new Promise(res => {
@@ -453,11 +466,7 @@ async function statsExport(year) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
     animated.forEach((node, i) => { node.style.animation = prevAnimation[i]; });
-    proxied.forEach(({ img, orig, prevCrossOrigin }) => {
-      img.src = orig;
-      if (prevCrossOrigin === null) img.removeAttribute("crossorigin");
-      else img.setAttribute("crossorigin", prevCrossOrigin);
-    });
+    proxied.forEach(({ img, orig }) => { img.src = orig; });
     if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
   }
 }
