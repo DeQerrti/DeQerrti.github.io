@@ -381,6 +381,12 @@ async function tlExport(rowsId, label) {
     const rows = document.getElementById(rowsId);
     if (!rows) throw new Error("Тир-лист не найден");
 
+    if (typeof html2canvas === "undefined") {
+      if (btn) btn.textContent = "⏳ Загружаем библиотеку…";
+      await loadHtml2Canvas();
+      if (btn) btn.textContent = "⏳ Создаём…";
+    }
+
     // Ждём загрузки всех изображений в этом контейнере
     const imgs = Array.from(rows.querySelectorAll("img"));
     await Promise.all(imgs.map(img =>
