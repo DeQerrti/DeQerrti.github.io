@@ -20,93 +20,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@2.0.4/dist/html2canvas-pro.min.js"></script>
+<link rel="stylesheet" href="/style.css">
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
-:root {
-  --bg:       #0a0a0c;
-  --bg2:      #0f0f12;
-  --surface:  #111114;
-  --surface2: #1a1a1f;
-  --border:   #222228;
-  --border2:  #333338;
-
-  --red:      #8b1a1a;
-  --red-hi:   #c0392b;
-  --red-dim:  #5a1010;
-
-  --text:     #b8b0a8;
-  --text-dim: #4a4540;
-  --text-hi:  #f0ece6;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
-  min-height: 100vh;
-}
 
 /* ══ HEADER ══════════════════════════════════════ */
-header {
-  text-align: center;
-  padding: 3.5rem 1rem 2.5rem;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-header::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, var(--red-dim) 20%, var(--red) 50%, var(--red-dim) 80%, transparent 100%);
-}
-
-.header-eyebrow {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .62rem;
-  letter-spacing: .35em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .7rem;
-}
-.header-eyebrow::before,
-.header-eyebrow::after { content: '—'; color: var(--border2); }
-
-.logo {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  color: var(--text-hi);
-  letter-spacing: .04em;
-  line-height: 1;
-}
-
-.header-deco {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .4rem;
-  margin-top: 1.2rem;
-}
-.header-deco span {
-  width: 4px; height: 4px;
-  transform: rotate(45deg);
-  background: var(--border2);
-}
-.header-deco span:nth-child(3) {
-  width: 6px; height: 6px;
-  background: var(--red);
-}
-.header-deco::before { content: ''; width: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--border2)); }
-.header-deco::after  { content: ''; width: 50px; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
 
 /* ══ NAV — ИСПРАВЛЕНА ПРОКРУТКА ══════════════════ */
 nav {
@@ -176,8 +94,6 @@ section.group { margin-bottom: 3.5rem; }
   align-items: center;
   gap: .8rem;
 }
-.section-title::before { content: ''; display: inline-block; width: 16px; height: 1px; background: var(--red); }
-.section-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
 
 .year-divider {
   font-family: 'Playfair Display', serif;
@@ -354,7 +270,7 @@ section.group { margin-bottom: 3.5rem; }
   animation: spin .9s linear infinite;
   margin: 0 auto 1rem;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -672,13 +588,7 @@ section.group { margin-bottom: 3.5rem; }
   gap: .3rem;
 
 }
-.tl-label-dot {
-  width: 5px; height: 5px;
-  border-radius: 1px;
-  transform: rotate(45deg);
-  background: var(--tl-color, var(--red));
-  flex-shrink: 0;
-}
+
 .tl-label-name {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
