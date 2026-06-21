@@ -392,6 +392,7 @@ async function statsExport(year) {
 
   let animated = [];
   let prevAnimation = [];
+  let proxied = [];
 
   try {
     const el = document.getElementById("stats-digest");
@@ -403,7 +404,19 @@ async function statsExport(year) {
       if (btn) btn.textContent = "⏳ Создаём…";
     }
 
+    // Обложки тянутся с внешних CDN (TMDB/IGDB/AniList и т.д.), которые не
+    // отдают CORS-заголовки — html2canvas не может прочитать их пиксели и
+    // рисует пустой прямоугольник вместо обложки. Прогоняем такие картинки
+    // через серверный прокси-эндпоинт с правильным Access-Control-Allow-Origin,
+    // а после скриншота возвращаем оригинальные src обратно.
     const imgs = Array.from(el.querySelectorAll("img"));
+    imgs.forEach(img => {
+      const src = img.getAttribute("src") || "";
+      if (!src || src.startsWith("data:") || src.startsWith(location.origin) || src.startsWith("/")) return;
+      proxied.push({ img, orig: src });
+      img.src = `/api/proxy-image?url=${encodeURIComponent(src)}`;
+    });
+
     await Promise.all(imgs.map(img =>
       img.complete ? Promise.resolve() : new Promise(res => {
         img.onload = img.onerror = res;
@@ -434,6 +447,7 @@ async function statsExport(year) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
     animated.forEach((node, i) => { node.style.animation = prevAnimation[i]; });
+    proxied.forEach(({ img, orig }) => { img.src = orig; });
     if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
   }
 }
