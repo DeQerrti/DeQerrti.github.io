@@ -19,6 +19,9 @@ const TYPE_COLORS = {
   gacha:   "#c0a020",   // жёлтый светлее
 };
 
+// Выбранный год дайджеста. "all" — обычная статистика за всё время.
+const statsState = { year: "all" };
+
 async function loadStats() {
   if (loading.stats) return;
   loading.stats = true;
@@ -28,7 +31,7 @@ async function loadStats() {
 
   try {
     await fetchReviews();
-    renderStats();
+    statsRender();
   } catch (err) {
     box.innerHTML = `<div class="state-box">Ошибка: ${esc(err.message)}</div>`;
   } finally {
@@ -36,40 +39,86 @@ async function loadStats() {
   }
 }
 
-function renderStats() {
+// Тайтл считается "завершённым в году Y", если в этом году дата
+// окончания (или начала, если конца нет — старые записи без date_end)
+function statsCompletedYear(r) {
+  const raw = r.date_end || r.date_start || r.date;
+  return raw ? new Date(raw).getFullYear() : null;
+}
+
+function statsRender() {
   const box     = document.getElementById("tab-stats");
   const reviews = cache.reviews || [];
 
-  const withGrade = reviews.filter(r => r.grade);
   const completed = reviews.filter(r =>
     r.status === "completed" || (!r.status && (r.preview || r.grade))
   );
 
-  // ── Счётчики по типам ──────────────────────────
+  const yearsSet = new Set();
+  for (const r of completed) {
+    const y = statsCompletedYear(r);
+    if (y) yearsSet.add(y);
+  }
+  const years = [...yearsSet].sort((a, b) => b - a);
+
+  const filtersHtml = statsYearFiltersHtml(years);
+  const bodyHtml = statsState.year === "all"
+    ? renderAllTimeStats(reviews, completed)
+    : renderYearDigest(statsState.year, completed);
+
+  box.innerHTML = filtersHtml + bodyHtml;
+
+  animateCounters();
+  animateStackedBars();
+  statsBindAll();
+}
+
+// ── Переключатель года ─────────────────────────
+function statsYearFiltersHtml(years) {
+  const allBtn = `<button class="tl-filter${statsState.year === "all" ? " active" : ""}" data-stat-year="all">Всё время</button>`;
+  const yearBtns = years.map(y =>
+    `<button class="tl-filter${String(statsState.year) === String(y) ? " active" : ""}" data-stat-year="${y}">${y}</button>`
+  ).join("");
+  return `<div class="stat-year-filters">${allBtn}${yearBtns}</div>`;
+}
+
+function statsBindAll() {
+  document.querySelectorAll(".tl-filter[data-stat-year]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      statsState.year = btn.dataset.statYear === "all" ? "all" : parseInt(btn.dataset.statYear);
+      statsRender();
+    });
+  });
+
+  const exportBtn = document.getElementById("stats-export-btn");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", () => statsExport(exportBtn.dataset.statExportYear));
+  }
+}
+
+// ── Статистика за всё время (как было) ─────────
+function renderAllTimeStats(reviews, completed) {
+  const withGrade = reviews.filter(r => r.grade);
+
   const typeCounts = {};
   for (const r of withGrade) {
     const t = r.type || "anime";
     typeCounts[t] = (typeCounts[t] || 0) + 1;
   }
-
   const counts = Object.entries(TYPE_LABELS)
     .map(([key, label]) => ({ key, label, val: typeCounts[key] || 0, color: TYPE_COLORS[key] || "#666" }))
     .filter(c => c.val > 0);
-
   const total = counts.reduce((s, c) => s + c.val, 0);
 
-  // ── По годам просмотра — разбивка по типам ─────
   const watchYearsByType = {};
   for (const r of completed) {
-    const raw = r.date_end || r.date_start || r.date;
-    const y   = raw ? new Date(raw).getFullYear() : null;
+    const y = statsCompletedYear(r);
     if (!y) continue;
     const t = r.type || "anime";
     if (!watchYearsByType[y]) watchYearsByType[y] = {};
     watchYearsByType[y][t] = (watchYearsByType[y][t] || 0) + 1;
   }
 
-  // ── По годам выхода — разбивка по типам ────────
   const releaseYearsByType = {};
   for (const r of withGrade) {
     const y = parseInt(r.year);
@@ -79,24 +128,16 @@ function renderStats() {
     releaseYearsByType[y][t] = (releaseYearsByType[y][t] || 0) + 1;
   }
 
-  // ── Оценки ─────────────────────────────────────
   const gradeCounts = {};
-  for (const r of withGrade) {
-    gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
-  }
+  for (const r of withGrade) gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
 
-  // ── Теги ───────────────────────────────────────
   const tagCounts = {};
   for (const r of reviews) {
-    for (const tag of (r.tags || [])) {
-      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-    }
+    for (const tag of (r.tags || [])) tagCounts[tag] = (tagCounts[tag] || 0) + 1;
   }
-  const topTags = Object.entries(tagCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 20);
+  const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 20);
 
-  box.innerHTML = `
+  return `
     ${renderCounters(counts, total)}
     ${renderDonut(counts, total)}
     ${renderStackedBarChart("По годам просмотра", "watch-bars", watchYearsByType)}
@@ -104,13 +145,78 @@ function renderStats() {
     ${renderGradeChart(gradeCounts)}
     ${renderTagCloud(topTags)}
   `;
+}
 
-  animateCounters();
-  animateStackedBars();
+// ── Годовой дайджест ────────────────────────────
+function renderYearDigest(year, completed) {
+  const yearReviews = completed.filter(r => statsCompletedYear(r) === year);
+  const withGrade   = yearReviews.filter(r => r.grade);
+
+  const typeCounts = {};
+  for (const r of withGrade) {
+    const t = r.type || "anime";
+    typeCounts[t] = (typeCounts[t] || 0) + 1;
+  }
+  const counts = Object.entries(TYPE_LABELS)
+    .map(([key, label]) => ({ key, label, val: typeCounts[key] || 0, color: TYPE_COLORS[key] || "#666" }))
+    .filter(c => c.val > 0);
+  const total = counts.reduce((s, c) => s + c.val, 0);
+
+  if (!total) {
+    return `<div class="state-box">За ${year} год пока нет завершённых тайтлов с оценкой</div>`;
+  }
+
+  const gradeCounts = {};
+  for (const r of withGrade) gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
+
+  const tagCounts = {};
+  for (const r of yearReviews) {
+    for (const tag of (r.tags || [])) tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+  }
+  const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+
+  const spotlight = statsTopTitlesOfYear(withGrade);
+
+  return `
+    <div id="stats-digest">
+      ${renderCounters(counts, total, `Итоги ${year}`, "завершено")}
+      ${renderDonut(counts, total)}
+      ${renderTitleOfYear(spotlight, year)}
+      ${renderGradeChart(gradeCounts)}
+      ${renderTagCloud(topTags)}
+    </div>
+    <div class="stat-export-row">
+      <button class="admin-add-btn" id="stats-export-btn" data-stat-export-year="${year}">Сохранить как картинку</button>
+    </div>
+  `;
+}
+
+// Лучшая оценка года (минимальный gradeScore — в начале GRADE_ORDER лежат
+// лучшие оценки). При нескольких тайтлах с одинаковой лучшей оценкой
+// показываем все, но не больше 6, чтобы не раздувать дайджест.
+function statsTopTitlesOfYear(withGrade) {
+  if (!withGrade.length) return [];
+  let best = Infinity;
+  for (const r of withGrade) {
+    const s = gradeScore(r.grade);
+    if (s !== null && s < best) best = s;
+  }
+  if (best === Infinity) return [];
+  return withGrade.filter(r => gradeScore(r.grade) === best).slice(0, 6);
+}
+
+function renderTitleOfYear(list, year) {
+  if (!list.length) return "";
+  const heading = list.length > 1 ? `Тайтлы ${year} года` : `Тайтл ${year} года`;
+  const cards = list.map((r, i) => `<div class="year-spotlight-item">${manualCard(r, i)}</div>`).join("");
+  return `<section class="stat-section">
+    <h2 class="section-title">🏆 ${esc(heading)}</h2>
+    <div class="year-spotlight-grid">${cards}</div>
+  </section>`;
 }
 
 // ── Счётчики ───────────────────────────────────
-function renderCounters(counts, total) {
+function renderCounters(counts, total, sectionTitle = "Всего", totalLabel = "тайтлов") {
   const items = counts.map(c => `
     <div class="stat-counter">
       <div class="stat-counter-val" data-target="${c.val}" style="color:${c.color}">0</div>
@@ -119,10 +225,10 @@ function renderCounters(counts, total) {
   `).join("");
 
   return `<section class="stat-section">
-    <h2 class="section-title">Всего</h2>
+    <h2 class="section-title">${esc(sectionTitle)}</h2>
     <div class="stat-total">
       <span class="stat-total-num" data-target="${total}">0</span>
-      <span class="stat-total-label">тайтлов</span>
+      <span class="stat-total-label">${esc(totalLabel)}</span>
     </div>
     <div class="stat-counters">${items}</div>
   </section>`;
@@ -175,7 +281,6 @@ function renderStackedBarChart(title, id, yearsByType) {
   const years = Object.keys(yearsByType).sort((a, b) => a - b);
   if (!years.length) return "";
 
-  // Максимум — сумма всех типов за год
   const totals = years.map(y => Object.values(yearsByType[y]).reduce((s, v) => s + v, 0));
   const max = Math.max(...totals);
 
@@ -183,8 +288,6 @@ function renderStackedBarChart(title, id, yearsByType) {
     const yearTotal = totals[yi];
     const pct = max ? (yearTotal / max * 100) : 0;
 
-    // Сегменты стека — каждый тип своим цветом
-    // Высота каждого сегмента пропорциональна его доле от yearTotal
     const segments = Object.entries(TYPE_LABELS)
       .map(([key]) => ({ key, val: yearsByType[year][key] || 0, color: TYPE_COLORS[key] || "#666" }))
       .filter(s => s.val > 0)
@@ -280,4 +383,40 @@ function animateStackedBars() {
       el.style.width = el.dataset.pct + "%";
     });
   }, 100);
+}
+
+// ── Экспорт дайджеста в картинку ───────────────
+async function statsExport(year) {
+  const btn = document.getElementById("stats-export-btn");
+  if (btn) { btn.textContent = "⏳ Создаём…"; btn.disabled = true; }
+
+  try {
+    const el = document.getElementById("stats-digest");
+    if (!el) throw new Error("Дайджест не найден");
+
+    const imgs = Array.from(el.querySelectorAll("img"));
+    await Promise.all(imgs.map(img =>
+      img.complete ? Promise.resolve() : new Promise(res => {
+        img.onload = img.onerror = res;
+      })
+    ));
+
+    const canvas = await html2canvas(el, {
+      backgroundColor: "#0a0a0c",
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+    });
+
+    const link = document.createElement("a");
+    link.download = `itogi-${year}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+  } catch (err) {
+    alert("Не удалось создать картинку 😢\n" + err.message);
+  } finally {
+    if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
+  }
 }
