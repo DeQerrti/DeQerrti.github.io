@@ -10,23 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
 <style>
-:root {
-  --bg:       #0a0a0c;
-  --bg2:      #0f0f12;
-  --surface:  #111114;
-  --surface2: #1a1a1f;
-  --border:   #222228;
-  --border2:  #333338;
-  --red:      #8b1a1a;
-  --red-hi:   #c0392b;
-  --red-dim:  #5a1010;
-  --text:     #b8b0a8;
-  --text-dim: #4a4540;
-  --text-hi:  #f0ece6;
-  --green-hi: #6ab87a;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
 
 header { text-align: center; padding: 2.5rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
@@ -86,7 +71,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
   align-items: center; justify-content: center; padding: .75rem .5rem;
   border-right: 1px solid var(--border); background: var(--surface); gap: .3rem; position: relative; }
 .tl-editor-label::after { content: ''; position: absolute; inset: 0; background: var(--tl-color, #888); opacity: .05; pointer-events: none; }
-.tl-label-dot { width: 5px; height: 5px; border-radius: 1px; transform: rotate(45deg); background: var(--tl-color, var(--red)); flex-shrink: 0; }
+
 .tl-label-input { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; font-size: .85rem;
   color: var(--tl-color, var(--text-hi)); text-align: center; background: none; border: none;
   outline: none; width: 100%; cursor: pointer; line-height: 1.2; padding: 0; }
@@ -210,8 +195,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 
 .save-bar { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
 .status-msg { font-family: 'DM Sans', sans-serif; font-size: .75rem; }
-.status-msg.ok  { color: var(--green-hi); }
-.status-msg.err { color: #d88; }
 
 .add-tier-row { display: flex; align-items: center; gap: .5rem; padding: .6rem; border: 1px dashed var(--border2); border-radius: 2px; flex-wrap: wrap; }
 .add-tier-row input { flex: 1; min-width: 120px; background: var(--surface2); border: 1px solid var(--border2);
