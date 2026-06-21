@@ -35,6 +35,59 @@ function loadHtml2Canvas() {
   return _html2canvasPromise;
 }
 
+// ── Прокси внешних обложек в data:-URL перед html2canvas ──
+// Используется и в tlExport() (тир-лист), и в statsExport() (годовой
+// дайджест) — общая функция, чтобы фикс жил в одном месте, а не
+// расходился по двум копиям одной и той же логики.
+//
+// Обложки тянутся с внешних CDN (TMDB/IGDB/AniList/Shikimori и т.д.),
+// которые не отдают Access-Control-Allow-Origin — html2canvas не может
+// прочитать их пиксели и рисует пустой прямоугольник вместо обложки.
+// Просто проставить прокси-адрес в src и выставить crossOrigin оказалось
+// недостаточно надёжно — html2canvas не всегда корректно подхватывает
+// CORS-режим уже загруженной <img>. Поэтому качаем такие картинки через
+// прокси заранее сами (fetch), превращаем в data:-URL и подставляем его
+// в src — у data:-URL в принципе нет источника, так что canvas с ним
+// не "пачкается" вообще, независимо от поведения html2canvas.
+//
+// Возвращает restore() — функцию, возвращающую исходные src обратно
+// (вызывать в finally, даже если экспорт дальше упал с ошибкой).
+async function proxyImagesToDataUrls(container) {
+  const imgs = Array.from(container.querySelectorAll("img"));
+  const toProxy = imgs
+    .map(img => ({ img, src: img.getAttribute("src") || "" }))
+    .filter(({ src }) => src && !src.startsWith("data:") && !src.startsWith(location.origin) && !src.startsWith("/"));
+
+  const origSrc = new Map();
+
+  await Promise.all(toProxy.map(async ({ img, src }) => {
+    try {
+      const res = await fetch(`/api/proxy-image?url=${encodeURIComponent(src)}`);
+      if (!res.ok) {
+        // не получилось — оставляем как есть, html2canvas просто пропустит картинку,
+        // но в консоль пишем, чтобы не гадать вслепую при следующей поломке источника
+        console.warn(`[proxyImagesToDataUrls] proxy-image не смог получить ${src}: ${res.status}`);
+        return;
+      }
+      const blob = await res.blob();
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload  = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+      origSrc.set(img, src);
+      img.src = dataUrl;
+    } catch {
+      // сеть подвела — пропускаем эту картинку, остальной экспорт не должен падать из-за одной обложки
+    }
+  }));
+
+  return function restore() {
+    origSrc.forEach((src, img) => { img.src = src; });
+  };
+}
+
 // ── Экранирование HTML ─────────────────────────
 function esc(s) {
   return String(s ?? "")
