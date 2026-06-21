@@ -10,23 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
 <style>
-:root {
-  --bg:      #0a0a0c;
-  --bg2:     #0f0f12;
-  --surface: #111114;
-  --surface2:#1a1a1f;
-  --border:  #222228;
-  --border2: #333338;
-  --red:     #8b1a1a;
-  --red-hi:  #c0392b;
-  --red-dim: #5a1010;
-  --text:    #b8b0a8;
-  --text-dim:#4a4540;
-  --text-hi: #f0ece6;
-  --green-hi:#6ab87a;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
 
 header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
@@ -43,7 +28,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
   font-size: 1.2rem; color: var(--text-hi); margin-bottom: 1.25rem;
   display: flex; align-items: center; gap: .8rem; }
 .section-title::before { content: ''; width: 16px; height: 1px; background: var(--red); flex-shrink: 0; }
-.section-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
 
 .hint { font-family: 'DM Sans', sans-serif; font-size: .72rem; color: var(--text-dim);
   margin-bottom: 1.5rem; line-height: 1.5; }
@@ -104,8 +88,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
   padding: .7rem 2rem; background: rgba(139,26,26,.12); border: 1px solid rgba(139,26,26,.35);
   border-radius: 2px; color: var(--text-hi); cursor: pointer; transition: background .2s, border-color .2s;
 }
-.btn-save:hover { background: rgba(139,26,26,.22); border-color: var(--red); }
-.btn-save:disabled { opacity: .4; cursor: not-allowed; }
+
 .save-status { font-family: 'DM Sans', sans-serif; font-size: .78rem; }
 .save-status.ok  { color: var(--green-hi); }
 .save-status.err { color: #d88; }
@@ -114,7 +97,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
   font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; }
 .spinner { width: 24px; height: 24px; border: 1px solid var(--border2); border-top-color: var(--red);
   border-radius: 50%; animation: spin .9s linear infinite; margin: 0 auto .75rem; }
-@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
