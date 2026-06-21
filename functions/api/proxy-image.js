@@ -71,23 +71,44 @@ export async function onRequest(context) {
     return json({ error: "Источник не входит в список разрешённых" }, 403);
   }
 
-  let upstream;
-  try {
-    upstream = await fetch(parsed.toString(), {
-      headers: {
-        // Некоторые CDN (например, AniList) режут запросы без правдоподобных
-        // браузерных заголовков как защиту от хотлинков. Referer ставим на
-        // сам источник, чтобы выглядеть как обычная загрузка с его страницы.
-        "User-Agent": "Mozilla/5.0 (compatible; TasteID-ImageProxy/1.0; +https://tasteid.ru)",
-        "Referer": `${parsed.protocol}//${parsed.hostname}/`,
-        "Accept": "image/*",
-      },
-      cf: { cacheTtl: 86400, cacheEverything: true },
-    });
-  } catch {
-    return json({ error: "Не удалось получить изображение" }, 502);
+  // Referer ставим на КОРНЕВОЙ домен источника (anilist.co), а не на
+  // поддомен CDN (s4.anilist.co), с которого реально отдаётся файл —
+  // CDN-картинки на этих сервисах встраиваются со страниц основного
+  // домена, и Referer "сам на себя" антихотлинк-защита AniList
+  // воспринимает как подозрительный и отвечает 403.
+  const hostParts = parsed.hostname.split(".");
+  const rootHost  = hostParts.length > 2 ? hostParts.slice(-2).join(".") : parsed.hostname;
+
+  async function tryFetch(headers) {
+    try {
+      return await fetch(parsed.toString(), {
+        headers,
+        cf: { cacheTtl: 86400, cacheEverything: true },
+      });
+    } catch {
+      return null;
+    }
   }
 
+  let upstream = await tryFetch({
+    "User-Agent": "Mozilla/5.0 (compatible; TasteID-ImageProxy/1.0; +https://tasteid.ru)",
+    "Referer": `${parsed.protocol}//${rootHost}/`,
+    "Accept": "image/*",
+  });
+
+  // Некоторые источники (или конкретно их анти-бот защита) режут запросы
+  // с Cloudflare edge вне зависимости от Referer. Пробуем второй раз вовсе
+  // без Referer — части CDN он наоборот мешает (трактуется как чужой сайт).
+  if (!upstream || !upstream.ok) {
+    upstream = await tryFetch({
+      "User-Agent": "Mozilla/5.0 (compatible; TasteID-ImageProxy/1.0; +https://tasteid.ru)",
+      "Accept": "image/*",
+    });
+  }
+
+  if (!upstream) {
+    return json({ error: "Не удалось получить изображение" }, 502);
+  }
   if (!upstream.ok) {
     return json({ error: `Источник вернул ${upstream.status}` }, 502);
   }
