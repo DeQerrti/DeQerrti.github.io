@@ -14,6 +14,11 @@
 /manifest.json
   Cache-Control: public, max-age=86400
 
+# Общий style.css — меняется не каждый день, но не настолько редко,
+# чтобы кэшировать насмерть (immutable), пока дизайн ещё дорабатывается
+/style.css
+  Cache-Control: public, max-age=86400, must-revalidate
+
 # og-картинка для шеринга в соцсетях
 /og.jpg
   Cache-Control: public, max-age=604800
