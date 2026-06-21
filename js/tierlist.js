@@ -377,6 +377,9 @@ async function tlExport(rowsId, label) {
   const tip = document.getElementById("tl-tooltip");
   if (tip) tip.style.visibility = "hidden";
 
+  let animated = [];
+  let prevAnimation = [];
+
   try {
     const rows = document.getElementById(rowsId);
     if (!rows) throw new Error("Тир-лист не найден");
@@ -395,6 +398,18 @@ async function tlExport(rowsId, label) {
       })
     ));
 
+    // "Приземляем" CSS-анимации появления (fadeUp с animation-delay по индексу) —
+    // если экспорт нажат сразу после открытия вкладки, поздние ряды/постеры
+    // ещё не доанимировались и html2canvas фотографирует их полупрозрачными.
+    // Временно убираем animation, чтобы зафиксировать финальное состояние
+    // (opacity:1, без translateY); восстанавливаем в finally — даже если
+    // дальше что-то упадёт с ошибкой, страница не останется без анимаций.
+    animated = Array.from(rows.querySelectorAll(".tl-row, .tl-poster, .tl-char-poster"));
+    prevAnimation = animated.map(el => el.style.animation);
+    animated.forEach(el => { el.style.animation = "none"; });
+    // Даём браузеру один кадр, чтобы применить стиль до снимка
+    await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+
     const canvas = await html2canvas(rows, {
       backgroundColor: "#0a0a0c",
       scale: 2,
@@ -412,6 +427,7 @@ async function tlExport(rowsId, label) {
   } catch (err) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
+    animated.forEach((el, i) => { el.style.animation = prevAnimation[i]; });
     if (tip) tip.style.visibility = "";
     if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
   }
