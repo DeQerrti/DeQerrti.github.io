@@ -90,8 +90,16 @@ export async function onRequest(context) {
     }
   }
 
+  // User-Agent — обычного браузера, без самоопознания как прокси/бот:
+  // строки вида "ImageProxy"/"bot"/"crawler" в UA — первое, по чему
+  // антибот-защита CDN (в т.ч. у AniList) фильтрует трафик, ещё до
+  // разбора Referer и остальных заголовков.
+  const BROWSER_UA =
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+
   let upstream = await tryFetch({
-    "User-Agent": "Mozilla/5.0 (compatible; TasteID-ImageProxy/1.0; +https://tasteid.ru)",
+    "User-Agent": BROWSER_UA,
     "Referer": `${parsed.protocol}//${rootHost}/`,
     "Accept": "image/*",
   });
@@ -101,7 +109,7 @@ export async function onRequest(context) {
   // без Referer — части CDN он наоборот мешает (трактуется как чужой сайт).
   if (!upstream || !upstream.ok) {
     upstream = await tryFetch({
-      "User-Agent": "Mozilla/5.0 (compatible; TasteID-ImageProxy/1.0; +https://tasteid.ru)",
+      "User-Agent": BROWSER_UA,
       "Accept": "image/*",
     });
   }
