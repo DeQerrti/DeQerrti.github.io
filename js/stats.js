@@ -392,7 +392,7 @@ async function statsExport(year) {
 
   let animated = [];
   let prevAnimation = [];
-  let proxied = [];
+  let restoreImages = () => {};
 
   try {
     const el = document.getElementById("stats-digest");
@@ -404,43 +404,12 @@ async function statsExport(year) {
       if (btn) btn.textContent = "⏳ Создаём…";
     }
 
-    // Обложки тянутся с внешних CDN (TMDB/IGDB/AniList и т.д.), которые не
-    // отдают CORS-заголовки — html2canvas не может прочитать их пиксели и
-    // рисует пустой прямоугольник вместо обложки. Просто проставить прокси-
-    // адрес в src и выставить crossOrigin оказалось недостаточно надёжно —
-    // html2canvas не всегда корректно подхватывает CORS-режим уже загруженной
-    // <img>. Поэтому качаем такие картинки через прокси заранее сами
-    // (fetch), превращаем в data:-URL и подставляем его в src — у data:-URL
-    // в принципе нет источника, так что canvas с ним не "пачкается" вообще,
-    // независимо от поведения html2canvas. Оригинальные src возвращаем в finally.
+    // Обложки с внешних CDN (TMDB/IGDB/AniList и т.д.) без прокси
+    // html2canvas нарисует пустыми прямоугольниками — см. комментарий
+    // у proxyImagesToDataUrls() в config.js.
+    restoreImages = await proxyImagesToDataUrls(el);
+
     const imgs = Array.from(el.querySelectorAll("img"));
-    const toProxy = imgs
-      .map(img => ({ img, src: img.getAttribute("src") || "" }))
-      .filter(({ src }) => src && !src.startsWith("data:") && !src.startsWith(location.origin) && !src.startsWith("/"));
-
-    await Promise.all(toProxy.map(async ({ img, src }) => {
-      try {
-        const res = await fetch(`/api/proxy-image?url=${encodeURIComponent(src)}`);
-        if (!res.ok) {
-          // не получилось — оставляем как есть, html2canvas просто пропустит картинку,
-          // но в консоль пишем, чтобы не гадать вслепую при следующей поломке источника
-          console.warn(`[statsExport] proxy-image не смог получить ${src}: ${res.status}`);
-          return;
-        }
-        const blob = await res.blob();
-        const dataUrl = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload  = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        });
-        proxied.push({ img, orig: src });
-        img.src = dataUrl;
-      } catch {
-        // сеть подвела — пропускаем эту картинку, остальной экспорт не должен падать из-за одной обложки
-      }
-    }));
-
     await Promise.all(imgs.map(img =>
       img.complete ? Promise.resolve() : new Promise(res => {
         img.onload = img.onerror = res;
@@ -471,7 +440,7 @@ async function statsExport(year) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
     animated.forEach((node, i) => { node.style.animation = prevAnimation[i]; });
-    proxied.forEach(({ img, orig }) => { img.src = orig; });
+    restoreImages();
     if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
   }
 }
