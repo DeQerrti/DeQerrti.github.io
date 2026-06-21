@@ -409,11 +409,17 @@ async function statsExport(year) {
     // рисует пустой прямоугольник вместо обложки. Прогоняем такие картинки
     // через серверный прокси-эндпоинт с правильным Access-Control-Allow-Origin,
     // а после скриншота возвращаем оригинальные src обратно.
+    //
+    // Важно: одного ACAO-заголовка от прокси недостаточно — браузер пометит
+    // canvas как "грязный", если у <img> не выставлен crossOrigin ДО загрузки.
+    // Без этого html2canvas с useCORS:true всё равно получит тот же чёрный
+    // прямоугольник, даже если сама картинка по сети уже подгрузилась.
     const imgs = Array.from(el.querySelectorAll("img"));
     imgs.forEach(img => {
       const src = img.getAttribute("src") || "";
       if (!src || src.startsWith("data:") || src.startsWith(location.origin) || src.startsWith("/")) return;
-      proxied.push({ img, orig: src });
+      proxied.push({ img, orig: src, prevCrossOrigin: img.getAttribute("crossorigin") });
+      img.crossOrigin = "anonymous";
       img.src = `/api/proxy-image?url=${encodeURIComponent(src)}`;
     });
 
@@ -447,7 +453,11 @@ async function statsExport(year) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
     animated.forEach((node, i) => { node.style.animation = prevAnimation[i]; });
-    proxied.forEach(({ img, orig }) => { img.src = orig; });
+    proxied.forEach(({ img, orig, prevCrossOrigin }) => {
+      img.src = orig;
+      if (prevCrossOrigin === null) img.removeAttribute("crossorigin");
+      else img.setAttribute("crossorigin", prevCrossOrigin);
+    });
     if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
   }
 }
