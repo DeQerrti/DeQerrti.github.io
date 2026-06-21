@@ -1,5 +1,6 @@
 // ══════════════════════════════════════════════
 //  BACKUP — кнопка скачивания бэкапа JSON-данных
+//  + LOGOUT — кнопка выхода (зовёт /api/logout)
 //  Подключать на всех админских страницах.
 //  Зависит от: JSZip (CDN, должен быть подключён раньше этого файла)
 // ══════════════════════════════════════════════
@@ -11,16 +12,16 @@
     { path: "/characters-tier.json", name: "characters-tier.json" },
   ];
 
-  function injectButton() {
+  function makeBtn(id, text, title, right) {
     const btn = document.createElement("button");
-    btn.id = "backup-btn";
-    btn.textContent = "⤓ Бэкап";
-    btn.title = "Скачать reviews.json + favorites.json + characters-tier.json одним архивом";
+    btn.id = id;
+    btn.textContent = text;
+    btn.title = title;
 
     Object.assign(btn.style, {
       position: "fixed",
       bottom: "20px",
-      right: "20px",
+      right: right,
       zIndex: "9999",
       padding: ".6rem 1.1rem",
       background: "var(--surface2, #1a1a1f)",
@@ -41,9 +42,46 @@
       btn.style.borderColor = "var(--border2, #333338)";
       btn.style.color = "var(--text, #b8b0a8)";
     };
-
-    btn.addEventListener("click", () => downloadBackup(btn));
     document.body.appendChild(btn);
+    return btn;
+  }
+
+  function injectButtons() {
+    const backupBtn = makeBtn(
+      "backup-btn",
+      "⤓ Бэкап",
+      "Скачать reviews.json + favorites.json + characters-tier.json одним архивом",
+      "20px"
+    );
+    backupBtn.addEventListener("click", () => downloadBackup(backupBtn));
+
+    const logoutBtn = makeBtn(
+      "logout-btn",
+      "⎋ Выйти",
+      "Завершить сессию администратора на этом устройстве",
+      "130px"
+    );
+    logoutBtn.addEventListener("click", () => doLogout(logoutBtn));
+  }
+
+  async function doLogout(btn) {
+    if (!confirm("Выйти из режима администратора?")) return;
+    const originalText = btn.textContent;
+    btn.textContent = "⎋ Выходим...";
+    btn.disabled = true;
+    try {
+      const res = await fetch("/api/logout", { method: "POST" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      window.location.href = "/login.html";
+    } catch (err) {
+      console.error("Logout failed:", err);
+      btn.textContent = "✗ Ошибка";
+      alert("Не удалось выйти 😢\n" + err.message);
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }, 2000);
+    }
   }
 
   async function downloadBackup(btn) {
@@ -96,8 +134,8 @@
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", injectButton);
+    document.addEventListener("DOMContentLoaded", injectButtons);
   } else {
-    injectButton();
+    injectButtons();
   }
 })();
