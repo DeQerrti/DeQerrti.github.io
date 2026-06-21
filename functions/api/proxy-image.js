@@ -74,7 +74,14 @@ export async function onRequest(context) {
   let upstream;
   try {
     upstream = await fetch(parsed.toString(), {
-      headers: { "User-Agent": "TasteID-ImageProxy" },
+      headers: {
+        // Некоторые CDN (например, AniList) режут запросы без правдоподобных
+        // браузерных заголовков как защиту от хотлинков. Referer ставим на
+        // сам источник, чтобы выглядеть как обычная загрузка с его страницы.
+        "User-Agent": "Mozilla/5.0 (compatible; TasteID-ImageProxy/1.0; +https://tasteid.ru)",
+        "Referer": `${parsed.protocol}//${parsed.hostname}/`,
+        "Accept": "image/*",
+      },
       cf: { cacheTtl: 86400, cacheEverything: true },
     });
   } catch {
