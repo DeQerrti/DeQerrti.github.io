@@ -394,6 +394,12 @@ async function statsExport(year) {
     const el = document.getElementById("stats-digest");
     if (!el) throw new Error("Дайджест не найден");
 
+    if (typeof html2canvas === "undefined") {
+      if (btn) btn.textContent = "⏳ Загружаем библиотеку…";
+      await loadHtml2Canvas();
+      if (btn) btn.textContent = "⏳ Создаём…";
+    }
+
     const imgs = Array.from(el.querySelectorAll("img"));
     await Promise.all(imgs.map(img =>
       img.complete ? Promise.resolve() : new Promise(res => {
