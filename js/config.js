@@ -11,6 +11,30 @@ const NOVEL_FORMATS = ["NOVEL", "LIGHT_NOVEL"];
 // Глобальный кэш — один объект на всё приложение
 const cache = {};
 
+// ── Ленивая загрузка html2canvas-pro ───────────
+// Нужна только для двух кнопок экспорта в картинку (тир-лист,
+// годовой дайджест статистики) — обычному посетителю незачем
+// качать эту библиотеку при каждом визите на сайт.
+// Промис кэшируется, так что повторные вызовы не грузят скрипт заново.
+let _html2canvasPromise = null;
+function loadHtml2Canvas() {
+  if (typeof html2canvas !== "undefined") return Promise.resolve();
+  if (_html2canvasPromise) return _html2canvasPromise;
+
+  _html2canvasPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/html2canvas-pro@2.0.4/dist/html2canvas-pro.min.js";
+    script.onload = () => resolve();
+    script.onerror = () => {
+      _html2canvasPromise = null; // даём шанс повторить попытку при следующем клике
+      reject(new Error("Не удалось загрузить html2canvas"));
+    };
+    document.head.appendChild(script);
+  });
+
+  return _html2canvasPromise;
+}
+
 // ── Экранирование HTML ─────────────────────────
 function esc(s) {
   return String(s ?? "")
