@@ -390,6 +390,9 @@ async function statsExport(year) {
   const btn = document.getElementById("stats-export-btn");
   if (btn) { btn.textContent = "⏳ Создаём…"; btn.disabled = true; }
 
+  let animated = [];
+  let prevAnimation = [];
+
   try {
     const el = document.getElementById("stats-digest");
     if (!el) throw new Error("Дайджест не найден");
@@ -407,6 +410,13 @@ async function statsExport(year) {
       })
     ));
 
+    // См. tierlist.js tlExport — та же защита от полупрозрачных элементов,
+    // если экспорт нажат до того, как доиграли fadeUp-анимации появления.
+    animated = Array.from(el.querySelectorAll(".stat-section, .card"));
+    prevAnimation = animated.map(node => node.style.animation);
+    animated.forEach(node => { node.style.animation = "none"; });
+    await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+
     const canvas = await html2canvas(el, {
       backgroundColor: "#0a0a0c",
       scale: 2,
@@ -423,6 +433,7 @@ async function statsExport(year) {
   } catch (err) {
     alert("Не удалось создать картинку 😢\n" + err.message);
   } finally {
+    animated.forEach((node, i) => { node.style.animation = prevAnimation[i]; });
     if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
   }
 }
