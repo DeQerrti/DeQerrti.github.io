@@ -50,6 +50,21 @@ function loadHtml2Canvas() {
 // в src — у data:-URL в принципе нет источника, так что canvas с ним
 // не "пачкается" вообще, независимо от поведения html2canvas.
 //
+// Два источника прокси, по очереди:
+//   1. wsrv.nl (бывший images.weserv.nl) — публичный CORS-прокси для
+//      картинок. Нужен в первую очередь из-за AniList: их Bot Fight
+//      Mode блокирует все cross-zone запросы с Workers/Pages Functions
+//      (у них общий служебный IP на ВСЕ чужие воркеры в интернете —
+//      см. https://community.cloudflare.com/t/627651), так что наш
+//      собственный /api/proxy-image для AniList в принципе не достучится
+//      с сервера, сколько Referer/UA ни меняй — блокировка на сетевом
+//      уровне. А вот wsrv.nl мы дёргаем отсюда, из браузера пользователя
+//      (обычный fetch с обычного жилого IP) — Bot Fight Mode тут вообще
+//      не участвует, картинку забирает уже сервер wsrv.nl сам.
+//   2. /api/proxy-image (свой, functions/api/proxy-image.js) — как
+//      fallback, если wsrv.nl недоступен. Для TMDB/IGDB он и так
+//      прекрасно работает (там Bot Fight Mode не мешает).
+//
 // Возвращает restore() — функцию, возвращающую исходные src обратно
 // (вызывать в finally, даже если экспорт дальше упал с ошибкой).
 async function proxyImagesToDataUrls(container) {
@@ -60,26 +75,42 @@ async function proxyImagesToDataUrls(container) {
 
   const origSrc = new Map();
 
+  async function fetchAsDataUrl(proxyUrl) {
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const blob = await res.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload  = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
   await Promise.all(toProxy.map(async ({ img, src }) => {
+    // 1. weserv.nl — https-источники нужно передавать СО схемой
+    // (без неё сервис по умолчанию трактует адрес как http://, и для
+    // https-источников типа AniList/TMDB это не сработает — см. их доки:
+    // "HTTPS origin hosts can be used by prefixing the hostname with https://").
     try {
-      const res = await fetch(`/api/proxy-image?url=${encodeURIComponent(src)}`);
-      if (!res.ok) {
-        // не получилось — оставляем как есть, html2canvas просто пропустит картинку,
-        // но в консоль пишем, чтобы не гадать вслепую при следующей поломке источника
-        console.warn(`[proxyImagesToDataUrls] proxy-image не смог получить ${src}: ${res.status}`);
-        return;
-      }
-      const blob = await res.blob();
-      const dataUrl = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload  = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
+      const dataUrl = await fetchAsDataUrl(`https://wsrv.nl/?url=${encodeURIComponent(src)}`);
       origSrc.set(img, src);
       img.src = dataUrl;
-    } catch {
-      // сеть подвела — пропускаем эту картинку, остальной экспорт не должен падать из-за одной обложки
+      return;
+    } catch (e) {
+      console.warn(`[proxyImagesToDataUrls] wsrv.nl не смог получить ${src}: ${e.message}`);
+    }
+
+    // 2. свой прокси — fallback
+    try {
+      const dataUrl = await fetchAsDataUrl(`/api/proxy-image?url=${encodeURIComponent(src)}`);
+      origSrc.set(img, src);
+      img.src = dataUrl;
+    } catch (e) {
+      // оба источника не справились — оставляем как есть, html2canvas
+      // просто пропустит эту конкретную картинку, остальной экспорт
+      // не должен падать из-за одной обложки
+      console.warn(`[proxyImagesToDataUrls] /api/proxy-image тоже не смог получить ${src}: ${e.message}`);
     }
   }));
 
