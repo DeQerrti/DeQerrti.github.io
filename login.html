@@ -10,26 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
 <style>
-:root {
-  --bg:       #0a0a0c;
-  --bg2:      #0f0f12;
-  --surface:  #111114;
-  --surface2: #1a1a1f;
-  --border:   #222228;
-  --border2:  #333338;
-
-  --red:      #8b1a1a;
-  --red-hi:   #c0392b;
-  --red-dim:  #5a1010;
-
-  --text:     #b8b0a8;
-  --text-dim: #4a4540;
-  --text-hi:  #f0ece6;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -128,16 +110,6 @@ body {
 }
 .box-title::before { content: ''; width: 14px; height: 1px; background: var(--red); flex-shrink: 0; }
 .box-title::after  { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
-
-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .65rem;
-  color: var(--text-dim);
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: .4rem;
-}
 
 input[type="password"] {
   width: 100%;
