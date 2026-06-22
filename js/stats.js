@@ -226,12 +226,17 @@ function renderCounters(counts, total, sectionTitle = "Всего", totalLabel =
   const label = totalLabel !== null
     ? totalLabel
     : plural(total, ["тайтл", "тайтла", "тайтлов"]);
-  const items = counts.map(c => `
+  const items = counts.map(c => {
+    const forms = TYPE_PLURAL[c.key];
+    const subLabel = forms ? plural(c.val, forms) : c.label;
+    const pluralAttr = forms ? `data-plural="${forms.join("|")}"` : "";
+    return `
     <div class="stat-counter">
       <div class="stat-counter-val" data-target="${c.val}" style="color:${c.color}">0</div>
-      <div class="stat-counter-label">${esc(c.label)}</div>
+      <div class="stat-counter-label" ${pluralAttr}>${esc(subLabel)}</div>
     </div>
-  `).join("");
+  `;
+  }).join("");
 
   return `<section class="stat-section">
     <h2 class="section-title">${esc(sectionTitle)}</h2>
@@ -371,10 +376,8 @@ function renderTagCloud(topTags) {
 function animateCounters() {
   document.querySelectorAll("[data-target]").forEach(el => {
     const target = parseInt(el.dataset.target);
-    // Если рядом есть лейбл с data-plural — обновляем его склонение в ходе анимации.
-    const labelEl = el.classList.contains("stat-total-num")
-      ? el.nextElementSibling
-      : null;
+    // Лейбл рядом: у stat-total-num — следующий span, у stat-counter-val — следующий div
+    const labelEl = el.nextElementSibling;
     const forms = labelEl?.dataset.plural?.split("|");
 
     const dur = 800, start = performance.now();
