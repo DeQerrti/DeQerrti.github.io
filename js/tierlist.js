@@ -218,7 +218,7 @@ function tlCharsHtml() {
     ? `<a href="/chars-edit" class="admin-add-btn">Редактор</a>`
     : "";
 
-  const exportBtn = "";
+  const exportBtn = `<button class="admin-add-btn" id="tl-export-btn" onclick="tlExport('tl-chars-rows', '${esc(game.title)}')">Сохранить как картинку</button>`;
 
   // Ползунок размера — теперь до 1000px
   const slider = `<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem">
@@ -359,4 +359,65 @@ function tlMoveTip(e, tip) {
   tip.style.position = "fixed";
   tip.style.left = x + "px";
   tip.style.top  = y + "px";
+}
+
+// ══ ЭКСПОРТ ТИР-ЛИСТА ПЕРСОНАЖЕЙ В КАРТИНКУ ══════════════
+
+async function tlExport(rowsId, label) {
+  const btn = document.getElementById("tl-export-btn");
+  if (btn) { btn.textContent = "⏳ Создаём…"; btn.disabled = true; }
+
+  const tip = document.getElementById("tl-tooltip");
+  if (tip) tip.style.visibility = "hidden";
+
+  let animated = [];
+  let prevAnimation = [];
+  let restoreImages = () => {};
+
+  try {
+    const rows = document.getElementById(rowsId);
+    if (!rows) throw new Error("Тир-лист не найден");
+
+    if (typeof html2canvas === "undefined") {
+      if (btn) btn.textContent = "⏳ Загружаем библиотеку…";
+      await loadHtml2Canvas();
+      if (btn) btn.textContent = "⏳ Создаём…";
+    }
+
+    const imgs = Array.from(rows.querySelectorAll("img"));
+    await Promise.all(imgs.map(img =>
+      img.complete ? Promise.resolve() : new Promise(res => {
+        img.onload = img.onerror = res;
+      })
+    ));
+
+    restoreImages = await proxyImagesToDataUrls(rows);
+
+    animated = Array.from(rows.querySelectorAll(".tl-row, .tl-poster, .tl-char-poster"));
+    prevAnimation = animated.map(el => el.style.animation);
+    animated.forEach(el => { el.style.animation = "none"; });
+    await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+
+    const canvas = await html2canvas(rows, {
+      backgroundColor: "#0a0a0c",
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+    });
+
+    const link = document.createElement("a");
+    const safeName = label.replace(/[^a-zA-Zа-яА-Я0-9_\- ]/g, "").trim() || "tierlist";
+    link.download = `${safeName}-tierlist.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+  } catch (err) {
+    alert("Не удалось создать картинку 😢\n" + err.message);
+  } finally {
+    restoreImages();
+    animated.forEach((el, i) => { el.style.animation = prevAnimation[i]; });
+    if (tip) tip.style.visibility = "";
+    if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
+  }
 }
