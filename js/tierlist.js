@@ -144,11 +144,6 @@ function tlTitlesHtml() {
   }
   html += `</div>` + tlTooltipHtml();
 
-  // Кнопка экспорта тайтлов
-  html += `<div style="margin-top:1.2rem">
-    <button class="admin-add-btn" id="tl-export-titles-btn" onclick="tlExport('tl-titles-rows', 'titles')">Сохранить как картинку</button>
-  </div>`;
-
   return html;
 }
 
@@ -223,7 +218,7 @@ function tlCharsHtml() {
     ? `<a href="/chars-edit" class="admin-add-btn">Редактор</a>`
     : "";
 
-  const exportBtn = `<button class="admin-add-btn" id="tl-export-btn" onclick="tlExport('tl-chars-rows', '${esc(game.title)}')">Сохранить как картинку</button>`;
+  const exportBtn = "";
 
   // Ползунок размера — теперь до 1000px
   const slider = `<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.2rem">
@@ -364,78 +359,4 @@ function tlMoveTip(e, tip) {
   tip.style.position = "fixed";
   tip.style.left = x + "px";
   tip.style.top  = y + "px";
-}
-
-// ══ ЭКСПОРТ ТИР-ЛИСТА В КАРТИНКУ ══════════════
-
-async function tlExport(rowsId, label) {
-  const btnId = rowsId === "tl-chars-rows" ? "tl-export-btn" : "tl-export-titles-btn";
-  const btn = document.getElementById(btnId);
-  if (btn) { btn.textContent = "⏳ Создаём…"; btn.disabled = true; }
-
-  // Скрываем тултип на время скриншота
-  const tip = document.getElementById("tl-tooltip");
-  if (tip) tip.style.visibility = "hidden";
-
-  let animated = [];
-  let prevAnimation = [];
-  let restoreImages = () => {};
-
-  try {
-    const rows = document.getElementById(rowsId);
-    if (!rows) throw new Error("Тир-лист не найден");
-
-    if (typeof html2canvas === "undefined") {
-      if (btn) btn.textContent = "⏳ Загружаем библиотеку…";
-      await loadHtml2Canvas();
-      if (btn) btn.textContent = "⏳ Создаём…";
-    }
-
-    // Ждём загрузки всех изображений в этом контейнере
-    const imgs = Array.from(rows.querySelectorAll("img"));
-    await Promise.all(imgs.map(img =>
-      img.complete ? Promise.resolve() : new Promise(res => {
-        img.onload = img.onerror = res;
-      })
-    ));
-
-    // Обложки с внешних CDN (TMDB/IGDB/AniList и т.д.) без прокси
-    // html2canvas нарисует пустыми прямоугольниками — см. комментарий
-    // у proxyImagesToDataUrls() в config.js.
-    restoreImages = await proxyImagesToDataUrls(rows);
-
-    // "Приземляем" CSS-анимации появления (fadeUp с animation-delay по индексу) —
-    // если экспорт нажат сразу после открытия вкладки, поздние ряды/постеры
-    // ещё не доанимировались и html2canvas фотографирует их полупрозрачными.
-    // Временно убираем animation, чтобы зафиксировать финальное состояние
-    // (opacity:1, без translateY); восстанавливаем в finally — даже если
-    // дальше что-то упадёт с ошибкой, страница не останется без анимаций.
-    animated = Array.from(rows.querySelectorAll(".tl-row, .tl-poster, .tl-char-poster"));
-    prevAnimation = animated.map(el => el.style.animation);
-    animated.forEach(el => { el.style.animation = "none"; });
-    // Даём браузеру один кадр, чтобы применить стиль до снимка
-    await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
-
-    const canvas = await html2canvas(rows, {
-      backgroundColor: "#0a0a0c",
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-    });
-
-    const link = document.createElement("a");
-    const safeName = label.replace(/[^a-zA-Zа-яА-Я0-9_\- ]/g, "").trim() || "tierlist";
-    link.download = `${safeName}-tierlist.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-
-  } catch (err) {
-    alert("Не удалось создать картинку 😢\n" + err.message);
-  } finally {
-    restoreImages();
-    animated.forEach((el, i) => { el.style.animation = prevAnimation[i]; });
-    if (tip) tip.style.visibility = "";
-    if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
-  }
 }
