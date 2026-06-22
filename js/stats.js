@@ -89,11 +89,6 @@ function statsBindAll() {
       statsRender();
     });
   });
-
-  const exportBtn = document.getElementById("stats-export-btn");
-  if (exportBtn) {
-    exportBtn.addEventListener("click", () => statsExport(exportBtn.dataset.statExportYear));
-  }
 }
 
 // ── Статистика за всё время (как было) ─────────
@@ -185,9 +180,6 @@ function renderYearDigest(year, completed) {
       ${renderGradeChart(gradeCounts)}
       ${renderTagCloud(topTags)}
     </div>
-    <div class="stat-export-row">
-      <button class="admin-add-btn" id="stats-export-btn" data-stat-export-year="${year}">Сохранить как картинку</button>
-    </div>
   `;
 }
 
@@ -216,7 +208,24 @@ function renderTitleOfYear(list, year) {
 }
 
 // ── Счётчики ───────────────────────────────────
-function renderCounters(counts, total, sectionTitle = "Всего", totalLabel = "тайтлов") {
+// Склонение числительных по форме слова.
+// plural(162, ["тайтл", "тайтла", "тайтлов"]) → "тайтла"
+// plural(11,  ["тайтл", "тайтла", "тайтлов"]) → "тайтлов"
+function plural(n, [one, few, many]) {
+  const abs = Math.abs(n) % 100;
+  const rem = abs % 10;
+  if (abs >= 11 && abs <= 19) return many;
+  if (rem === 1)               return one;
+  if (rem >= 2 && rem <= 4)   return few;
+  return many;
+}
+
+function renderCounters(counts, total, sectionTitle = "Всего", totalLabel = null) {
+  // По умолчанию — склоняемое "тайтл/тайтла/тайтлов".
+  // Если передана строка ("завершено") — используем её как есть без склонения.
+  const label = totalLabel !== null
+    ? totalLabel
+    : plural(total, ["тайтл", "тайтла", "тайтлов"]);
   const items = counts.map(c => `
     <div class="stat-counter">
       <div class="stat-counter-val" data-target="${c.val}" style="color:${c.color}">0</div>
@@ -228,7 +237,7 @@ function renderCounters(counts, total, sectionTitle = "Всего", totalLabel =
     <h2 class="section-title">${esc(sectionTitle)}</h2>
     <div class="stat-total">
       <span class="stat-total-num" data-target="${total}">0</span>
-      <span class="stat-total-label">${esc(totalLabel)}</span>
+      <span class="stat-total-label" ${!totalLabel ? 'data-plural="тайтл|тайтла|тайтлов"' : ""}>${esc(label)}</span>
     </div>
     <div class="stat-counters">${items}</div>
   </section>`;
@@ -362,14 +371,31 @@ function renderTagCloud(topTags) {
 function animateCounters() {
   document.querySelectorAll("[data-target]").forEach(el => {
     const target = parseInt(el.dataset.target);
+    // Если рядом есть лейбл с data-plural — обновляем его склонение в ходе анимации.
+    const labelEl = el.classList.contains("stat-total-num")
+      ? el.nextElementSibling
+      : null;
+    const forms = labelEl?.dataset.plural?.split("|");
+
     const dur = 800, start = performance.now();
     function tick(now) {
       const t = Math.min((now - start) / dur, 1);
-      el.textContent = Math.round((1 - Math.pow(1 - t, 3)) * target);
+      const val = Math.round((1 - Math.pow(1 - t, 3)) * target);
+      el.textContent = val;
+      if (forms && labelEl) labelEl.textContent = pluralLabel(val, forms);
       if (t < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
   });
+}
+
+function pluralLabel(n, [one, few, many]) {
+  const abs = Math.abs(n) % 100;
+  const rem = abs % 10;
+  if (abs >= 11 && abs <= 19) return many;
+  if (rem === 1)               return one;
+  if (rem >= 2 && rem <= 4)   return few;
+  return many;
 }
 
 function animateStackedBars() {
@@ -383,64 +409,4 @@ function animateStackedBars() {
       el.style.width = el.dataset.pct + "%";
     });
   }, 100);
-}
-
-// ── Экспорт дайджеста в картинку ───────────────
-async function statsExport(year) {
-  const btn = document.getElementById("stats-export-btn");
-  if (btn) { btn.textContent = "⏳ Создаём…"; btn.disabled = true; }
-
-  let animated = [];
-  let prevAnimation = [];
-  let restoreImages = () => {};
-
-  try {
-    const el = document.getElementById("stats-digest");
-    if (!el) throw new Error("Дайджест не найден");
-
-    if (typeof html2canvas === "undefined") {
-      if (btn) btn.textContent = "⏳ Загружаем библиотеку…";
-      await loadHtml2Canvas();
-      if (btn) btn.textContent = "⏳ Создаём…";
-    }
-
-    // Обложки с внешних CDN (TMDB/IGDB/AniList и т.д.) без прокси
-    // html2canvas нарисует пустыми прямоугольниками — см. комментарий
-    // у proxyImagesToDataUrls() в config.js.
-    restoreImages = await proxyImagesToDataUrls(el);
-
-    const imgs = Array.from(el.querySelectorAll("img"));
-    await Promise.all(imgs.map(img =>
-      img.complete ? Promise.resolve() : new Promise(res => {
-        img.onload = img.onerror = res;
-      })
-    ));
-
-    // См. tierlist.js tlExport — та же защита от полупрозрачных элементов,
-    // если экспорт нажат до того, как доиграли fadeUp-анимации появления.
-    animated = Array.from(el.querySelectorAll(".stat-section, .card"));
-    prevAnimation = animated.map(node => node.style.animation);
-    animated.forEach(node => { node.style.animation = "none"; });
-    await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
-
-    const canvas = await html2canvas(el, {
-      backgroundColor: "#0a0a0c",
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-    });
-
-    const link = document.createElement("a");
-    link.download = `itogi-${year}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-
-  } catch (err) {
-    alert("Не удалось создать картинку 😢\n" + err.message);
-  } finally {
-    animated.forEach((node, i) => { node.style.animation = prevAnimation[i]; });
-    restoreImages();
-    if (btn) { btn.textContent = "Сохранить как картинку"; btn.disabled = false; }
-  }
 }
