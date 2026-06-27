@@ -2266,5 +2266,159 @@
         ]
       }
     ]
+  },
+  {
+    "id": "arknightsendfield",
+    "title": "Arknights: Endfield",
+    "cover": "https://images.igdb.com/igdb/image/upload/t_cover_big_2x/coc5sz.jpg",
+    "folder": "Arknights Endfield",
+    "tierlists": [
+      {
+        "id": "arknightsendfield-design",
+        "label": "Дизайн & Впечатление",
+        "tiers": [
+          {
+            "name": "A",
+            "color": "#2563a8",
+            "chars": [
+              {
+                "name": "Rossi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Rossi.webp"
+              },
+              {
+                "name": "Xaihi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Xaihi.webp"
+              },
+              {
+                "name": "Pogranichnik",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Pogranichnik.webp"
+              },
+              {
+                "name": "Zhuang_Fangyi",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Zhuang_Fangyi.webp"
+              },
+              {
+                "name": "Chen_Qianyu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Chen_Qianyu.webp"
+              },
+              {
+                "name": "Arclight",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Arclight.webp"
+              },
+              {
+                "name": "Perlica",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Perlica.webp"
+              },
+              {
+                "name": "Camille",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Camille.webp"
+              }
+            ]
+          },
+          {
+            "name": "B",
+            "color": "#2d8a4e",
+            "chars": [
+              {
+                "name": "Endministrator_(Female)",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Endministrator_(Female).webp"
+              },
+              {
+                "name": "Endministrator_(Male)",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Endministrator_(Male).webp"
+              },
+              {
+                "name": "Wulfgard",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Wulfgard.webp"
+              },
+              {
+                "name": "Lifeng",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Lifeng.webp"
+              },
+              {
+                "name": "Laevatain",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Laevatain.webp"
+              },
+              {
+                "name": "Tangtang",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Tangtang.webp"
+              },
+              {
+                "name": "Gilberta",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Gilberta.webp"
+              },
+              {
+                "name": "Alesh",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Alesh.webp"
+              }
+            ]
+          },
+          {
+            "name": "C",
+            "color": "#d4a017",
+            "chars": [
+              {
+                "name": "Fluorite",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Fluorite.webp"
+              },
+              {
+                "name": "Akekuri",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Akekuri.webp"
+              },
+              {
+                "name": "Antal",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Antal.webp"
+              },
+              {
+                "name": "Avywenna",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Avywenna.webp"
+              },
+              {
+                "name": "Catcher",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Catcher.webp"
+              },
+              {
+                "name": "Estella",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Estella.webp"
+              },
+              {
+                "name": "Da_Pan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Da_Pan.webp"
+              }
+            ]
+          },
+          {
+            "name": "D",
+            "color": "#6b7280",
+            "chars": [
+              {
+                "name": "Mi_Fu",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Mi_Fu.webp"
+              },
+              {
+                "name": "Last_Rite",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Last_Rite.webp"
+              },
+              {
+                "name": "Ardelia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Ardelia.webp"
+              },
+              {
+                "name": "Yvonne",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Yvonne.webp"
+              },
+              {
+                "name": "Snowshine",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Snowshine.webp"
+              },
+              {
+                "name": "Ember",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Ember.webp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
