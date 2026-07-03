@@ -1,7 +1,7 @@
 [
   {
     "title": "Ozark",
-    "url": "",
+    "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mpracvpwvs2v",
     "type": "show",
     "status": "current",
     "favorite": false,
@@ -9,14 +9,25 @@
     "url2": null,
     "source2": null,
     "year": "2017",
-    "format": null,
+    "format": "3 сезона",
     "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/pCGyPVrI9Fzw6rE1Pvi4BIXF6ET.jpg",
     "date_start": "2026-06-16",
     "date_end": null,
     "favorites": null,
-    "preview": null,
-    "grade": null,
-    "tags": [],
+    "preview": "Посмотрел первый сезон сериала Озарк. Раскачивается долго и из-за этого я еще пару лет назад его отложил, и только сейчас дошли руки дать больше фокуса тайтлу, и он вполне себе оправдал второй шанс. Не люблю спойлерить, поэтому скажу, что если вам понравились Во все тяжкие или Нарко, то советую",
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Долгая раскачка",
+      "До титров",
+      "Саспенс",
+      "Живые герои",
+      "Почти без кринжа",
+      "Жесть",
+      "Серая мораль",
+      "Лучше в оригинале",
+      "Триллер",
+      "Драма"
+    ],
     "id": 225
   },
   {
