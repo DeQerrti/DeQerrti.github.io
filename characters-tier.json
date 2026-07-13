@@ -295,16 +295,16 @@
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
               },
               {
+                "name": "Ulrich",
+                "img": "/chars/Reverse/Ulrich.webp"
+              },
+              {
                 "name": "Igor",
                 "img": "/chars/Reverse/Igor.webp"
               },
               {
                 "name": "Lopera",
                 "img": "/chars/Reverse/Lopera.webp"
-              },
-              {
-                "name": "Ulrich",
-                "img": "/chars/Reverse/Ulrich.webp"
               }
             ]
           },
