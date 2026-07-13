@@ -32,6 +32,10 @@
               {
                 "name": "Charlie skin",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charlie%20to.webp"
+              },
+              {
+                "name": "Igor",
+                "img": "/chars/Reverse/Igor.webp"
               }
             ]
           },
@@ -58,6 +62,18 @@
               {
                 "name": "6",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/6.webp"
+              },
+              {
+                "name": "Ulrich",
+                "img": "/chars/Reverse/Ulrich.webp"
+              },
+              {
+                "name": "Lopera",
+                "img": "/chars/Reverse/Lopera.webp"
+              },
+              {
+                "name": "Lorelei",
+                "img": "/chars/Reverse/Lorelei.webp"
               }
             ]
           },
@@ -92,6 +108,10 @@
               {
                 "name": "Medicine Pocket",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Medicine%20Pocket.webp"
+              },
+              {
+                "name": "Willow",
+                "img": "/chars/Reverse/Willow.webp"
               }
             ]
           },
@@ -130,6 +150,10 @@
               {
                 "name": "Pickles",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
+              },
+              {
+                "name": "Tuesday",
+                "img": "/chars/Reverse/Tuesday.webp"
               }
             ]
           },
@@ -269,6 +293,18 @@
               {
                 "name": "Pickles",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
+              },
+              {
+                "name": "Igor",
+                "img": "/chars/Reverse/Igor.webp"
+              },
+              {
+                "name": "Lopera",
+                "img": "/chars/Reverse/Lopera.webp"
+              },
+              {
+                "name": "Ulrich",
+                "img": "/chars/Reverse/Ulrich.webp"
               }
             ]
           },
