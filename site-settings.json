@@ -1,6 +1,6 @@
 {
-  "theme": "graphite",
-  "customAccent": "#282dc3",
+  "theme": "classic",
+  "customAccent": "#a31919",
   "labels": {
     "nav": {
       "now": "Главная",
