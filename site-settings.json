@@ -1,4 +1,19 @@
 {
-  "theme": "classic",
-  "customAccent": "#8b1a1a"
+  "theme": "midnight",
+  "customAccent": "#8b1a1a",
+  "labels": {
+    "nav": {
+      "now": "Главная",
+      "favorites": "Любимое",
+      "reviews": "Отзывы",
+      "stats": "Статистика",
+      "tierlist": "Тир-лист"
+    },
+    "statuses": {
+      "current": "В процессе",
+      "onhold": "Отложено",
+      "planning": "Планирую",
+      "archive": "Архив"
+    }
+  }
 }
