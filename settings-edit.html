@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Настройки сайта — TasteID</title>
+<link rel="stylesheet" href="/style.css">
+<script src="/js/theme.js"></script>
+<script src="/js/config.js"></script>
+<style>
+  body { max-width: 640px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 4px; }
+  p.intro { color: var(--text-dim); font-size: .9rem; margin-bottom: 32px; }
+
+  section { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+  h2 { font-size: 1.1rem; margin-bottom: 14px; color: var(--text-hi); }
+
+  .theme-grid { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  .theme-option {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: .85rem;
+    background: var(--surface);
+    color: var(--text);
+  }
+  .theme-option.selected { border-color: var(--red); color: var(--text-hi); }
+
+  label { display: block; font-size: .85rem; color: var(--text-dim); margin: 14px 0 6px; }
+  input[type="text"], input[type="color"] {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text-hi);
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: .9rem;
+  }
+  input[type="color"] { width: 60px; height: 34px; padding: 2px; cursor: pointer; }
+  input[type="text"] { width: 100%; box-sizing: border-box; }
+
+  .row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 160px; }
+
+  button {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: .85rem;
+    margin-top: 10px;
+  }
+  button:hover { background: var(--red-hi); }
+  button.secondary { background: var(--surface2); color: var(--text); }
+
+  select {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text-hi);
+    padding: 8px 10px;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #status, #imgStatus { margin-top: 12px; font-size: .85rem; }
+  .locked { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+  .locked a { color: var(--red-hi); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div id="locked" class="locked hidden">
+  Нужно войти, чтобы менять настройки — <a href="/login">войти</a>.
+</div>
+
+<div id="content">
+  <h1>Настройки сайта</h1>
+  <p class="intro">Оформление, подписи и картинки персонажей — без правки кода.</p>
+
+  <section>
+    <h2>Тема оформления</h2>
+    <div class="theme-grid" id="themeGrid"></div>
+    <label>Акцентный цвет (любой)</label>
+    <input type="color" id="accent" value="#8b1a1a">
+  </section>
+
+  <section>
+    <h2>Подписи вкладок</h2>
+    <div class="row">
+      <div><label>Главная</label><input type="text" id="lbl-nav-now"></div>
+      <div><label>Любимое</label><input type="text" id="lbl-nav-favorites"></div>
+    </div>
+    <div class="row">
+      <div><label>Отзывы</label><input type="text" id="lbl-nav-reviews"></div>
+      <div><label>Статистика</label><input type="text" id="lbl-nav-stats"></div>
+    </div>
+    <div class="row">
+      <div><label>Тир-лист</label><input type="text" id="lbl-nav-tierlist"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Подписи статусов (вкладка «Главная»)</h2>
+    <div class="row">
+      <div><label>В процессе</label><input type="text" id="lbl-status-current"></div>
+      <div><label>Отложено</label><input type="text" id="lbl-status-onhold"></div>
+    </div>
+    <div class="row">
+      <div><label>Планирую</label><input type="text" id="lbl-status-planning"></div>
+      <div><label>Архив</label><input type="text" id="lbl-status-archive"></div>
+    </div>
+  </section>
+
+  <button onclick="saveSettings()">Сохранить настройки</button>
+  <div id="status"></div>
+
+  <section style="margin-top: 40px;">
+    <h2>Добавить картинки персонажей</h2>
+    <label>Существующая папка (тайтл)</label>
+    <select id="existingFolder"><option value="">— выбрать —</option></select>
+    <label>Или новая папка (название тайтла)</label>
+    <input type="text" id="newFolder" placeholder="Например: Neural Cloud">
+    <label>Файлы</label>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+    <button onclick="uploadImages()">Загрузить и опубликовать</button>
+    <div id="imgStatus"></div>
+  </section>
+</div>
+
+<script>
+  if (typeof isAdmin === "function" && !isAdmin()) {
+    document.getElementById("locked").classList.remove("hidden");
+    document.getElementById("content").style.display = "none";
+  }
+
+  const THEMES = [
+    { id: "classic",  label: "Классический" },
+    { id: "midnight", label: "Полночный индиго" },
+    { id: "graphite", label: "Тёплый графит" },
+    { id: "emerald",  label: "Глубокий изумруд" },
+  ];
+  let selectedTheme = "classic";
+
+  function renderThemeGrid() {
+    const grid = document.getElementById("themeGrid");
+    grid.innerHTML = THEMES.map(t =>
+      `<div class="theme-option${t.id === selectedTheme ? " selected" : ""}" data-theme="${t.id}">${t.label}</div>`
+    ).join("");
+    grid.querySelectorAll(".theme-option").forEach(el => {
+      el.onclick = () => { selectedTheme = el.dataset.theme; renderThemeGrid(); };
+    });
+  }
+
+  async function loadCurrentSettings() {
+    let settings = {};
+    try {
+      const res = await fetch("/site-settings.json");
+      if (res.ok) settings = await res.json();
+    } catch {}
+
+    selectedTheme = settings.theme || "classic";
+    renderThemeGrid();
+    document.getElementById("accent").value = settings.customAccent || "#8b1a1a";
+
+    const labels = settings.labels || {};
+    const nav = labels.nav || {};
+    const statuses = labels.statuses || {};
+    document.getElementById("lbl-nav-now").value = nav.now || "Главная";
+    document.getElementById("lbl-nav-favorites").value = nav.favorites || "Любимое";
+    document.getElementById("lbl-nav-reviews").value = nav.reviews || "Отзывы";
+    document.getElementById("lbl-nav-stats").value = nav.stats || "Статистика";
+    document.getElementById("lbl-nav-tierlist").value = nav.tierlist || "Тир-лист";
+    document.getElementById("lbl-status-current").value = statuses.current || "В процессе";
+    document.getElementById("lbl-status-onhold").value = statuses.onhold || "Отложено";
+    document.getElementById("lbl-status-planning").value = statuses.planning || "Планирую";
+    document.getElementById("lbl-status-archive").value = statuses.archive || "Архив";
+  }
+
+  async function saveSettings() {
+    const payload = {
+      theme: selectedTheme,
+      customAccent: document.getElementById("accent").value,
+      labels: {
+        nav: {
+          now: document.getElementById("lbl-nav-now").value,
+          favorites: document.getElementById("lbl-nav-favorites").value,
+          reviews: document.getElementById("lbl-nav-reviews").value,
+          stats: document.getElementById("lbl-nav-stats").value,
+          tierlist: document.getElementById("lbl-nav-tierlist").value,
+        },
+        statuses: {
+          current: document.getElementById("lbl-status-current").value,
+          onhold: document.getElementById("lbl-status-onhold").value,
+          planning: document.getElementById("lbl-status-planning").value,
+          archive: document.getElementById("lbl-status-archive").value,
+        },
+      },
+    };
+
+    const status = document.getElementById("status");
+    status.textContent = "Сохраняю...";
+    status.style.color = "var(--text-dim)";
+
+    const res = await fetch("/api/save-site-settings", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    status.textContent = data.ok ? "Сохранено ✓ (обнови страницу, чтобы увидеть изменения)" : "Ошибка: " + data.error;
+    status.style.color = data.ok ? "var(--green)" : "var(--red-hi)";
+  }
+
+  async function loadFolders() {
+    try {
+      const res = await fetch("/api/list-chars", { credentials: "include" });
+      const data = await res.json();
+      const select = document.getElementById("existingFolder");
+      for (const f of (data.folders || [])) {
+        const opt = document.createElement("option");
+        opt.value = f;
+        opt.textContent = f;
+        select.appendChild(opt);
+      }
+    } catch {}
+  }
+
+  // Уменьшает и конвертирует картинку в WebP прямо в браузере — тот же
+  // стандарт, что уже используется во всём репозитории (макс. сторона
+  // 1200px, качество ~85). Конвертация на сервере невозможна: Cloudflare
+  // Functions не умеют работать с изображениями так, как это делает sharp.
+  function convertToWebp(file) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        const maxSide = Math.max(width, height);
+        if (maxSide > 1200) {
+          const scale = 1200 / maxSide;
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return reject(new Error("Не удалось сконвертировать"));
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(",")[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          },
+          "image/webp",
+          0.85
+        );
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  async function uploadImages() {
+    const existing = document.getElementById("existingFolder").value;
+    const newFolder = document.getElementById("newFolder").value.trim();
+    const folder = newFolder || existing;
+    const files = document.getElementById("fileInput").files;
+    const status = document.getElementById("imgStatus");
+
+    if (!folder) {
+      status.textContent = "Выбери папку или впиши новую";
+      status.style.color = "var(--red-hi)";
+      return;
+    }
+    if (!files.length) {
+      status.textContent = "Выбери хотя бы один файл";
+      status.style.color = "var(--red-hi)";
+      return;
+    }
+
+    let done = 0, failed = 0;
+    for (const file of files) {
+      status.textContent = `Обрабатываю ${done + failed + 1} из ${files.length}...`;
+      status.style.color = "var(--text-dim)";
+      try {
+        const base64 = await convertToWebp(file);
+        const filename = file.name.replace(/\.[^.]+$/, "") + ".webp";
+        const res = await fetch("/api/upload-char-image", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ folder, filename, contentBase64: base64 }),
+        });
+        const data = await res.json();
+        if (data.ok) done++; else failed++;
+      } catch {
+        failed++;
+      }
+    }
+
+    status.textContent = `Готово: загружено ${done}, ошибок ${failed}.`;
+    status.style.color = failed ? "var(--red-hi)" : "var(--green)";
+  }
+
+  loadCurrentSettings();
+  loadFolders();
+</script>
+</body>
+</html>
