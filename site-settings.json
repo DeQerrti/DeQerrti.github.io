@@ -1,19 +1,19 @@
 {
-  "theme": "emerald",
-  "customAccent": "#307e3d",
+  "theme": "graphite",
+  "customAccent": "#282dc3",
   "labels": {
     "nav": {
-      "now": "Главна",
-      "favorites": "Любимо",
-      "reviews": "Отзыв",
-      "stats": "Статистик",
-      "tierlist": "Тир-лис"
+      "now": "Главная",
+      "favorites": "Любимое",
+      "reviews": "Отзывы",
+      "stats": "Статистика",
+      "tierlist": "Тир-лист"
     },
     "statuses": {
-      "current": "В процесс",
-      "onhold": "Отложен",
-      "planning": "Планиру",
-      "archive": "Архи"
+      "current": "В процессе",
+      "onhold": "Отложено",
+      "planning": "Планирую",
+      "archive": "Архив"
     }
   }
 }
