@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<script src="/js/theme.js"></script>
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -967,14 +968,23 @@ section.group { margin-bottom: 3.5rem; }
   <div class="header-deco">
     <span></span><span></span><span></span><span></span><span></span>
   </div>
+  <a href="/settings-edit" id="admin-settings-link" class="hidden" style="position:absolute;top:20px;right:20px;font-size:.75rem;color:var(--text-dim);text-decoration:none;">⚙ Настройки</a>
 </header>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof isAdmin === "function" && isAdmin()) {
+      document.getElementById("admin-settings-link").classList.remove("hidden");
+    }
+  });
+</script>
+
 <nav>
-  <button class="tab-btn active" onclick="switchTab('tab-now', this)">Главная</button>
-  <button class="tab-btn" onclick="switchTab('tab-favorites', this)">Любимое</button>
-  <button class="tab-btn" onclick="switchTab('tab-reviews', this)">Отзывы</button>
-  <button class="tab-btn" onclick="switchTab('tab-stats', this)">Статистика</button>
-  <button class="tab-btn" onclick="switchTab('tab-tierlist', this)">Тир-лист</button>
+  <button class="tab-btn active" data-label="nav.now" onclick="switchTab('tab-now', this)">Главная</button>
+  <button class="tab-btn" data-label="nav.favorites" onclick="switchTab('tab-favorites', this)">Любимое</button>
+  <button class="tab-btn" data-label="nav.reviews" onclick="switchTab('tab-reviews', this)">Отзывы</button>
+  <button class="tab-btn" data-label="nav.stats" onclick="switchTab('tab-stats', this)">Статистика</button>
+  <button class="tab-btn" data-label="nav.tierlist" onclick="switchTab('tab-tierlist', this)">Тир-лист</button>
 </nav>
 
 <main>
