@@ -5,6 +5,10 @@
 // ══════════════════════════════════════════════
 const loading = {};
 
+document.addEventListener("site-labels-ready", () => {
+  if (cache.now) renderNow(cache.now);
+});
+
 // ── Сохранение состояния секций ────────────────
 const COLLAPSE_KEY = "tasteid_collapsed";
 function getCollapsed() {
@@ -118,9 +122,9 @@ function renderNow({ current, onhold, planning, completed }) {
     .now-section-body.hidden { display: none; }
   </style>`;
 
-  if (current.length)  html += makeSection("current",  "В процессе", current,  collapsed);
-  if (onhold.length)   html += makeSection("onhold",   "Отложено",   onhold,   collapsed);
-  if (planning.length) html += makeSection("planning",  "Планирую",   planning, collapsed);
+  if (current.length)  html += makeSection("current",  siteLabel("statuses", "current", "В процессе"), current,  collapsed);
+  if (onhold.length)   html += makeSection("onhold",   siteLabel("statuses", "onhold", "Отложено"),   onhold,   collapsed);
+  if (planning.length) html += makeSection("planning",  siteLabel("statuses", "planning", "Планирую"),   planning, collapsed);
 
   // ── Архив — группируем по году ─────────────────
   if (completed.length) {
@@ -150,7 +154,7 @@ function renderNow({ current, onhold, planning, completed }) {
       <section class="group now-section" data-section="archive">
         <div class="now-section-header" onclick="toggleSection('archive')">
           <h2 class="section-title" style="margin-bottom:0;cursor:pointer;user-select:none">
-            Архив
+            ${siteLabel("statuses", "archive", "Архив")}
             <span class="section-count">${completed.length}</span>
           </h2>
           <span class="section-chevron${isCollapsed ? " collapsed" : ""}">▾</span>
