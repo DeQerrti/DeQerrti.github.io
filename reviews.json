@@ -1,5 +1,33 @@
 [
   {
+    "title": "The Crown",
+    "url": "",
+    "type": "show",
+    "status": "current",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2016",
+    "format": "1 сезон",
+    "cover": "https://www.themoviedb.org/t/p/w600_and_h900_face/bFEFDqhxxon7CTe6k8lUgPE2qUO.jpg",
+    "date_start": "2026-07-15",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": "etalon",
+    "tags": [
+      "Топ визуал",
+      "Саспенс",
+      "Живые герои",
+      "Без кринжа",
+      "Лучше в оригинале",
+      "Исторический",
+      "Биография"
+    ],
+    "id": 230
+  },
+  {
     "title": "Conversations with a Killer: The Ted Bundy Tapes",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mq5eva4nvc2b",
     "type": "show",
