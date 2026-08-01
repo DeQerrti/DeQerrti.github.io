@@ -1166,8 +1166,9 @@
   {
     "title": "ALLfiring",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3mlxw2unljc2e",
-    "type": "game",
+    "type": "gacha",
     "status": "completed",
+    "favorite": false,
     "source": "bluesky",
     "url2": null,
     "source2": null,
