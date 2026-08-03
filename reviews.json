@@ -1,5 +1,36 @@
 [
   {
+    "title": "Rome",
+    "url": "",
+    "type": "show",
+    "status": "current",
+    "favorite": false,
+    "source": "bluesky",
+    "url2": null,
+    "source2": null,
+    "year": "2005",
+    "format": "1 сезон",
+    "cover": "https://image.tmdb.org/t/p/w600_and_h900_face/1A1BwgWO3Sw379VEhR0vkTuE3XW.jpg",
+    "date_start": "2026-08-03",
+    "date_end": null,
+    "favorites": null,
+    "preview": null,
+    "grade": "vyskazyvanie",
+    "tags": [
+      "Затягивает сразу",
+      "До титров",
+      "Живые герои",
+      "Почти без кринжа",
+      "Жесть",
+      "Серая мораль",
+      "Хорни вайб",
+      "Лучше в оригинале",
+      "Драма",
+      "Исторический"
+    ],
+    "id": 231
+  },
+  {
     "title": "The Crown",
     "url": "https://bsky.app/profile/ktnovas.bsky.social/post/3ms4awabjtc2o",
     "type": "show",
