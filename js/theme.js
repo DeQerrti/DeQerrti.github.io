@@ -113,6 +113,30 @@ async function applyTheme() {
   document.head.appendChild(style);
 
   window.SITE_LABELS = mergeLabels(settings.labels);
+  window.SITE_CUSTOM_TAGS = settings.customTags || {};
+  const hiddenTabs = settings.hiddenTabs || [];
+
+  function applyHiddenTabs() {
+    let activeIsHidden = false;
+    document.querySelectorAll("[data-label^='nav.']").forEach((btn) => {
+      const id = btn.getAttribute("data-label").split(".")[1];
+      if (hiddenTabs.includes(id)) {
+        btn.style.display = "none";
+        if (btn.classList.contains("active")) activeIsHidden = true;
+      }
+    });
+    if (activeIsHidden) {
+      const firstVisible = document.querySelector(".tab-btn:not([style*='display: none'])");
+      if (firstVisible) firstVisible.click();
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyHiddenTabs);
+  } else {
+    applyHiddenTabs();
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", applyNavLabels);
   } else {
