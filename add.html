@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="/js/theme.js"></script>
 <script src="/js/config.js"></script>
 <link rel="stylesheet" href="/style.css">
 <style>
@@ -448,18 +449,24 @@ for (const key of GRADE_ORDER) {
 
 // ── Теги — из TAGS_MAP (config.js) ─────────────
 const tagsGrid = document.getElementById("tags-grid");
-for (const [tag, meta] of Object.entries(TAGS_MAP)) {
-  const btn = document.createElement("span");
-  btn.className = "tag-toggle";
-  btn.textContent = tag;
-  btn.dataset.tag = tag;
-  btn.title = meta.tip || "";
-  btn.onclick = () => {
-    if (selectedTags.has(tag)) { selectedTags.delete(tag); btn.classList.remove("active"); }
-    else { selectedTags.add(tag); btn.classList.add("active"); }
-  };
-  tagsGrid.appendChild(btn);
+function renderTagsGrid() {
+  tagsGrid.innerHTML = "";
+  for (const [tag, meta] of Object.entries(TAGS_MAP)) {
+    const btn = document.createElement("span");
+    btn.className = "tag-toggle";
+    btn.textContent = tag;
+    btn.dataset.tag = tag;
+    btn.title = meta.tip || "";
+    if (selectedTags.has(tag)) btn.classList.add("active");
+    btn.onclick = () => {
+      if (selectedTags.has(tag)) { selectedTags.delete(tag); btn.classList.remove("active"); }
+      else { selectedTags.add(tag); btn.classList.add("active"); }
+    };
+    tagsGrid.appendChild(btn);
+  }
 }
+renderTagsGrid();
+document.addEventListener("tags-map-updated", renderTagsGrid);
 
 // ── заполнить форму ────────────────────────────
 function fillForm(r) {
