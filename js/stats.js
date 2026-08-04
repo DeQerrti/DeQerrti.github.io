@@ -138,6 +138,7 @@ function renderAllTimeStats(reviews, completed) {
     ${renderStackedBarChart("По годам просмотра", "watch-bars", watchYearsByType)}
     ${renderStackedBarChart("По годам выхода",    "release-bars", releaseYearsByType)}
     ${renderGradeChart(gradeCounts)}
+    ${renderRewatchStats(reviews)}
     ${renderTagCloud(topTags)}
   `;
 }
@@ -178,6 +179,7 @@ function renderYearDigest(year, completed) {
       ${renderDonut(counts, total)}
       ${renderTitleOfYear(spotlight, year)}
       ${renderGradeChart(gradeCounts)}
+      ${renderRewatchStats(yearReviews)}
       ${renderTagCloud(topTags)}
     </div>
   `;
@@ -356,6 +358,29 @@ function renderGradeChart(gradeCounts) {
 }
 
 // ── Облако тегов ───────────────────────────────
+function renderRewatchStats(reviews) {
+  const rewatched = reviews.filter(r => r.rewatch_count > 0);
+  if (!rewatched.length) return "";
+
+  const totalRewatches = rewatched.reduce((sum, r) => sum + r.rewatch_count, 0);
+  const top = [...rewatched].sort((a, b) => b.rewatch_count - a.rewatch_count)[0];
+
+  return `<section class="stat-section">
+    <h2 class="section-title">Пересмотры</h2>
+    <div class="stat-counters">
+      <div class="stat-counter">
+        <div class="stat-counter-val" data-target="${rewatched.length}" style="color:var(--red-hi)">0</div>
+        <div class="stat-counter-label">${esc(plural(rewatched.length, ["тайтл пересмотрен", "тайтла пересмотрено", "тайтлов пересмотрено"]))}</div>
+      </div>
+      <div class="stat-counter">
+        <div class="stat-counter-val" data-target="${totalRewatches}" style="color:var(--red-hi)">0</div>
+        <div class="stat-counter-label">${esc(plural(totalRewatches, ["пересмотр всего", "пересмотра всего", "пересмотров всего"]))}</div>
+      </div>
+    </div>
+    <div class="stat-rewatch-top">Больше всего пересмотрено: <b>${esc(top.title)}</b> (×${top.rewatch_count})</div>
+  </section>`;
+}
+
 function renderTagCloud(topTags) {
   if (!topTags.length) return "";
   const max = topTags[0][1];
