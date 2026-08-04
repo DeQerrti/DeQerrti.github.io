@@ -302,6 +302,16 @@ const TAG_CAT_CLASS = {
   genre:   "rtag-genre",
 };
 
+// Пользовательские теги (добавляются через /settings-edit, хранятся в
+// site-settings.json) — подмешиваются в TAGS_MAP, как только теги
+// подгрузятся. Событие переотправляем дальше, чтобы страницы вроде
+// add.html могли перерисовать список тегов, если он уже был построен.
+document.addEventListener("site-labels-ready", () => {
+  const custom = window.SITE_CUSTOM_TAGS || {};
+  Object.assign(TAGS_MAP, custom);
+  document.dispatchEvent(new CustomEvent("tags-map-updated"));
+});
+
 const SOURCE_LABELS = {
   teletype: "Teletype",
   bluesky:  "Bluesky",
