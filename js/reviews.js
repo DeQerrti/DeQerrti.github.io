@@ -195,7 +195,7 @@ function reviewCard(r, i) {
     : "";
 
   const rewatchHtml = r.rewatch_count > 0
-    ? ` <span class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">↻ ×${r.rewatch_count}</span>`
+    ? `<div class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">↻ ×${r.rewatch_count}</div>`
     : "";
 
   const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
@@ -226,15 +226,18 @@ function reviewCard(r, i) {
         style="animation-delay:${Math.min(i * 40, 600)}ms;
                border-top: 2px solid ${grade ? grade.color + "66" : "var(--border2)"}">
       <div class="review-top">
-        <div class="review-cover">
-          <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+        <div class="review-cover-col">
+          <div class="review-cover">
+            <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+          </div>
+          ${rewatchHtml}
         </div>
         <div class="review-body">
           <div class="review-title">${esc(r.title)}</div>
           <div class="review-meta-row">
             ${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}
           </div>
-          ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span>${rewatchHtml}</div>` : ""}
+          ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
           ${waifuHtml}
           <div class="review-preview">${esc(r.preview || "")}</div>
         </div>
