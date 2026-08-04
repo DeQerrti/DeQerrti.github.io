@@ -97,7 +97,7 @@ function tlTitlesHtml() {
 
   const filtered = tlState.yearFilter === "all"
     ? byType
-    : byType.filter(item => String(item.review.year || "") === String(tlState.yearFilter));
+    : byType.filter(item => String(statsCompletedYear(item.review) || "") === String(tlState.yearFilter));
 
   const byGrade = {};
   for (const item of filtered) {
@@ -161,16 +161,19 @@ function tlFiltersHtml() {
 
 function tlYearFiltersHtml(itemsForYearScope) {
   const years = [...new Set(
-    itemsForYearScope.map(item => item.review.year).filter(Boolean)
+    itemsForYearScope.map(item => statsCompletedYear(item.review)).filter(Boolean)
   )].sort((a, b) => b - a);
 
   if (!years.length) return "";
 
-  const allBtn = `<button class="tl-filter${tlState.yearFilter === "all" ? " active" : ""}" data-tl-year="all">Все года</button>`;
-  const yearBtns = years.map(y =>
-    `<button class="tl-filter${String(tlState.yearFilter) === String(y) ? " active" : ""}" data-tl-year="${esc(String(y))}">${esc(String(y))}</button>`
-  ).join("");
-  return `<div class="tl-filters tl-filters-year">${allBtn}${yearBtns}</div>`;
+  const options = [`<option value="all">Все года</option>`]
+    .concat(years.map(y =>
+      `<option value="${y}"${String(tlState.yearFilter) === String(y) ? " selected" : ""}>${y}</option>`
+    )).join("");
+
+  return `<div class="tl-year-select-wrap">
+    <select class="tl-year-select" id="tl-year-select">${options}</select>
+  </div>`;
 }
 
 // ══ РЕЖИМ ПЕРСОНАЖЕЙ ══════════════════════════
@@ -291,12 +294,13 @@ function tlBindAll() {
     });
   });
 
-  document.querySelectorAll(".tl-filter[data-tl-year]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      tlState.yearFilter = btn.dataset.tlYear;
+  const yearSelect = document.getElementById("tl-year-select");
+  if (yearSelect) {
+    yearSelect.addEventListener("change", () => {
+      tlState.yearFilter = yearSelect.value;
       tlRender();
     });
-  });
+  }
 
   document.querySelectorAll("[data-char-game]").forEach(btn => {
     btn.addEventListener("click", () => {
