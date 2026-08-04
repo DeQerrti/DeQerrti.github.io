@@ -302,6 +302,11 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   <!-- Даты — показываются в зависимости от статуса -->
   <div id="dates-section"></div>
 
+  <div class="field" style="max-width:200px;">
+    <label>Пересмотров (не считая первого раза)</label>
+    <input type="number" id="rewatch-count" min="0" value="0" step="1">
+  </div>
+
   <!-- Источник 1 -->
   <h2 class="section-title">Источник 1</h2>
   <div class="grid">
@@ -495,6 +500,8 @@ function fillForm(r) {
   const startEl = document.getElementById("f-date-start");
   const endEl   = document.getElementById("f-date-end");
   if (startEl) startEl.value = r.date_start || today;
+  const rewatchEl = document.getElementById("rewatch-count");
+  if (rewatchEl) rewatchEl.value = r.rewatch_count || 0;
   if (endEl)   endEl.value   = r.date_end   || today;
 
   updatePreview();
@@ -523,6 +530,7 @@ function resetToNew() {
   document.getElementById("f-source2").value = "";
   document.getElementById("f-type").value    = "anime";
   document.getElementById("f-status").value  = "planning";
+  document.getElementById("rewatch-count").value = 0;
 
   // Сброс чекбокса
   const cb   = document.getElementById("f-favorite");
@@ -616,6 +624,7 @@ async function saveReview() {
     format:     document.getElementById("f-format").value.trim()    || null,
     cover:      document.getElementById("f-cover").value.trim()     || null,
     date_start: dateStart,
+    rewatch_count: parseInt(document.getElementById("rewatch-count").value, 10) || 0,
     date_end:   dateEnd,
     favorites:  document.getElementById("f-favorites").value.trim() || null,
     preview:    preview || null,
