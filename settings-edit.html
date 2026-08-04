@@ -88,6 +88,21 @@
   </section>
 
   <section>
+    <h2>Видимость вкладок</h2>
+    <div class="row">
+      <div><label><input type="checkbox" id="show-now" style="width:auto;margin-right:6px;">Главная</label></div>
+      <div><label><input type="checkbox" id="show-favorites" style="width:auto;margin-right:6px;">Любимое</label></div>
+    </div>
+    <div class="row">
+      <div><label><input type="checkbox" id="show-reviews" style="width:auto;margin-right:6px;">Отзывы</label></div>
+      <div><label><input type="checkbox" id="show-stats" style="width:auto;margin-right:6px;">Статистика</label></div>
+    </div>
+    <div class="row">
+      <div><label><input type="checkbox" id="show-tierlist" style="width:auto;margin-right:6px;">Тир-лист</label></div>
+    </div>
+  </section>
+
+  <section>
     <h2>Подписи вкладок</h2>
     <div class="row">
       <div><label>Главная</label><input type="text" id="lbl-nav-now"></div>
@@ -112,6 +127,28 @@
       <div><label>Планирую</label><input type="text" id="lbl-status-planning"></div>
       <div><label>Архив</label><input type="text" id="lbl-status-archive"></div>
     </div>
+  </section>
+
+  <section style="margin-top: 40px;">
+    <h2>Свои теги</h2>
+    <p class="intro" style="margin-bottom:14px;">Появятся в форме добавления отзыва вместе со встроенными.</p>
+    <div class="row">
+      <div><label>Название тега</label><input type="text" id="newTagName" placeholder="Например: Крутой саундтрек"></div>
+      <div>
+        <label>Категория</label>
+        <select id="newTagCat">
+          <option value="visual">Визуал / звук</option>
+          <option value="plot">Сюжет / нарратив</option>
+          <option value="chars">Персонажи / мир</option>
+          <option value="special" selected>Атмосфера / эмоции</option>
+          <option value="genre">Жанр</option>
+        </select>
+      </div>
+    </div>
+    <label>Подсказка (необязательно)</label>
+    <input type="text" id="newTagTip" placeholder="Короткое пояснение, что значит тег">
+    <button class="secondary" onclick="addCustomTag()">+ Добавить тег</button>
+    <div id="customTagsList" style="margin-top:14px;"></div>
   </section>
 
   <button onclick="saveSettings()">Сохранить настройки</button>
@@ -143,6 +180,40 @@
     { id: "emerald",  label: "Глубокий изумруд" },
   ];
   let selectedTheme = "classic";
+  let customTags = {};
+
+  const CAT_LABELS = { visual: "Визуал", plot: "Сюжет", chars: "Персонажи", special: "Атмосфера", genre: "Жанр" };
+
+  function renderCustomTagsList() {
+    const container = document.getElementById("customTagsList");
+    const entries = Object.entries(customTags);
+    if (!entries.length) {
+      container.innerHTML = `<div style="color:var(--text-dim);font-size:.85rem;">Своих тегов пока нет</div>`;
+      return;
+    }
+    container.innerHTML = entries.map(([name, meta]) => `
+      <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);">
+        <span style="flex:1;">${name} <span style="color:var(--text-dim);font-size:.8rem;">(${CAT_LABELS[meta.cat] || meta.cat})</span></span>
+        <button class="secondary" style="margin:0;padding:4px 10px;" onclick="removeCustomTag('${name.replace(/'/g, "\\'")}')">Удалить</button>
+      </div>
+    `).join("");
+  }
+
+  function addCustomTag() {
+    const name = document.getElementById("newTagName").value.trim();
+    const cat = document.getElementById("newTagCat").value;
+    const tip = document.getElementById("newTagTip").value.trim();
+    if (!name) return;
+    customTags[name] = { cat, tip };
+    document.getElementById("newTagName").value = "";
+    document.getElementById("newTagTip").value = "";
+    renderCustomTagsList();
+  }
+
+  function removeCustomTag(name) {
+    delete customTags[name];
+    renderCustomTagsList();
+  }
 
   function renderThemeGrid() {
     const grid = document.getElementById("themeGrid");
@@ -177,12 +248,27 @@
     document.getElementById("lbl-status-onhold").value = statuses.onhold || "Отложено";
     document.getElementById("lbl-status-planning").value = statuses.planning || "Планирую";
     document.getElementById("lbl-status-archive").value = statuses.archive || "Архив";
+
+    customTags = settings.customTags || {};
+    renderCustomTagsList();
+
+    const hidden = settings.hiddenTabs || [];
+    document.getElementById("show-now").checked = !hidden.includes("now");
+    document.getElementById("show-favorites").checked = !hidden.includes("favorites");
+    document.getElementById("show-reviews").checked = !hidden.includes("reviews");
+    document.getElementById("show-stats").checked = !hidden.includes("stats");
+    document.getElementById("show-tierlist").checked = !hidden.includes("tierlist");
   }
 
   async function saveSettings() {
+    const allTabs = ["now", "favorites", "reviews", "stats", "tierlist"];
+    const hiddenTabs = allTabs.filter((id) => !document.getElementById(`show-${id}`).checked);
+
     const payload = {
       theme: selectedTheme,
       customAccent: document.getElementById("accent").value,
+      customTags: customTags,
+      hiddenTabs: hiddenTabs,
       labels: {
         nav: {
           now: document.getElementById("lbl-nav-now").value,
