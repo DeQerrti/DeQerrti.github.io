@@ -28,6 +28,7 @@ let tlCharHeight = parseInt(localStorage.getItem("tl-char-height") || "200");
 const tlState = {
   mode:        "titles",
   filter:      "all",
+  yearFilter:  "all",
   gameId:      null,
   listId:      null,
   items:       [],
@@ -90,9 +91,13 @@ function tlModeToggleHtml() {
 // ══ РЕЖИМ ТАЙТЛОВ ═════════════════════════════
 
 function tlTitlesHtml() {
-  const filtered = tlState.filter === "all"
+  const byType = tlState.filter === "all"
     ? tlState.items
     : tlState.items.filter(item => tlInferType(item.review) === tlState.filter);
+
+  const filtered = tlState.yearFilter === "all"
+    ? byType
+    : byType.filter(item => String(item.review.year || "") === String(tlState.yearFilter));
 
   const byGrade = {};
   for (const item of filtered) {
@@ -102,7 +107,7 @@ function tlTitlesHtml() {
   }
 
   const hasAny = TIER_ROWS.some(t => byGrade[t.key]?.length);
-  let html = tlFiltersHtml();
+  let html = tlFiltersHtml() + tlYearFiltersHtml(byType);
 
   if (!hasAny) {
     return html + `<div class="state-box" style="padding-top:2rem">Ничего не найдено</div>`;
@@ -152,6 +157,20 @@ function tlFiltersHtml() {
     `<button class="tl-filter${tlState.filter === val ? " active" : ""}" data-tl-type="${val}">${label}</button>`
   ).join("");
   return `<div class="tl-filters">${btns}</div>`;
+}
+
+function tlYearFiltersHtml(itemsForYearScope) {
+  const years = [...new Set(
+    itemsForYearScope.map(item => item.review.year).filter(Boolean)
+  )].sort((a, b) => b - a);
+
+  if (!years.length) return "";
+
+  const allBtn = `<button class="tl-filter${tlState.yearFilter === "all" ? " active" : ""}" data-tl-year="all">Все года</button>`;
+  const yearBtns = years.map(y =>
+    `<button class="tl-filter${String(tlState.yearFilter) === String(y) ? " active" : ""}" data-tl-year="${esc(String(y))}">${esc(String(y))}</button>`
+  ).join("");
+  return `<div class="tl-filters tl-filters-year">${allBtn}${yearBtns}</div>`;
 }
 
 // ══ РЕЖИМ ПЕРСОНАЖЕЙ ══════════════════════════
@@ -267,6 +286,14 @@ function tlBindAll() {
   document.querySelectorAll(".tl-filter[data-tl-type]").forEach(btn => {
     btn.addEventListener("click", () => {
       tlState.filter = btn.dataset.tlType;
+      tlState.yearFilter = "all"; // при смене типа список годов меняется — сбрасываем
+      tlRender();
+    });
+  });
+
+  document.querySelectorAll(".tl-filter[data-tl-year]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      tlState.yearFilter = btn.dataset.tlYear;
       tlRender();
     });
   });
