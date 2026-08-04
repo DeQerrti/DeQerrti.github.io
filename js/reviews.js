@@ -194,6 +194,10 @@ function reviewCard(r, i) {
     ? new Date(dateRaw).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
 
+  const rewatchHtml = r.rewatch_count > 0
+    ? ` <span class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">↻ ×${r.rewatch_count}</span>`
+    : "";
+
   const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
 
   const btn1 = sourceBtnHtml(r.url,  r.source);
@@ -230,7 +234,7 @@ function reviewCard(r, i) {
           <div class="review-meta-row">
             ${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}
           </div>
-          ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
+          ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span>${rewatchHtml}</div>` : ""}
           ${waifuHtml}
           <div class="review-preview">${esc(r.preview || "")}</div>
         </div>
