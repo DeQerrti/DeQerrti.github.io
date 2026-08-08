@@ -314,15 +314,14 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
       <label>Тип</label>
       <div class="select-wrap">
         <select id="f-source">
-          <option value="bluesky">Bluesky (мини)</option>
-          <option value="teletype">Teletype (полный)</option>
+          <option value="teletype">Teletype</option>
           <option value="other">Другое</option>
         </select>
       </div>
     </div>
     <div class="field">
       <label>URL</label>
-      <input type="text" id="f-url" placeholder="https://bsky.app/...">
+      <input type="text" id="f-url" placeholder="https://teletype.in/...">
     </div>
     <div class="field">
       <label>Фавориты</label>
@@ -332,15 +331,14 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
 
   <!-- Источник 2 -->
   <h2 class="section-title">Источник 2 <span class="sub">— необязательно</span></h2>
-  <div class="hint">Заполни если у отзыва два места публикации — например мини на Bluesky и полный на Teletype.</div>
+  <div class="hint">Заполни, если у отзыва есть ещё одна ссылка — например, отдельный пост или страница на другом сайте.</div>
   <div class="grid">
     <div class="field">
       <label>Тип</label>
       <div class="select-wrap">
         <select id="f-source2">
           <option value="">— не указан —</option>
-          <option value="bluesky">Bluesky (мини)</option>
-          <option value="teletype">Teletype (полный)</option>
+          <option value="teletype">Teletype</option>
           <option value="other">Другое</option>
         </select>
       </div>
@@ -489,7 +487,7 @@ function fillForm(r) {
   document.getElementById("f-favorites").value = r.favorites || "";
   document.getElementById("f-preview").value   = r.preview   || "";
   document.getElementById("f-review-full").value = r.review_full || "";
-  document.getElementById("f-source").value    = r.source    || "bluesky";
+  document.getElementById("f-source").value    = r.source    || "teletype";
   document.getElementById("f-type").value      = r.type      || "anime";
   document.getElementById("f-status").value    = r.status    || "completed";
   document.getElementById("f-url2").value      = r.url2      || "";
@@ -533,7 +531,7 @@ function resetToNew() {
 
   ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview","f-url2","f-review-full"]
     .forEach(id => document.getElementById(id).value = "");
-  document.getElementById("f-source").value  = "bluesky";
+  document.getElementById("f-source").value  = "teletype";
   document.getElementById("f-source2").value = "";
   document.getElementById("f-type").value    = "anime";
   document.getElementById("f-status").value  = "planning";
