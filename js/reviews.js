@@ -11,6 +11,8 @@ const rvState = {
   search: "",
 };
 
+let rvLastFiltered = [];
+
 async function loadReviews() {
   const data = await fetchReviews();
   const withReview = data.filter(r => r.preview || r.grade);
@@ -155,9 +157,91 @@ function applyRvFilters(reviews) {
   }
 
   grid.innerHTML = filtered.map((r, i) => reviewCard(r, i)).join("");
+  rvLastFiltered = filtered;
+  rvBindCardClicks();
 }
 
-// ── Карточка отзыва ────────────────────────────
+function rvBindCardClicks() {
+  const grid = document.getElementById("rv-grid");
+  if (!grid || grid.dataset.clickBound) return;
+  grid.dataset.clickBound = "1";
+
+  grid.addEventListener("click", (e) => {
+    if (e.target.closest(".review-edit-btn") || e.target.closest(".review-source-link")) return;
+    const wrap = e.target.closest(".review-card-wrap");
+    if (!wrap) return;
+    const idx = parseInt(wrap.dataset.reviewIdx, 10);
+    const review = rvLastFiltered[idx];
+    if (review) openReviewModal(review);
+  });
+}
+
+// ── Модальное окно с полным текстом отзыва ─────
+function reviewModalBodyHtml(r) {
+  const grade = GRADES[r.grade] || null;
+  const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
+  const dateRaw = r.date_end || r.date_start || r.date || null;
+  const dateStr = dateRaw
+    ? new Date(dateRaw).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
+    : "";
+
+  const tagsHtml = (r.tags || []).length
+    ? `<div class="review-tags">${r.tags.map(tag => tagHtml(tag)).join("")}</div>`
+    : "";
+
+  const btn1 = sourceBtnHtml(r.url, r.source);
+  const btn2 = sourceBtnHtml(r.url2, r.source2);
+
+  const hasFullText = r.review_full && r.review_full.trim();
+  const textHtml = hasFullText
+    ? `<div class="review-modal-fulltext">${esc(r.review_full).split("\n").map(p => p ? `<p>${p}</p>` : "").join("")}</div>`
+    : `<div class="review-modal-fulltext">
+        <p>${esc(r.preview || "Пока без текста.")}</p>
+        ${(btn1 || btn2) ? `<p class="review-modal-nofull-hint">Развёрнутый текст пока не перенесён на сайт — полный отзыв можно почитать по ссылке ниже.</p>` : ""}
+      </div>`;
+
+  return `
+    <div class="review-modal-header">
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" class="review-modal-cover" onerror="this.src='${PH_TALL}'">
+      <div>
+        <div class="review-modal-title">${esc(r.title)}</div>
+        <div class="review-meta-row">${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}</div>
+        ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
+        ${r.rewatch_count > 0 ? `<div class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">↻ ×${r.rewatch_count}</div>` : ""}
+        ${grade ? `<div class="grade-chip" style="--gc:${grade.color}" data-tip="${esc(grade.desc)}">${esc(grade.name)}</div>` : ""}
+      </div>
+    </div>
+    ${textHtml}
+    ${tagsHtml}
+    <div class="source-buttons">${btn1}${btn2}</div>
+  `;
+}
+
+function openReviewModal(r) {
+  let overlay = document.getElementById("review-modal-overlay");
+  if (!overlay) return;
+  document.getElementById("review-modal-body").innerHTML = reviewModalBodyHtml(r);
+  overlay.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
+function closeReviewModal() {
+  const overlay = document.getElementById("review-modal-overlay");
+  if (!overlay) return;
+  overlay.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("review-modal-overlay");
+  if (!overlay) return;
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay || e.target.closest(".review-modal-close")) closeReviewModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeReviewModal();
+  });
+});
 function sourceBtnHtml(url, source) {
   if (!url) return "";
   const label = SOURCE_LABELS[source] || source || "Подробнее";
@@ -220,7 +304,7 @@ function reviewCard(r, i) {
     ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
     : "";
 
-  return `<div class="review-card-wrap">
+  return `<div class="review-card-wrap" data-review-idx="${i}">
     ${editBtn}
     <div class="review-card"
         style="animation-delay:${Math.min(i * 40, 600)}ms;
@@ -240,6 +324,7 @@ function reviewCard(r, i) {
           ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
           ${waifuHtml}
           <div class="review-preview">${esc(r.preview || "")}</div>
+          <div class="review-read-more">Читать полностью →</div>
         </div>
       </div>
       ${tagsHtml}
