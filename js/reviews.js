@@ -31,7 +31,7 @@ async function loadReviews() {
 // ── Порядок фильтров ───────────────────────────
 const TYPE_FILTER_ORDER   = ["anime","manga","manhwa","manhua","movie","show","dorama","game","gacha","book","novel"];
 const GRADE_FILTER_ORDER  = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
-const SOURCE_FILTER_ORDER = ["teletype","bluesky"];
+const SOURCE_FILTER_ORDER = ["teletype"];
 
 function sortByOrder(arr, order) {
   return [...arr].sort((a, b) => {
@@ -185,10 +185,6 @@ function reviewModalBodyHtml(r) {
     ? new Date(dateRaw).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
     : "";
 
-  const tagsHtml = (r.tags || []).length
-    ? `<div class="review-tags">${r.tags.map(tag => tagHtml(tag)).join("")}</div>`
-    : "";
-
   const btn1 = sourceBtnHtml(r.url, r.source);
   const btn2 = sourceBtnHtml(r.url2, r.source2);
 
@@ -212,7 +208,6 @@ function reviewModalBodyHtml(r) {
       </div>
     </div>
     ${textHtml}
-    ${tagsHtml}
     <div class="source-buttons">${btn1}${btn2}</div>
   `;
 }
@@ -245,11 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function sourceBtnHtml(url, source) {
   if (!url) return "";
   const label = SOURCE_LABELS[source] || source || "Подробнее";
-  if (source === "bluesky") {
-    return `<a href="${esc(url)}" target="_blank" rel="noopener" class="review-source-link source-bluesky">
-      <span class="source-dot-bluesky"></span>${esc(label)} →
-    </a>`;
-  }
   if (source === "teletype") {
     return `<a href="${esc(url)}" target="_blank" rel="noopener" class="review-source-link source-teletype">
       <span class="source-dot-teletype"></span>${esc(label)} →
