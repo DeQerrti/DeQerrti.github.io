@@ -358,6 +358,12 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     <div class="preview-box" id="preview-out">Здесь появится превью…</div>
   </div>
 
+  <!-- Полный текст -->
+  <h2 class="section-title">Полный текст отзыва (необязательно)</h2>
+  <div class="field">
+    <textarea id="f-review-full" placeholder="Развёрнутый отзыв — откроется по клику на карточку. Если оставить пустым, при клике покажется превью со ссылкой на источник." style="min-height:220px;"></textarea>
+  </div>
+
   <!-- Оценка -->
   <div class="divider"></div>
   <h2 class="section-title">Оценка</h2>
@@ -482,6 +488,7 @@ function fillForm(r) {
   document.getElementById("f-url").value       = r.url       || "";
   document.getElementById("f-favorites").value = r.favorites || "";
   document.getElementById("f-preview").value   = r.preview   || "";
+  document.getElementById("f-review-full").value = r.review_full || "";
   document.getElementById("f-source").value    = r.source    || "bluesky";
   document.getElementById("f-type").value      = r.type      || "anime";
   document.getElementById("f-status").value    = r.status    || "completed";
@@ -524,7 +531,7 @@ function resetToNew() {
   document.getElementById("btn-save").textContent = "Сохранить отзыв";
   history.replaceState(null, "", "add.html");
 
-  ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview","f-url2"]
+  ["f-title","f-year","f-format","f-cover","f-url","f-favorites","f-preview","f-url2","f-review-full"]
     .forEach(id => document.getElementById(id).value = "");
   document.getElementById("f-source").value  = "bluesky";
   document.getElementById("f-source2").value = "";
@@ -601,6 +608,7 @@ async function saveReview() {
   const title   = document.getElementById("f-title").value.trim();
   const url     = document.getElementById("f-url").value.trim();
   const preview = document.getElementById("f-preview").value.trim();
+  const reviewFull = document.getElementById("f-review-full").value.trim();
   const status  = document.getElementById("f-status").value;
 
   if (!title) { setStatus("err", "Заполни название"); return; }
@@ -628,6 +636,7 @@ async function saveReview() {
     date_end:   dateEnd,
     favorites:  document.getElementById("f-favorites").value.trim() || null,
     preview:    preview || null,
+    review_full: reviewFull || null,
     grade:      selectedGrade,
     tags:       [...selectedTags],
   };
