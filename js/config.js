@@ -314,5 +314,5 @@ document.addEventListener("site-labels-ready", () => {
 
 const SOURCE_LABELS = {
   teletype: "Teletype",
-  other:    "Ссылка",
+  other:    "Другое",
 };
