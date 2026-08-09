@@ -74,6 +74,10 @@
               {
                 "name": "Lorelei",
                 "img": "/chars/Reverse/Lorelei.webp"
+              },
+              {
+                "name": "Schneider",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Schneider.webp"
               }
             ]
           },
