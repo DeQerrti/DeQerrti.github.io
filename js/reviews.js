@@ -69,7 +69,7 @@ function renderReviews(reviews) {
         </div>
         ${renderRvFilterGroup("type",   "Тип",      types,   TYPE_LABELS,   rvState.type)}
         ${renderRvFilterGroup("grade",  "Оценка",   grades,  gradeLabels(), rvState.grade)}
-        ${renderRvFilterGroup("source", "Источник", sources, SOURCE_LABELS, rvState.source)}
+        ${renderRvFilterGroup("source", "Ссылки", sources, SOURCE_LABELS, rvState.source)}
       </div>
       ${adminBtn}
     </div>
