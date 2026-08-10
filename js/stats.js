@@ -133,13 +133,13 @@ function renderAllTimeStats(reviews, completed) {
   const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 20);
 
   return `
-    ${renderCounters(counts, total)}
-    ${renderDonut(counts, total)}
-    ${renderStackedBarChart("По годам просмотра", "watch-bars", watchYearsByType)}
-    ${renderStackedBarChart("По годам выхода",    "release-bars", releaseYearsByType)}
-    ${renderGradeChart(gradeCounts)}
-    ${renderRewatchStats(reviews)}
-    ${renderTagCloud(topTags)}
+    ${isStatVisible("counters")   ? renderCounters(counts, total) : ""}
+    ${isStatVisible("donut")      ? renderDonut(counts, total) : ""}
+    ${isStatVisible("watch-bars") ? renderStackedBarChart("По годам просмотра", "watch-bars", watchYearsByType) : ""}
+    ${isStatVisible("release-bars") ? renderStackedBarChart("По годам выхода", "release-bars", releaseYearsByType) : ""}
+    ${isStatVisible("grades")     ? renderGradeChart(gradeCounts) : ""}
+    ${isStatVisible("rewatch")    ? renderRewatchStats(reviews) : ""}
+    ${isStatVisible("tags")       ? renderTagCloud(topTags) : ""}
   `;
 }
 
@@ -175,12 +175,12 @@ function renderYearDigest(year, completed) {
 
   return `
     <div id="stats-digest">
-      ${renderCounters(counts, total, `Итоги ${year}`, "завершено")}
-      ${renderDonut(counts, total)}
-      ${renderTitleOfYear(spotlight, year)}
-      ${renderGradeChart(gradeCounts)}
-      ${renderRewatchStats(yearReviews)}
-      ${renderTagCloud(topTags)}
+      ${isStatVisible("counters") ? renderCounters(counts, total, `Итоги ${year}`, "завершено") : ""}
+      ${isStatVisible("donut")    ? renderDonut(counts, total) : ""}
+      ${isStatVisible("spotlight") ? renderTitleOfYear(spotlight, year) : ""}
+      ${isStatVisible("grades")   ? renderGradeChart(gradeCounts) : ""}
+      ${isStatVisible("rewatch")  ? renderRewatchStats(yearReviews) : ""}
+      ${isStatVisible("tags")     ? renderTagCloud(topTags) : ""}
     </div>
   `;
 }
