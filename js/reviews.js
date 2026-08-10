@@ -13,6 +13,10 @@ const rvState = {
 
 let rvLastFiltered = [];
 
+document.addEventListener("tags-map-updated", () => {
+  if (cache.reviews && document.getElementById("rv-grid")) applyRvFilters(cache.reviews);
+});
+
 async function loadReviews() {
   const data = await fetchReviews();
   const withReview = data.filter(r => r.preview || r.grade);
