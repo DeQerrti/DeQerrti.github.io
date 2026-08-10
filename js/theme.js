@@ -113,7 +113,9 @@ async function applyTheme() {
   document.head.appendChild(style);
 
   window.SITE_LABELS = mergeLabels(settings.labels);
+  window.SITE_LABEL_OVERRIDES = settings.labels || {};
   window.SITE_CUSTOM_TAGS = settings.customTags || {};
+  window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
   const hiddenTabs = settings.hiddenTabs || [];
 
   function applyHiddenTabs() {
@@ -167,6 +169,12 @@ function mergeLabels(overrides) {
 // отдаёт запасное значение, ничего не ломается.
 function siteLabel(group, key, fallback) {
   return (window.SITE_LABELS && window.SITE_LABELS[group] && window.SITE_LABELS[group][key]) || fallback;
+}
+
+// Используется stats.js, чтобы решить, показывать ли конкретный блок
+// статистики — управляется из /settings-edit.
+function isStatVisible(key) {
+  return !(window.SITE_HIDDEN_STATS && window.SITE_HIDDEN_STATS.has(key));
 }
 
 function applyNavLabels() {
