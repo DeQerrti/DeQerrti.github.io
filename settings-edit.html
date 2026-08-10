@@ -91,6 +91,27 @@
   </section>
 
   <section>
+    <h2>Блоки статистики</h2>
+    <p class="intro" style="margin-bottom:14px;">Что показывать на вкладке "Статистика".</p>
+    <div class="row">
+      <div><label><input type="checkbox" id="stat-counters" style="width:auto;margin-right:6px;">По типам (цифры)</label></div>
+      <div><label><input type="checkbox" id="stat-donut" style="width:auto;margin-right:6px;">По типам (диаграмма)</label></div>
+    </div>
+    <div class="row">
+      <div><label><input type="checkbox" id="stat-watch-bars" style="width:auto;margin-right:6px;">По годам просмотра</label></div>
+      <div><label><input type="checkbox" id="stat-release-bars" style="width:auto;margin-right:6px;">По годам выхода</label></div>
+    </div>
+    <div class="row">
+      <div><label><input type="checkbox" id="stat-grades" style="width:auto;margin-right:6px;">Распределение оценок</label></div>
+      <div><label><input type="checkbox" id="stat-rewatch" style="width:auto;margin-right:6px;">Пересмотры</label></div>
+    </div>
+    <div class="row">
+      <div><label><input type="checkbox" id="stat-tags" style="width:auto;margin-right:6px;">Облако тегов</label></div>
+      <div><label><input type="checkbox" id="stat-spotlight" style="width:auto;margin-right:6px;">Топ тайтлы года (только в дайджесте года)</label></div>
+    </div>
+  </section>
+
+  <section>
     <h2>Видимость вкладок</h2>
     <div class="row">
       <div><label><input type="checkbox" id="show-now" style="width:auto;margin-right:6px;">Главная</label></div>
@@ -132,7 +153,53 @@
     </div>
   </section>
 
-  <section style="margin-top: 40px;">
+  <section>
+    <h2>Подписи оценок</h2>
+    <div class="row">
+      <div><label>Резонанс</label><input type="text" id="lbl-grade-rezonans"></div>
+      <div><label>Эталон</label><input type="text" id="lbl-grade-etalon"></div>
+    </div>
+    <div class="row">
+      <div><label>Отлично</label><input type="text" id="lbl-grade-vyskazyvanie"></div>
+      <div><label>Аттракцион</label><input type="text" id="lbl-grade-attrakcion"></div>
+    </div>
+    <div class="row">
+      <div><label>Фоновый шум</label><input type="text" id="lbl-grade-fon"></div>
+      <div><label>Брак</label><input type="text" id="lbl-grade-brak"></div>
+    </div>
+    <div class="row">
+      <div><label>Разочарование</label><input type="text" id="lbl-grade-razocharo"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Подписи типов</h2>
+    <div class="row">
+      <div><label>Аниме</label><input type="text" id="lbl-type-anime"></div>
+      <div><label>Манга</label><input type="text" id="lbl-type-manga"></div>
+    </div>
+    <div class="row">
+      <div><label>Манхва</label><input type="text" id="lbl-type-manhwa"></div>
+      <div><label>Маньхуа</label><input type="text" id="lbl-type-manhua"></div>
+    </div>
+    <div class="row">
+      <div><label>Ранобэ</label><input type="text" id="lbl-type-novel"></div>
+      <div><label>Фильм</label><input type="text" id="lbl-type-movie"></div>
+    </div>
+    <div class="row">
+      <div><label>Сериал</label><input type="text" id="lbl-type-show"></div>
+      <div><label>Дорама</label><input type="text" id="lbl-type-dorama"></div>
+    </div>
+    <div class="row">
+      <div><label>Книга</label><input type="text" id="lbl-type-book"></div>
+      <div><label>Игра</label><input type="text" id="lbl-type-game"></div>
+    </div>
+    <div class="row">
+      <div><label>Гача</label><input type="text" id="lbl-type-gacha"></div>
+    </div>
+  </section>
+
+  <section>
     <h2>Свои теги</h2>
     <p class="intro" style="margin-bottom:14px;">Появятся в форме добавления отзыва вместе со встроенными.</p>
     <div class="row">
@@ -242,6 +309,8 @@
     const labels = settings.labels || {};
     const nav = labels.nav || {};
     const statuses = labels.statuses || {};
+    const grades = labels.grades || {};
+    const types = labels.types || {};
     document.getElementById("lbl-nav-now").value = nav.now || "Главная";
     document.getElementById("lbl-nav-favorites").value = nav.favorites || "Любимое";
     document.getElementById("lbl-nav-reviews").value = nav.reviews || "Отзывы";
@@ -251,6 +320,29 @@
     document.getElementById("lbl-status-onhold").value = statuses.onhold || "Отложено";
     document.getElementById("lbl-status-planning").value = statuses.planning || "Планирую";
     document.getElementById("lbl-status-archive").value = statuses.archive || "Архив";
+
+    const gradeDefaults = {
+      rezonans: "Резонанс", etalon: "Эталон", vyskazyvanie: "Отлично",
+      attrakcion: "Аттракцион", fon: "Фоновый шум", brak: "Брак", razocharo: "Разочарование",
+    };
+    for (const [key, def] of Object.entries(gradeDefaults)) {
+      document.getElementById(`lbl-grade-${key}`).value = grades[key] || def;
+    }
+
+    const typeDefaults = {
+      anime: "Аниме", manga: "Манга", manhwa: "Манхва", manhua: "Маньхуа",
+      novel: "Ранобэ", movie: "Фильм", show: "Сериал", dorama: "Дорама",
+      book: "Книга", game: "Игра", gacha: "Гача",
+    };
+    for (const [key, def] of Object.entries(typeDefaults)) {
+      document.getElementById(`lbl-type-${key}`).value = types[key] || def;
+    }
+
+    const hiddenStats = settings.hiddenStatsBlocks || [];
+    ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"].forEach(key => {
+      const el = document.getElementById(`stat-${key}`);
+      if (el) el.checked = !hiddenStats.includes(key);
+    });
 
     customTags = settings.customTags || {};
     renderCustomTagsList();
@@ -267,11 +359,26 @@
     const allTabs = ["now", "favorites", "reviews", "stats", "tierlist"];
     const hiddenTabs = allTabs.filter((id) => !document.getElementById(`show-${id}`).checked);
 
+    const statKeys = ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"];
+    const hiddenStatsBlocks = statKeys.filter((key) => {
+      const el = document.getElementById(`stat-${key}`);
+      return el && !el.checked;
+    });
+
+    const gradeKeys = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
+    const grades = {};
+    for (const key of gradeKeys) grades[key] = document.getElementById(`lbl-grade-${key}`).value;
+
+    const typeKeys = ["anime","manga","manhwa","manhua","novel","movie","show","dorama","book","game","gacha"];
+    const types = {};
+    for (const key of typeKeys) types[key] = document.getElementById(`lbl-type-${key}`).value;
+
     const payload = {
       theme: selectedTheme,
       customAccent: document.getElementById("accent").value,
       customTags: customTags,
       hiddenTabs: hiddenTabs,
+      hiddenStatsBlocks: hiddenStatsBlocks,
       labels: {
         nav: {
           now: document.getElementById("lbl-nav-now").value,
@@ -286,6 +393,8 @@
           planning: document.getElementById("lbl-status-planning").value,
           archive: document.getElementById("lbl-status-archive").value,
         },
+        grades: grades,
+        types: types,
       },
     };
 
