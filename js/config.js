@@ -309,6 +309,24 @@ const TAG_CAT_CLASS = {
 document.addEventListener("site-labels-ready", () => {
   const custom = window.SITE_CUSTOM_TAGS || {};
   Object.assign(TAGS_MAP, custom);
+
+  const overrides = window.SITE_LABEL_OVERRIDES || {};
+
+  const gradeOverrides = overrides.grades || {};
+  for (const [key, name] of Object.entries(gradeOverrides)) {
+    if (GRADES[key] && name) GRADES[key].name = name;
+  }
+  // TIER_ROWS — снимок GRADES_DEF на момент загрузки, обновляем label
+  // отдельно, иначе тир-лист не увидит переименование.
+  for (const row of TIER_ROWS) {
+    if (GRADES[row.key]) row.label = GRADES[row.key].name;
+  }
+
+  const typeOverrides = overrides.types || {};
+  for (const [key, label] of Object.entries(typeOverrides)) {
+    if (TYPE_LABELS[key] !== undefined && label) TYPE_LABELS[key] = label;
+  }
+
   document.dispatchEvent(new CustomEvent("tags-map-updated"));
 });
 
