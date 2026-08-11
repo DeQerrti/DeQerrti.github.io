@@ -249,19 +249,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     <div class="field">
       <label>Тип</label>
       <div class="select-wrap">
-        <select id="f-type">
-          <option value="anime">Аниме</option>
-          <option value="manga">Манга</option>
-          <option value="manhwa">Манхва</option>
-          <option value="manhua">Маньхуа</option>
-          <option value="novel">Ранобэ</option>
-          <option value="movie">Фильм</option>
-          <option value="show">Сериал</option>
-          <option value="dorama">Дорама</option>
-          <option value="book">Книга</option>
-          <option value="game">Игра</option>
-          <option value="gacha">Гача</option>
-        </select>
+        <select id="f-type"></select>
       </div>
     </div>
     <div class="field">
@@ -476,6 +464,18 @@ function renderTagsGrid() {
 }
 renderTagsGrid();
 document.addEventListener("tags-map-updated", renderTagsGrid);
+
+// ── Список типов — из TYPE_LABELS (config.js), меняется из /settings-edit ──
+function renderTypeSelect() {
+  const select = document.getElementById("f-type");
+  const current = select.value;
+  select.innerHTML = Object.entries(TYPE_LABELS)
+    .map(([key, label]) => `<option value="${key}">${label}</option>`)
+    .join("");
+  if (current && TYPE_LABELS[current] !== undefined) select.value = current;
+}
+renderTypeSelect();
+document.addEventListener("tags-map-updated", renderTypeSelect);
 
 // ── заполнить форму ────────────────────────────
 function fillForm(r) {
