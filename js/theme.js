@@ -115,6 +115,9 @@ async function applyTheme() {
   window.SITE_LABELS = mergeLabels(settings.labels);
   window.SITE_LABEL_OVERRIDES = settings.labels || {};
   window.SITE_CUSTOM_TAGS = settings.customTags || {};
+  window.SITE_CUSTOM_TYPES = settings.customTypes || {};
+  window.SITE_HIDDEN_TYPES = settings.hiddenTypes || [];
+  window.SITE_CUSTOM_CATEGORIES = settings.customCategories || {};
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
   const hiddenTabs = settings.hiddenTabs || [];
 
