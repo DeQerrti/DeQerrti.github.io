@@ -302,6 +302,18 @@ const TAG_CAT_CLASS = {
   genre:   "rtag-genre",
 };
 
+const CAT_LABELS = {
+  visual:  "Визуал / звук",
+  plot:    "Сюжет / нарратив",
+  chars:   "Персонажи / мир",
+  special: "Атмосфера / эмоции",
+  genre:   "Жанр",
+};
+
+// Заполняется только для пользовательских категорий (у встроенных цвета нет —
+// они все выглядят нейтрально). ключ → hex-цвет.
+const CAT_COLORS = {};
+
 // Пользовательские теги (добавляются через /settings-edit, хранятся в
 // site-settings.json) — подмешиваются в TAGS_MAP, как только теги
 // подгрузятся. Событие переотправляем дальше, чтобы страницы вроде
@@ -323,8 +335,23 @@ document.addEventListener("site-labels-ready", () => {
   }
 
   const typeOverrides = overrides.types || {};
+  const customTypes = window.SITE_CUSTOM_TYPES || {};
+  const hiddenTypes = window.SITE_HIDDEN_TYPES || [];
+
+  Object.assign(TYPE_LABELS, customTypes);
+  for (const key of hiddenTypes) delete TYPE_LABELS[key];
   for (const [key, label] of Object.entries(typeOverrides)) {
     if (TYPE_LABELS[key] !== undefined && label) TYPE_LABELS[key] = label;
+  }
+
+  const catOverrides = overrides.categories || {};
+  for (const [key, label] of Object.entries(catOverrides)) {
+    if (CAT_LABELS[key] !== undefined && label) CAT_LABELS[key] = label;
+  }
+  const customCategories = window.SITE_CUSTOM_CATEGORIES || {};
+  for (const [key, meta] of Object.entries(customCategories)) {
+    CAT_LABELS[key] = meta.label;
+    if (meta.color) CAT_COLORS[key] = meta.color;
   }
 
   document.dispatchEvent(new CustomEvent("tags-map-updated"));
