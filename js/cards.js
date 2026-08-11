@@ -50,9 +50,11 @@ function fmtDateStr(str, short = false) {
 // Тег в отзыве
 function tagHtml(tag) {
   const info = TAGS_MAP[tag];
-  const cls  = info ? TAG_CAT_CLASS[info.cat] : "rtag-special";
+  const customColor = info && CAT_COLORS[info.cat];
+  const cls = customColor ? "rtag-custom" : (info ? TAG_CAT_CLASS[info.cat] : "rtag-special");
+  const style = customColor ? ` style="--tag-color:${customColor}"` : "";
   const tip  = info?.tip || "";
-  return `<span class="rtag ${cls}" data-tip="${esc(tip)}">${esc(tag)}</span>`;
+  return `<span class="rtag ${cls}"${style} data-tip="${esc(tip)}">${esc(tag)}</span>`;
 }
 
 // Карточка из reviews.json (главная, архив)
