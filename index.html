@@ -443,6 +443,11 @@ section.group { margin-bottom: 3.5rem; }
   color: #c8c0b8;
   border: 1px solid rgba(240,236,230,.15);
 }
+.rtag-custom {
+  background: color-mix(in srgb, var(--tag-color, #f0ece6) 12%, transparent);
+  color: var(--tag-color, #c8c0b8);
+  border: 1px solid color-mix(in srgb, var(--tag-color, #f0ece6) 30%, transparent);
+}
 
 .rtag[data-tip]:hover::after {
   content: attr(data-tip);
