@@ -7,240 +7,279 @@
 <script src="/js/theme.js"></script>
 <script src="/js/config.js"></script>
 <style>
-  body { max-width: 640px; margin: 0 auto; padding: 40px 24px; }
-  h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 4px; }
-  p.intro { color: var(--text-dim); font-size: .9rem; margin-bottom: 32px; }
+  body { margin: 0; padding: 0; display: flex; min-height: 100vh; }
 
-  section { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
-  h2 { font-size: 1.1rem; margin-bottom: 14px; color: var(--text-hi); }
+  #locked { text-align: center; padding: 80px 20px; color: var(--text-dim); width: 100%; }
+  #locked a { color: var(--red-hi); }
+  .hidden { display: none; }
+
+  #sidebar {
+    width: 220px; flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  #sidebar a.back {
+    display: block; margin: 0 20px 20px;
+    color: var(--text-dim); text-decoration: none; font-size: .82rem;
+  }
+  .side-tab {
+    display: block; width: 100%; text-align: left;
+    background: none; border: none; margin: 0;
+    padding: 10px 20px; font-size: .85rem;
+    color: var(--text-dim); cursor: pointer;
+    border-left: 2px solid transparent;
+  }
+  .side-tab:hover { color: var(--text); background: var(--surface2); }
+  .side-tab.active { color: var(--text-hi); border-left-color: var(--red); background: var(--surface2); }
+
+  #main { flex: 1; max-width: 680px; padding: 40px 32px; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin: 0 0 24px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel-intro { color: var(--text-dim); font-size: .85rem; margin-bottom: 20px; }
 
   .theme-grid { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
   .theme-option {
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    cursor: pointer;
-    font-size: .85rem;
-    background: var(--surface);
-    color: var(--text);
+    border: 2px solid var(--border); border-radius: 8px; padding: 10px 14px;
+    cursor: pointer; font-size: .85rem; background: var(--surface); color: var(--text);
   }
   .theme-option.selected { border-color: var(--red); color: var(--text-hi); }
 
   label { display: block; font-size: .85rem; color: var(--text-dim); margin: 14px 0 6px; }
-  input[type="text"], input[type="color"] {
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    color: var(--text-hi);
-    padding: 8px 10px;
-    border-radius: 6px;
-    font-size: .9rem;
+  input[type="text"], input[type="color"], input[type="number"] {
+    background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
+    padding: 8px 10px; border-radius: 6px; font-size: .9rem;
   }
   input[type="color"] { width: 60px; height: 34px; padding: 2px; cursor: pointer; }
   input[type="text"] { width: 100%; box-sizing: border-box; }
 
-  .row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 4px; }
   .row > div { flex: 1; min-width: 160px; }
 
   button {
-    background: var(--red);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: .85rem;
-    margin-top: 10px;
+    background: var(--red); color: #fff; border: none; padding: 9px 18px;
+    border-radius: 6px; cursor: pointer; font-size: .83rem; margin-top: 10px;
   }
   button:hover { background: var(--red-hi); }
   button.secondary { background: var(--surface2); color: var(--text); }
+  button.icon-btn {
+    background: none; border: 1px solid var(--border2); color: var(--text-dim);
+    width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 4px; font-size: .8rem;
+  }
+  button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); background: none; }
 
   select {
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    color: var(--text-hi);
-    padding: 8px 10px;
-    border-radius: 6px;
-    width: 100%;
-    box-sizing: border-box;
+    background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
+    padding: 8px 10px; border-radius: 6px; width: 100%; box-sizing: border-box;
   }
 
-  #status, #imgStatus { margin-top: 12px; font-size: .85rem; }
-  .locked { text-align: center; padding: 60px 20px; color: var(--text-dim); }
-  .locked a { color: var(--red-hi); }
-  .hidden { display: none; }
+  .status-msg { margin-top: 12px; font-size: .83rem; }
+
+  h2.section-h { font-size: 1.05rem; margin: 28px 0 12px; color: var(--text-hi); }
+  h2.section-h:first-child { margin-top: 0; }
+
+  .list-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+  }
+  .list-row .name { flex: 1; font-size: .88rem; }
+  .list-row .tag-note { color: var(--text-dim); font-size: .78rem; }
+
+  .tab-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+  }
+  .tab-row input[type="checkbox"] { width: auto; margin: 0; }
+  .tab-row .tab-name { flex: 1; font-size: .9rem; }
+  .tab-row input[type="text"] { flex: 1; display: none; }
+  .tab-row.editing .tab-name { display: none; }
+  .tab-row.editing input[type="text"] { display: block; }
 </style>
 </head>
 <body>
 
-<div id="locked" class="locked hidden">
+<div id="locked" class="hidden">
   Нужно войти, чтобы менять настройки — <a href="/login">войти</a>.
   <br><br>
   <a href="/" style="color:var(--text-dim);">← На главную</a>
 </div>
 
-<div id="content">
-  <a href="/" style="display:inline-block;margin-bottom:20px;color:var(--text-dim);text-decoration:none;font-size:.85rem;">← На главную</a>
-  <h1>Настройки сайта</h1>
-  <p class="intro">Оформление, подписи и картинки персонажей — без правки кода.</p>
+<div id="app" class="hidden" style="display:flex; width:100%;">
+  <nav id="sidebar">
+    <a href="/" class="back">← На главную</a>
+    <button class="side-tab active" data-panel="appearance">Оформление</button>
+    <button class="side-tab" data-panel="tabs">Вкладки</button>
+    <button class="side-tab" data-panel="stats">Статистика</button>
+    <button class="side-tab" data-panel="types">Типы</button>
+    <button class="side-tab" data-panel="grades">Оценки и статусы</button>
+    <button class="side-tab" data-panel="tags">Теги</button>
+    <button class="side-tab" data-panel="images">Картинки</button>
+  </nav>
 
-  <section>
-    <h2>Тема оформления</h2>
-    <div class="theme-grid" id="themeGrid"></div>
-    <label>Акцентный цвет (любой)</label>
-    <input type="color" id="accent" value="#8b1a1a">
-  </section>
+  <main id="main">
+    <h1>Настройки сайта</h1>
 
-  <section>
-    <h2>Блоки статистики</h2>
-    <p class="intro" style="margin-bottom:14px;">Что показывать на вкладке "Статистика".</p>
-    <div class="row">
-      <div><label><input type="checkbox" id="stat-counters" style="width:auto;margin-right:6px;">По типам (цифры)</label></div>
-      <div><label><input type="checkbox" id="stat-donut" style="width:auto;margin-right:6px;">По типам (диаграмма)</label></div>
+    <div class="panel active" id="panel-appearance">
+      <p class="panel-intro">Тема и акцентный цвет.</p>
+      <div class="theme-grid" id="themeGrid"></div>
+      <label>Акцентный цвет (любой)</label>
+      <input type="color" id="accent" value="#8b1a1a">
+      <div><button onclick="saveSettings()">Сохранить</button><div class="status-msg" id="status-appearance"></div></div>
     </div>
-    <div class="row">
-      <div><label><input type="checkbox" id="stat-watch-bars" style="width:auto;margin-right:6px;">По годам просмотра</label></div>
-      <div><label><input type="checkbox" id="stat-release-bars" style="width:auto;margin-right:6px;">По годам выхода</label></div>
-    </div>
-    <div class="row">
-      <div><label><input type="checkbox" id="stat-grades" style="width:auto;margin-right:6px;">Распределение оценок</label></div>
-      <div><label><input type="checkbox" id="stat-rewatch" style="width:auto;margin-right:6px;">Пересмотры</label></div>
-    </div>
-    <div class="row">
-      <div><label><input type="checkbox" id="stat-tags" style="width:auto;margin-right:6px;">Облако тегов</label></div>
-      <div><label><input type="checkbox" id="stat-spotlight" style="width:auto;margin-right:6px;">Топ тайтлы года (только в дайджесте года)</label></div>
-    </div>
-  </section>
 
-  <section>
-    <h2>Видимость вкладок</h2>
-    <div class="row">
-      <div><label><input type="checkbox" id="show-now" style="width:auto;margin-right:6px;">Главная</label></div>
-      <div><label><input type="checkbox" id="show-favorites" style="width:auto;margin-right:6px;">Любимое</label></div>
-    </div>
-    <div class="row">
-      <div><label><input type="checkbox" id="show-reviews" style="width:auto;margin-right:6px;">Отзывы</label></div>
-      <div><label><input type="checkbox" id="show-stats" style="width:auto;margin-right:6px;">Статистика</label></div>
-    </div>
-    <div class="row">
-      <div><label><input type="checkbox" id="show-tierlist" style="width:auto;margin-right:6px;">Тир-лист</label></div>
-    </div>
-  </section>
+    <div class="panel" id="panel-tabs">
+      <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать.</p>
+      <div id="tabsList"></div>
+      <button onclick="saveSettings()">Сохранить</button>
+      <div class="status-msg" id="status-tabs"></div>
 
-  <section>
-    <h2>Подписи вкладок</h2>
-    <div class="row">
-      <div><label>Главная</label><input type="text" id="lbl-nav-now"></div>
-      <div><label>Любимое</label><input type="text" id="lbl-nav-favorites"></div>
-    </div>
-    <div class="row">
-      <div><label>Отзывы</label><input type="text" id="lbl-nav-reviews"></div>
-      <div><label>Статистика</label><input type="text" id="lbl-nav-stats"></div>
-    </div>
-    <div class="row">
-      <div><label>Тир-лист</label><input type="text" id="lbl-nav-tierlist"></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Подписи статусов (вкладка «Главная»)</h2>
-    <div class="row">
-      <div><label>В процессе</label><input type="text" id="lbl-status-current"></div>
-      <div><label>Отложено</label><input type="text" id="lbl-status-onhold"></div>
-    </div>
-    <div class="row">
-      <div><label>Планирую</label><input type="text" id="lbl-status-planning"></div>
-      <div><label>Архив</label><input type="text" id="lbl-status-archive"></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Подписи оценок</h2>
-    <div class="row">
-      <div><label>Резонанс</label><input type="text" id="lbl-grade-rezonans"></div>
-      <div><label>Эталон</label><input type="text" id="lbl-grade-etalon"></div>
-    </div>
-    <div class="row">
-      <div><label>Отлично</label><input type="text" id="lbl-grade-vyskazyvanie"></div>
-      <div><label>Аттракцион</label><input type="text" id="lbl-grade-attrakcion"></div>
-    </div>
-    <div class="row">
-      <div><label>Фоновый шум</label><input type="text" id="lbl-grade-fon"></div>
-      <div><label>Брак</label><input type="text" id="lbl-grade-brak"></div>
-    </div>
-    <div class="row">
-      <div><label>Разочарование</label><input type="text" id="lbl-grade-razocharo"></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Подписи типов</h2>
-    <div class="row">
-      <div><label>Аниме</label><input type="text" id="lbl-type-anime"></div>
-      <div><label>Манга</label><input type="text" id="lbl-type-manga"></div>
-    </div>
-    <div class="row">
-      <div><label>Манхва</label><input type="text" id="lbl-type-manhwa"></div>
-      <div><label>Маньхуа</label><input type="text" id="lbl-type-manhua"></div>
-    </div>
-    <div class="row">
-      <div><label>Ранобэ</label><input type="text" id="lbl-type-novel"></div>
-      <div><label>Фильм</label><input type="text" id="lbl-type-movie"></div>
-    </div>
-    <div class="row">
-      <div><label>Сериал</label><input type="text" id="lbl-type-show"></div>
-      <div><label>Дорама</label><input type="text" id="lbl-type-dorama"></div>
-    </div>
-    <div class="row">
-      <div><label>Книга</label><input type="text" id="lbl-type-book"></div>
-      <div><label>Игра</label><input type="text" id="lbl-type-game"></div>
-    </div>
-    <div class="row">
-      <div><label>Гача</label><input type="text" id="lbl-type-gacha"></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Свои теги</h2>
-    <p class="intro" style="margin-bottom:14px;">Появятся в форме добавления отзыва вместе со встроенными.</p>
-    <div class="row">
-      <div><label>Название тега</label><input type="text" id="newTagName" placeholder="Например: Крутой саундтрек"></div>
-      <div>
-        <label>Категория</label>
-        <select id="newTagCat">
-          <option value="visual">Визуал / звук</option>
-          <option value="plot">Сюжет / нарратив</option>
-          <option value="chars">Персонажи / мир</option>
-          <option value="special" selected>Атмосфера / эмоции</option>
-          <option value="genre">Жанр</option>
-        </select>
+      <h2 class="section-h">Подписи статусов (вкладка «Главная»)</h2>
+      <div class="row">
+        <div><label>В процессе</label><input type="text" id="lbl-status-current"></div>
+        <div><label>Отложено</label><input type="text" id="lbl-status-onhold"></div>
       </div>
+      <div class="row">
+        <div><label>Планирую</label><input type="text" id="lbl-status-planning"></div>
+        <div><label>Архив</label><input type="text" id="lbl-status-archive"></div>
+      </div>
+      <p class="panel-intro" style="margin-top:10px;">Добавление совсем новых статусов сверх этих четырёх — отдельная задача, обсудим отдельно.</p>
+      <button onclick="saveSettings()">Сохранить</button>
     </div>
-    <label>Подсказка (необязательно)</label>
-    <input type="text" id="newTagTip" placeholder="Короткое пояснение, что значит тег">
-    <button class="secondary" onclick="addCustomTag()">+ Добавить тег</button>
-    <div id="customTagsList" style="margin-top:14px;"></div>
-  </section>
 
-  <button onclick="saveSettings()">Сохранить настройки</button>
-  <div id="status"></div>
+    <div class="panel" id="panel-stats">
+      <p class="panel-intro">Что показывать на вкладке "Статистика".</p>
+      <div class="row">
+        <div><label><input type="checkbox" id="stat-counters" style="width:auto;margin-right:6px;">По типам (цифры)</label></div>
+        <div><label><input type="checkbox" id="stat-donut" style="width:auto;margin-right:6px;">По типам (диаграмма)</label></div>
+      </div>
+      <div class="row">
+        <div><label><input type="checkbox" id="stat-watch-bars" style="width:auto;margin-right:6px;">По годам просмотра</label></div>
+        <div><label><input type="checkbox" id="stat-release-bars" style="width:auto;margin-right:6px;">По годам выхода</label></div>
+      </div>
+      <div class="row">
+        <div><label><input type="checkbox" id="stat-grades" style="width:auto;margin-right:6px;">Распределение оценок</label></div>
+        <div><label><input type="checkbox" id="stat-rewatch" style="width:auto;margin-right:6px;">Пересмотры</label></div>
+      </div>
+      <div class="row">
+        <div><label><input type="checkbox" id="stat-tags" style="width:auto;margin-right:6px;">Облако тегов</label></div>
+        <div><label><input type="checkbox" id="stat-spotlight" style="width:auto;margin-right:6px;">Топ тайтлы года</label></div>
+      </div>
+      <button onclick="saveSettings()">Сохранить</button>
+      <div class="status-msg" id="status-stats"></div>
+    </div>
 
-  <section style="margin-top: 40px;">
-    <h2>Добавить картинки персонажей</h2>
-    <label>Существующая папка (тайтл)</label>
-    <select id="existingFolder"><option value="">— выбрать —</option></select>
-    <label>Или новая папка (название тайтла)</label>
-    <input type="text" id="newFolder" placeholder="Например: Neural Cloud">
-    <label>Файлы</label>
-    <input type="file" id="fileInput" accept="image/*" multiple>
-    <button onclick="uploadImages()">Загрузить и опубликовать</button>
-    <div id="imgStatus"></div>
-  </section>
+    <div class="panel" id="panel-types">
+      <p class="panel-intro">Переименуй, удали или добавь новый тип. Удаление не трогает уже сохранённые тайтлы этого типа — они просто перестанут появляться в фильтрах по названию.</p>
+      <div id="typesList"></div>
+      <div class="row" style="margin-top:16px;">
+        <div><label>Новый тип</label><input type="text" id="newTypeName" placeholder="Например: Артбук"></div>
+      </div>
+      <button class="secondary" onclick="addCustomType()">+ Добавить тип</button>
+      <button onclick="saveSettings()">Сохранить</button>
+      <div class="status-msg" id="status-types"></div>
+    </div>
+
+    <div class="panel" id="panel-grades">
+      <p class="panel-intro">
+        Сейчас переименование — полноценная замена системы оценок (10-балльная,
+        звёзды и т.д.) требует более глубокой переработки тир-листа и статистики,
+        обсудим это отдельно, когда дойдём.
+      </p>
+      <div class="row">
+        <div><label>Резонанс</label><input type="text" id="lbl-grade-rezonans"></div>
+        <div><label>Эталон</label><input type="text" id="lbl-grade-etalon"></div>
+      </div>
+      <div class="row">
+        <div><label>Отлично</label><input type="text" id="lbl-grade-vyskazyvanie"></div>
+        <div><label>Аттракцион</label><input type="text" id="lbl-grade-attrakcion"></div>
+      </div>
+      <div class="row">
+        <div><label>Фоновый шум</label><input type="text" id="lbl-grade-fon"></div>
+        <div><label>Брак</label><input type="text" id="lbl-grade-brak"></div>
+      </div>
+      <div class="row">
+        <div><label>Разочарование</label><input type="text" id="lbl-grade-razocharo"></div>
+      </div>
+      <button onclick="saveSettings()">Сохранить</button>
+      <div class="status-msg" id="status-grades"></div>
+    </div>
+
+    <div class="panel" id="panel-tags">
+      <h2 class="section-h">Категории тегов</h2>
+      <p class="panel-intro">Переименуй встроенные или добавь свою (с любым цветом).</p>
+      <div class="row">
+        <div><label>Визуал / звук</label><input type="text" id="lbl-cat-visual"></div>
+        <div><label>Сюжет / нарратив</label><input type="text" id="lbl-cat-plot"></div>
+      </div>
+      <div class="row">
+        <div><label>Персонажи / мир</label><input type="text" id="lbl-cat-chars"></div>
+        <div><label>Атмосфера / эмоции</label><input type="text" id="lbl-cat-special"></div>
+      </div>
+      <div class="row">
+        <div><label>Жанр</label><input type="text" id="lbl-cat-genre"></div>
+      </div>
+
+      <div id="customCatsList" style="margin-top:10px;"></div>
+      <div class="row" style="margin-top:10px;">
+        <div><label>Новая категория</label><input type="text" id="newCatName" placeholder="Например: Технические детали"></div>
+        <div style="flex:0 0 80px;"><label>Цвет</label><input type="color" id="newCatColor" value="#8b1a1a"></div>
+      </div>
+      <button class="secondary" onclick="addCustomCategory()">+ Добавить категорию</button>
+
+      <h2 class="section-h">Свои теги</h2>
+      <p class="panel-intro">Появятся в форме добавления отзыва вместе со встроенными.</p>
+      <div class="row">
+        <div><label>Название тега</label><input type="text" id="newTagName" placeholder="Например: Крутой саундтрек"></div>
+        <div>
+          <label>Категория</label>
+          <select id="newTagCat"></select>
+        </div>
+      </div>
+      <label>Подсказка (необязательно)</label>
+      <input type="text" id="newTagTip" placeholder="Короткое пояснение, что значит тег">
+      <button class="secondary" onclick="addCustomTag()">+ Добавить тег</button>
+      <div id="customTagsList" style="margin-top:14px;"></div>
+
+      <button onclick="saveSettings()">Сохранить всё</button>
+      <div class="status-msg" id="status-tags"></div>
+    </div>
+
+    <div class="panel" id="panel-images">
+      <p class="panel-intro">Выбери папку тайтла и файлы — уменьшатся и сконвертируются в WebP автоматически.</p>
+      <label>Существующая папка (тайтл)</label>
+      <select id="existingFolder"><option value="">— выбрать —</option></select>
+      <label>Или новая папка (название тайтла)</label>
+      <input type="text" id="newFolder" placeholder="Например: Neural Cloud">
+      <label>Файлы</label>
+      <input type="file" id="fileInput" accept="image/*" multiple>
+      <button onclick="uploadImages()">Загрузить и опубликовать</button>
+      <div class="status-msg" id="imgStatus"></div>
+    </div>
+  </main>
 </div>
 
 <script>
   if (typeof isAdmin === "function" && !isAdmin()) {
     document.getElementById("locked").classList.remove("hidden");
-    document.getElementById("content").style.display = "none";
+  } else {
+    document.getElementById("app").classList.remove("hidden");
+  }
+
+  document.querySelectorAll(".side-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".side-tab").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(`panel-${btn.dataset.panel}`).classList.add("active");
+    });
+  });
+
+  function flashStatus(id, ok, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color = ok ? "var(--green)" : "var(--red-hi)";
   }
 
   const THEMES = [
@@ -250,9 +289,96 @@
     { id: "emerald",  label: "Глубокий изумруд" },
   ];
   let selectedTheme = "classic";
-  let customTags = {};
 
-  const CAT_LABELS = { visual: "Визуал", plot: "Сюжет", chars: "Персонажи", special: "Атмосфера", genre: "Жанр" };
+  function renderThemeGrid() {
+    const grid = document.getElementById("themeGrid");
+    grid.innerHTML = THEMES.map(t =>
+      `<div class="theme-option${t.id === selectedTheme ? " selected" : ""}" data-theme="${t.id}">${t.label}</div>`
+    ).join("");
+    grid.querySelectorAll(".theme-option").forEach(el => {
+      el.onclick = () => { selectedTheme = el.dataset.theme; renderThemeGrid(); };
+    });
+  }
+
+  const TAB_DEFS = [
+    { id: "now", def: "Главная" },
+    { id: "favorites", def: "Любимое" },
+    { id: "reviews", def: "Отзывы" },
+    { id: "stats", def: "Статистика" },
+    { id: "tierlist", def: "Тир-лист" },
+  ];
+  let tabLabels = {};
+  let hiddenTabsState = new Set();
+
+  function renderTabsList() {
+    const container = document.getElementById("tabsList");
+    container.innerHTML = TAB_DEFS.map(t => `
+      <div class="tab-row" id="tabrow-${t.id}">
+        <input type="checkbox" id="showtab-${t.id}" ${hiddenTabsState.has(t.id) ? "" : "checked"}
+          onchange="hiddenTabsState.has('${t.id}') ? hiddenTabsState.delete('${t.id}') : hiddenTabsState.add('${t.id}')">
+        <span class="tab-name" id="tabname-${t.id}">${(tabLabels[t.id] || t.def)}</span>
+        <input type="text" id="tabinput-${t.id}" value="${(tabLabels[t.id] || t.def)}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleTabEdit('${t.id}')">✎</button>
+      </div>
+    `).join("");
+  }
+
+  function toggleTabEdit(id) {
+    const row = document.getElementById(`tabrow-${id}`);
+    const editing = row.classList.toggle("editing");
+    if (!editing) {
+      const val = document.getElementById(`tabinput-${id}`).value.trim();
+      const def = TAB_DEFS.find(t => t.id === id).def;
+      tabLabels[id] = val || def;
+      document.getElementById(`tabname-${id}`).textContent = tabLabels[id];
+    }
+  }
+
+  let customCategories = {};
+
+  function renderCustomCatsList() {
+    const container = document.getElementById("customCatsList");
+    const entries = Object.entries(customCategories);
+    container.innerHTML = entries.map(([key, meta]) => `
+      <div class="list-row">
+        <span style="width:14px;height:14px;border-radius:3px;background:${meta.color};flex-shrink:0;"></span>
+        <span class="name">${meta.label}</span>
+        <button class="icon-btn" onclick="removeCustomCategory('${key}')">✕</button>
+      </div>
+    `).join("");
+  }
+
+  function addCustomCategory() {
+    const name = document.getElementById("newCatName").value.trim();
+    const color = document.getElementById("newCatColor").value;
+    if (!name) return;
+    const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+    customCategories[key] = { label: name, color };
+    document.getElementById("newCatName").value = "";
+    renderCustomCatsList();
+    renderTagCatOptions();
+  }
+
+  function removeCustomCategory(key) {
+    delete customCategories[key];
+    renderCustomCatsList();
+    renderTagCatOptions();
+  }
+
+  function renderTagCatOptions() {
+    const select = document.getElementById("newTagCat");
+    const builtIn = [
+      ["visual", document.getElementById("lbl-cat-visual").value || "Визуал / звук"],
+      ["plot", document.getElementById("lbl-cat-plot").value || "Сюжет / нарратив"],
+      ["chars", document.getElementById("lbl-cat-chars").value || "Персонажи / мир"],
+      ["special", document.getElementById("lbl-cat-special").value || "Атмосфера / эмоции"],
+      ["genre", document.getElementById("lbl-cat-genre").value || "Жанр"],
+    ];
+    const custom = Object.entries(customCategories).map(([key, meta]) => [key, meta.label]);
+    select.innerHTML = [...builtIn, ...custom].map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
+  }
+
+  let customTags = {};
 
   function renderCustomTagsList() {
     const container = document.getElementById("customTagsList");
@@ -261,10 +387,14 @@
       container.innerHTML = `<div style="color:var(--text-dim);font-size:.85rem;">Своих тегов пока нет</div>`;
       return;
     }
+    const catLabel = (key) => {
+      const opt = document.querySelector(`#newTagCat option[value="${key}"]`);
+      return opt ? opt.textContent : key;
+    };
     container.innerHTML = entries.map(([name, meta]) => `
-      <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);">
-        <span style="flex:1;">${name} <span style="color:var(--text-dim);font-size:.8rem;">(${CAT_LABELS[meta.cat] || meta.cat})</span></span>
-        <button class="secondary" style="margin:0;padding:4px 10px;" onclick="removeCustomTag('${name.replace(/'/g, "\\'")}')">Удалить</button>
+      <div class="list-row">
+        <span class="name">${name} <span class="tag-note">(${catLabel(meta.cat)})</span></span>
+        <button class="icon-btn" onclick="removeCustomTag('${name.replace(/'/g, "\\'")}')">✕</button>
       </div>
     `).join("");
   }
@@ -285,14 +415,50 @@
     renderCustomTagsList();
   }
 
-  function renderThemeGrid() {
-    const grid = document.getElementById("themeGrid");
-    grid.innerHTML = THEMES.map(t =>
-      `<div class="theme-option${t.id === selectedTheme ? " selected" : ""}" data-theme="${t.id}">${t.label}</div>`
-    ).join("");
-    grid.querySelectorAll(".theme-option").forEach(el => {
-      el.onclick = () => { selectedTheme = el.dataset.theme; renderThemeGrid(); };
-    });
+  const BUILTIN_TYPE_DEFAULTS = {
+    anime: "Аниме", manga: "Манга", manhwa: "Манхва", manhua: "Маньхуа",
+    novel: "Ранобэ", movie: "Фильм", show: "Сериал", dorama: "Дорама",
+    book: "Книга", game: "Игра", gacha: "Гача",
+  };
+  let typeLabels = {};
+  let hiddenTypes = new Set();
+  let customTypeKeys = new Set();
+
+  function renderTypesList() {
+    const container = document.getElementById("typesList");
+    const allKeys = Object.keys(typeLabels);
+    container.innerHTML = allKeys.map(key => {
+      const isCustom = customTypeKeys.has(key);
+      const isHidden = hiddenTypes.has(key);
+      return `
+      <div class="list-row" style="${isHidden ? "opacity:.4;" : ""}">
+        <input type="text" style="flex:1;" id="type-input-${key}" value="${typeLabels[key]}" ${isHidden ? "disabled" : ""}>
+        <button class="icon-btn" title="${isHidden ? "Показать" : "Скрыть"}" onclick="toggleTypeHidden('${key}')">${isHidden ? "👁" : "🚫"}</button>
+        ${isCustom ? `<button class="icon-btn" title="Удалить совсем" onclick="deleteCustomType('${key}')">✕</button>` : ""}
+      </div>`;
+    }).join("");
+  }
+
+  function toggleTypeHidden(key) {
+    if (hiddenTypes.has(key)) hiddenTypes.delete(key); else hiddenTypes.add(key);
+    renderTypesList();
+  }
+
+  function deleteCustomType(key) {
+    delete typeLabels[key];
+    customTypeKeys.delete(key);
+    hiddenTypes.delete(key);
+    renderTypesList();
+  }
+
+  function addCustomType() {
+    const name = document.getElementById("newTypeName").value.trim();
+    if (!name) return;
+    const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+    typeLabels[key] = name;
+    customTypeKeys.add(key);
+    document.getElementById("newTypeName").value = "";
+    renderTypesList();
   }
 
   async function loadCurrentSettings() {
@@ -307,20 +473,17 @@
     document.getElementById("accent").value = settings.customAccent || "#8b1a1a";
 
     const labels = settings.labels || {};
-    const nav = labels.nav || {};
+    tabLabels = { ...(labels.nav || {}) };
+    hiddenTabsState = new Set(settings.hiddenTabs || []);
+    renderTabsList();
+
     const statuses = labels.statuses || {};
-    const grades = labels.grades || {};
-    const types = labels.types || {};
-    document.getElementById("lbl-nav-now").value = nav.now || "Главная";
-    document.getElementById("lbl-nav-favorites").value = nav.favorites || "Любимое";
-    document.getElementById("lbl-nav-reviews").value = nav.reviews || "Отзывы";
-    document.getElementById("lbl-nav-stats").value = nav.stats || "Статистика";
-    document.getElementById("lbl-nav-tierlist").value = nav.tierlist || "Тир-лист";
     document.getElementById("lbl-status-current").value = statuses.current || "В процессе";
     document.getElementById("lbl-status-onhold").value = statuses.onhold || "Отложено";
     document.getElementById("lbl-status-planning").value = statuses.planning || "Планирую";
     document.getElementById("lbl-status-archive").value = statuses.archive || "Архив";
 
+    const grades = labels.grades || {};
     const gradeDefaults = {
       rezonans: "Резонанс", etalon: "Эталон", vyskazyvanie: "Отлично",
       attrakcion: "Аттракцион", fon: "Фоновый шум", brak: "Брак", razocharo: "Разочарование",
@@ -329,35 +492,42 @@
       document.getElementById(`lbl-grade-${key}`).value = grades[key] || def;
     }
 
-    const typeDefaults = {
-      anime: "Аниме", manga: "Манга", manhwa: "Манхва", manhua: "Маньхуа",
-      novel: "Ранобэ", movie: "Фильм", show: "Сериал", dorama: "Дорама",
-      book: "Книга", game: "Игра", gacha: "Гача",
-    };
-    for (const [key, def] of Object.entries(typeDefaults)) {
-      document.getElementById(`lbl-type-${key}`).value = types[key] || def;
-    }
-
     const hiddenStats = settings.hiddenStatsBlocks || [];
     ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"].forEach(key => {
       const el = document.getElementById(`stat-${key}`);
       if (el) el.checked = !hiddenStats.includes(key);
     });
 
+    typeLabels = { ...BUILTIN_TYPE_DEFAULTS, ...(settings.customTypes || {}) };
+    const typeOverrides = labels.types || {};
+    for (const [key, val] of Object.entries(typeOverrides)) {
+      if (typeLabels[key] !== undefined) typeLabels[key] = val;
+    }
+    customTypeKeys = new Set(Object.keys(settings.customTypes || {}));
+    hiddenTypes = new Set(settings.hiddenTypes || []);
+    renderTypesList();
+
+    const catOverrides = labels.categories || {};
+    document.getElementById("lbl-cat-visual").value = catOverrides.visual || "Визуал / звук";
+    document.getElementById("lbl-cat-plot").value = catOverrides.plot || "Сюжет / нарратив";
+    document.getElementById("lbl-cat-chars").value = catOverrides.chars || "Персонажи / мир";
+    document.getElementById("lbl-cat-special").value = catOverrides.special || "Атмосфера / эмоции";
+    document.getElementById("lbl-cat-genre").value = catOverrides.genre || "Жанр";
+    customCategories = settings.customCategories || {};
+    renderCustomCatsList();
+    renderTagCatOptions();
+
     customTags = settings.customTags || {};
     renderCustomTagsList();
-
-    const hidden = settings.hiddenTabs || [];
-    document.getElementById("show-now").checked = !hidden.includes("now");
-    document.getElementById("show-favorites").checked = !hidden.includes("favorites");
-    document.getElementById("show-reviews").checked = !hidden.includes("reviews");
-    document.getElementById("show-stats").checked = !hidden.includes("stats");
-    document.getElementById("show-tierlist").checked = !hidden.includes("tierlist");
   }
 
   async function saveSettings() {
-    const allTabs = ["now", "favorites", "reviews", "stats", "tierlist"];
-    const hiddenTabs = allTabs.filter((id) => !document.getElementById(`show-${id}`).checked);
+    TAB_DEFS.forEach(t => {
+      const row = document.getElementById(`tabrow-${t.id}`);
+      if (row && row.classList.contains("editing")) toggleTabEdit(t.id);
+    });
+
+    const hiddenTabs = TAB_DEFS.filter(t => !document.getElementById(`showtab-${t.id}`).checked).map(t => t.id);
 
     const statKeys = ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"];
     const hiddenStatsBlocks = statKeys.filter((key) => {
@@ -369,48 +539,62 @@
     const grades = {};
     for (const key of gradeKeys) grades[key] = document.getElementById(`lbl-grade-${key}`).value;
 
-    const typeKeys = ["anime","manga","manhwa","manhua","novel","movie","show","dorama","book","game","gacha"];
-    const types = {};
-    for (const key of typeKeys) types[key] = document.getElementById(`lbl-type-${key}`).value;
+    Object.keys(typeLabels).forEach(key => {
+      const input = document.getElementById(`type-input-${key}`);
+      if (input) typeLabels[key] = input.value;
+    });
+    const customTypes = {};
+    customTypeKeys.forEach(key => { if (typeLabels[key] !== undefined) customTypes[key] = typeLabels[key]; });
+    const typeRenames = {};
+    Object.keys(BUILTIN_TYPE_DEFAULTS).forEach(key => { typeRenames[key] = typeLabels[key]; });
+
+    const categories = {
+      visual: document.getElementById("lbl-cat-visual").value,
+      plot: document.getElementById("lbl-cat-plot").value,
+      chars: document.getElementById("lbl-cat-chars").value,
+      special: document.getElementById("lbl-cat-special").value,
+      genre: document.getElementById("lbl-cat-genre").value,
+    };
 
     const payload = {
       theme: selectedTheme,
       customAccent: document.getElementById("accent").value,
-      customTags: customTags,
-      hiddenTabs: hiddenTabs,
-      hiddenStatsBlocks: hiddenStatsBlocks,
+      customTags,
+      customCategories,
+      customTypes,
+      hiddenTypes: [...hiddenTypes],
+      hiddenTabs,
+      hiddenStatsBlocks,
       labels: {
-        nav: {
-          now: document.getElementById("lbl-nav-now").value,
-          favorites: document.getElementById("lbl-nav-favorites").value,
-          reviews: document.getElementById("lbl-nav-reviews").value,
-          stats: document.getElementById("lbl-nav-stats").value,
-          tierlist: document.getElementById("lbl-nav-tierlist").value,
-        },
+        nav: { ...tabLabels },
         statuses: {
           current: document.getElementById("lbl-status-current").value,
           onhold: document.getElementById("lbl-status-onhold").value,
           planning: document.getElementById("lbl-status-planning").value,
           archive: document.getElementById("lbl-status-archive").value,
         },
-        grades: grades,
-        types: types,
+        grades,
+        types: typeRenames,
+        categories,
       },
     };
 
-    const status = document.getElementById("status");
-    status.textContent = "Сохраняю...";
-    status.style.color = "var(--text-dim)";
+    const activePanel = document.querySelector(".panel.active").id.replace("panel-", "");
+    const statusId = `status-${activePanel}`;
+    flashStatus(statusId, true, "Сохраняю...");
 
-    const res = await fetch("/api/save-site-settings", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    status.textContent = data.ok ? "Сохранено ✓ (обнови страницу, чтобы увидеть изменения)" : "Ошибка: " + data.error;
-    status.style.color = data.ok ? "var(--green)" : "var(--red-hi)";
+    try {
+      const res = await fetch("/api/save-site-settings", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      flashStatus(statusId, data.ok, data.ok ? "Сохранено ✓ (обнови страницу на сайте, чтобы увидеть изменения)" : "Ошибка: " + data.error);
+    } catch (e) {
+      flashStatus(statusId, false, "Ошибка: " + e.message);
+    }
   }
 
   async function loadFolders() {
@@ -427,10 +611,6 @@
     } catch {}
   }
 
-  // Уменьшает и конвертирует картинку в WebP прямо в браузере — тот же
-  // стандарт, что уже используется во всём репозитории (макс. сторона
-  // 1200px, качество ~85). Конвертация на сервере невозможна: Cloudflare
-  // Functions не умеют работать с изображениями так, как это делает sharp.
   function convertToWebp(file) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -468,23 +648,13 @@
     const newFolder = document.getElementById("newFolder").value.trim();
     const folder = newFolder || existing;
     const files = document.getElementById("fileInput").files;
-    const status = document.getElementById("imgStatus");
 
-    if (!folder) {
-      status.textContent = "Выбери папку или впиши новую";
-      status.style.color = "var(--red-hi)";
-      return;
-    }
-    if (!files.length) {
-      status.textContent = "Выбери хотя бы один файл";
-      status.style.color = "var(--red-hi)";
-      return;
-    }
+    if (!folder) return flashStatus("imgStatus", false, "Выбери папку или впиши новую");
+    if (!files.length) return flashStatus("imgStatus", false, "Выбери хотя бы один файл");
 
     let done = 0, failed = 0;
     for (const file of files) {
-      status.textContent = `Обрабатываю ${done + failed + 1} из ${files.length}...`;
-      status.style.color = "var(--text-dim)";
+      flashStatus("imgStatus", true, `Обрабатываю ${done + failed + 1} из ${files.length}...`);
       try {
         const base64 = await convertToWebp(file);
         const filename = file.name.replace(/\.[^.]+$/, "") + ".webp";
@@ -500,9 +670,7 @@
         failed++;
       }
     }
-
-    status.textContent = `Готово: загружено ${done}, ошибок ${failed}.`;
-    status.style.color = failed ? "var(--red-hi)" : "var(--green)";
+    flashStatus("imgStatus", !failed, `Готово: загружено ${done}, ошибок ${failed}.`);
   }
 
   loadCurrentSettings();
