@@ -386,9 +386,11 @@ function renderTagCloud(topTags) {
   const max = topTags[0][1];
   const items = topTags.map(([tag, cnt]) => {
     const info  = TAGS_MAP[tag];
-    const cls   = info ? TAG_CAT_CLASS[info.cat] : "rtag-special";
+    const customColor = info && CAT_COLORS[info.cat];
+    const cls   = customColor ? "rtag-custom" : (info ? TAG_CAT_CLASS[info.cat] : "rtag-special");
+    const styleAttr = customColor ? `--tag-color:${customColor};` : "";
     const scale = 0.8 + (cnt / max) * 0.7;
-    return `<span class="rtag ${cls} stat-tag" style="font-size:${scale.toFixed(2)}rem"
+    return `<span class="rtag ${cls} stat-tag" style="${styleAttr}font-size:${scale.toFixed(2)}rem"
       data-tip="${esc(info?.tip || "")}">${esc(tag)} <span class="stat-tag-cnt">${cnt}</span></span>`;
   }).join("");
   return `<section class="stat-section">
