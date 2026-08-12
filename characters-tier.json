@@ -1108,6 +1108,10 @@
               {
                 "name": "Camille",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Camille.webp"
+              },
+              {
+                "name": "Arcane",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Arcane.webp"
               }
             ]
           },
@@ -1187,6 +1191,10 @@
             "name": "D",
             "color": "#6b7280",
             "chars": [
+              {
+                "name": "Liino",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Liino.webp"
+              },
               {
                 "name": "Mi_Fu",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Arknights%20Endfield/Mi_Fu.webp"
