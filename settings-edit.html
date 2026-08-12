@@ -95,6 +95,15 @@
   .tab-row input[type="text"] { flex: 1; display: none; }
   .tab-row.editing .tab-name { display: none; }
   .tab-row.editing input[type="text"] { display: block; }
+
+  .shelf-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+  }
+  .shelf-row input[type="text"] { flex: 1.4; }
+  .shelf-row input[type="number"] { width: 64px; flex: none; }
+  .shelf-row input[type="color"] { width: 34px; height: 34px; flex: none; }
+  .shelf-row .rng { color: var(--text-dim); font-size: .8rem; }
 </style>
 </head>
 <body>
@@ -181,27 +190,42 @@
     </div>
 
     <div class="panel" id="panel-grades">
-      <p class="panel-intro">
-        Сейчас переименование — полноценная замена системы оценок (10-балльная,
-        звёзды и т.д.) требует более глубокой переработки тир-листа и статистики,
-        обсудим это отдельно, когда дойдём.
-      </p>
-      <div class="row">
-        <div><label>Резонанс</label><input type="text" id="lbl-grade-rezonans"></div>
-        <div><label>Эталон</label><input type="text" id="lbl-grade-etalon"></div>
+      <p class="panel-intro">Тип шкалы влияет на то, как выглядит поле оценки в форме добавления и как тайтлы раскладываются по тир-листу.</p>
+
+      <div class="theme-grid" id="scaleTypeGrid"></div>
+
+      <div id="categoricalBlock">
+        <h2 class="section-h">Названия полок</h2>
+        <div class="row">
+          <div><label>Резонанс</label><input type="text" id="lbl-grade-rezonans"></div>
+          <div><label>Эталон</label><input type="text" id="lbl-grade-etalon"></div>
+        </div>
+        <div class="row">
+          <div><label>Отлично</label><input type="text" id="lbl-grade-vyskazyvanie"></div>
+          <div><label>Аттракцион</label><input type="text" id="lbl-grade-attrakcion"></div>
+        </div>
+        <div class="row">
+          <div><label>Фоновый шум</label><input type="text" id="lbl-grade-fon"></div>
+          <div><label>Брак</label><input type="text" id="lbl-grade-brak"></div>
+        </div>
+        <div class="row">
+          <div><label>Разочарование</label><input type="text" id="lbl-grade-razocharo"></div>
+        </div>
       </div>
-      <div class="row">
-        <div><label>Отлично</label><input type="text" id="lbl-grade-vyskazyvanie"></div>
-        <div><label>Аттракцион</label><input type="text" id="lbl-grade-attrakcion"></div>
+
+      <div id="numericBlock" style="display:none;">
+        <h2 class="section-h">Диапазон</h2>
+        <div class="row">
+          <div style="flex:0 0 140px;"><label id="numericMaxLabel">Максимум</label><input type="number" id="numericMax" min="2" max="1000" value="10"></div>
+        </div>
+
+        <h2 class="section-h">Полки (от лучшей к худшей)</h2>
+        <p class="panel-intro">Каждая полка — диапазон значений с названием и цветом. Именно эти полки станут строками тир-листа.</p>
+        <div id="shelvesList"></div>
+        <button class="secondary" onclick="addShelfRow()">+ Добавить полку</button>
       </div>
-      <div class="row">
-        <div><label>Фоновый шум</label><input type="text" id="lbl-grade-fon"></div>
-        <div><label>Брак</label><input type="text" id="lbl-grade-brak"></div>
-      </div>
-      <div class="row">
-        <div><label>Разочарование</label><input type="text" id="lbl-grade-razocharo"></div>
-      </div>
-      <button onclick="saveSettings()">Сохранить</button>
+
+      <button onclick="saveSettings()" style="margin-top:20px;">Сохранить</button>
       <div class="status-msg" id="status-grades"></div>
     </div>
 
@@ -280,6 +304,78 @@
     if (!el) return;
     el.textContent = msg;
     el.style.color = ok ? "var(--green)" : "var(--red-hi)";
+  }
+
+  // ── Шкала оценок ──
+  const SCALE_TYPES = [
+    { id: "categorical", label: "Названия (как сейчас)" },
+    { id: "numeric",     label: "Числа" },
+    { id: "stars",       label: "Звёзды" },
+  ];
+  let scaleType = "categorical";
+  let shelves = []; // [{key, name, color, min, max}]
+
+  const DEFAULT_SHELF_COLORS = ["#7c3aed","#2563a8","#2d8a4e","#d4a017","#6b7280","#c0392b","#8B6914"];
+
+  function renderScaleTypeGrid() {
+    const grid = document.getElementById("scaleTypeGrid");
+    grid.innerHTML = SCALE_TYPES.map(t =>
+      `<div class="theme-option${t.id === scaleType ? " selected" : ""}" data-scale="${t.id}">${t.label}</div>`
+    ).join("");
+    grid.querySelectorAll(".theme-option").forEach(el => {
+      el.onclick = () => {
+        scaleType = el.dataset.scale;
+        if (scaleType !== "categorical" && !shelves.length) seedDefaultShelves();
+        renderScaleTypeGrid();
+        updateScaleBlocks();
+      };
+    });
+    document.getElementById("numericMaxLabel").textContent = scaleType === "stars" ? "Сколько звёзд" : "Максимум";
+  }
+
+  function updateScaleBlocks() {
+    document.getElementById("categoricalBlock").style.display = scaleType === "categorical" ? "" : "none";
+    document.getElementById("numericBlock").style.display = scaleType === "categorical" ? "none" : "";
+    if (scaleType !== "categorical") renderShelvesList();
+  }
+
+  function seedDefaultShelves() {
+    const max = Number(document.getElementById("numericMax").value) || (scaleType === "stars" ? 5 : 10);
+    const names = ["Резонанс","Эталон","Отлично","Аттракцион","Фоновый шум","Брак","Разочарование"];
+    const n = Math.min(names.length, max);
+    const step = max / n;
+    shelves = [];
+    for (let i = 0; i < n; i++) {
+      const hi = Math.round(max - i * step);
+      const lo = i === n - 1 ? 1 : Math.round(max - (i + 1) * step) + 1;
+      shelves.push({ key: "shelf_" + (i + 1), name: names[i], color: DEFAULT_SHELF_COLORS[i], min: lo, max: hi });
+    }
+  }
+
+  function renderShelvesList() {
+    const container = document.getElementById("shelvesList");
+    container.innerHTML = shelves.map((s, i) => `
+      <div class="shelf-row">
+        <input type="color" value="${s.color}" onchange="shelves[${i}].color=this.value">
+        <input type="text" value="${s.name}" onchange="shelves[${i}].name=this.value" placeholder="Название">
+        <span class="rng">от</span>
+        <input type="number" value="${s.min}" onchange="shelves[${i}].min=Number(this.value)">
+        <span class="rng">до</span>
+        <input type="number" value="${s.max}" onchange="shelves[${i}].max=Number(this.value)">
+        <button class="icon-btn" onclick="removeShelfRow(${i})">✕</button>
+      </div>
+    `).join("");
+  }
+
+  function addShelfRow() {
+    const max = Number(document.getElementById("numericMax").value) || 10;
+    shelves.push({ key: "shelf_" + Date.now().toString(36).slice(-5), name: "Новая полка", color: "#8b1a1a", min: 1, max });
+    renderShelvesList();
+  }
+
+  function removeShelfRow(i) {
+    shelves.splice(i, 1);
+    renderShelvesList();
   }
 
   const THEMES = [
@@ -492,6 +588,13 @@
       document.getElementById(`lbl-grade-${key}`).value = grades[key] || def;
     }
 
+    const gradeScale = settings.gradeScale || null;
+    scaleType = gradeScale?.type || "categorical";
+    shelves = gradeScale?.shelves ? JSON.parse(JSON.stringify(gradeScale.shelves)) : [];
+    document.getElementById("numericMax").value = gradeScale?.numericMax || (scaleType === "stars" ? 5 : 10);
+    renderScaleTypeGrid();
+    updateScaleBlocks();
+
     const hiddenStats = settings.hiddenStatsBlocks || [];
     ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"].forEach(key => {
       const el = document.getElementById(`stat-${key}`);
@@ -556,6 +659,10 @@
       genre: document.getElementById("lbl-cat-genre").value,
     };
 
+    const gradeScale = scaleType === "categorical"
+      ? { type: "categorical" }
+      : { type: scaleType, numericMax: Number(document.getElementById("numericMax").value) || 10, shelves };
+
     const payload = {
       theme: selectedTheme,
       customAccent: document.getElementById("accent").value,
@@ -565,6 +672,7 @@
       hiddenTypes: [...hiddenTypes],
       hiddenTabs,
       hiddenStatsBlocks,
+      gradeScale,
       labels: {
         nav: { ...tabLabels },
         statuses: {
