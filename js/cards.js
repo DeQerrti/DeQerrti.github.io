@@ -17,8 +17,9 @@ function findReviewForTitle(title, type) {
       ?? cache.reviews.find(r => normTitle(r.title) === norm)
     : cache.reviews.find(r => normTitle(r.title) === norm);
   if (!found) return null;
-  const grade = GRADES[found.grade] || null;
-  const score = gradeScore(found.grade);
+  const shelf = gradeToShelf(found.grade);
+  const grade = GRADES[shelf] || null;
+  const score = gradeScore(shelf);
   return grade ? { grade, score } : null;
 }
 
