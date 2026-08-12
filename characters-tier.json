@@ -1286,6 +1286,10 @@
               {
                 "name": "Ramona",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Ramona.webp"
+              },
+              {
+                "name": "Pontos",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Pontos.webp"
               }
             ]
           },
@@ -1293,6 +1297,10 @@
             "name": "B",
             "color": "#2d8a4e",
             "chars": [
+              {
+                "name": "Lotan Cetarchon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Lotan%20Cetarchon.webp"
+              },
               {
                 "name": "Horla",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Morimens/Horla.webp"
