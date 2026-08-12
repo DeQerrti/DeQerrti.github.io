@@ -425,24 +425,80 @@ function updateDateFields() {
   }
 }
 
-// ── Оценки — из GRADE_ORDER + GRADES (config.js) ──
+// ── Оценки — вид зависит от шкалы, настроенной в /settings-edit ──
 const gradesGrid = document.getElementById("grades-grid");
-for (const key of GRADE_ORDER) {
-  const g = GRADES[key];
-  const btn = document.createElement("button");
-  btn.className = "grade-btn";
-  btn.textContent = g.name;
-  btn.style.color = g.color;
-  btn.style.borderColor = g.color + "55";
-  btn.title = g.desc || "";
-  btn.dataset.key = key;
-  btn.onclick = () => {
-    selectedGrade = selectedGrade === key ? null : key;
-    document.querySelectorAll(".grade-btn").forEach(b =>
-      b.classList.toggle("active", b.dataset.key === selectedGrade));
+
+function renderGradeInput() {
+  const scale = window.SITE_GRADE_SCALE;
+  gradesGrid.innerHTML = "";
+
+  if (!scale || scale.type === "categorical") {
+    for (const key of GRADE_ORDER) {
+      const g = GRADES[key];
+      const btn = document.createElement("button");
+      btn.className = "grade-btn";
+      btn.textContent = g.name;
+      btn.style.color = g.color;
+      btn.style.borderColor = g.color + "55";
+      btn.title = g.desc || "";
+      btn.dataset.key = key;
+      btn.classList.toggle("active", key === selectedGrade);
+      btn.onclick = () => {
+        selectedGrade = selectedGrade === key ? null : key;
+        renderGradeInput();
+      };
+      gradesGrid.appendChild(btn);
+    }
+    return;
+  }
+
+  if (scale.type === "stars") {
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "display:flex;gap:6px;align-items:center;";
+    for (let i = 1; i <= (scale.numericMax || 5); i++) {
+      const star = document.createElement("span");
+      star.textContent = selectedGrade && i <= Number(selectedGrade) ? "★" : "☆";
+      star.style.cssText = "cursor:pointer;font-size:1.6rem;color:var(--red);";
+      star.onclick = () => { selectedGrade = selectedGrade === i ? null : i; renderGradeInput(); };
+      wrap.appendChild(star);
+    }
+    gradesGrid.appendChild(wrap);
+    const shelf = GRADES[gradeToShelf(selectedGrade)];
+    if (shelf) {
+      const note = document.createElement("div");
+      note.style.cssText = `color:${shelf.color};font-size:.8rem;margin-top:6px;`;
+      note.textContent = shelf.name;
+      gradesGrid.appendChild(note);
+    }
+    return;
+  }
+
+  // numeric (5/10/100-балльная и т.п.)
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = 1;
+  input.max = scale.numericMax || 10;
+  input.value = selectedGrade ?? "";
+  input.style.cssText = "width:100px;";
+  input.oninput = () => {
+    selectedGrade = input.value === "" ? null : Number(input.value);
+    renderShelfPreview();
   };
-  gradesGrid.appendChild(btn);
+  gradesGrid.appendChild(input);
+  const preview = document.createElement("div");
+  preview.id = "grade-shelf-preview";
+  preview.style.cssText = "font-size:.8rem;margin-top:6px;";
+  gradesGrid.appendChild(preview);
+
+  function renderShelfPreview() {
+    const shelf = GRADES[gradeToShelf(selectedGrade)];
+    preview.style.color = shelf ? shelf.color : "var(--text-dim)";
+    preview.textContent = shelf ? shelf.name : "";
+  }
+  renderShelfPreview();
 }
+renderGradeInput();
+document.addEventListener("tags-map-updated", renderGradeInput);
 
 // ── Теги — из TAGS_MAP (config.js) ─────────────
 const tagsGrid = document.getElementById("tags-grid");
@@ -512,9 +568,8 @@ function fillForm(r) {
   updatePreview();
   previewCover(r.cover || "");
 
-  selectedGrade = r.grade || null;
-  document.querySelectorAll(".grade-btn").forEach(b =>
-    b.classList.toggle("active", b.dataset.key === selectedGrade));
+  selectedGrade = (r.grade !== undefined && r.grade !== null) ? r.grade : null;
+  renderGradeInput();
 
   selectedTags = new Set(r.tags || []);
   document.querySelectorAll(".tag-toggle").forEach(b =>
@@ -547,7 +602,7 @@ function resetToNew() {
   document.getElementById("cover-img").style.display = "none";
   selectedGrade = null;
   selectedTags.clear();
-  document.querySelectorAll(".grade-btn").forEach(b => b.classList.remove("active"));
+  renderGradeInput();
   document.querySelectorAll(".tag-toggle").forEach(b => b.classList.remove("active"));
   document.getElementById("status").textContent = "";
   document.getElementById("status").className = "status-msg";
