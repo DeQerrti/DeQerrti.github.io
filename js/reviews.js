@@ -34,7 +34,6 @@ async function loadReviews() {
 
 // ── Порядок фильтров ───────────────────────────
 const TYPE_FILTER_ORDER   = ["anime","manga","manhwa","manhua","movie","show","dorama","game","gacha","book","novel"];
-const GRADE_FILTER_ORDER  = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
 const SOURCE_FILTER_ORDER = ["teletype"];
 
 function sortByOrder(arr, order) {
@@ -47,7 +46,7 @@ function sortByOrder(arr, order) {
 
 function renderReviews(reviews) {
   const types   = sortByOrder([...new Set(reviews.map(r => r.type).filter(Boolean))],   TYPE_FILTER_ORDER);
-  const grades  = sortByOrder([...new Set(reviews.map(r => r.grade).filter(Boolean))],  GRADE_FILTER_ORDER);
+  const grades  = sortByOrder([...new Set(reviews.map(r => gradeToShelf(r.grade)).filter(Boolean))],  GRADE_ORDER);
   const sources = sortByOrder([...new Set(
     reviews.flatMap(r => [r.source, r.source2]).filter(Boolean)
   )], SOURCE_FILTER_ORDER);
@@ -137,7 +136,7 @@ function applyRvFilters(reviews) {
     filtered = filtered.filter(r => r.type === rvState.type);
   }
   if (rvState.grade !== "all") {
-    filtered = filtered.filter(r => r.grade === rvState.grade);
+    filtered = filtered.filter(r => gradeToShelf(r.grade) === rvState.grade);
   }
   if (rvState.source !== "all") {
     filtered = filtered.filter(r =>
@@ -182,7 +181,7 @@ function rvBindCardClicks() {
 
 // ── Модальное окно с полным текстом отзыва ─────
 function reviewModalBodyHtml(r) {
-  const grade = GRADES[r.grade] || null;
+  const grade = GRADES[gradeToShelf(r.grade)] || null;
   const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
   const dateRaw = r.date_end || r.date_start || r.date || null;
   const dateStr = dateRaw
@@ -255,7 +254,7 @@ function sourceBtnHtml(url, source) {
 }
 
 function reviewCard(r, i) {
-  const grade = GRADES[r.grade] || null;
+  const grade = GRADES[gradeToShelf(r.grade)] || null;
 
   const tagsHtml = (r.tags || []).length
     ? `<div class="review-tags">
