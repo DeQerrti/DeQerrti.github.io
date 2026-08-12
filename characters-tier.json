@@ -252,30 +252,16 @@
         "label": "Как персонаж в сюжете",
         "tiers": [
           {
-            "name": "Раскрытие",
-            "color": "#7c3aed",
+            "name": "Отлично",
+            "color": "#2563a8",
             "chars": [
               {
                 "name": "Schneider",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Schneider.webp"
-              }
-            ]
-          },
-          {
-            "name": "Персонаж",
-            "color": "#2563a8",
-            "chars": [
-              {
-                "name": "Sonetto",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sonetto.webp"
               },
               {
-                "name": "Regulus",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Regulus.webp"
-              },
-              {
-                "name": "Druvis III",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Druvis%20III.webp"
+                "name": "Igor",
+                "img": "/chars/Reverse/Igor.webp"
               }
             ]
           },
@@ -284,8 +270,32 @@
             "color": "#2d8a4e",
             "chars": [
               {
+                "name": "Charon",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Charon.webp"
+              },
+              {
+                "name": "Marsha",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marsha.webp"
+              },
+              {
+                "name": "Regulus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Regulus.webp"
+              },
+              {
+                "name": "Sonetto",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sonetto.webp"
+              },
+              {
+                "name": "Druvis III",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Druvis%20III.webp"
+              },
+              {
                 "name": "Kakania",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Kakania.webp"
+              },
+              {
+                "name": "Moldir",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Moldir.webp"
               },
               {
                 "name": "Matilda",
@@ -314,6 +324,38 @@
               {
                 "name": "Lilya",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Lilya.webp"
+              },
+              {
+                "name": "Sentinel",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sentinel.webp"
+              },
+              {
+                "name": "Recoleta",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Recoleta.webp"
+              },
+              {
+                "name": "Lopera",
+                "img": "/chars/Reverse/Lopera.webp"
+              },
+              {
+                "name": "Ulrich",
+                "img": "/chars/Reverse/Ulrich.webp"
+              },
+              {
+                "name": "Nautika",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Nautika.webp"
+              },
+              {
+                "name": "Anjo Nala",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Anjo%20Nala.webp"
+              },
+              {
+                "name": "Aleph",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Aleph.webp"
+              },
+              {
+                "name": "Ms. Stranger",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Stranger.webp"
               }
             ]
           },
@@ -366,23 +408,26 @@
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Pickles.webp"
               },
               {
-                "name": "Ulrich",
-                "img": "/chars/Reverse/Ulrich.webp"
+                "name": "Mr. Duncan",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Mr.%20Duncan.webp"
               },
               {
-                "name": "Igor",
-                "img": "/chars/Reverse/Igor.webp"
+                "name": "White Rum",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/White%20Rum.webp"
               },
               {
-                "name": "Lopera",
-                "img": "/chars/Reverse/Lopera.webp"
+                "name": "Buddy Fairchild",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Buddy%20Fairchild.webp"
+              },
+              {
+                "name": "The Twins",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/The%20Twins.webp"
+              },
+              {
+                "name": "NORA",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/NORA.webp"
               }
             ]
-          },
-          {
-            "name": "Слабо",
-            "color": "#6b7280",
-            "chars": []
           }
         ]
       }
