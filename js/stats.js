@@ -124,7 +124,7 @@ function renderAllTimeStats(reviews, completed) {
   }
 
   const gradeCounts = {};
-  for (const r of withGrade) gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
+  for (const r of withGrade) { const s = gradeToShelf(r.grade); if (s) gradeCounts[s] = (gradeCounts[s] || 0) + 1; }
 
   const tagCounts = {};
   for (const r of reviews) {
@@ -163,7 +163,7 @@ function renderYearDigest(year, completed) {
   }
 
   const gradeCounts = {};
-  for (const r of withGrade) gradeCounts[r.grade] = (gradeCounts[r.grade] || 0) + 1;
+  for (const r of withGrade) { const s = gradeToShelf(r.grade); if (s) gradeCounts[s] = (gradeCounts[s] || 0) + 1; }
 
   const tagCounts = {};
   for (const r of yearReviews) {
@@ -192,11 +192,11 @@ function statsTopTitlesOfYear(withGrade) {
   if (!withGrade.length) return [];
   let best = Infinity;
   for (const r of withGrade) {
-    const s = gradeScore(r.grade);
+    const s = gradeScore(gradeToShelf(r.grade));
     if (s !== null && s < best) best = s;
   }
   if (best === Infinity) return [];
-  return withGrade.filter(r => gradeScore(r.grade) === best).slice(0, 6);
+  return withGrade.filter(r => gradeScore(gradeToShelf(r.grade)) === best).slice(0, 6);
 }
 
 function renderTitleOfYear(list, year) {
