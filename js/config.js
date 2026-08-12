@@ -149,13 +149,41 @@ const GRADES_DEF = [
   },
 ];
 
-const GRADES      = Object.fromEntries(GRADES_DEF.map(g => [g.key, g]));
-const GRADE_ORDER = GRADES_DEF.map(g => g.key);
-const TIER_ROWS   = GRADES_DEF.map(g => ({ key: g.key, label: g.name, color: g.color }));
+let GRADES      = Object.fromEntries(GRADES_DEF.map(g => [g.key, g]));
+let GRADE_ORDER = GRADES_DEF.map(g => g.key);
+let TIER_ROWS   = GRADES_DEF.map(g => ({ key: g.key, label: g.name, color: g.color }));
 
 function gradeScore(key) {
   const idx = GRADE_ORDER.indexOf(key);
   return idx >= 0 ? idx + 1 : null;
+}
+
+// ── Шкала оценок — по умолчанию "названия" (то, что уже было). Если в
+//    /settings-edit настроена числовая шкала (5/10/100-балльная, звёзды),
+//    сырое значение r.grade — число, и его нужно перевести в "полку"
+//    (одну из GRADES/TIER_ROWS) через диапазоны. Везде, где раньше читали
+//    r.grade напрямую как ключ полки, теперь нужно сначала прогнать через
+//    gradeToShelf(r.grade).
+function gradeToShelf(rawGrade) {
+  if (rawGrade === null || rawGrade === undefined || rawGrade === "") return null;
+  const scale = window.SITE_GRADE_SCALE;
+  if (!scale || scale.type === "categorical") return rawGrade; // уже ключ полки
+  const num = Number(rawGrade);
+  if (Number.isNaN(num)) return null;
+  for (const shelf of scale.shelves) {
+    if (num >= shelf.min && num <= shelf.max) return shelf.key;
+  }
+  return null;
+}
+
+// Пересобирает GRADES/GRADE_ORDER/TIER_ROWS из настроенной шкалы —
+// вызывается один раз после того, как site-settings.json загрузится.
+function rebuildGradesFromScale() {
+  const scale = window.SITE_GRADE_SCALE;
+  if (!scale || !scale.shelves || !scale.shelves.length) return; // остаёмся на дефолте
+  GRADES = Object.fromEntries(scale.shelves.map(s => [s.key, { key: s.key, name: s.name, desc: s.desc || "", color: s.color }]));
+  GRADE_ORDER = scale.shelves.map(s => s.key);
+  TIER_ROWS = scale.shelves.map(s => ({ key: s.key, label: s.name, color: s.color }));
 }
 
 // ── Типы медиа ─────────────────────────────────
@@ -324,14 +352,20 @@ document.addEventListener("site-labels-ready", () => {
 
   const overrides = window.SITE_LABEL_OVERRIDES || {};
 
-  const gradeOverrides = overrides.grades || {};
-  for (const [key, name] of Object.entries(gradeOverrides)) {
-    if (GRADES[key] && name) GRADES[key].name = name;
-  }
-  // TIER_ROWS — снимок GRADES_DEF на момент загрузки, обновляем label
-  // отдельно, иначе тир-лист не увидит переименование.
-  for (const row of TIER_ROWS) {
-    if (GRADES[row.key]) row.label = GRADES[row.key].name;
+  // Если настроена числовая/своя шкала — GRADES/GRADE_ORDER/TIER_ROWS
+  // пересобираются полностью из неё, старое переименование категориальных
+  // оценок в этом случае не применяется (шкала задаёт полки сама).
+  const scale = window.SITE_GRADE_SCALE;
+  if (scale && scale.type !== "categorical" && scale.shelves?.length) {
+    rebuildGradesFromScale();
+  } else {
+    const gradeOverrides = overrides.grades || {};
+    for (const [key, name] of Object.entries(gradeOverrides)) {
+      if (GRADES[key] && name) GRADES[key].name = name;
+    }
+    for (const row of TIER_ROWS) {
+      if (GRADES[row.key]) row.label = GRADES[row.key].name;
+    }
   }
 
   const typeOverrides = overrides.types || {};
