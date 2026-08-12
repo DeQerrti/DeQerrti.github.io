@@ -101,7 +101,7 @@ function tlTitlesHtml() {
 
   const byGrade = {};
   for (const item of filtered) {
-    const g = item.review.grade;
+    const g = gradeToShelf(item.review.grade);
     if (!byGrade[g]) byGrade[g] = [];
     byGrade[g].push(item);
   }
