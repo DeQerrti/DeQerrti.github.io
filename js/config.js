@@ -153,6 +153,22 @@ let GRADES      = Object.fromEntries(GRADES_DEF.map(g => [g.key, g]));
 let GRADE_ORDER = GRADES_DEF.map(g => g.key);
 let TIER_ROWS   = GRADES_DEF.map(g => ({ key: g.key, label: g.name, color: g.color }));
 
+// ── Статусы "до завершения" (секции на вкладке "Главная"). "completed"
+//    (Архив) — особый, всегда есть, от него зависит статистика. Остальные
+//    три — по умолчанию, но список полностью настраиваемый через
+//    /settings-edit (можно переименовать/скрыть/добавить свои, например
+//    "Брошено").
+const DEFAULT_STATUS_BUCKETS = [
+  { key: "current",  label: "В процессе" },
+  { key: "onhold",   label: "Отложено" },
+  { key: "planning", label: "Планирую" },
+];
+
+function activeStatusBuckets() {
+  const configured = window.SITE_STATUS_BUCKETS;
+  return (configured && configured.length) ? configured : DEFAULT_STATUS_BUCKETS;
+}
+
 function gradeScore(key) {
   const idx = GRADE_ORDER.indexOf(key);
   return idx >= 0 ? idx + 1 : null;
@@ -352,20 +368,12 @@ document.addEventListener("site-labels-ready", () => {
 
   const overrides = window.SITE_LABEL_OVERRIDES || {};
 
-  // Если настроена числовая/своя шкала — GRADES/GRADE_ORDER/TIER_ROWS
-  // пересобираются полностью из неё, старое переименование категориальных
-  // оценок в этом случае не применяется (шкала задаёт полки сама).
+  // Если настроен свой список полок (для любого типа шкалы, включая
+  // "Названия") — GRADES/GRADE_ORDER/TIER_ROWS пересобираются из него.
+  // Иначе остаёмся на встроенных 7 GRADES_DEF.
   const scale = window.SITE_GRADE_SCALE;
-  if (scale && scale.type !== "categorical" && scale.shelves?.length) {
+  if (scale && scale.shelves?.length) {
     rebuildGradesFromScale();
-  } else {
-    const gradeOverrides = overrides.grades || {};
-    for (const [key, name] of Object.entries(gradeOverrides)) {
-      if (GRADES[key] && name) GRADES[key].name = name;
-    }
-    for (const row of TIER_ROWS) {
-      if (GRADES[row.key]) row.label = GRADES[row.key].name;
-    }
   }
 
   const typeOverrides = overrides.types || {};
@@ -383,9 +391,12 @@ document.addEventListener("site-labels-ready", () => {
     if (CAT_LABELS[key] !== undefined && label) CAT_LABELS[key] = label;
   }
   const customCategories = window.SITE_CUSTOM_CATEGORIES || {};
-  for (const [key, meta] of Object.entries(customCategories)) {
-    CAT_LABELS[key] = meta.label;
-    if (meta.color) CAT_COLORS[key] = meta.color;
+  for (const [key, label] of Object.entries(customCategories)) {
+    CAT_LABELS[key] = label;
+  }
+  const categoryColors = window.SITE_CATEGORY_COLORS || {};
+  for (const [key, color] of Object.entries(categoryColors)) {
+    if (color) CAT_COLORS[key] = color;
   }
 
   document.dispatchEvent(new CustomEvent("tags-map-updated"));
