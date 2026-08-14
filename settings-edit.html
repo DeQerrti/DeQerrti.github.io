@@ -143,16 +143,13 @@
       <button onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-tabs"></div>
 
-      <h2 class="section-h">Подписи статусов (вкладка «Главная»)</h2>
-      <div class="row">
-        <div><label>В процессе</label><input type="text" id="lbl-status-current"></div>
-        <div><label>Отложено</label><input type="text" id="lbl-status-onhold"></div>
+      <h2 class="section-h">Статусы (вкладка «Главная»)</h2>
+      <p class="panel-intro">Галочка — показывать секцию. Карандаш — переименовать. "Архив" особый — от него зависит статистика, его нельзя удалить, только скрыть или переименовать.</p>
+      <div id="statusesList"></div>
+      <div class="row" style="margin-top:14px;">
+        <div><label>Новый статус</label><input type="text" id="newStatusName" placeholder="Например: Брошено"></div>
       </div>
-      <div class="row">
-        <div><label>Планирую</label><input type="text" id="lbl-status-planning"></div>
-        <div><label>Архив</label><input type="text" id="lbl-status-archive"></div>
-      </div>
-      <p class="panel-intro" style="margin-top:10px;">Добавление совсем новых статусов сверх этих четырёх — отдельная задача, обсудим отдельно.</p>
+      <button class="secondary" onclick="addStatusBucket()">+ Добавить статус</button>
       <button onclick="saveSettings()">Сохранить</button>
     </div>
 
@@ -195,22 +192,10 @@
       <div class="theme-grid" id="scaleTypeGrid"></div>
 
       <div id="categoricalBlock">
-        <h2 class="section-h">Названия полок</h2>
-        <div class="row">
-          <div><label>Резонанс</label><input type="text" id="lbl-grade-rezonans"></div>
-          <div><label>Эталон</label><input type="text" id="lbl-grade-etalon"></div>
-        </div>
-        <div class="row">
-          <div><label>Отлично</label><input type="text" id="lbl-grade-vyskazyvanie"></div>
-          <div><label>Аттракцион</label><input type="text" id="lbl-grade-attrakcion"></div>
-        </div>
-        <div class="row">
-          <div><label>Фоновый шум</label><input type="text" id="lbl-grade-fon"></div>
-          <div><label>Брак</label><input type="text" id="lbl-grade-brak"></div>
-        </div>
-        <div class="row">
-          <div><label>Разочарование</label><input type="text" id="lbl-grade-razocharo"></div>
-        </div>
+        <h2 class="section-h">Полки</h2>
+        <p class="panel-intro">Переименуй, перекрась, удали или добавь свою.</p>
+        <div id="catShelvesList"></div>
+        <button class="secondary" onclick="addShelfRow(true)">+ Добавить полку</button>
       </div>
 
       <div id="numericBlock" style="display:none;">
@@ -231,20 +216,8 @@
 
     <div class="panel" id="panel-tags">
       <h2 class="section-h">Категории тегов</h2>
-      <p class="panel-intro">Переименуй встроенные или добавь свою (с любым цветом).</p>
-      <div class="row">
-        <div><label>Визуал / звук</label><input type="text" id="lbl-cat-visual"></div>
-        <div><label>Сюжет / нарратив</label><input type="text" id="lbl-cat-plot"></div>
-      </div>
-      <div class="row">
-        <div><label>Персонажи / мир</label><input type="text" id="lbl-cat-chars"></div>
-        <div><label>Атмосфера / эмоции</label><input type="text" id="lbl-cat-special"></div>
-      </div>
-      <div class="row">
-        <div><label>Жанр</label><input type="text" id="lbl-cat-genre"></div>
-      </div>
-
-      <div id="customCatsList" style="margin-top:10px;"></div>
+      <p class="panel-intro">Переименуй, перекрась, удали (свои) или добавь новую.</p>
+      <div id="allCatsList"></div>
       <div class="row" style="margin-top:10px;">
         <div><label>Новая категория</label><input type="text" id="newCatName" placeholder="Например: Технические детали"></div>
         <div style="flex:0 0 80px;"><label>Цвет</label><input type="color" id="newCatColor" value="#8b1a1a"></div>
@@ -324,8 +297,10 @@
     ).join("");
     grid.querySelectorAll(".theme-option").forEach(el => {
       el.onclick = () => {
+        const prevWasCategorical = scaleType === "categorical";
         scaleType = el.dataset.scale;
-        if (scaleType !== "categorical" && !shelves.length) seedDefaultShelves();
+        const nowIsCategorical = scaleType === "categorical";
+        if (prevWasCategorical !== nowIsCategorical) shelves = [];
         renderScaleTypeGrid();
         updateScaleBlocks();
       };
@@ -336,10 +311,23 @@
   function updateScaleBlocks() {
     document.getElementById("categoricalBlock").style.display = scaleType === "categorical" ? "" : "none";
     document.getElementById("numericBlock").style.display = scaleType === "categorical" ? "none" : "";
-    if (scaleType !== "categorical") renderShelvesList();
+    if (scaleType === "categorical") {
+      if (!shelves.length) seedCategoricalShelves();
+      renderShelvesList("catShelvesList", false);
+    } else {
+      if (!shelves.length) seedNumericShelves();
+      renderShelvesList("shelvesList", true);
+    }
   }
 
-  function seedDefaultShelves() {
+  // Сид для "Названия" — обязательно с реальными ключами GRADES_DEF,
+  // иначе уже сохранённые отзывы (grade: "etalon" и т.д.) перестанут
+  // находить свою полку.
+  function seedCategoricalShelves() {
+    shelves = GRADES_DEF.map(g => ({ key: g.key, name: g.name, color: g.color }));
+  }
+
+  function seedNumericShelves() {
     const max = Number(document.getElementById("numericMax").value) || (scaleType === "stars" ? 5 : 10);
     const names = ["Резонанс","Эталон","Отлично","Аттракцион","Фоновый шум","Брак","Разочарование"];
     const n = Math.min(names.length, max);
@@ -352,30 +340,39 @@
     }
   }
 
-  function renderShelvesList() {
-    const container = document.getElementById("shelvesList");
+  function renderShelvesList(containerId, withRange) {
+    const container = document.getElementById(containerId);
     container.innerHTML = shelves.map((s, i) => `
       <div class="shelf-row">
         <input type="color" value="${s.color}" onchange="shelves[${i}].color=this.value">
         <input type="text" value="${s.name}" onchange="shelves[${i}].name=this.value" placeholder="Название">
-        <span class="rng">от</span>
-        <input type="number" value="${s.min}" onchange="shelves[${i}].min=Number(this.value)">
-        <span class="rng">до</span>
-        <input type="number" value="${s.max}" onchange="shelves[${i}].max=Number(this.value)">
-        <button class="icon-btn" onclick="removeShelfRow(${i})">✕</button>
+        ${withRange ? `
+          <span class="rng">от</span>
+          <input type="number" value="${s.min}" onchange="shelves[${i}].min=Number(this.value)">
+          <span class="rng">до</span>
+          <input type="number" value="${s.max}" onchange="shelves[${i}].max=Number(this.value)">
+        ` : ""}
+        <button class="icon-btn" onclick="removeShelfRow(${i}, '${containerId}', ${withRange})">✕</button>
       </div>
     `).join("");
   }
 
-  function addShelfRow() {
-    const max = Number(document.getElementById("numericMax").value) || 10;
-    shelves.push({ key: "shelf_" + Date.now().toString(36).slice(-5), name: "Новая полка", color: "#8b1a1a", min: 1, max });
-    renderShelvesList();
+  function addShelfRow(categorical) {
+    if (categorical) {
+      const name = "Новая полка";
+      const key = "custom_" + name.toLowerCase() + "_" + Date.now().toString(36).slice(-5);
+      shelves.push({ key, name, color: "#8b1a1a" });
+      renderShelvesList("catShelvesList", false);
+    } else {
+      const max = Number(document.getElementById("numericMax").value) || 10;
+      shelves.push({ key: "shelf_" + Date.now().toString(36).slice(-5), name: "Новая полка", color: "#8b1a1a", min: 1, max });
+      renderShelvesList("shelvesList", true);
+    }
   }
 
-  function removeShelfRow(i) {
+  function removeShelfRow(i, containerId, withRange) {
     shelves.splice(i, 1);
-    renderShelvesList();
+    renderShelvesList(containerId, withRange);
   }
 
   const THEMES = [
@@ -430,18 +427,81 @@
     }
   }
 
-  let customCategories = {};
+  // ── Статусы ──
+  let archiveLabel = "Архив";
+  let statusBuckets = [];
+  let hiddenStatusesState = new Set();
 
-  function renderCustomCatsList() {
-    const container = document.getElementById("customCatsList");
-    const entries = Object.entries(customCategories);
-    container.innerHTML = entries.map(([key, meta]) => `
-      <div class="list-row">
-        <span style="width:14px;height:14px;border-radius:3px;background:${meta.color};flex-shrink:0;"></span>
-        <span class="name">${meta.label}</span>
-        <button class="icon-btn" onclick="removeCustomCategory('${key}')">✕</button>
+  function renderStatusesList() {
+    const container = document.getElementById("statusesList");
+    const rows = [...statusBuckets, { key: "archive", label: archiveLabel, removable: false }];
+    container.innerHTML = rows.map(b => `
+      <div class="tab-row" id="statusrow-${b.key}">
+        <input type="checkbox" id="showstatus-${b.key}" ${hiddenStatusesState.has(b.key) ? "" : "checked"}
+          onchange="hiddenStatusesState.has('${b.key}') ? hiddenStatusesState.delete('${b.key}') : hiddenStatusesState.add('${b.key}')">
+        <span class="tab-name" id="statusname-${b.key}">${b.label}</span>
+        <input type="text" id="statusinput-${b.key}" value="${b.label}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleStatusEdit('${b.key}')">✎</button>
+        ${b.removable !== false ? `<button class="icon-btn" title="Удалить" onclick="removeStatusBucket('${b.key}')">✕</button>` : ""}
       </div>
     `).join("");
+  }
+
+  function toggleStatusEdit(key) {
+    const row = document.getElementById(`statusrow-${key}`);
+    const editing = row.classList.toggle("editing");
+    if (!editing) {
+      const val = document.getElementById(`statusinput-${key}`).value.trim();
+      if (key === "archive") {
+        archiveLabel = val || "Архив";
+        document.getElementById(`statusname-${key}`).textContent = archiveLabel;
+      } else {
+        const bucket = statusBuckets.find(b => b.key === key);
+        if (bucket) {
+          bucket.label = val || bucket.label;
+          document.getElementById(`statusname-${key}`).textContent = bucket.label;
+        }
+      }
+    }
+  }
+
+  function addStatusBucket() {
+    const name = document.getElementById("newStatusName").value.trim();
+    if (!name) return;
+    const key = "status_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+    statusBuckets.push({ key, label: name, removable: true });
+    document.getElementById("newStatusName").value = "";
+    renderStatusesList();
+  }
+
+  function removeStatusBucket(key) {
+    statusBuckets = statusBuckets.filter(b => b.key !== key);
+    hiddenStatusesState.delete(key);
+    renderStatusesList();
+  }
+
+  const BUILTIN_CAT_DEFAULTS = {
+    visual: "Визуал / звук",
+    plot: "Сюжет / нарратив",
+    chars: "Персонажи / мир",
+    special: "Атмосфера / эмоции",
+    genre: "Жанр",
+  };
+  let allCatLabels = { ...BUILTIN_CAT_DEFAULTS }; // ключ -> название (встроенные + свои)
+  let catColors = {};        // ключ -> hex (необязательно, у встроенных по умолчанию нет)
+  let customCatKeys = new Set();
+
+  function renderAllCatsList() {
+    const container = document.getElementById("allCatsList");
+    container.innerHTML = Object.keys(allCatLabels).map(key => {
+      const isCustom = customCatKeys.has(key);
+      return `
+      <div class="shelf-row">
+        <input type="color" value="${catColors[key] || "#8b1a1a"}" onchange="catColors['${key}']=this.value">
+        <input type="text" style="flex:1;" id="cat-input-${key}" value="${allCatLabels[key]}">
+        ${isCustom ? `<button class="icon-btn" onclick="removeCategory('${key}')">✕</button>` : ""}
+      </div>`;
+    }).join("");
   }
 
   function addCustomCategory() {
@@ -449,29 +509,27 @@
     const color = document.getElementById("newCatColor").value;
     if (!name) return;
     const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
-    customCategories[key] = { label: name, color };
+    allCatLabels[key] = name;
+    catColors[key] = color;
+    customCatKeys.add(key);
     document.getElementById("newCatName").value = "";
-    renderCustomCatsList();
+    renderAllCatsList();
     renderTagCatOptions();
   }
 
-  function removeCustomCategory(key) {
-    delete customCategories[key];
-    renderCustomCatsList();
+  function removeCategory(key) {
+    delete allCatLabels[key];
+    delete catColors[key];
+    customCatKeys.delete(key);
+    renderAllCatsList();
     renderTagCatOptions();
   }
 
   function renderTagCatOptions() {
     const select = document.getElementById("newTagCat");
-    const builtIn = [
-      ["visual", document.getElementById("lbl-cat-visual").value || "Визуал / звук"],
-      ["plot", document.getElementById("lbl-cat-plot").value || "Сюжет / нарратив"],
-      ["chars", document.getElementById("lbl-cat-chars").value || "Персонажи / мир"],
-      ["special", document.getElementById("lbl-cat-special").value || "Атмосфера / эмоции"],
-      ["genre", document.getElementById("lbl-cat-genre").value || "Жанр"],
-    ];
-    const custom = Object.entries(customCategories).map(([key, meta]) => [key, meta.label]);
-    select.innerHTML = [...builtIn, ...custom].map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
+    const current = select.value;
+    select.innerHTML = Object.entries(allCatLabels).map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
+    if (current && allCatLabels[current] !== undefined) select.value = current;
   }
 
   let customTags = {};
@@ -574,19 +632,17 @@
     renderTabsList();
 
     const statuses = labels.statuses || {};
-    document.getElementById("lbl-status-current").value = statuses.current || "В процессе";
-    document.getElementById("lbl-status-onhold").value = statuses.onhold || "Отложено";
-    document.getElementById("lbl-status-planning").value = statuses.planning || "Планирую";
-    document.getElementById("lbl-status-archive").value = statuses.archive || "Архив";
-
-    const grades = labels.grades || {};
-    const gradeDefaults = {
-      rezonans: "Резонанс", etalon: "Эталон", vyskazyvanie: "Отлично",
-      attrakcion: "Аттракцион", fon: "Фоновый шум", brak: "Брак", razocharo: "Разочарование",
-    };
-    for (const [key, def] of Object.entries(gradeDefaults)) {
-      document.getElementById(`lbl-grade-${key}`).value = grades[key] || def;
-    }
+    const builtinDefaults = [
+      { key: "current", label: "В процессе", removable: false },
+      { key: "onhold", label: "Отложено", removable: false },
+      { key: "planning", label: "Планирую", removable: false },
+    ];
+    statusBuckets = settings.statusBuckets
+      ? JSON.parse(JSON.stringify(settings.statusBuckets))
+      : builtinDefaults;
+    archiveLabel = statuses.archive || "Архив";
+    hiddenStatusesState = new Set(settings.hiddenStatuses || []);
+    renderStatusesList();
 
     const gradeScale = settings.gradeScale || null;
     scaleType = gradeScale?.type || "categorical";
@@ -611,13 +667,18 @@
     renderTypesList();
 
     const catOverrides = labels.categories || {};
-    document.getElementById("lbl-cat-visual").value = catOverrides.visual || "Визуал / звук";
-    document.getElementById("lbl-cat-plot").value = catOverrides.plot || "Сюжет / нарратив";
-    document.getElementById("lbl-cat-chars").value = catOverrides.chars || "Персонажи / мир";
-    document.getElementById("lbl-cat-special").value = catOverrides.special || "Атмосфера / эмоции";
-    document.getElementById("lbl-cat-genre").value = catOverrides.genre || "Жанр";
-    customCategories = settings.customCategories || {};
-    renderCustomCatsList();
+    allCatLabels = { ...BUILTIN_CAT_DEFAULTS };
+    for (const [key, label] of Object.entries(catOverrides)) {
+      if (allCatLabels[key] !== undefined && label) allCatLabels[key] = label;
+    }
+    catColors = { ...(settings.categoryColors || {}) };
+    customCatKeys = new Set();
+    const savedCustomCats = settings.customCategories || {};
+    for (const [key, label] of Object.entries(savedCustomCats)) {
+      allCatLabels[key] = label;
+      customCatKeys.add(key);
+    }
+    renderAllCatsList();
     renderTagCatOptions();
 
     customTags = settings.customTags || {};
@@ -629,18 +690,20 @@
       const row = document.getElementById(`tabrow-${t.id}`);
       if (row && row.classList.contains("editing")) toggleTabEdit(t.id);
     });
+    const rows = [...statusBuckets, { key: "archive" }];
+    rows.forEach(b => {
+      const row = document.getElementById(`statusrow-${b.key}`);
+      if (row && row.classList.contains("editing")) toggleStatusEdit(b.key);
+    });
 
     const hiddenTabs = TAB_DEFS.filter(t => !document.getElementById(`showtab-${t.id}`).checked).map(t => t.id);
+    const hiddenStatuses = [...hiddenStatusesState];
 
     const statKeys = ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"];
     const hiddenStatsBlocks = statKeys.filter((key) => {
       const el = document.getElementById(`stat-${key}`);
       return el && !el.checked;
     });
-
-    const gradeKeys = ["rezonans","etalon","vyskazyvanie","attrakcion","fon","brak","razocharo"];
-    const grades = {};
-    for (const key of gradeKeys) grades[key] = document.getElementById(`lbl-grade-${key}`).value;
 
     Object.keys(typeLabels).forEach(key => {
       const input = document.getElementById(`type-input-${key}`);
@@ -651,37 +714,42 @@
     const typeRenames = {};
     Object.keys(BUILTIN_TYPE_DEFAULTS).forEach(key => { typeRenames[key] = typeLabels[key]; });
 
-    const categories = {
-      visual: document.getElementById("lbl-cat-visual").value,
-      plot: document.getElementById("lbl-cat-plot").value,
-      chars: document.getElementById("lbl-cat-chars").value,
-      special: document.getElementById("lbl-cat-special").value,
-      genre: document.getElementById("lbl-cat-genre").value,
-    };
+    Object.keys(allCatLabels).forEach(key => {
+      const input = document.getElementById(`cat-input-${key}`);
+      if (input) allCatLabels[key] = input.value;
+    });
+    const categories = {};
+    Object.keys(BUILTIN_CAT_DEFAULTS).forEach(key => { categories[key] = allCatLabels[key]; });
+    const customCategoriesPayload = {};
+    const categoryColors = {};
+    Object.keys(allCatLabels).forEach(key => {
+      if (catColors[key]) categoryColors[key] = catColors[key];
+    });
+    customCatKeys.forEach(key => {
+      customCategoriesPayload[key] = allCatLabels[key];
+    });
 
-    const gradeScale = scaleType === "categorical"
-      ? { type: "categorical" }
-      : { type: scaleType, numericMax: Number(document.getElementById("numericMax").value) || 10, shelves };
+    const gradeScale = { type: scaleType, shelves };
+    if (scaleType !== "categorical") gradeScale.numericMax = Number(document.getElementById("numericMax").value) || 10;
 
     const payload = {
       theme: selectedTheme,
       customAccent: document.getElementById("accent").value,
       customTags,
-      customCategories,
+      customCategories: customCategoriesPayload,
+      categoryColors,
       customTypes,
       hiddenTypes: [...hiddenTypes],
       hiddenTabs,
       hiddenStatsBlocks,
       gradeScale,
+      statusBuckets,
+      hiddenStatuses,
       labels: {
         nav: { ...tabLabels },
         statuses: {
-          current: document.getElementById("lbl-status-current").value,
-          onhold: document.getElementById("lbl-status-onhold").value,
-          planning: document.getElementById("lbl-status-planning").value,
-          archive: document.getElementById("lbl-status-archive").value,
+          archive: archiveLabel,
         },
-        grades,
         types: typeRenames,
         categories,
       },
