@@ -118,6 +118,10 @@ async function applyTheme() {
   window.SITE_CUSTOM_TYPES = settings.customTypes || {};
   window.SITE_HIDDEN_TYPES = settings.hiddenTypes || [];
   window.SITE_CUSTOM_CATEGORIES = settings.customCategories || {};
+  window.SITE_CATEGORY_COLORS = settings.categoryColors || {};
+  window.SITE_GRADE_SCALE = settings.gradeScale || null;
+  window.SITE_STATUS_BUCKETS = settings.statusBuckets || null;
+  window.SITE_HIDDEN_STATUSES = new Set(settings.hiddenStatuses || []);
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
   const hiddenTabs = settings.hiddenTabs || [];
 
