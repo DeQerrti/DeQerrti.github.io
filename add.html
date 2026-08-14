@@ -255,12 +255,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     <div class="field">
       <label>Статус</label>
       <div class="select-wrap">
-        <select id="f-status" onchange="updateDateFields()">
-          <option value="planning">Планирую</option>
-          <option value="current">В процессе</option>
-          <option value="onhold">Отложено</option>
-          <option value="completed">Завершено</option>
-        </select>
+        <select id="f-status" onchange="updateDateFields()"></select>
       </div>
     </div>
     <div class="field">
@@ -423,6 +418,17 @@ function updateDateFields() {
       </div>`;
     return;
   }
+
+  // Свой статус (не planning/current/onhold/completed) — по умолчанию
+  // ведём себя как current/onhold: просто дата начала.
+  section.innerHTML = `
+    <h2 class="section-title">Дата начала</h2>
+    <div class="grid">
+      <div class="field">
+        <label>Начал</label>
+        <input type="date" id="f-date-start" value="${prevStart}">
+      </div>
+    </div>`;
 }
 
 // ── Оценки — вид зависит от шкалы, настроенной в /settings-edit ──
@@ -532,6 +538,22 @@ function renderTypeSelect() {
 }
 renderTypeSelect();
 document.addEventListener("tags-map-updated", renderTypeSelect);
+
+// ── Список статусов — настраиваемые "до завершения" + всегда "Завершено" ──
+function renderStatusSelect() {
+  const select = document.getElementById("f-status");
+  const current = select.value;
+  const buckets = activeStatusBuckets().filter(b => !window.SITE_HIDDEN_STATUSES?.has(b.key));
+  const archiveLabel = siteLabel("statuses", "archive", "Завершено");
+  select.innerHTML = [
+    ...buckets.map(b => `<option value="${b.key}">${b.label}</option>`),
+    `<option value="completed">${archiveLabel}</option>`,
+  ].join("");
+  if (current && [...select.options].some(o => o.value === current)) select.value = current;
+  updateDateFields();
+}
+renderStatusSelect();
+document.addEventListener("tags-map-updated", renderStatusSelect);
 
 // ── заполнить форму ────────────────────────────
 function fillForm(r) {
