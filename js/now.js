@@ -27,13 +27,15 @@ async function loadNow() {
   try {
     await fetchReviews();
     const reviews = cache.reviews || [];
-    const current   = reviews.filter(r => r.status === "current");
-    const onhold    = reviews.filter(r => r.status === "onhold");
-    const planning  = reviews.filter(r => r.status === "planning");
+    const buckets = activeStatusBuckets().map(b => ({
+      key: b.key,
+      label: b.label,
+      items: reviews.filter(r => r.status === b.key),
+    }));
     const completed = reviews.filter(r =>
       r.status === "completed" || (!r.status && (r.preview || r.grade))
     );
-    cache.now = { current, onhold, planning, completed };
+    cache.now = { buckets, completed };
     renderNow(cache.now);
   } catch (err) {
     box.innerHTML = `<div class="state-box">
@@ -82,7 +84,7 @@ function toggleSection(id) {
   saveCollapsed(collapsed);
 }
 
-function renderNow({ current, onhold, planning, completed }) {
+function renderNow({ buckets, completed }) {
   const box = document.getElementById("tab-now");
   const collapsed = getCollapsed();
   let html = `<style>
@@ -122,12 +124,13 @@ function renderNow({ current, onhold, planning, completed }) {
     .now-section-body.hidden { display: none; }
   </style>`;
 
-  if (current.length)  html += makeSection("current",  siteLabel("statuses", "current", "В процессе"), current,  collapsed);
-  if (onhold.length)   html += makeSection("onhold",   siteLabel("statuses", "onhold", "Отложено"),   onhold,   collapsed);
-  if (planning.length) html += makeSection("planning",  siteLabel("statuses", "planning", "Планирую"),   planning, collapsed);
+  for (const bucket of buckets) {
+    if (window.SITE_HIDDEN_STATUSES?.has(bucket.key)) continue;
+    if (bucket.items.length) html += makeSection(bucket.key, bucket.label, bucket.items, collapsed);
+  }
 
   // ── Архив — группируем по году ─────────────────
-  if (completed.length) {
+  if (completed.length && !window.SITE_HIDDEN_STATUSES?.has("archive")) {
     const sorted = [...completed].sort((a, b) => {
       const da = new Date(a.date_end || a.date_start || a.date || 0);
       const db = new Date(b.date_end || b.date_start || b.date || 0);
