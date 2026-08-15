@@ -9,6 +9,18 @@ function normTitle(s) {
   return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
 }
 
+// Основная ссылка на обложку не открылась — пробуем резервную копию
+// (если есть), а если и она не сработала — заглушку. data-tried не даёт
+// зациклиться, если резервная копия тоже окажется битой.
+function coverFallback(img, backupUrl) {
+  if (!img.dataset.tried && backupUrl) {
+    img.dataset.tried = "1";
+    img.src = backupUrl;
+  } else {
+    img.src = PH_TALL;
+  }
+}
+
 function findReviewForTitle(title, type) {
   if (!cache.reviews?.length || !title) return null;
   const norm = normTitle(title);
@@ -89,7 +101,7 @@ function manualCard(r, index) {
     <div class="card" style="animation-delay:0ms">
       <span class="type-tag tag-manual">${esc(tagLabel)}</span>
       ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
-      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="coverFallback(this, '${esc(r.cover_backup || "")}')">
       <div class="card-body">
         <div class="card-title">${esc(r.title)}</div>
         ${r.year || info
