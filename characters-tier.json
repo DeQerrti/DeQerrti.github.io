@@ -262,6 +262,10 @@
               {
                 "name": "Igor",
                 "img": "/chars/Reverse/Igor.webp"
+              },
+              {
+                "name": "Merel",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Merel.webp"
               }
             ]
           },
@@ -276,6 +280,10 @@
               {
                 "name": "Marsha",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marsha.webp"
+              },
+              {
+                "name": "Creius",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Creius.webp"
               },
               {
                 "name": "Regulus",
@@ -294,12 +302,24 @@
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Kakania.webp"
               },
               {
+                "name": "Ms. Stranger",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Stranger.webp"
+              },
+              {
                 "name": "Moldir",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Moldir.webp"
               },
               {
                 "name": "Matilda",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Matilda.webp"
+              },
+              {
+                "name": "Marcus",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marcus.webp"
+              },
+              {
+                "name": "Greta Hofmann",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Greta%20Hofmann.webp"
               },
               {
                 "name": "Melania",
@@ -312,10 +332,6 @@
               {
                 "name": "37",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/37.webp"
-              },
-              {
-                "name": "Marcus",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Marcus.webp"
               },
               {
                 "name": "APPLe",
@@ -354,8 +370,8 @@
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Aleph.webp"
               },
               {
-                "name": "Ms. Stranger",
-                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ms.%20Stranger.webp"
+                "name": "Z",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Z.webp"
               }
             ]
           },
@@ -394,6 +410,38 @@
               {
                 "name": "Isolde",
                 "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Isolde.webp"
+              },
+              {
+                "name": "Constantine",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Constantine.webp"
+              },
+              {
+                "name": "Arcana",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Arcana.webp"
+              },
+              {
+                "name": "Ptolemy",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Ptolemy.webp"
+              },
+              {
+                "name": "Sophia",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Sophia.webp"
+              },
+              {
+                "name": "Urd",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Urd.webp"
+              },
+              {
+                "name": "President",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/President.webp"
+              },
+              {
+                "name": "Santos",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Santos.webp"
+              },
+              {
+                "name": "Forget Me Not",
+                "img": "https://raw.githubusercontent.com/DeQerrti/DeQerrti.github.io/main/chars/Reverse/Forget%20Me%20Not.webp"
               },
               {
                 "name": "Diggers",
