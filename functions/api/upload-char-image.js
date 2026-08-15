@@ -23,10 +23,14 @@ export async function onRequest(context) {
     return json({ error: "Bad JSON" }, 400);
   }
 
-  const { folder, filename, contentBase64 } = body;
+  const { folder, filename, contentBase64, basePath } = body;
+  const base = isSafeName(basePath) ? basePath : "chars";
 
-  if (!isSafeName(folder) || !isSafeName(filename)) {
-    return json({ error: "Недопустимое название папки или файла" }, 400);
+  if (folder && !isSafeName(folder)) {
+    return json({ error: "Недопустимое название папки" }, 400);
+  }
+  if (!isSafeName(filename)) {
+    return json({ error: "Недопустимое название файла" }, 400);
   }
   if (!filename.toLowerCase().endsWith(".webp")) {
     return json({ error: "Ожидается файл .webp (конвертация происходит в браузере перед отправкой)" }, 400);
@@ -37,7 +41,7 @@ export async function onRequest(context) {
 
   const repo    = env.GITHUB_REPO;
   const ghToken = env.GITHUB_TOKEN;
-  const path    = `chars/${folder}/${filename}`;
+  const path    = folder ? `${base}/${folder}/${filename}` : `${base}/${filename}`;
 
   try {
     const getRes = await githubGet(repo, path, ghToken);
@@ -51,7 +55,7 @@ export async function onRequest(context) {
 
     const putRes = await githubPut(
       repo, path, contentBase64, sha,
-      `chars: ${sha ? "обновление" : "добавление"} "${folder}/${filename}"`,
+      `${base}: ${sha ? "обновление" : "добавление"} "${path}"`,
       ghToken
     );
 
