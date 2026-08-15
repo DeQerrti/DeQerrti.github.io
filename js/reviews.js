@@ -201,7 +201,7 @@ function reviewModalBodyHtml(r) {
 
   return `
     <div class="review-modal-header">
-      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" class="review-modal-cover" onerror="this.src='${PH_TALL}'">
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" class="review-modal-cover" onerror="coverFallback(this, '${esc(r.cover_backup || "")}')">
       <div>
         <div class="review-modal-title">${esc(r.title)}</div>
         <div class="review-meta-row">${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}</div>
@@ -305,7 +305,7 @@ function reviewCard(r, i) {
       <div class="review-top">
         <div class="review-cover-col">
           <div class="review-cover">
-            <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="this.src='${PH_TALL}'">
+            <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="coverFallback(this, '${esc(r.cover_backup || "")}')">
           </div>
           ${rewatchHtml}
         </div>
