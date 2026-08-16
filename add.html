@@ -175,13 +175,64 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   color: var(--text-dim); cursor: pointer; font-size: 1.1rem; transition: color .15s; }
 .modal-close:hover { color: var(--text-hi); }
 
-/* ══ МОДАЛКА: источники ссылок ════════════════════ */
-.src-list-row { display: flex; align-items: center; gap: 10px;
-  padding: 8px 0; border-bottom: 1px solid var(--border); }
-.src-list-row .name { flex: 1; font-size: .88rem; }
 button.icon-btn { background: none; border: 1px solid var(--border2); color: var(--text-dim);
-  width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 4px; font-size: .8rem; cursor: pointer; }
+  width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 4px; font-size: .8rem; cursor: pointer; flex-shrink: 0; }
 button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); background: none; }
+
+/* ══ ИСТОЧНИКИ — инлайн-виджет вместо модалки ═════ */
+.src-field { margin-bottom: .75rem; }
+
+.src-add-btn {
+  background: none; border: 1px dashed var(--border2); border-radius: 2px;
+  color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: .78rem;
+  padding: .65rem .9rem; width: 100%; text-align: left; cursor: pointer; transition: all .15s;
+}
+.src-add-btn:hover { color: var(--red-hi); border-color: var(--red-dim); }
+.src-add-btn .sub { font-style: italic; margin-left: .3rem; }
+.src-add-btn.hidden { display: none; }
+
+.src-panel.hidden { display: none; }
+.src-panel-row { display: flex; gap: .5rem; align-items: stretch; }
+
+.src-type-wrap { position: relative; flex: 0 0 150px; }
+.src-type-btn {
+  width: 100%; height: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 2px; color: var(--text-hi); font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; padding: .65rem .85rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: .4rem;
+  transition: border-color .2s;
+}
+.src-type-btn:hover { border-color: var(--red-dim); }
+.src-caret { color: var(--text-dim); font-size: .75rem; flex-shrink: 0; }
+
+.src-url-input { flex: 1; }
+
+.src-type-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; min-width: 210px;
+  background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
+  padding: .4rem; z-index: 50; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.src-type-dropdown.hidden { display: none; }
+.src-type-list { max-height: 220px; overflow-y: auto; }
+
+.src-type-option {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  padding: .45rem .55rem; border-radius: 2px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: .8rem; color: var(--text); transition: background .15s;
+}
+.src-type-option:hover { background: rgba(255,255,255,.04); }
+.src-type-option.active { color: var(--red-hi); }
+.src-type-option .icon-btn.src-type-remove { width: 22px; height: 22px; font-size: .65rem; }
+
+.src-type-add-row { border-top: 1px solid var(--border); margin-top: .3rem; padding-top: .3rem; }
+.src-type-add-btn { width: 100%; text-align: center; }
+
+.src-type-add-form { border-top: 1px solid var(--border); margin-top: .3rem; padding-top: .5rem; display: flex; gap: .4rem; }
+.src-type-add-form.hidden { display: none; }
+.src-type-add-form input { flex: 1; padding: .5rem .65rem; font-size: .85rem; }
+.src-type-add-form button { flex-shrink: 0; }
+
+.src-type-status { margin-top: .3rem; text-align: left; font-size: .7rem; }
 
 .tag-modal-tabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; }
 .tag-modal-tab { flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 2px;
@@ -324,39 +375,47 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
     <input type="number" id="rewatch-count" min="0" value="0" step="1">
   </div>
 
-  <!-- Ссылка 1 -->
-  <h2 class="section-title">Ссылка 1 <button type="button" class="btn-new" onclick="openSourceModal()">Источники</button></h2>
-  <div class="grid">
-    <div class="field">
-      <label>Тип</label>
-      <div class="select-wrap">
-        <select id="f-source"></select>
+  <!-- Источники -->
+  <h2 class="section-title">Источники</h2>
+  <div class="hint">Ссылка на отзыв — например, если у тебя уже есть пост об этом тайтле на Teletype или где-то ещё на стороне, можно указать ссылку на него.</div>
+
+  <div class="src-field" id="src-field-1">
+    <button type="button" class="src-add-btn" id="src-add-btn-1" onclick="openSourcePanel(1)">+ Добавить источник</button>
+    <div class="src-panel hidden" id="src-panel-1">
+      <div class="src-panel-row">
+        <div class="src-type-wrap">
+          <button type="button" class="src-type-btn" id="src-type-btn-1" onclick="toggleTypeDropdown(1)">
+            <span id="src-type-label-1">Teletype</span><span class="src-caret">▾</span>
+          </button>
+          <div class="src-type-dropdown hidden" id="src-type-dropdown-1"></div>
+        </div>
+        <input type="text" id="f-url" class="src-url-input" placeholder="https://" oninput="onSourceUrlChange(1)">
+        <button type="button" class="icon-btn" title="Убрать источник" onclick="closeSourcePanel(1)">✕</button>
       </div>
     </div>
-    <div class="field">
-      <label>URL</label>
-      <input type="text" id="f-url" placeholder="https://">
-    </div>
-    <div class="field">
-      <label>Фавориты</label>
-      <input type="text" id="f-favorites" placeholder="Kaneki Ken, Touka">
-    </div>
+    <input type="hidden" id="f-source" value="teletype">
   </div>
 
-  <!-- Ссылка 2 -->
-  <h2 class="section-title">Ссылка 2 <span class="sub">— необязательно</span></h2>
-  <div class="hint">Заполни, если у отзыва есть ещё одна ссылка — например, отдельный пост или страница на другом сайте.</div>
-  <div class="grid">
-    <div class="field">
-      <label>Тип</label>
-      <div class="select-wrap">
-        <select id="f-source2"></select>
+  <div class="src-field" id="src-field-2" style="margin-top:.75rem;">
+    <button type="button" class="src-add-btn" id="src-add-btn-2" onclick="openSourcePanel(2)">+ Добавить источник <span class="sub">— необязательно, если есть дублирующая публикация</span></button>
+    <div class="src-panel hidden" id="src-panel-2">
+      <div class="src-panel-row">
+        <div class="src-type-wrap">
+          <button type="button" class="src-type-btn" id="src-type-btn-2" onclick="toggleTypeDropdown(2)">
+            <span id="src-type-label-2">Teletype</span><span class="src-caret">▾</span>
+          </button>
+          <div class="src-type-dropdown hidden" id="src-type-dropdown-2"></div>
+        </div>
+        <input type="text" id="f-url2" class="src-url-input" placeholder="https://" oninput="onSourceUrlChange(2)">
+        <button type="button" class="icon-btn" title="Убрать источник" onclick="closeSourcePanel(2)">✕</button>
       </div>
     </div>
-    <div class="field">
-      <label>URL 2</label>
-      <input type="text" id="f-url2" placeholder="https://">
-    </div>
+    <input type="hidden" id="f-source2" value="">
+  </div>
+
+  <div class="field full" style="margin-top:1rem;">
+    <label>Фавориты</label>
+    <input type="text" id="f-favorites" placeholder="Kaneki Ken, Touka">
   </div>
 
   <!-- Превью -->
@@ -428,24 +487,6 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
     </div>
 
     <div class="status-msg" id="tag-modal-status"></div>
-  </div>
-</div>
-
-<!-- Модалка: источники ссылок -->
-<div class="modal-overlay hidden" id="source-modal-overlay" onclick="closeSourceModalOnOverlay(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeSourceModal()">✕</button>
-    <div class="modal-title">Источники ссылок</div>
-
-    <div id="source-modal-list"></div>
-
-    <div class="field" style="margin-top:1.25rem;">
-      <label>Новый источник</label>
-      <input type="text" id="sm-name" placeholder="Например: Дзен">
-    </div>
-    <button class="btn-save" id="sm-save" onclick="submitNewSource()">Добавить источник</button>
-
-    <div class="status-msg" id="source-modal-status"></div>
   </div>
 </div>
 
@@ -712,103 +753,167 @@ async function submitNewCategory() {
   }
 }
 
-// ── Список источников — из SOURCE_LABELS (config.js), редактируется прямо
-//    здесь через модалку, без похода в /settings-edit ──
-function renderSourceSelects() {
-  const opts = Object.entries(SOURCE_LABELS)
-    .map(([key, label]) => `<option value="${key}">${esc(label)}</option>`)
-    .join("");
-
-  const sel1 = document.getElementById("f-source");
-  const cur1 = sel1.value;
-  sel1.innerHTML = opts;
-  if (cur1 && SOURCE_LABELS[cur1] !== undefined) sel1.value = cur1;
-
-  const sel2 = document.getElementById("f-source2");
-  const cur2 = sel2.value;
-  sel2.innerHTML = `<option value="">— не указан —</option>` + opts;
-  if (cur2 && SOURCE_LABELS[cur2] !== undefined) sel2.value = cur2;
-}
-renderSourceSelects();
-document.addEventListener("tags-map-updated", renderSourceSelects);
-
+// ── Источники ссылок — источник выбирается прямо в инлайн-меню под
+//    кнопкой «+ Добавить источник», без похода в отдельную модалку.
+//    Новые типы источников добавляются из того же меню и сохраняются
+//    в settings.customSources (SOURCE_LABELS приходит из config.js) ──
 const SOURCE_BUILTINS = ["teletype", "other"];
+let openSourceDropdown = null; // 1 | 2 | null — какое меню типа сейчас открыто
 
-function renderSourceModalList() {
-  const container = document.getElementById("source-modal-list");
-  container.innerHTML = Object.entries(SOURCE_LABELS).map(([key, label]) => {
-    const removable = !SOURCE_BUILTINS.includes(key);
-    return `
-    <div class="src-list-row">
-      <span class="name">${esc(label)}</span>
-      ${removable ? `<button type="button" class="icon-btn" title="Удалить" onclick="removeSource('${key}')">✕</button>` : ""}
-    </div>`;
-  }).join("");
+function sourceLabel(key) {
+  return SOURCE_LABELS[key] || SOURCE_LABELS.teletype;
 }
 
-function openSourceModal() {
-  document.getElementById("sm-name").value = "";
-  const statusEl = document.getElementById("source-modal-status");
-  statusEl.textContent = "";
-  statusEl.className = "status-msg";
-  renderSourceModalList();
-  document.getElementById("source-modal-overlay").classList.remove("hidden");
-}
-function closeSourceModal() {
-  document.getElementById("source-modal-overlay").classList.add("hidden");
-}
-function closeSourceModalOnOverlay(e) {
-  if (e.target === document.getElementById("source-modal-overlay")) closeSourceModal();
+function srcIds(n) {
+  return { url: n === 1 ? "f-url" : "f-url2", source: n === 1 ? "f-source" : "f-source2" };
 }
 
-async function submitNewSource() {
-  const name = document.getElementById("sm-name").value.trim();
-  const statusEl = document.getElementById("source-modal-status");
+// Разворачивает/сворачивает панель источника в зависимости от того,
+// заполнен ли URL — используется и при ручном открытии, и после fillForm.
+function syncSourcePanel(n) {
+  const ids = srcIds(n);
+  const hasUrl = document.getElementById(ids.url).value.trim().length > 0;
+  const srcKey = document.getElementById(ids.source).value || "teletype";
+  document.getElementById(`src-type-label-${n}`).textContent = sourceLabel(srcKey);
+  document.getElementById(`src-add-btn-${n}`).classList.toggle("hidden", hasUrl);
+  document.getElementById(`src-panel-${n}`).classList.toggle("hidden", !hasUrl);
+}
 
-  if (!name) { statusEl.textContent = "Введи название источника"; statusEl.className = "status-msg err"; return; }
+function openSourcePanel(n) {
+  const ids = srcIds(n);
+  const srcInput = document.getElementById(ids.source);
+  if (!srcInput.value) srcInput.value = "teletype";
+  document.getElementById(`src-type-label-${n}`).textContent = sourceLabel(srcInput.value);
+  document.getElementById(`src-add-btn-${n}`).classList.add("hidden");
+  document.getElementById(`src-panel-${n}`).classList.remove("hidden");
+  document.getElementById(ids.url).focus();
+}
+
+function closeSourcePanel(n) {
+  const ids = srcIds(n);
+  document.getElementById(ids.url).value = "";
+  if (n === 2) document.getElementById(ids.source).value = "";
+  closeTypeDropdown();
+  document.getElementById(`src-panel-${n}`).classList.add("hidden");
+  document.getElementById(`src-add-btn-${n}`).classList.remove("hidden");
+}
+
+function onSourceUrlChange(n) {
+  // резерв на будущее — например, автоопределение типа источника по URL
+}
+
+function renderTypeDropdown(n) {
+  const ids = srcIds(n);
+  const dd = document.getElementById(`src-type-dropdown-${n}`);
+  const current = document.getElementById(ids.source).value || "teletype";
+  const options = Object.entries(SOURCE_LABELS).map(([key, label]) => `
+    <div class="src-type-option${key === current ? " active" : ""}" onclick="selectSourceType(${n}, '${key}')">
+      <span>${esc(label)}</span>
+      ${!SOURCE_BUILTINS.includes(key) ? `<span class="icon-btn src-type-remove" title="Удалить" onclick="event.stopPropagation(); removeSourceType('${key}')">✕</span>` : ""}
+    </div>`).join("");
+  dd.innerHTML = `
+    <div class="src-type-list">${options}</div>
+    <div class="src-type-add-row">
+      <button type="button" class="btn-new src-type-add-btn" onclick="showAddTypeForm(${n})">+ Добавить</button>
+    </div>
+    <div class="src-type-add-form hidden" id="src-type-add-form-${n}">
+      <input type="text" id="src-type-new-name-${n}" placeholder="Например: Дзен">
+      <button type="button" class="btn-new" onclick="confirmAddType(${n})">Ок</button>
+    </div>
+    <div class="status-msg src-type-status" id="src-type-status-${n}"></div>`;
+}
+
+function toggleTypeDropdown(n) {
+  const dd = document.getElementById(`src-type-dropdown-${n}`);
+  const isOpen = !dd.classList.contains("hidden");
+  closeTypeDropdown();
+  if (!isOpen) {
+    renderTypeDropdown(n);
+    dd.classList.remove("hidden");
+    openSourceDropdown = n;
+  }
+}
+
+function closeTypeDropdown() {
+  if (openSourceDropdown === null) return;
+  document.getElementById(`src-type-dropdown-${openSourceDropdown}`)?.classList.add("hidden");
+  openSourceDropdown = null;
+}
+
+document.addEventListener("click", (e) => {
+  if (openSourceDropdown === null) return;
+  const wrap = document.getElementById(`src-type-btn-${openSourceDropdown}`)?.closest(".src-type-wrap");
+  if (wrap && !wrap.contains(e.target)) closeTypeDropdown();
+});
+
+function selectSourceType(n, key) {
+  document.getElementById(srcIds(n).source).value = key;
+  document.getElementById(`src-type-label-${n}`).textContent = sourceLabel(key);
+  closeTypeDropdown();
+}
+
+function showAddTypeForm(n) {
+  const dd = document.getElementById(`src-type-dropdown-${n}`);
+  dd.querySelector(".src-type-list").style.display = "none";
+  dd.querySelector(".src-type-add-row").style.display = "none";
+  document.getElementById(`src-type-add-form-${n}`).classList.remove("hidden");
+  document.getElementById(`src-type-new-name-${n}`).focus();
+}
+
+async function confirmAddType(n) {
+  const input = document.getElementById(`src-type-new-name-${n}`);
+  const statusEl = document.getElementById(`src-type-status-${n}`);
+  const name = input.value.trim();
+
+  if (!name) { statusEl.textContent = "Введи название источника"; statusEl.className = "status-msg src-type-status err"; return; }
   const exists = Object.values(SOURCE_LABELS).some(l => l.toLowerCase() === name.toLowerCase());
-  if (exists) { statusEl.textContent = "Такой источник уже есть"; statusEl.className = "status-msg err"; return; }
+  if (exists) { statusEl.textContent = "Такой источник уже есть"; statusEl.className = "status-msg src-type-status err"; return; }
 
   const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
-  const btn = document.getElementById("sm-save");
-  btn.disabled = true;
   statusEl.textContent = "Сохраняем…";
-  statusEl.className = "status-msg";
+  statusEl.className = "status-msg src-type-status";
   try {
     await patchSiteSettings((settings) => {
       settings.customSources = settings.customSources || {};
       settings.customSources[key] = name;
     });
     SOURCE_LABELS[key] = name;
-    document.getElementById("sm-name").value = "";
-    renderSourceModalList();
     document.dispatchEvent(new CustomEvent("tags-map-updated"));
-    statusEl.textContent = "Источник добавлен";
-    statusEl.className = "status-msg ok";
+    selectSourceType(n, key);
   } catch (err) {
     statusEl.textContent = err.message || "Ошибка сохранения";
-    statusEl.className = "status-msg err";
-  } finally {
-    btn.disabled = false;
+    statusEl.className = "status-msg src-type-status err";
   }
 }
 
-async function removeSource(key) {
+async function removeSourceType(key) {
   if (!confirm(`Удалить источник «${SOURCE_LABELS[key]}»?`)) return;
-  const statusEl = document.getElementById("source-modal-status");
   try {
     await patchSiteSettings((settings) => {
       settings.customSources = settings.customSources || {};
       delete settings.customSources[key];
     });
     delete SOURCE_LABELS[key];
-    renderSourceModalList();
     document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    if (openSourceDropdown !== null) renderTypeDropdown(openSourceDropdown);
+    // если удалённый тип был выбран в одном из полей — сбрасываем на Teletype
+    [1, 2].forEach(n => {
+      const el = document.getElementById(srcIds(n).source);
+      if (el.value === key) { el.value = "teletype"; syncSourcePanel(n); }
+    });
   } catch (err) {
-    statusEl.textContent = err.message || "Ошибка удаления";
-    statusEl.className = "status-msg err";
+    alert(err.message || "Ошибка удаления");
   }
 }
+
+// Держим подписи типов в src-type-label в актуальном состоянии, если
+// SOURCE_LABELS обновился где-то ещё (например, из /settings-edit).
+document.addEventListener("tags-map-updated", () => {
+  [1, 2].forEach(n => {
+    const label = document.getElementById(`src-type-label-${n}`);
+    if (label) label.textContent = sourceLabel(document.getElementById(srcIds(n).source).value || "teletype");
+  });
+});
 
 // ── Список типов — из TYPE_LABELS (config.js), меняется из /settings-edit ──
 function renderTypeSelect() {
@@ -855,6 +960,10 @@ function fillForm(r) {
   document.getElementById("f-url2").value      = r.url2      || "";
   document.getElementById("f-source2").value   = r.source2   || "";
 
+  // Инлайн-панели источников — раскрыть/свернуть по наличию URL
+  syncSourcePanel(1);
+  syncSourcePanel(2);
+
   // Чекбокс Любимое
   const cb   = document.getElementById("f-favorite");
   const wrap = document.getElementById("fav-wrap");
@@ -897,6 +1006,11 @@ function resetToNew() {
   document.getElementById("f-type").value    = "anime";
   document.getElementById("f-status").value  = "planning";
   document.getElementById("rewatch-count").value = 0;
+
+  // Свернуть обе панели источников обратно в «+ Добавить источник»
+  closeTypeDropdown();
+  syncSourcePanel(1);
+  syncSourcePanel(2);
 
   // Сброс чекбокса
   const cb   = document.getElementById("f-favorite");
