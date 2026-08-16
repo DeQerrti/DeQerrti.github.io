@@ -180,20 +180,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 .field input::placeholder { color: var(--text-dim); }
 .img-preview { width: 60px; height: 90px; object-fit: cover; border-radius: 1px; border: 1px solid var(--border2); margin-top: .5rem; display: none; }
 
-/* Кнопки */
-.btn { font-family: 'DM Sans', sans-serif; font-size: .72rem; font-weight: 500; letter-spacing: .06em;
-  text-transform: uppercase; padding: .5rem 1.1rem; border-radius: 2px; cursor: pointer; transition: all .15s; border: 1px solid; }
-.btn-primary { background: rgba(139,26,26,.12); border-color: rgba(139,26,26,.35); color: var(--text-hi); }
-.btn-primary:hover { background: rgba(139,26,26,.22); border-color: var(--red); }
-.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
-.btn-ghost { background: none; border-color: var(--border2); color: var(--text-dim); }
-.btn-ghost:hover { border-color: var(--border2); color: var(--text); }
-.btn-green { background: rgba(106,184,122,.08); border-color: rgba(106,184,122,.3); color: var(--green-hi); }
-.btn-green:hover { background: rgba(106,184,122,.18); border-color: var(--green-hi); }
-.btn-green:disabled { opacity: .4; cursor: not-allowed; }
-.btn-dashed { background: none; border-style: dashed; border-color: var(--border2); color: var(--text-dim); }
-.btn-dashed:hover { border-color: var(--green-hi); color: var(--green-hi); }
-
+/* Кнопки — общие .btn/.btn-primary/.btn-ghost/.btn-green/.btn-dashed/.icon-btn
+   теперь в style.css, тут остаются только специфичные для этой страницы. */
 .save-bar { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
 .status-msg { font-family: 'DM Sans', sans-serif; font-size: .75rem; }
 
@@ -243,7 +231,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
       </div>
       <div class="field">
         <label>Или загрузить с компьютера</label>
-        <input type="file" id="nt-cover-upload" accept="image/*">
+        <input type="file" id="nt-cover-upload" accept="image/*" class="file-input">
         <button class="btn btn-ghost" style="margin-top:.5rem" onclick="uploadTitleCoverFile()">Загрузить и использовать</button>
         <div id="nt-cover-upload-status" style="font-family:'DM Sans',sans-serif;font-size:.7rem;margin-top:.3rem"></div>
       </div>
@@ -297,7 +285,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
     <span class="manual-toggle" onclick="toggleUpload()">⬆ Загрузить с компьютера</span>
     <div class="manual-section" id="upload-section">
       <div class="field">
-        <input type="file" id="m-upload-file" accept="image/*">
+        <input type="file" id="m-upload-file" accept="image/*" class="file-input">
         <button class="btn btn-ghost" style="margin-top:.5rem" onclick="uploadCharImage()">Загрузить и использовать</button>
         <div id="upload-status" style="font-size:.8rem;margin-top:.4rem;"></div>
       </div>
