@@ -11,6 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<script src="/js/theme.js"></script>
+<script src="/js/config.js"></script>
 <style>
 .logo {
   font-family: 'Playfair Display', serif;
@@ -221,14 +223,7 @@ input::placeholder { color: var(--text-dim); }
     <div class="field full field-subtype" id="field-subtype">
       <label>Роль персоны</label>
       <div class="select-wrap">
-        <select id="f-subtype">
-          <option value="actor">Актёр</option>
-          <option value="director">Режиссёр</option>
-          <option value="author">Автор</option>
-          <option value="seiyuu">Сэйю</option>
-          <option value="artist">Художник</option>
-          <option value="composer">Композитор</option>
-        </select>
+        <select id="f-subtype"></select>
       </div>
     </div>
     <div class="field full">
@@ -275,10 +270,17 @@ let personList = [];   // текущий порядок персон
 let orderDirty = false;
 let dragSrc    = null; // DOM-элемент, который сейчас тащим
 
-const SUBTYPE_LABELS = {
-  actor: "Актёр", director: "Режиссёр", author: "Автор",
-  seiyuu: "Сэйю", artist: "Художник", composer: "Композитор"
-};
+// Список ролей приходит из общего SUBTYPE_LABELS (js/config.js), куда
+// подмешиваются свои роли и переименования из /settings-edit.
+function renderSubtypeSelect() {
+  const select = document.getElementById("f-subtype");
+  const current = select.value;
+  select.innerHTML = Object.entries(SUBTYPE_LABELS)
+    .map(([key, label]) => `<option value="${key}">${esc(label)}</option>`).join("");
+  if (current && SUBTYPE_LABELS[current] !== undefined) select.value = current;
+}
+renderSubtypeSelect();
+document.addEventListener("tags-map-updated", renderSubtypeSelect);
 
 function onTypeChange() {
   const isPerson = document.getElementById("f-type").value === "person";
