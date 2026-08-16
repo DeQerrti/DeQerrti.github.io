@@ -110,13 +110,18 @@
   .tab-row .main-radio-label input { width: auto; margin: 0; }
 
   .shelf-row {
-    display: flex; align-items: center; gap: 8px;
     padding: 8px 0; border-bottom: 1px solid var(--border);
   }
+  .shelf-row-main { display: flex; align-items: center; gap: 8px; }
   .shelf-row input[type="text"] { flex: 1.4; }
   .shelf-row input[type="number"] { width: 64px; flex: none; }
   .shelf-row input[type="color"] { width: 34px; height: 34px; flex: none; }
   .shelf-row .rng { color: var(--text-dim); font-size: .8rem; }
+  .shelf-row .shelf-desc {
+    width: 100%; margin-top: 6px; background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 2px; color: var(--text);
+    font-size: .78rem; padding: 6px 8px; box-sizing: border-box;
+  }
 </style>
 </head>
 <body>
@@ -362,7 +367,7 @@
   // иначе уже сохранённые отзывы (grade: "etalon" и т.д.) перестанут
   // находить свою полку.
   function seedCategoricalShelves() {
-    shelves = GRADES_DEF.map(g => ({ key: g.key, name: g.name, color: g.color }));
+    shelves = GRADES_DEF.map(g => ({ key: g.key, name: g.name, color: g.color, desc: g.desc }));
   }
 
   function seedNumericShelves() {
@@ -382,15 +387,19 @@
     const container = document.getElementById(containerId);
     container.innerHTML = shelves.map((s, i) => `
       <div class="shelf-row">
-        <input type="color" value="${s.color}" onchange="shelves[${i}].color=this.value">
-        <input type="text" value="${s.name}" onchange="shelves[${i}].name=this.value" placeholder="Название">
-        ${withRange ? `
-          <span class="rng">от</span>
-          <input type="number" value="${s.min}" onchange="shelves[${i}].min=Number(this.value)">
-          <span class="rng">до</span>
-          <input type="number" value="${s.max}" onchange="shelves[${i}].max=Number(this.value)">
-        ` : ""}
-        <button class="icon-btn" onclick="removeShelfRow(${i}, '${containerId}', ${withRange})">✕</button>
+        <div class="shelf-row-main">
+          <input type="color" value="${s.color}" onchange="shelves[${i}].color=this.value">
+          <input type="text" value="${s.name}" onchange="shelves[${i}].name=this.value" placeholder="Название">
+          ${withRange ? `
+            <span class="rng">от</span>
+            <input type="number" value="${s.min}" onchange="shelves[${i}].min=Number(this.value)">
+            <span class="rng">до</span>
+            <input type="number" value="${s.max}" onchange="shelves[${i}].max=Number(this.value)">
+          ` : ""}
+          <button class="icon-btn" onclick="removeShelfRow(${i}, '${containerId}', ${withRange})">✕</button>
+        </div>
+        <input type="text" class="shelf-desc" value="${(s.desc || "").replace(/"/g, "&quot;")}"
+          onchange="shelves[${i}].desc=this.value" placeholder="Описание — показывается подсказкой при наведении">
       </div>
     `).join("");
   }
