@@ -123,6 +123,7 @@
     <button class="side-tab" data-panel="types">Типы</button>
     <button class="side-tab" data-panel="grades">Оценки и статусы</button>
     <button class="side-tab" data-panel="tags">Теги</button>
+    <button class="side-tab" data-panel="collections">Тир-листы</button>
     <button class="side-tab" data-panel="images">Картинки</button>
   </nav>
 
@@ -240,6 +241,23 @@
 
       <button onclick="saveSettings()">Сохранить всё</button>
       <div class="status-msg" id="status-tags"></div>
+    </div>
+
+    <div class="panel" id="panel-collections">
+      <p class="panel-intro">
+        Помимо "Тайтлы" в тир-листе можно завести отдельные коллекции — как
+        "Персонажи" сейчас, только про что угодно (опенинги, версии сюжета
+        и т.д.). У каждой своя страница-редактор, свои картинки, своя
+        группировка. "Персонажи" — встроенная, её нельзя удалить, только
+        переименовать.
+      </p>
+      <div id="collectionsList"></div>
+      <div class="row" style="margin-top:14px;">
+        <div><label>Новая коллекция</label><input type="text" id="newCollectionName" placeholder="Например: Опенинги"></div>
+      </div>
+      <button class="secondary" onclick="addCollection()">+ Добавить коллекцию</button>
+      <button onclick="saveSettings()">Сохранить</button>
+      <div class="status-msg" id="status-collections"></div>
     </div>
 
     <div class="panel" id="panel-images">
@@ -373,6 +391,54 @@
   function removeShelfRow(i, containerId, withRange) {
     shelves.splice(i, 1);
     renderShelvesList(containerId, withRange);
+  }
+
+  // ── Коллекции тир-листов ──
+  let tierCollections = [];
+
+  function slugify(name) {
+    return name.toLowerCase()
+      .replace(/[^a-zа-я0-9]+/gi, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 40) + "-" + Date.now().toString(36).slice(-4);
+  }
+
+  function renderCollectionsList() {
+    const container = document.getElementById("collectionsList");
+    container.innerHTML = tierCollections.map(c => `
+      <div class="tab-row" id="collrow-${c.id}">
+        <span class="tab-name" id="collname-${c.id}" style="flex:1;">${c.label}</span>
+        <input type="text" id="collinput-${c.id}" value="${c.label}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleCollectionEdit('${c.id}')">✎</button>
+        ${c.id !== "characters" ? `<button class="icon-btn" title="Удалить" onclick="removeCollection('${c.id}')">✕</button>` : ""}
+      </div>
+    `).join("");
+  }
+
+  function toggleCollectionEdit(id) {
+    const row = document.getElementById(`collrow-${id}`);
+    const editing = row.classList.toggle("editing");
+    if (!editing) {
+      const val = document.getElementById(`collinput-${id}`).value.trim();
+      const c = tierCollections.find(c => c.id === id);
+      if (c) {
+        c.label = val || c.label;
+        document.getElementById(`collname-${id}`).textContent = c.label;
+      }
+    }
+  }
+
+  function addCollection() {
+    const name = document.getElementById("newCollectionName").value.trim();
+    if (!name) return;
+    tierCollections.push({ id: slugify(name), label: name });
+    document.getElementById("newCollectionName").value = "";
+    renderCollectionsList();
+  }
+
+  function removeCollection(id) {
+    tierCollections = tierCollections.filter(c => c.id !== id);
+    renderCollectionsList();
   }
 
   const THEMES = [
@@ -631,6 +697,11 @@
     hiddenTabsState = new Set(settings.hiddenTabs || []);
     renderTabsList();
 
+    tierCollections = settings.tierCollections
+      ? JSON.parse(JSON.stringify(settings.tierCollections))
+      : [{ id: "characters", label: "Персонажи" }];
+    renderCollectionsList();
+
     const statuses = labels.statuses || {};
     const builtinDefaults = [
       { key: "current", label: "В процессе", removable: false },
@@ -695,6 +766,10 @@
       const row = document.getElementById(`statusrow-${b.key}`);
       if (row && row.classList.contains("editing")) toggleStatusEdit(b.key);
     });
+    tierCollections.forEach(c => {
+      const row = document.getElementById(`collrow-${c.id}`);
+      if (row && row.classList.contains("editing")) toggleCollectionEdit(c.id);
+    });
 
     const hiddenTabs = TAB_DEFS.filter(t => !document.getElementById(`showtab-${t.id}`).checked).map(t => t.id);
     const hiddenStatuses = [...hiddenStatusesState];
@@ -745,6 +820,7 @@
       gradeScale,
       statusBuckets,
       hiddenStatuses,
+      tierCollections,
       labels: {
         nav: { ...tabLabels },
         statuses: {
