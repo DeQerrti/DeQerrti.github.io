@@ -1292,8 +1292,8 @@
         "label": "Дизайн & Впечатление",
         "tiers": [
           {
-            "name": "S",
-            "color": "#7c3aed",
+            "name": "A",
+            "color": "#2563a8",
             "chars": [
               {
                 "name": "Saya",
