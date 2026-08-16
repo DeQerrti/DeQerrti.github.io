@@ -2,6 +2,111 @@
   "theme": "classic",
   "customAccent": "#8b1a1a",
   "customTags": {},
+  "customCategories": {},
+  "categoryColors": {},
+  "customTypes": {},
+  "hiddenTypes": [],
+  "customTypePlural": {},
   "hiddenTabs": [],
-  "labels": {}
+  "tabOrder": [
+    "now",
+    "favorites",
+    "reviews",
+    "stats",
+    "tierlist"
+  ],
+  "mainTab": "reviews",
+  "hiddenStatsBlocks": [],
+  "gradeScale": {
+    "type": "categorical",
+    "shelves": [
+      {
+        "key": "rezonans",
+        "name": "Резонанс",
+        "color": "#7c3aed"
+      },
+      {
+        "key": "etalon",
+        "name": "Эталон",
+        "color": "#2563a8"
+      },
+      {
+        "key": "vyskazyvanie",
+        "name": "Отлично",
+        "color": "#2d8a4e"
+      },
+      {
+        "key": "attrakcion",
+        "name": "Аттракцион",
+        "color": "#d4a017"
+      },
+      {
+        "key": "fon",
+        "name": "Фоновый шум",
+        "color": "#6b7280"
+      },
+      {
+        "key": "brak",
+        "name": "Брак",
+        "color": "#c0392b"
+      },
+      {
+        "key": "razocharo",
+        "name": "Разочарование",
+        "color": "#8B6914"
+      }
+    ]
+  },
+  "statusBuckets": [
+    {
+      "key": "current",
+      "label": "В процессе",
+      "removable": false
+    },
+    {
+      "key": "onhold",
+      "label": "Отложено",
+      "removable": false
+    },
+    {
+      "key": "planning",
+      "label": "Планирую",
+      "removable": false
+    }
+  ],
+  "hiddenStatuses": [],
+  "tierCollections": [
+    {
+      "id": "characters",
+      "label": "Персонажи"
+    }
+  ],
+  "labels": {
+    "nav": {
+      "now": "Статусы"
+    },
+    "statuses": {
+      "archive": "Архив"
+    },
+    "types": {
+      "anime": "Аниме",
+      "manga": "Манга",
+      "manhwa": "Манхва",
+      "manhua": "Маньхуа",
+      "novel": "Ранобэ",
+      "movie": "Фильм",
+      "show": "Сериал",
+      "dorama": "Дорама",
+      "book": "Книга",
+      "game": "Игра",
+      "gacha": "Гача"
+    },
+    "categories": {
+      "visual": "Визуал / звук",
+      "plot": "Сюжет / нарратив",
+      "chars": "Персонажи / мир",
+      "special": "Атмосфера / эмоции",
+      "genre": "Жанр"
+    }
+  }
 }
