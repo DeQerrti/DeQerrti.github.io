@@ -102,7 +102,7 @@ input::placeholder { color: var(--text-dim); }
 .btn-save-order.visible { display: block; }
 .btn-save-order:disabled { opacity: .4; cursor: not-allowed; }
 
-.entries-list { display: flex; flex-direction: column; gap: .5rem; }
+.entries-list { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 2rem; }
 
 .entry-row {
   display: flex;
@@ -112,34 +112,22 @@ input::placeholder { color: var(--text-dim); }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 2px;
-  transition: border-color .15s;
+  transition: border-color .15s, opacity .15s, box-shadow .15s;
 }
 .entry-row:hover { border-color: var(--border2); }
+.entry-row.dragging { opacity: .4; }
+.entry-row.drag-over { border-color: var(--red); box-shadow: 0 -1px 0 var(--red); }
 
-/* Кнопки порядка */
-.entry-order-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.entry-drag-handle {
   flex-shrink: 0;
-}
-.btn-order {
-  background: none;
-  border: 1px solid var(--border2);
-  border-radius: 1px;
+  cursor: grab;
   color: var(--text-dim);
-  font-size: .6rem;
-  width: 20px; height: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .12s;
+  font-size: 1rem;
   line-height: 1;
-  padding: 0;
+  padding: 0 2px;
+  user-select: none;
 }
-.btn-order:hover { border-color: var(--red-dim); color: var(--red-hi); }
-.btn-order:disabled { opacity: .2; cursor: default; }
+.entry-drag-handle:active { cursor: grabbing; }
 
 .entry-avatar {
   width: 36px; height: 36px;
@@ -186,6 +174,15 @@ input::placeholder { color: var(--text-dim); }
   display: none;
 }
 .order-hint.visible { display: block; }
+
+.entries-empty {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+  color: var(--text-dim);
+  padding: 1rem .85rem;
+  border: 1px dashed var(--border);
+  border-radius: 2px;
+}
 </style>
 </head>
 <body>
@@ -249,18 +246,25 @@ input::placeholder { color: var(--text-dim); }
   <div class="status-msg" id="status"></div>
 
   <div class="list-header" id="list-header" style="display:none">
-    <div class="divider-title">Все записи</div>
+    <div class="divider-title">Персонажи</div>
     <button class="btn-save-order" id="btn-save-order" onclick="saveOrder()">✦ Сохранить порядок</button>
   </div>
-  <div class="entries-list" id="entries-list"></div>
-  <div class="order-hint" id="order-hint">Используй ↑↓ для изменения порядка, затем нажми «Сохранить порядок»</div>
+  <div class="entries-list" id="entries-list-character"></div>
+
+  <div class="divider-title" id="persons-title" style="display:none">Персоны</div>
+  <div class="entries-list" id="entries-list-person"></div>
+
+  <div class="order-hint" id="order-hint">Перетащи за ⠿, чтобы изменить порядок, затем нажми «Сохранить порядок»</div>
 
 </main>
 
 <script>
 let editingId  = null;
-let listData   = [];   // текущий порядок записей
+let allEntries = [];   // все записи как есть (для поиска при редактировании)
+let charList   = [];   // текущий порядок персонажей
+let personList = [];   // текущий порядок персон
 let orderDirty = false;
+let dragSrc    = null; // DOM-элемент, который сейчас тащим
 
 const SUBTYPE_LABELS = {
   actor: "Актёр", director: "Режиссёр", author: "Автор",
@@ -308,28 +312,20 @@ function fillForm(r) {
   onTypeChange();
 }
 
-// ── Перемещение записи ──────────────────────────
-function moveEntry(idx, dir) {
-  const newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= listData.length) return;
-  [listData[idx], listData[newIdx]] = [listData[newIdx], listData[idx]];
-  orderDirty = true;
-  renderList();
-}
-
-// ── Рендер списка ───────────────────────────────
-function renderList() {
-  const list = document.getElementById("entries-list");
-  list.innerHTML = listData.map((r, idx) => {
+// ── Рендер одного из двух списков (персонажи / персоны) ──
+function renderGroup(type, list) {
+  const container = document.getElementById(`entries-list-${type}`);
+  if (!list.length) {
+    container.innerHTML = `<div class="entries-empty">Пока пусто</div>`;
+    return;
+  }
+  container.innerHTML = list.map((r) => {
     const typeLabel = r.type === "person"
       ? (SUBTYPE_LABELS[r.subtype] || "Персона")
       : "Персонаж";
     return `
-    <div class="entry-row">
-      <div class="entry-order-btns">
-        <button class="btn-order" onclick="moveEntry(${idx}, -1)" ${idx === 0 ? "disabled" : ""} title="Вверх">▲</button>
-        <button class="btn-order" onclick="moveEntry(${idx}, 1)"  ${idx === listData.length - 1 ? "disabled" : ""} title="Вниз">▼</button>
-      </div>
+    <div class="entry-row" data-id="${r.id}" data-group="${type}" draggable="true">
+      <span class="entry-drag-handle" title="Перетащить">⠿</span>
       <img class="entry-avatar" src="${esc(r.image || "")}" onerror="this.style.display='none'" alt="">
       <div class="entry-name">${esc(r.name)}</div>
       ${r.from ? `<div class="entry-type">${esc(r.from)}</div>` : ""}
@@ -337,12 +333,64 @@ function renderList() {
       <button class="entry-edit" onclick="startEdit(${r.id})">✎ Изменить</button>
     </div>`;
   }).join("");
+  bindDnd(container);
+}
 
-  // Показываем кнопку сохранения порядка только если что-то сдвинули
+function renderList() {
+  renderGroup("character", charList);
+  renderGroup("person", personList);
+
+  document.getElementById("persons-title").style.display = personList.length || charList.length ? "flex" : "none";
+
   const btn = document.getElementById("btn-save-order");
   const hint = document.getElementById("order-hint");
   btn.classList.toggle("visible", orderDirty);
-  hint.classList.toggle("visible", listData.length > 1);
+  hint.classList.toggle("visible", (charList.length + personList.length) > 1);
+}
+
+// ── Drag-and-drop внутри одного списка (персонажи ИЛИ персоны — раздельно) ──
+function bindDnd(container) {
+  container.querySelectorAll(".entry-row").forEach(row => {
+    row.addEventListener("dragstart", (e) => {
+      dragSrc = row;
+      row.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+    });
+    row.addEventListener("dragend", () => {
+      container.querySelectorAll(".entry-row").forEach(el => el.classList.remove("dragging", "drag-over"));
+      dragSrc = null;
+    });
+    row.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      if (!dragSrc || row === dragSrc || row.dataset.group !== dragSrc.dataset.group) return;
+      container.querySelectorAll(".entry-row").forEach(el => el.classList.remove("drag-over"));
+      row.classList.add("drag-over");
+    });
+    row.addEventListener("dragleave", () => row.classList.remove("drag-over"));
+    row.addEventListener("drop", (e) => {
+      e.preventDefault();
+      row.classList.remove("drag-over");
+      if (!dragSrc || row === dragSrc || row.dataset.group !== dragSrc.dataset.group) return;
+
+      const group = row.dataset.group;
+      const list  = group === "character" ? charList : personList;
+      const srcId = Number(dragSrc.dataset.id);
+      const targetId = Number(row.dataset.id);
+      const srcIdx = list.findIndex(r => r.id === srcId);
+      let targetIdx = list.findIndex(r => r.id === targetId);
+      if (srcIdx === -1 || targetIdx === -1) return;
+
+      const rect = row.getBoundingClientRect();
+      const before = e.clientY < rect.top + rect.height / 2;
+
+      const [moved] = list.splice(srcIdx, 1);
+      targetIdx = list.findIndex(r => r.id === targetId);
+      list.splice(before ? targetIdx : targetIdx + 1, 0, moved);
+
+      orderDirty = true;
+      renderList();
+    });
+  });
 }
 
 async function loadList() {
@@ -352,7 +400,9 @@ async function loadList() {
     const data = await res.json();
     if (!data.length) return;
 
-    listData   = data;
+    allEntries = data;
+    charList   = data.filter(r => r.type === "character");
+    personList = data.filter(r => r.type === "person");
     orderDirty = false;
     document.getElementById("list-header").style.display = "flex";
     renderList();
@@ -360,7 +410,7 @@ async function loadList() {
 }
 
 async function startEdit(id) {
-  const entry = listData.find(r => r.id === id);
+  const entry = allEntries.find(r => r.id === id);
   if (!entry) return;
   editingId = entry.id;
   fillForm(entry);
@@ -371,18 +421,20 @@ async function startEdit(id) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// ── Сохранить порядок ───────────────────────────
+// ── Сохранить порядок (обеих групп сразу) ───────
 async function saveOrder() {
   const btn = document.getElementById("btn-save-order");
   btn.disabled = true;
   btn.textContent = "Сохраняем…";
+
+  const newOrder = [...charList, ...personList].map(r => r.id);
 
   try {
     const res  = await fetch("/api/save-favorite", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ _reorder: listData.map(r => r.id) }),
+      body: JSON.stringify({ _reorder: newOrder }),
     });
     const data = await res.json();
     if (res.ok) {

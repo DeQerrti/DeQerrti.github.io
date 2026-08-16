@@ -89,16 +89,20 @@
   .tab-row {
     display: flex; align-items: center; gap: 10px;
     padding: 8px 0; border-bottom: 1px solid var(--border);
+    transition: opacity .15s, border-color .15s;
   }
   .tab-row input[type="checkbox"] { width: auto; margin: 0; }
   .tab-row .tab-name { flex: 1; font-size: .9rem; }
   .tab-row input[type="text"] { flex: 1; display: none; }
   .tab-row.editing .tab-name { display: none; }
   .tab-row.editing input[type="text"] { display: block; }
-  .tab-row .move-btns { display: flex; gap: 2px; flex: none; }
-  .tab-row .move-btns button.icon-btn { width: 24px; height: 24px; font-size: .7rem; }
-  .tab-row .move-btns button.icon-btn:disabled { opacity: .3; cursor: default; }
-  .tab-row .move-btns button.icon-btn:disabled:hover { color: var(--text-dim); border-color: var(--border2); }
+  .tab-row .drag-handle {
+    flex: none; cursor: grab; color: var(--text-dim); font-size: .95rem;
+    line-height: 1; padding: 2px 4px; user-select: none;
+  }
+  .tab-row .drag-handle:active { cursor: grabbing; }
+  .tab-row.dragging { opacity: .4; }
+  .tab-row.drag-over { border-color: var(--red); box-shadow: 0 -1px 0 var(--red); }
   .tab-row .main-radio-label {
     display: flex; align-items: center; gap: 5px; flex: none;
     font-size: .72rem; color: var(--text-dim); cursor: pointer; white-space: nowrap;
@@ -149,7 +153,7 @@
     </div>
 
     <div class="panel" id="panel-tabs">
-      <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать. Стрелки — порядок вкладок. Точка справа — какая вкладка открывается первой (при заходе на сайт и при обновлении страницы).</p>
+      <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать. Перетаскивай за ⠿, чтобы менять порядок. Точка справа — какая вкладка открывается первой (при заходе на сайт и при обновлении страницы).</p>
       <div id="tabsList"></div>
       <button onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-tabs"></div>
@@ -490,15 +494,12 @@
 
   function renderTabsList() {
     const container = document.getElementById("tabsList");
-    container.innerHTML = tabOrderState.map((id, i) => {
+    container.innerHTML = tabOrderState.map((id) => {
       const def = TAB_DEFS_BY_ID[id];
       if (!def) return "";
       return `
-      <div class="tab-row" id="tabrow-${id}">
-        <div class="move-btns">
-          <button class="icon-btn" title="Выше" ${i === 0 ? "disabled" : ""} onclick="moveTab('${id}', -1)">↑</button>
-          <button class="icon-btn" title="Ниже" ${i === tabOrderState.length - 1 ? "disabled" : ""} onclick="moveTab('${id}', 1)">↓</button>
-        </div>
+      <div class="tab-row" id="tabrow-${id}" data-id="${id}" draggable="true">
+        <span class="drag-handle" title="Перетащить">⠿</span>
         <input type="checkbox" id="showtab-${id}" ${hiddenTabsState.has(id) ? "" : "checked"}
           onchange="hiddenTabsState.has('${id}') ? hiddenTabsState.delete('${id}') : hiddenTabsState.add('${id}')">
         <span class="tab-name" id="tabname-${id}">${(tabLabels[id] || def.def)}</span>
@@ -512,14 +513,54 @@
       </div>
     `;
     }).join("");
+    bindTabsDnd();
   }
 
-  function moveTab(id, dir) {
-    const i = tabOrderState.indexOf(id);
-    const j = i + dir;
-    if (i < 0 || j < 0 || j >= tabOrderState.length) return;
-    [tabOrderState[i], tabOrderState[j]] = [tabOrderState[j], tabOrderState[i]];
-    renderTabsList();
+  // ── Drag-and-drop порядка вкладок (вертикальный список) ──
+  let tabDragSrc = null;
+
+  function bindTabsDnd() {
+    const container = document.getElementById("tabsList");
+
+    container.querySelectorAll(".tab-row").forEach(row => {
+      row.addEventListener("dragstart", (e) => {
+        tabDragSrc = row;
+        row.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+      });
+      row.addEventListener("dragend", () => {
+        container.querySelectorAll(".tab-row").forEach(el => el.classList.remove("dragging", "drag-over"));
+        tabDragSrc = null;
+      });
+      row.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        if (!tabDragSrc || row === tabDragSrc) return;
+        container.querySelectorAll(".tab-row").forEach(el => el.classList.remove("drag-over"));
+        row.classList.add("drag-over");
+      });
+      row.addEventListener("dragleave", () => row.classList.remove("drag-over"));
+      row.addEventListener("drop", (e) => {
+        e.preventDefault();
+        row.classList.remove("drag-over");
+        if (!tabDragSrc || row === tabDragSrc) return;
+
+        const srcId = tabDragSrc.dataset.id;
+        const targetId = row.dataset.id;
+        const srcIdx = tabOrderState.indexOf(srcId);
+        let targetIdx = tabOrderState.indexOf(targetId);
+        if (srcIdx === -1 || targetIdx === -1) return;
+
+        // Вставляем перед/после target в зависимости от того, выше или ниже курсор середины строки
+        const rect = row.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+
+        tabOrderState.splice(srcIdx, 1);
+        targetIdx = tabOrderState.indexOf(targetId);
+        tabOrderState.splice(before ? targetIdx : targetIdx + 1, 0, srcId);
+
+        renderTabsList();
+      });
+    });
   }
 
   function toggleTabEdit(id) {
