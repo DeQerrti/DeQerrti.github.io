@@ -419,6 +419,16 @@ document.addEventListener("site-labels-ready", () => {
     if (TYPE_LABELS[key] !== undefined && label) TYPE_LABELS[key] = label;
   }
 
+  // Формы склонения для своих типов (см. addCustomType в /settings-edit) —
+  // встроенные типы уже имеют свои формы выше и не переопределяются.
+  const customTypePlural = window.SITE_CUSTOM_TYPE_PLURAL || {};
+  Object.assign(TYPE_PLURAL, customTypePlural);
+
+  // Свои источники ссылок (добавляются прямо из редактора отзыва, add.html) —
+  // подмешиваются в SOURCE_LABELS, как только настройки подгрузятся.
+  const customSources = window.SITE_CUSTOM_SOURCES || {};
+  Object.assign(SOURCE_LABELS, customSources);
+
   const catOverrides = overrides.categories || {};
   for (const [key, label] of Object.entries(catOverrides)) {
     if (CAT_LABELS[key] !== undefined && label) CAT_LABELS[key] = label;
