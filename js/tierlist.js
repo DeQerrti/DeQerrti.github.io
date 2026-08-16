@@ -115,7 +115,7 @@ async function loadTierlist() {
       box.innerHTML = `<div class="state-box"><div class="spinner"></div>Загружаем…</div>`;
       await fetchReviews();
       const reviews  = (cache.reviews || []).filter(r => r.grade);
-      tlState.items  = reviews.map(r => ({ review: r, poster: r.cover || null }));
+      tlState.items  = reviews.map(r => ({ review: r, poster: r.cover || null, posterBackup: r.cover_backup || null }));
       tlState.loaded = true;
     }
     tlRender();
@@ -207,8 +207,9 @@ function tlTitlesHtml() {
       html += `<div class="tl-empty">—</div>`;
     } else {
       for (let i = 0; i < items.length; i++) {
-        const { review: r, poster } = items[i];
-        const src = poster || `https://placehold.co/72x108/111114/4a4540?text=${encodeURIComponent(r.title.slice(0, 2))}`;
+        const { review: r, poster, posterBackup } = items[i];
+        const placeholder = `https://placehold.co/72x108/111114/4a4540?text=${encodeURIComponent(r.title.slice(0, 2))}`;
+        const src = poster || posterBackup || placeholder;
         html += `<div class="tl-poster"
             data-tl-title="${esc(r.title)}"
             data-tl-grade="${esc(tier.label)}"
@@ -218,7 +219,7 @@ function tlTitlesHtml() {
             data-tl-type="${esc(tlTypeLabel(tlInferType(r)))}"
             style="animation-delay:${Math.min(i * 18, 400)}ms">
           <img src="${esc(src)}" alt="${esc(r.title)}" loading="lazy"
-            onerror="this.src='https://placehold.co/72x108/111114/4a4540?text=?'">
+            onerror="imgFallback(this, '${esc(poster ? (posterBackup || "") : "")}', '${placeholder}')">
         </div>`;
       }
     }
@@ -311,8 +312,8 @@ function tlCharsHtml(collectionId) {
             data-tl-year=""
             data-tl-type="${esc(game.title)}"
             style="height:${tlCharHeight}px;animation-delay:${Math.min(i * 18, 400)}ms">
-          <img src="${esc(ch.img)}" alt="${esc(ch.name)}" loading="lazy"
-            onerror="this.src='https://placehold.co/100x150/111114/4a4540?text=?'">
+          <img src="${esc(ch.img || ch.img_backup || "")}" alt="${esc(ch.name)}" loading="lazy"
+            onerror="imgFallback(this, '${esc(ch.img ? (ch.img_backup || "") : "")}', 'https://placehold.co/100x150/111114/4a4540?text=?')">
         </div>`;
       }
     }
