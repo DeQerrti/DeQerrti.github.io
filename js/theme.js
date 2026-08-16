@@ -122,6 +122,7 @@ async function applyTheme() {
   window.SITE_GRADE_SCALE = settings.gradeScale || null;
   window.SITE_STATUS_BUCKETS = settings.statusBuckets || null;
   window.SITE_HIDDEN_STATUSES = new Set(settings.hiddenStatuses || []);
+  window.SITE_TIER_COLLECTIONS = settings.tierCollections || null;
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
   const hiddenTabs = settings.hiddenTabs || [];
 
