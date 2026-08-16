@@ -47,7 +47,7 @@ function renderFavorites({ titles, characters, persons }) {
   html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">Тайтлы</h2>
-      ${admin ? `<a href="/reviews-order" class="admin-add-btn">⇅ Порядок</a><a href="/add" class="admin-add-btn">+ Добавить</a>` : ""}
+      ${admin ? `<a href="/reviews-order" class="admin-add-btn">⇅ Порядок</a>` : ""}
     </div>
     <div class="grid-now">
       ${titles.length
