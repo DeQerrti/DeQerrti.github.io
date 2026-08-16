@@ -32,10 +32,20 @@ const tlState = {
   gameId:      null,
   listId:      null,
   items:       [],
-  charGames:   [],
+  collections: {}, // { [collectionId]: { games: [...], loaded: bool } }
   loaded:      false,
-  charsLoaded: false,
 };
+
+// Список коллекций (кроме "Тайтлы") — по умолчанию только встроенная
+// "Персонажи", остальное настраивается в /settings-edit.
+function activeTierCollections() {
+  const configured = window.SITE_TIER_COLLECTIONS;
+  return (configured && configured.length) ? configured : [{ id: "characters", label: "Персонажи" }];
+}
+
+function collectionFileFor(id) {
+  return id === "characters" ? "characters-tier.json" : `tier-${id}.json`;
+}
 
 async function loadTierlist() {
   if (loading.tierlist) return;
@@ -57,34 +67,38 @@ async function loadTierlist() {
   }
 }
 
-async function loadCharGames() {
-  if (tlState.charsLoaded) return;
+async function loadCharGames(collectionId) {
+  const existing = tlState.collections[collectionId];
+  if (existing?.loaded) return;
+
+  let games = [];
   try {
-    const res = await fetch("characters-tier.json");
-    if (!res.ok) throw new Error("characters-tier.json не найден");
-    tlState.charGames   = await res.json();
-    tlState.charsLoaded = true;
-    if (tlState.charGames.length && !tlState.gameId) {
-      tlState.gameId = tlState.charGames[0].id;
-      tlState.listId = tlState.charGames[0].tierlists[0]?.id || null;
-    }
-  } catch {
-    tlState.charGames   = [];
-    tlState.charsLoaded = true;
+    const res = await fetch(collectionFileFor(collectionId));
+    if (res.ok) games = await res.json();
+  } catch {}
+
+  tlState.collections[collectionId] = { games, loaded: true };
+
+  if (games.length && !tlState.gameId) {
+    tlState.gameId = games[0].id;
+    tlState.listId = games[0].tierlists[0]?.id || null;
   }
 }
 
 function tlRender() {
   const box = document.getElementById("tab-tierlist");
   box.innerHTML = tlModeToggleHtml()
-    + (tlState.mode === "titles" ? tlTitlesHtml() : tlCharsHtml());
+    + (tlState.mode === "titles" ? tlTitlesHtml() : tlCharsHtml(tlState.mode));
   tlBindAll();
 }
 
 function tlModeToggleHtml() {
+  const collectionBtns = activeTierCollections().map(c =>
+    `<button class="tl-mode-btn${tlState.mode === c.id ? " active" : ""}" data-mode="${esc(c.id)}">${esc(c.label)}</button>`
+  ).join("");
   return `<div class="tl-mode-toggle">
     <button class="tl-mode-btn${tlState.mode === "titles" ? " active" : ""}" data-mode="titles">Тайтлы</button>
-    <button class="tl-mode-btn${tlState.mode === "chars"  ? " active" : ""}" data-mode="chars">Персонажи</button>
+    ${collectionBtns}
   </div>`;
 }
 
@@ -178,18 +192,25 @@ function tlYearFiltersHtml(itemsForYearScope) {
 
 // ══ РЕЖИМ ПЕРСОНАЖЕЙ ══════════════════════════
 
-function tlCharsHtml() {
-  if (!tlState.charsLoaded) {
-    return `<div class="state-box"><div class="spinner"></div>Загружаем персонажей…</div>`;
+function tlCharsHtml(collectionId) {
+  const collectionLabel = activeTierCollections().find(c => c.id === collectionId)?.label || collectionId;
+  const state = tlState.collections[collectionId];
+
+  if (!state?.loaded) {
+    return `<div class="state-box"><div class="spinner"></div>Загружаем «${esc(collectionLabel)}»…</div>`;
   }
-  if (!tlState.charGames.length) {
-    return `<div class="state-box">Нет данных о персонажах</div>`;
+  if (!state.games.length) {
+    const adminBtn = isAdmin()
+      ? `<a href="/chars-edit?collection=${esc(collectionId)}" class="admin-add-btn">Редактор</a>`
+      : "";
+    return `<div class="state-box">Нет данных — ${adminBtn}</div>`;
   }
 
-  const game = tlState.charGames.find(g => g.id === tlState.gameId) || tlState.charGames[0];
+  const games = state.games;
+  const game = games.find(g => g.id === tlState.gameId) || games[0];
   const list = game.tierlists.find(l => l.id === tlState.listId) || game.tierlists[0];
 
-  const gameButtons = tlState.charGames.map(g =>
+  const gameButtons = games.map(g =>
     `<button class="tl-filter${g.id === game.id ? " active" : ""}" data-char-game="${esc(g.id)}">${esc(g.title)}</button>`
   ).join("");
 
@@ -237,7 +258,7 @@ function tlCharsHtml() {
   tiersHtml += `</div>`;
 
   const adminBtn = isAdmin()
-    ? `<a href="/chars-edit" class="admin-add-btn">Редактор</a>`
+    ? `<a href="/chars-edit?collection=${esc(collectionId)}" class="admin-add-btn">Редактор</a>`
     : "";
 
   const exportBtn = `<button class="admin-add-btn" id="tl-export-btn" onclick="tlExport('tl-chars-rows', '${esc(game.title)}')">Сохранить как картинку</button>`;
@@ -275,12 +296,18 @@ function tlTooltipHtml() {
 function tlBindAll() {
   document.querySelectorAll(".tl-mode-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
-      tlState.mode = btn.dataset.mode;
-      if (tlState.mode === "chars" && !tlState.charsLoaded) {
+      const newMode = btn.dataset.mode;
+      if (newMode !== "titles" && !tlState.collections[newMode]?.loaded) {
+        const label = activeTierCollections().find(c => c.id === newMode)?.label || newMode;
+        tlState.mode = newMode;
+        tlState.gameId = null;
+        tlState.listId = null;
         const box = document.getElementById("tab-tierlist");
         box.innerHTML = tlModeToggleHtml()
-          + `<div class="state-box"><div class="spinner"></div>Загружаем персонажей…</div>`;
-        await loadCharGames();
+          + `<div class="state-box"><div class="spinner"></div>Загружаем «${esc(label)}»…</div>`;
+        await loadCharGames(newMode);
+      } else {
+        tlState.mode = newMode;
       }
       tlRender();
     });
@@ -305,7 +332,8 @@ function tlBindAll() {
   document.querySelectorAll("[data-char-game]").forEach(btn => {
     btn.addEventListener("click", () => {
       tlState.gameId = btn.dataset.charGame;
-      const game = tlState.charGames.find(g => g.id === tlState.gameId);
+      const games = tlState.collections[tlState.mode]?.games || [];
+      const game = games.find(g => g.id === tlState.gameId);
       tlState.listId = game?.tierlists[0]?.id || null;
       tlRender();
     });
