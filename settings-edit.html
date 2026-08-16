@@ -182,6 +182,12 @@
       <div class="row" style="margin-top:16px;">
         <div><label>Новый тип</label><input type="text" id="newTypeName" placeholder="Например: Артбук"></div>
       </div>
+      <p class="panel-intro" style="margin-bottom:8px;">Склонение по числу (необязательно, но без него счётчики на статистике будут просто повторять название типа):</p>
+      <div class="row">
+        <div><label>1 штука</label><input type="text" id="newTypePluralOne" placeholder="артбук"></div>
+        <div><label>2–4 штуки</label><input type="text" id="newTypePluralFew" placeholder="артбука"></div>
+        <div><label>5+ штук</label><input type="text" id="newTypePluralMany" placeholder="артбуков"></div>
+      </div>
       <button class="secondary" onclick="addCustomType()">+ Добавить тип</button>
       <button onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-types"></div>
@@ -643,6 +649,7 @@
   let typeLabels = {};
   let hiddenTypes = new Set();
   let customTypeKeys = new Set();
+  let typePlural = {}; // key -> [1 штука, 2–4 штуки, 5+ штук], только для своих типов
 
   function renderTypesList() {
     const container = document.getElementById("typesList");
@@ -650,12 +657,20 @@
     container.innerHTML = allKeys.map(key => {
       const isCustom = customTypeKeys.has(key);
       const isHidden = hiddenTypes.has(key);
+      const forms = typePlural[key] || ["", "", ""];
+      const pluralRow = isCustom ? `
+      <div class="list-row" style="border-top:none;padding-top:0;">
+        <span style="width:0;flex:0 0 0;"></span>
+        <input type="text" style="flex:1;" id="type-plural-${key}-0" value="${forms[0] || ""}" placeholder="1 артбук" title="Форма для 1 штуки">
+        <input type="text" style="flex:1;" id="type-plural-${key}-1" value="${forms[1] || ""}" placeholder="2 артбука" title="Форма для 2–4 штук">
+        <input type="text" style="flex:1;" id="type-plural-${key}-2" value="${forms[2] || ""}" placeholder="5 артбуков" title="Форма для 5+ штук">
+      </div>` : "";
       return `
       <div class="list-row" style="${isHidden ? "opacity:.4;" : ""}">
         <input type="text" style="flex:1;" id="type-input-${key}" value="${typeLabels[key]}" ${isHidden ? "disabled" : ""}>
         <button class="icon-btn" title="${isHidden ? "Показать" : "Скрыть"}" onclick="toggleTypeHidden('${key}')">${isHidden ? "👁" : "🚫"}</button>
         ${isCustom ? `<button class="icon-btn" title="Удалить совсем" onclick="deleteCustomType('${key}')">✕</button>` : ""}
-      </div>`;
+      </div>${pluralRow}`;
     }).join("");
   }
 
@@ -668,6 +683,7 @@
     delete typeLabels[key];
     customTypeKeys.delete(key);
     hiddenTypes.delete(key);
+    delete typePlural[key];
     renderTypesList();
   }
 
@@ -677,7 +693,16 @@
     const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
     typeLabels[key] = name;
     customTypeKeys.add(key);
+
+    const one  = document.getElementById("newTypePluralOne").value.trim();
+    const few  = document.getElementById("newTypePluralFew").value.trim();
+    const many = document.getElementById("newTypePluralMany").value.trim();
+    if (one && few && many) typePlural[key] = [one, few, many];
+
     document.getElementById("newTypeName").value = "";
+    document.getElementById("newTypePluralOne").value = "";
+    document.getElementById("newTypePluralFew").value = "";
+    document.getElementById("newTypePluralMany").value = "";
     renderTypesList();
   }
 
@@ -735,6 +760,7 @@
     }
     customTypeKeys = new Set(Object.keys(settings.customTypes || {}));
     hiddenTypes = new Set(settings.hiddenTypes || []);
+    typePlural = JSON.parse(JSON.stringify(settings.customTypePlural || {}));
     renderTypesList();
 
     const catOverrides = labels.categories || {};
@@ -789,6 +815,18 @@
     const typeRenames = {};
     Object.keys(BUILTIN_TYPE_DEFAULTS).forEach(key => { typeRenames[key] = typeLabels[key]; });
 
+    customTypeKeys.forEach(key => {
+      const i0 = document.getElementById(`type-plural-${key}-0`);
+      const i1 = document.getElementById(`type-plural-${key}-1`);
+      const i2 = document.getElementById(`type-plural-${key}-2`);
+      if (!i0) return;
+      const one = i0.value.trim(), few = i1.value.trim(), many = i2.value.trim();
+      if (one && few && many) typePlural[key] = [one, few, many];
+      else delete typePlural[key];
+    });
+    const customTypePlural = {};
+    customTypeKeys.forEach(key => { if (typePlural[key]) customTypePlural[key] = typePlural[key]; });
+
     Object.keys(allCatLabels).forEach(key => {
       const input = document.getElementById(`cat-input-${key}`);
       if (input) allCatLabels[key] = input.value;
@@ -815,6 +853,7 @@
       categoryColors,
       customTypes,
       hiddenTypes: [...hiddenTypes],
+      customTypePlural,
       hiddenTabs,
       hiddenStatsBlocks,
       gradeScale,
