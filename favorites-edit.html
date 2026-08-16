@@ -232,8 +232,16 @@ input::placeholder { color: var(--text-dim); }
     </div>
     <div class="field full">
       <label>Ссылка на изображение</label>
-      <input type="text" id="f-image" placeholder="https://..." oninput="previewAvatar(this.value)">
+      <input type="text" id="f-image" placeholder="https://..." oninput="previewAvatar(this.value); scheduleBackupImage();">
+      <input type="hidden" id="f-image-backup">
       <img id="avatar-img" class="avatar-preview">
+      <div id="image-backup-status" style="font-size:.8rem;margin-top:.4rem;"></div>
+    </div>
+    <div class="field full">
+      <label>Или загрузить с компьютера</label>
+      <input type="file" id="f-image-upload" accept="image/*">
+      <button type="button" class="btn-new" style="margin-top:.5rem" onclick="uploadFavImage()">Загрузить и использовать</button>
+      <div id="image-upload-status" style="font-size:.8rem;margin-top:.4rem;"></div>
     </div>
     <div class="field full">
       <label>Из чего (необязательно)</label>
@@ -282,6 +290,108 @@ function previewAvatar(url) {
   else img.style.display = "none";
 }
 
+// ── Загрузка своей картинки вместо/вместе со ссылкой ──
+function convertImageToWebp(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      const maxSide = Math.max(width, height);
+      if (maxSide > 1200) {
+        const scale = 1200 / maxSide;
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+      canvas.toBlob((blob) => {
+        if (!blob) return reject(new Error("Не удалось сконвертировать"));
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      }, "image/webp", 0.85);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+async function uploadFavImage() {
+  const fileInput = document.getElementById("f-image-upload");
+  const status = document.getElementById("image-upload-status");
+  if (!fileInput.files.length) {
+    status.textContent = "Выбери файл";
+    status.style.color = "var(--red-hi, #c0392b)";
+    return;
+  }
+  const name = document.getElementById("f-name").value.trim() || "favorite";
+  const slug = name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 60) + "-" + Date.now().toString(36).slice(-5);
+
+  status.textContent = "Обрабатываю...";
+  status.style.color = "";
+  try {
+    const base64 = await convertImageToWebp(fileInput.files[0]);
+    const res = await fetch("/api/upload-char-image", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ basePath: "favorites", filename: slug + ".webp", contentBase64: base64 }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Ошибка загрузки");
+
+    // Картинка загружена напрямую в репозиторий — своя резервная копия ей не нужна.
+    document.getElementById("f-image").value = "";
+    document.getElementById("f-image-backup").value = "/" + data.path;
+    previewAvatar("/" + data.path);
+    status.textContent = "Загружено ✓";
+    status.style.color = "var(--green, #4a8c5c)";
+  } catch (e) {
+    status.textContent = "Ошибка: " + e.message;
+    status.style.color = "var(--red-hi, #c0392b)";
+  }
+}
+
+// ── Автобэкап картинки по ссылке — качается на сервере, чтобы не
+//    упереться в CORS. Срабатывает через паузу после ввода. ──
+let backupImageTimer = null;
+function scheduleBackupImage() {
+  clearTimeout(backupImageTimer);
+  document.getElementById("f-image-backup").value = "";
+  backupImageTimer = setTimeout(backupImageNow, 1200);
+}
+
+async function backupImageNow() {
+  const url = document.getElementById("f-image").value.trim();
+  const status = document.getElementById("image-backup-status");
+  if (!url || !url.startsWith("http")) return;
+
+  const name = document.getElementById("f-name").value.trim() || "favorite";
+  const slug = name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 60) + "-" + Date.now().toString(36).slice(-5);
+
+  status.textContent = "Делаю резервную копию картинки...";
+  status.style.color = "";
+  try {
+    const res = await fetch("/api/backup-cover", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, filename: slug }),
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Не удалось сохранить копию");
+    document.getElementById("f-image-backup").value = data.url || ("/" + data.path);
+    status.textContent = "Резервная копия сохранена ✓";
+    status.style.color = "var(--green, #4a8c5c)";
+  } catch (e) {
+    status.textContent = "Резервную копию сделать не удалось: " + e.message;
+    status.style.color = "var(--red-hi, #c0392b)";
+  }
+}
+
 function setStatus(type, text) {
   const el = document.getElementById("status");
   el.className = "status-msg" + (type ? " " + type : "");
@@ -294,20 +404,27 @@ function resetToNew() {
   document.getElementById("page-subtitle").textContent = "Персонажи и персоны";
   document.getElementById("btn-save").textContent = "Сохранить";
   history.replaceState(null, "", "favorites-edit.html");
-  ["f-name","f-image","f-from"].forEach(id => document.getElementById(id).value = "");
+  ["f-name","f-image","f-from","f-image-backup"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("f-type").value = "character";
   document.getElementById("f-subtype").value = "actor";
   document.getElementById("avatar-img").style.display = "none";
   document.getElementById("field-subtype").classList.remove("visible");
+  document.getElementById("image-backup-status").textContent = "";
+  document.getElementById("image-upload-status").textContent = "";
+  document.getElementById("f-image-upload").value = "";
   setStatus("", "");
 }
 
 function fillForm(r) {
   document.getElementById("f-name").value    = r.name    || "";
   document.getElementById("f-image").value   = r.image   || "";
+  document.getElementById("f-image-backup").value = r.image_backup || "";
   document.getElementById("f-from").value    = r.from    || "";
   document.getElementById("f-type").value    = r.type    || "character";
   document.getElementById("f-subtype").value = r.subtype || "actor";
+  document.getElementById("image-backup-status").textContent = "";
+  document.getElementById("image-upload-status").textContent = "";
+  document.getElementById("f-image-upload").value = "";
   previewAvatar(r.image || "");
   onTypeChange();
 }
@@ -326,7 +443,7 @@ function renderGroup(type, list) {
     return `
     <div class="entry-row" data-id="${r.id}" data-group="${type}" draggable="true">
       <span class="entry-drag-handle" title="Перетащить">⠿</span>
-      <img class="entry-avatar" src="${esc(r.image || "")}" onerror="this.style.display='none'" alt="">
+      <img class="entry-avatar" src="${esc(r.image || r.image_backup || "")}" onerror="this.style.display='none'" alt="">
       <div class="entry-name">${esc(r.name)}</div>
       ${r.from ? `<div class="entry-type">${esc(r.from)}</div>` : ""}
       <div class="entry-type">${esc(typeLabel)}</div>
@@ -459,10 +576,22 @@ async function saveEntry() {
   if (!name) { setStatus("err", "Заполни имя"); return; }
 
   const type = document.getElementById("f-type").value;
+
+  // Подстраховка: если ссылку на картинку вписали и сразу сохранили, не
+  // дожидаясь паузы в 1.2с — бэкап мог не успеть запуститься. Досылаем
+  // его прямо сейчас и ждём завершения перед сохранением записи.
+  const imageUrl = document.getElementById("f-image").value.trim();
+  if (imageUrl && imageUrl.startsWith("http") && !document.getElementById("f-image-backup").value) {
+    clearTimeout(backupImageTimer);
+    setStatus("", "Делаю резервную копию картинки перед сохранением...");
+    await backupImageNow();
+  }
+
   const entry = {
     name,
     type,
-    image: document.getElementById("f-image").value.trim() || null,
+    image: imageUrl || null,
+    image_backup: document.getElementById("f-image-backup").value.trim() || null,
     from:  document.getElementById("f-from").value.trim()  || null,
   };
   if (type === "person") {
