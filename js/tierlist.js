@@ -47,6 +47,65 @@ function collectionFileFor(id) {
   return id === "characters" ? "characters-tier.json" : `tier-${id}.json`;
 }
 
+// ── Модалка: новый тир-лист (коллекция) — только для админа ────
+function tlSlugify(name) {
+  return name.toLowerCase()
+    .replace(/[^a-zа-я0-9]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40) + "-" + Date.now().toString(36).slice(-4);
+}
+
+function openCollectionModal() {
+  document.getElementById("cm-collection-name").value = "";
+  const statusEl = document.getElementById("collection-modal-status");
+  statusEl.textContent = "";
+  statusEl.className = "status-msg";
+  document.getElementById("collection-modal-overlay").classList.remove("hidden");
+}
+function closeCollectionModal() {
+  document.getElementById("collection-modal-overlay").classList.add("hidden");
+}
+function closeCollectionModalOnOverlay(e) {
+  if (e.target === document.getElementById("collection-modal-overlay")) closeCollectionModal();
+}
+
+async function submitNewCollection() {
+  const name = document.getElementById("cm-collection-name").value.trim();
+  const statusEl = document.getElementById("collection-modal-status");
+  if (!name) { statusEl.textContent = "Введи название"; statusEl.className = "status-msg err"; return; }
+
+  const newCollection = { id: tlSlugify(name), label: name };
+  const btn = document.getElementById("cm-collection-save");
+  btn.disabled = true;
+  statusEl.textContent = "Сохраняем…";
+  statusEl.className = "status-msg";
+  try {
+    await patchSiteSettings((settings) => {
+      settings.tierCollections = settings.tierCollections && settings.tierCollections.length
+        ? settings.tierCollections
+        : activeTierCollections(); // сохраняем встроенную "Персонажи", если своих ещё не было
+      settings.tierCollections.push(newCollection);
+    });
+    window.SITE_TIER_COLLECTIONS = (window.SITE_TIER_COLLECTIONS && window.SITE_TIER_COLLECTIONS.length
+      ? window.SITE_TIER_COLLECTIONS
+      : activeTierCollections()).concat([newCollection]);
+    closeCollectionModal();
+    tlState.mode = newCollection.id;
+    tlState.gameId = null;
+    tlState.listId = null;
+    const box = document.getElementById("tab-tierlist");
+    box.innerHTML = tlModeToggleHtml()
+      + `<div class="state-box"><div class="spinner"></div>Загружаем «${esc(name)}»…</div>`;
+    await loadCharGames(newCollection.id);
+    tlRender();
+  } catch (err) {
+    statusEl.textContent = err.message || "Ошибка сохранения";
+    statusEl.className = "status-msg err";
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 async function loadTierlist() {
   if (loading.tierlist) return;
   loading.tierlist = true;
@@ -96,9 +155,13 @@ function tlModeToggleHtml() {
   const collectionBtns = activeTierCollections().map(c =>
     `<button class="tl-mode-btn${tlState.mode === c.id ? " active" : ""}" data-mode="${esc(c.id)}">${esc(c.label)}</button>`
   ).join("");
+  const addBtn = isAdmin()
+    ? `<button class="tl-mode-add-btn" id="tl-add-collection-btn" type="button" title="Новый тир-лист">+</button>`
+    : "";
   return `<div class="tl-mode-toggle">
     <button class="tl-mode-btn${tlState.mode === "titles" ? " active" : ""}" data-mode="titles">Тайтлы</button>
     ${collectionBtns}
+    ${addBtn}
   </div>`;
 }
 
@@ -294,6 +357,9 @@ function tlTooltipHtml() {
 
 // ── Бинды ──────────────────────────────────────
 function tlBindAll() {
+  const addBtn = document.getElementById("tl-add-collection-btn");
+  if (addBtn) addBtn.addEventListener("click", openCollectionModal);
+
   document.querySelectorAll(".tl-mode-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
       const newMode = btn.dataset.mode;
