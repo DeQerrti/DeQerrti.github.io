@@ -175,6 +175,14 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   color: var(--text-dim); cursor: pointer; font-size: 1.1rem; transition: color .15s; }
 .modal-close:hover { color: var(--text-hi); }
 
+/* ══ МОДАЛКА: источники ссылок ════════════════════ */
+.src-list-row { display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border); }
+.src-list-row .name { flex: 1; font-size: .88rem; }
+button.icon-btn { background: none; border: 1px solid var(--border2); color: var(--text-dim);
+  width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 4px; font-size: .8rem; cursor: pointer; }
+button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); background: none; }
+
 .tag-modal-tabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; }
 .tag-modal-tab { flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 2px;
   color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: .72rem; letter-spacing: .05em;
@@ -317,20 +325,17 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   </div>
 
   <!-- Ссылка 1 -->
-  <h2 class="section-title">Ссылка 1</h2>
+  <h2 class="section-title">Ссылка 1 <button type="button" class="btn-new" onclick="openSourceModal()">Источники</button></h2>
   <div class="grid">
     <div class="field">
       <label>Тип</label>
       <div class="select-wrap">
-        <select id="f-source">
-          <option value="teletype">Teletype</option>
-          <option value="other">Другое</option>
-        </select>
+        <select id="f-source"></select>
       </div>
     </div>
     <div class="field">
       <label>URL</label>
-      <input type="text" id="f-url" placeholder="https://teletype.in/...">
+      <input type="text" id="f-url" placeholder="https://">
     </div>
     <div class="field">
       <label>Фавориты</label>
@@ -345,16 +350,12 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     <div class="field">
       <label>Тип</label>
       <div class="select-wrap">
-        <select id="f-source2">
-          <option value="">— не указан —</option>
-          <option value="teletype">Teletype</option>
-          <option value="other">Другое</option>
-        </select>
+        <select id="f-source2"></select>
       </div>
     </div>
     <div class="field">
       <label>URL 2</label>
-      <input type="text" id="f-url2" placeholder="https://teletype.in/...">
+      <input type="text" id="f-url2" placeholder="https://">
     </div>
   </div>
 
@@ -427,6 +428,24 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
     </div>
 
     <div class="status-msg" id="tag-modal-status"></div>
+  </div>
+</div>
+
+<!-- Модалка: источники ссылок -->
+<div class="modal-overlay hidden" id="source-modal-overlay" onclick="closeSourceModalOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSourceModal()">✕</button>
+    <div class="modal-title">Источники ссылок</div>
+
+    <div id="source-modal-list"></div>
+
+    <div class="field" style="margin-top:1.25rem;">
+      <label>Новый источник</label>
+      <input type="text" id="sm-name" placeholder="Например: Дзен">
+    </div>
+    <button class="btn-save" id="sm-save" onclick="submitNewSource()">Добавить источник</button>
+
+    <div class="status-msg" id="source-modal-status"></div>
   </div>
 </div>
 
@@ -690,6 +709,104 @@ async function submitNewCategory() {
     statusEl.className = "status-msg err";
   } finally {
     btn.disabled = false;
+  }
+}
+
+// ── Список источников — из SOURCE_LABELS (config.js), редактируется прямо
+//    здесь через модалку, без похода в /settings-edit ──
+function renderSourceSelects() {
+  const opts = Object.entries(SOURCE_LABELS)
+    .map(([key, label]) => `<option value="${key}">${esc(label)}</option>`)
+    .join("");
+
+  const sel1 = document.getElementById("f-source");
+  const cur1 = sel1.value;
+  sel1.innerHTML = opts;
+  if (cur1 && SOURCE_LABELS[cur1] !== undefined) sel1.value = cur1;
+
+  const sel2 = document.getElementById("f-source2");
+  const cur2 = sel2.value;
+  sel2.innerHTML = `<option value="">— не указан —</option>` + opts;
+  if (cur2 && SOURCE_LABELS[cur2] !== undefined) sel2.value = cur2;
+}
+renderSourceSelects();
+document.addEventListener("tags-map-updated", renderSourceSelects);
+
+const SOURCE_BUILTINS = ["teletype", "other"];
+
+function renderSourceModalList() {
+  const container = document.getElementById("source-modal-list");
+  container.innerHTML = Object.entries(SOURCE_LABELS).map(([key, label]) => {
+    const removable = !SOURCE_BUILTINS.includes(key);
+    return `
+    <div class="src-list-row">
+      <span class="name">${esc(label)}</span>
+      ${removable ? `<button type="button" class="icon-btn" title="Удалить" onclick="removeSource('${key}')">✕</button>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function openSourceModal() {
+  document.getElementById("sm-name").value = "";
+  const statusEl = document.getElementById("source-modal-status");
+  statusEl.textContent = "";
+  statusEl.className = "status-msg";
+  renderSourceModalList();
+  document.getElementById("source-modal-overlay").classList.remove("hidden");
+}
+function closeSourceModal() {
+  document.getElementById("source-modal-overlay").classList.add("hidden");
+}
+function closeSourceModalOnOverlay(e) {
+  if (e.target === document.getElementById("source-modal-overlay")) closeSourceModal();
+}
+
+async function submitNewSource() {
+  const name = document.getElementById("sm-name").value.trim();
+  const statusEl = document.getElementById("source-modal-status");
+
+  if (!name) { statusEl.textContent = "Введи название источника"; statusEl.className = "status-msg err"; return; }
+  const exists = Object.values(SOURCE_LABELS).some(l => l.toLowerCase() === name.toLowerCase());
+  if (exists) { statusEl.textContent = "Такой источник уже есть"; statusEl.className = "status-msg err"; return; }
+
+  const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+  const btn = document.getElementById("sm-save");
+  btn.disabled = true;
+  statusEl.textContent = "Сохраняем…";
+  statusEl.className = "status-msg";
+  try {
+    await patchSiteSettings((settings) => {
+      settings.customSources = settings.customSources || {};
+      settings.customSources[key] = name;
+    });
+    SOURCE_LABELS[key] = name;
+    document.getElementById("sm-name").value = "";
+    renderSourceModalList();
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    statusEl.textContent = "Источник добавлен";
+    statusEl.className = "status-msg ok";
+  } catch (err) {
+    statusEl.textContent = err.message || "Ошибка сохранения";
+    statusEl.className = "status-msg err";
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function removeSource(key) {
+  if (!confirm(`Удалить источник «${SOURCE_LABELS[key]}»?`)) return;
+  const statusEl = document.getElementById("source-modal-status");
+  try {
+    await patchSiteSettings((settings) => {
+      settings.customSources = settings.customSources || {};
+      delete settings.customSources[key];
+    });
+    delete SOURCE_LABELS[key];
+    renderSourceModalList();
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+  } catch (err) {
+    statusEl.textContent = err.message || "Ошибка удаления";
+    statusEl.className = "status-msg err";
   }
 }
 
