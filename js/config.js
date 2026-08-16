@@ -100,6 +100,39 @@ function isAdmin() {
   return document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui="));
 }
 
+// ── Точечное обновление site-settings.json ─────
+// Для мест вне /settings-edit (например, редактор отзыва или тир-лист),
+// где нет всего состояния настроек на руках: подтягивает актуальный
+// site-settings.json, даёт мутатору поправить нужный кусок и отправляет
+// файл целиком обратно. mutator(settings) должен мутировать объект
+// на месте (или вернуть новый — оба варианта поддерживаются).
+async function patchSiteSettings(mutator) {
+  let settings = {};
+  try {
+    const res = await fetch("site-settings.json", { cache: "no-store" });
+    if (res.ok) settings = await res.json();
+  } catch {
+    // нет файла/сети — работаем с пустым объектом, как при первом сохранении
+  }
+
+  settings = mutator(settings) || settings;
+
+  const res = await fetch("/api/save-site-settings", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(settings),
+  });
+
+  if (!res.ok) {
+    let message = "Ошибка сохранения";
+    try { message = (await res.json()).error || message; } catch {}
+    throw new Error(message);
+  }
+
+  return settings;
+}
+
 // ══════════════════════════════════════════════
 //  ЕДИНЫЙ ИСТОЧНИК ПРАВДЫ ДЛЯ ОЦЕНОК
 // ══════════════════════════════════════════════
