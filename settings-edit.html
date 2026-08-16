@@ -208,6 +208,15 @@
         <div><label>5+ штук</label><input type="text" id="newTypePluralMany" placeholder="артбуков"></div>
       </div>
       <button class="secondary" onclick="addCustomType()">+ Добавить тип</button>
+
+      <h2 class="section-h" style="margin-top:26px;">Роли персон (в «Любимом»)</h2>
+      <p class="panel-intro">То же самое, но для ролей, которые выбираются у записей с типом «Персона» — Актёр, Режиссёр и т.д.</p>
+      <div id="subtypesList"></div>
+      <div class="row" style="margin-top:16px;">
+        <div><label>Новая роль</label><input type="text" id="newSubtypeName" placeholder="Например: Продюсер"></div>
+      </div>
+      <button class="secondary" onclick="addCustomSubtype()">+ Добавить роль</button>
+
       <button onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-types"></div>
     </div>
@@ -735,6 +744,53 @@
   let customTypeKeys = new Set();
   let typePlural = {}; // key -> [1 штука, 2–4 штуки, 5+ штук], только для своих типов
 
+  // ── Роли персон (в «Любимом», тип «Персона») — тот же паттерн, что и
+  //    у типов, только без склонения по числу (роли не считаются). ──
+  const BUILTIN_SUBTYPE_DEFAULTS = {
+    actor: "Актёр", director: "Режиссёр", author: "Автор",
+    seiyuu: "Сэйю", artist: "Художник", composer: "Композитор",
+  };
+  let subtypeLabels = {};
+  let hiddenSubtypes = new Set();
+  let customSubtypeKeys = new Set();
+
+  function renderSubtypesList() {
+    const container = document.getElementById("subtypesList");
+    const allKeys = Object.keys(subtypeLabels);
+    container.innerHTML = allKeys.map(key => {
+      const isCustom = customSubtypeKeys.has(key);
+      const isHidden = hiddenSubtypes.has(key);
+      return `
+      <div class="list-row" style="${isHidden ? "opacity:.4;" : ""}">
+        <input type="text" style="flex:1;" id="subtype-input-${key}" value="${subtypeLabels[key]}" ${isHidden ? "disabled" : ""}>
+        <button class="icon-btn" title="${isHidden ? "Показать" : "Скрыть"}" onclick="toggleSubtypeHidden('${key}')">${isHidden ? "👁" : "🚫"}</button>
+        ${isCustom ? `<button class="icon-btn" title="Удалить совсем" onclick="deleteCustomSubtype('${key}')">✕</button>` : ""}
+      </div>`;
+    }).join("");
+  }
+
+  function toggleSubtypeHidden(key) {
+    if (hiddenSubtypes.has(key)) hiddenSubtypes.delete(key); else hiddenSubtypes.add(key);
+    renderSubtypesList();
+  }
+
+  function deleteCustomSubtype(key) {
+    delete subtypeLabels[key];
+    customSubtypeKeys.delete(key);
+    hiddenSubtypes.delete(key);
+    renderSubtypesList();
+  }
+
+  function addCustomSubtype() {
+    const name = document.getElementById("newSubtypeName").value.trim();
+    if (!name) return;
+    const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+    subtypeLabels[key] = name;
+    customSubtypeKeys.add(key);
+    document.getElementById("newSubtypeName").value = "";
+    renderSubtypesList();
+  }
+
   function renderTypesList() {
     const container = document.getElementById("typesList");
     const allKeys = Object.keys(typeLabels);
@@ -851,6 +907,15 @@
     typePlural = JSON.parse(JSON.stringify(settings.customTypePlural || {}));
     renderTypesList();
 
+    subtypeLabels = { ...BUILTIN_SUBTYPE_DEFAULTS, ...(settings.customSubtypes || {}) };
+    const subtypeOverrides = labels.subtypes || {};
+    for (const [key, val] of Object.entries(subtypeOverrides)) {
+      if (subtypeLabels[key] !== undefined) subtypeLabels[key] = val;
+    }
+    customSubtypeKeys = new Set(Object.keys(settings.customSubtypes || {}));
+    hiddenSubtypes = new Set(settings.hiddenSubtypes || []);
+    renderSubtypesList();
+
     const catOverrides = labels.categories || {};
     allCatLabels = { ...BUILTIN_CAT_DEFAULTS };
     for (const [key, label] of Object.entries(catOverrides)) {
@@ -921,6 +986,15 @@
     const customTypePlural = {};
     customTypeKeys.forEach(key => { if (typePlural[key]) customTypePlural[key] = typePlural[key]; });
 
+    Object.keys(subtypeLabels).forEach(key => {
+      const input = document.getElementById(`subtype-input-${key}`);
+      if (input) subtypeLabels[key] = input.value;
+    });
+    const customSubtypes = {};
+    customSubtypeKeys.forEach(key => { if (subtypeLabels[key] !== undefined) customSubtypes[key] = subtypeLabels[key]; });
+    const subtypeRenames = {};
+    Object.keys(BUILTIN_SUBTYPE_DEFAULTS).forEach(key => { subtypeRenames[key] = subtypeLabels[key]; });
+
     Object.keys(allCatLabels).forEach(key => {
       const input = document.getElementById(`cat-input-${key}`);
       if (input) allCatLabels[key] = input.value;
@@ -948,6 +1022,8 @@
       customTypes,
       hiddenTypes: [...hiddenTypes],
       customTypePlural,
+      customSubtypes,
+      hiddenSubtypes: [...hiddenSubtypes],
       hiddenTabs,
       tabOrder: tabOrderState,
       mainTab: mainTabState,
@@ -963,6 +1039,7 @@
         },
         types: typeRenames,
         categories,
+        subtypes: subtypeRenames,
       },
     };
 
