@@ -988,6 +988,56 @@ section.group { margin-bottom: 3.5rem; }
   border-color: var(--red);
   background: var(--surface2);
 }
+.tl-mode-add-btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  width: 2.6rem;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.tl-mode-add-btn:hover { color: var(--red-hi); border-color: var(--red-dim); }
+
+/* ══ МОДАЛКА: новый тир-лист (коллекция) ═════════ */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.hidden { display: none; }
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
+  padding: 1.75rem; width: 100%; max-width: 420px; position: relative; max-height: 90vh; overflow-y: auto; }
+.modal-title { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic;
+  font-size: 1.1rem; color: var(--text-hi); margin-bottom: 1.25rem; }
+.modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+  color: var(--text-dim); cursor: pointer; font-size: 1.1rem; transition: color .15s; }
+.modal-close:hover { color: var(--text-hi); }
+.modal .field { margin-bottom: 1rem; }
+.modal .field label {
+  font-family: 'DM Sans', sans-serif; font-size: .65rem; color: var(--text-dim);
+  letter-spacing: .12em; text-transform: uppercase; display: block; margin-bottom: .4rem;
+}
+.modal .field input[type="text"] {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 2px;
+  padding: .65rem .85rem; color: var(--text-hi); font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; outline: none; transition: border-color .2s, background .2s;
+}
+.modal .field input[type="text"]:focus { border-color: var(--red); background: var(--bg2); }
+.modal .btn-save {
+  width: 100%; background: rgba(139,26,26,.12); border: 1px solid rgba(139,26,26,.35);
+  border-radius: 2px; color: var(--text-hi); font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700; font-style: italic; letter-spacing: .06em;
+  padding: .8rem; cursor: pointer; transition: background .2s, border-color .2s;
+}
+.modal .btn-save:hover { background: rgba(139,26,26,.22); border-color: var(--red); }
+.modal .btn-save:disabled { opacity: .4; cursor: not-allowed; }
+.modal .status-msg {
+  font-family: 'DM Sans', sans-serif; font-size: .78rem; text-align: center;
+  margin-top: .85rem; min-height: 1.2rem; letter-spacing: .03em;
+}
+.modal .status-msg.ok  { color: var(--green-hi); }
+.modal .status-msg.err { color: #d88; }
 
 /* ── Переключатель тир-листов внутри игры ── */
 .tl-char-lists {
@@ -1104,6 +1154,20 @@ section.group { margin-bottom: 3.5rem; }
   <div id="tab-stats"     class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Считаем…</div></div>
   <div id="tab-tierlist"  class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем рецензии…</div></div>
 </main>
+
+<!-- Модалка: новый тир-лист (коллекция) — доступна только админу -->
+<div class="modal-overlay hidden" id="collection-modal-overlay" onclick="closeCollectionModalOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCollectionModal()">✕</button>
+    <div class="modal-title">Новый тир-лист</div>
+    <div class="field">
+      <label>Название</label>
+      <input type="text" id="cm-collection-name" placeholder="Например: Опенинги">
+    </div>
+    <button class="btn-save" id="cm-collection-save" onclick="submitNewCollection()">Создать</button>
+    <div class="status-msg" id="collection-modal-status"></div>
+  </div>
+</div>
 
 <script src="js/config.js"></script>
 <script src="js/api.js"></script>
