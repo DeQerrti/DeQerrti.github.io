@@ -127,6 +127,9 @@ async function applyTheme() {
   window.SITE_TIER_COLLECTIONS = settings.tierCollections || null;
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
   const hiddenTabs = settings.hiddenTabs || [];
+  // Какая вкладка должна открываться первой — читается страницей (index.html)
+  // после события site-labels-ready, вместо всегда захардкоженной "Главная".
+  window.SITE_MAIN_TAB = settings.mainTab || "now";
 
   function applyHiddenTabs() {
     let activeIsHidden = false;
@@ -143,9 +146,26 @@ async function applyTheme() {
     }
   }
 
+  // Переставляет кнопки вкладок в <nav> в порядке, заданном в настройках
+  // (tabOrder — массив id). Вкладки, которых нет в массиве, остаются в конце
+  // в исходном порядке — так старые настройки без tabOrder не ломаются.
+  function applyTabOrder() {
+    const order = settings.tabOrder;
+    if (!Array.isArray(order) || !order.length) return;
+    const nav = document.querySelector("nav");
+    if (!nav) return;
+    const buttons = [...nav.querySelectorAll("[data-label^='nav.']")];
+    const byId = new Map(buttons.map(btn => [btn.getAttribute("data-label").split(".")[1], btn]));
+    order.forEach((id) => {
+      const btn = byId.get(id);
+      if (btn) nav.appendChild(btn);
+    });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyHiddenTabs);
+    document.addEventListener("DOMContentLoaded", () => { applyTabOrder(); applyHiddenTabs(); });
   } else {
+    applyTabOrder();
     applyHiddenTabs();
   }
 

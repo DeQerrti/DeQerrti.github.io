@@ -1133,7 +1133,7 @@ section.group { margin-bottom: 3.5rem; }
 </script>
 
 <nav>
-  <button class="tab-btn active" data-label="nav.now" onclick="switchTab('tab-now', this)">Главная</button>
+  <button class="tab-btn" data-label="nav.now" onclick="switchTab('tab-now', this)">Главная</button>
   <button class="tab-btn" data-label="nav.favorites" onclick="switchTab('tab-favorites', this)">Любимое</button>
   <button class="tab-btn" data-label="nav.reviews" onclick="switchTab('tab-reviews', this)">Отзывы</button>
   <button class="tab-btn" data-label="nav.stats" onclick="switchTab('tab-stats', this)">Статистика</button>
@@ -1198,8 +1198,26 @@ function switchTab(tabId, btn) {
   if (tabId === "tab-tierlist")  loadTierlist();
 }
 
-document.querySelector(".tab-btn.active").click();
-_navInit = false;
+// Какая вкладка открывается первой определяется в site-settings.json
+// (mainTab, настраивается в /settings-edit → Вкладки). Ждём, пока theme.js
+// подгрузит настройки и объявит window.SITE_MAIN_TAB, чтобы не мигать
+// сначала "Главной", а потом перескакивать на нужную вкладку.
+let _mainTabActivated = false;
+function activateMainTab() {
+  if (_mainTabActivated) return;
+  _mainTabActivated = true;
+  const mainId = window.SITE_MAIN_TAB || "now";
+  let btn = document.querySelector(`.tab-btn[data-label="nav.${mainId}"]`);
+  if (!btn || btn.style.display === "none") {
+    btn = document.querySelector(".tab-btn:not([style*='display: none'])") || document.querySelector(".tab-btn");
+  }
+  if (btn) btn.click();
+  _navInit = false;
+}
+document.addEventListener("site-labels-ready", activateMainTab, { once: true });
+// Подстраховка на случай, если site-settings.json не загрузится вовсе —
+// не оставляем пользователя с пустой страницей без вкладок.
+setTimeout(activateMainTab, 2000);
 </script>
 
 </body>

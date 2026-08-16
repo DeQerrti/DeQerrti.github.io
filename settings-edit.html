@@ -95,6 +95,15 @@
   .tab-row input[type="text"] { flex: 1; display: none; }
   .tab-row.editing .tab-name { display: none; }
   .tab-row.editing input[type="text"] { display: block; }
+  .tab-row .move-btns { display: flex; gap: 2px; flex: none; }
+  .tab-row .move-btns button.icon-btn { width: 24px; height: 24px; font-size: .7rem; }
+  .tab-row .move-btns button.icon-btn:disabled { opacity: .3; cursor: default; }
+  .tab-row .move-btns button.icon-btn:disabled:hover { color: var(--text-dim); border-color: var(--border2); }
+  .tab-row .main-radio-label {
+    display: flex; align-items: center; gap: 5px; flex: none;
+    font-size: .72rem; color: var(--text-dim); cursor: pointer; white-space: nowrap;
+  }
+  .tab-row .main-radio-label input { width: auto; margin: 0; }
 
   .shelf-row {
     display: flex; align-items: center; gap: 8px;
@@ -125,6 +134,7 @@
     <button class="side-tab" data-panel="tags">Теги</button>
     <button class="side-tab" data-panel="collections">Тир-листы</button>
     <button class="side-tab" data-panel="images">Картинки</button>
+    <a href="/backup-history" class="back" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">🕐 История версий</a>
   </nav>
 
   <main id="main">
@@ -139,7 +149,7 @@
     </div>
 
     <div class="panel" id="panel-tabs">
-      <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать.</p>
+      <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать. Стрелки — порядок вкладок. Точка справа — какая вкладка открывается первой (при заходе на сайт и при обновлении страницы).</p>
       <div id="tabsList"></div>
       <button onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-tabs"></div>
@@ -472,20 +482,44 @@
     { id: "stats", def: "Статистика" },
     { id: "tierlist", def: "Тир-лист" },
   ];
+  const TAB_DEFS_BY_ID = Object.fromEntries(TAB_DEFS.map(t => [t.id, t]));
   let tabLabels = {};
   let hiddenTabsState = new Set();
+  let tabOrderState = TAB_DEFS.map(t => t.id); // порядок id вкладок
+  let mainTabState = "now"; // какая вкладка открывается первой
 
   function renderTabsList() {
     const container = document.getElementById("tabsList");
-    container.innerHTML = TAB_DEFS.map(t => `
-      <div class="tab-row" id="tabrow-${t.id}">
-        <input type="checkbox" id="showtab-${t.id}" ${hiddenTabsState.has(t.id) ? "" : "checked"}
-          onchange="hiddenTabsState.has('${t.id}') ? hiddenTabsState.delete('${t.id}') : hiddenTabsState.add('${t.id}')">
-        <span class="tab-name" id="tabname-${t.id}">${(tabLabels[t.id] || t.def)}</span>
-        <input type="text" id="tabinput-${t.id}" value="${(tabLabels[t.id] || t.def)}">
-        <button class="icon-btn" title="Переименовать" onclick="toggleTabEdit('${t.id}')">✎</button>
+    container.innerHTML = tabOrderState.map((id, i) => {
+      const def = TAB_DEFS_BY_ID[id];
+      if (!def) return "";
+      return `
+      <div class="tab-row" id="tabrow-${id}">
+        <div class="move-btns">
+          <button class="icon-btn" title="Выше" ${i === 0 ? "disabled" : ""} onclick="moveTab('${id}', -1)">↑</button>
+          <button class="icon-btn" title="Ниже" ${i === tabOrderState.length - 1 ? "disabled" : ""} onclick="moveTab('${id}', 1)">↓</button>
+        </div>
+        <input type="checkbox" id="showtab-${id}" ${hiddenTabsState.has(id) ? "" : "checked"}
+          onchange="hiddenTabsState.has('${id}') ? hiddenTabsState.delete('${id}') : hiddenTabsState.add('${id}')">
+        <span class="tab-name" id="tabname-${id}">${(tabLabels[id] || def.def)}</span>
+        <input type="text" id="tabinput-${id}" value="${(tabLabels[id] || def.def)}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleTabEdit('${id}')">✎</button>
+        <label class="main-radio-label" title="Открывать эту вкладку первой">
+          <input type="radio" name="mainTabRadio" value="${id}" ${mainTabState === id ? "checked" : ""}
+            onchange="mainTabState = '${id}'">
+          Главная страница
+        </label>
       </div>
-    `).join("");
+    `;
+    }).join("");
+  }
+
+  function moveTab(id, dir) {
+    const i = tabOrderState.indexOf(id);
+    const j = i + dir;
+    if (i < 0 || j < 0 || j >= tabOrderState.length) return;
+    [tabOrderState[i], tabOrderState[j]] = [tabOrderState[j], tabOrderState[i]];
+    renderTabsList();
   }
 
   function toggleTabEdit(id) {
@@ -720,6 +754,10 @@
     const labels = settings.labels || {};
     tabLabels = { ...(labels.nav || {}) };
     hiddenTabsState = new Set(settings.hiddenTabs || []);
+    const savedOrder = Array.isArray(settings.tabOrder) ? settings.tabOrder.filter(id => TAB_DEFS_BY_ID[id]) : [];
+    const missing = TAB_DEFS.map(t => t.id).filter(id => !savedOrder.includes(id));
+    tabOrderState = [...savedOrder, ...missing];
+    mainTabState = (settings.mainTab && TAB_DEFS_BY_ID[settings.mainTab]) ? settings.mainTab : "now";
     renderTabsList();
 
     tierCollections = settings.tierCollections
@@ -783,9 +821,9 @@
   }
 
   async function saveSettings() {
-    TAB_DEFS.forEach(t => {
-      const row = document.getElementById(`tabrow-${t.id}`);
-      if (row && row.classList.contains("editing")) toggleTabEdit(t.id);
+    tabOrderState.forEach(id => {
+      const row = document.getElementById(`tabrow-${id}`);
+      if (row && row.classList.contains("editing")) toggleTabEdit(id);
     });
     const rows = [...statusBuckets, { key: "archive" }];
     rows.forEach(b => {
@@ -797,7 +835,13 @@
       if (row && row.classList.contains("editing")) toggleCollectionEdit(c.id);
     });
 
-    const hiddenTabs = TAB_DEFS.filter(t => !document.getElementById(`showtab-${t.id}`).checked).map(t => t.id);
+    const hiddenTabs = tabOrderState.filter(id => !document.getElementById(`showtab-${id}`).checked);
+    // Если главная вкладка оказалась скрыта — не даём сохранить такую комбинацию молча,
+    // просто подстраховываемся и переключаем на первую видимую.
+    if (hiddenTabs.includes(mainTabState)) {
+      const firstVisible = tabOrderState.find(id => !hiddenTabs.includes(id));
+      if (firstVisible) mainTabState = firstVisible;
+    }
     const hiddenStatuses = [...hiddenStatusesState];
 
     const statKeys = ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"];
@@ -855,6 +899,8 @@
       hiddenTypes: [...hiddenTypes],
       customTypePlural,
       hiddenTabs,
+      tabOrder: tabOrderState,
+      mainTab: mainTabState,
       hiddenStatsBlocks,
       gradeScale,
       statusBuckets,

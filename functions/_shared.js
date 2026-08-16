@@ -153,6 +153,28 @@ export function encodeGithubJson(data) {
   return btoa(Array.from(encoded, b => String.fromCharCode(b)).join(""));
 }
 
+// Список коммитов, затронувших конкретный файл — основа для истории версий
+// (вкладка "Бэкап" в админке). GitHub хранит их бессрочно, так что отдельного
+// хранилища под снепшоты не нужно: каждое сохранение уже само по себе снепшот.
+export async function githubListCommits(repo, path, token, perPage = 30) {
+  const safePath = safeGithubPath(path);
+  const res = await fetch(
+    `https://api.github.com/repos/${repo}/commits?path=${safePath}&per_page=${perPage}`,
+    { headers: ghHeaders(token) }
+  );
+  return res;
+}
+
+// Содержимое файла на конкретный коммит (ref = sha коммита)
+export async function githubGetAtRef(repo, path, ref, token) {
+  const safePath = safeGithubPath(path);
+  const res = await fetch(
+    `https://api.github.com/repos/${repo}/contents/${safePath}?ref=${encodeURIComponent(ref)}`,
+    { headers: ghHeaders(token) }
+  );
+  return res;
+}
+
 // PUT (создание/обновление) файла в репозитории GitHub
 export async function githubPut(repo, path, content, sha, message, token) {
   const safePath = safeGithubPath(path);

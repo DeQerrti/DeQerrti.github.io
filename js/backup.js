@@ -55,13 +55,32 @@
     );
     backupBtn.addEventListener("click", () => downloadBackup(backupBtn));
 
-    const logoutBtn = makeBtn(
-      "logout-btn",
-      "⎋ Выйти",
-      "Завершить сессию администратора на этом устройстве",
-      "130px"
-    );
-    logoutBtn.addEventListener("click", () => doLogout(logoutBtn));
+    // Не дублируем ссылку на саму себя, если мы уже на странице истории
+    if (!/backup-history/.test(location.pathname)) {
+      const historyBtn = makeBtn(
+        "history-btn",
+        "🕐 История",
+        "Посмотреть все сохранённые версии данных и восстановить старую при необходимости",
+        "130px"
+      );
+      historyBtn.addEventListener("click", () => { location.href = "/backup-history"; });
+
+      const logoutBtn = makeBtn(
+        "logout-btn",
+        "⎋ Выйти",
+        "Завершить сессию администратора на этом устройстве",
+        "245px"
+      );
+      logoutBtn.addEventListener("click", () => doLogout(logoutBtn));
+    } else {
+      const logoutBtn = makeBtn(
+        "logout-btn",
+        "⎋ Выйти",
+        "Завершить сессию администратора на этом устройстве",
+        "130px"
+      );
+      logoutBtn.addEventListener("click", () => doLogout(logoutBtn));
+    }
   }
 
   async function doLogout(btn) {
