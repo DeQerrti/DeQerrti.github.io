@@ -11,7 +11,13 @@
 
   #locked { text-align: center; padding: 80px 20px; color: var(--text-dim); width: 100%; }
   #locked a { color: var(--red-hi); }
-  .hidden { display: none; }
+  /* Утилитарный класс должен побеждать любые другие правила отображения
+     (в т.ч. #app { display:flex } ниже) — иначе элемент с id может
+     остаться видимым несмотря на добавленный класс .hidden (баг:
+     настройки на миг показывались разлогиненным пользователям). */
+  .hidden { display: none !important; }
+
+  #app { display: flex; width: 100%; }
 
   #sidebar {
     width: 220px; flex-shrink: 0;
@@ -41,38 +47,37 @@
 
   .theme-grid { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
   .theme-option {
-    border: 2px solid var(--border); border-radius: 8px; padding: 10px 14px;
+    border: 1px solid var(--border2); border-radius: 2px; padding: 10px 14px;
     cursor: pointer; font-size: .85rem; background: var(--surface); color: var(--text);
+    font-family: 'DM Sans', sans-serif; transition: all .15s;
   }
-  .theme-option.selected { border-color: var(--red); color: var(--text-hi); }
+  .theme-option:hover { border-color: var(--red-dim); color: var(--text-hi); }
+  .theme-option.selected { border-color: var(--red); color: var(--text-hi); background: rgba(139,26,26,.08); }
 
-  label { display: block; font-size: .85rem; color: var(--text-dim); margin: 14px 0 6px; }
+  label { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; color: var(--text-dim);
+    letter-spacing: .12em; text-transform: uppercase; margin: 16px 0 6px; }
   input[type="text"], input[type="color"], input[type="number"] {
     background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
-    padding: 8px 10px; border-radius: 6px; font-size: .9rem;
+    padding: 8px 10px; border-radius: 2px; font-size: .9rem; font-family: 'Cormorant Garamond', serif;
+    outline: none; transition: border-color .2s, background .2s;
   }
+  input[type="text"]:focus, input[type="number"]:focus { border-color: var(--red); background: var(--bg2); }
   input[type="color"] { width: 60px; height: 34px; padding: 2px; cursor: pointer; }
   input[type="text"] { width: 100%; box-sizing: border-box; }
 
   .row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 4px; }
   .row > div { flex: 1; min-width: 160px; }
 
-  button {
-    background: var(--red); color: #fff; border: none; padding: 9px 18px;
-    border-radius: 6px; cursor: pointer; font-size: .83rem; margin-top: 10px;
-  }
-  button:hover { background: var(--red-hi); }
-  button.secondary { background: var(--surface2); color: var(--text); }
-  button.icon-btn {
-    background: none; border: 1px solid var(--border2); color: var(--text-dim);
-    width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 4px; font-size: .8rem;
-  }
-  button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); background: none; }
+  /* Кнопки — .btn/.btn-primary/.btn-ghost/.btn-save/.icon-btn теперь общие
+     (style.css); ниже в разметке вместо голых <button> и .secondary/.icon-btn
+     локальных стилей навешаны эти классы явно. */
 
   select {
     background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
-    padding: 8px 10px; border-radius: 6px; width: 100%; box-sizing: border-box;
+    padding: 8px 10px; border-radius: 2px; width: 100%; box-sizing: border-box;
+    font-family: 'Cormorant Garamond', serif; font-size: .95rem; outline: none;
   }
+  select:focus { border-color: var(--red); }
 
   .status-msg { margin-top: 12px; font-size: .83rem; }
 
@@ -132,7 +137,7 @@
   <a href="/" style="color:var(--text-dim);">← На главную</a>
 </div>
 
-<div id="app" class="hidden" style="display:flex; width:100%;">
+<div id="app" class="hidden">
   <nav id="sidebar">
     <a href="/" class="back">← На главную</a>
     <button class="side-tab active" data-panel="appearance">Оформление</button>
@@ -154,13 +159,13 @@
       <div class="theme-grid" id="themeGrid"></div>
       <label>Акцентный цвет (любой)</label>
       <input type="color" id="accent" value="#8b1a1a">
-      <div><button onclick="saveSettings()">Сохранить</button><div class="status-msg" id="status-appearance"></div></div>
+      <div><button class="btn-save" onclick="saveSettings()">Сохранить</button><div class="status-msg" id="status-appearance"></div></div>
     </div>
 
     <div class="panel" id="panel-tabs">
       <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать. Перетаскивай за ⠿, чтобы менять порядок. Точка справа — какая вкладка открывается первой (при заходе на сайт и при обновлении страницы).</p>
       <div id="tabsList"></div>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-tabs"></div>
 
       <h2 class="section-h">Статусы (вкладка «Главная»)</h2>
@@ -169,8 +174,8 @@
       <div class="row" style="margin-top:14px;">
         <div><label>Новый статус</label><input type="text" id="newStatusName" placeholder="Например: Брошено"></div>
       </div>
-      <button class="secondary" onclick="addStatusBucket()">+ Добавить статус</button>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn btn-ghost" onclick="addStatusBucket()">+ Добавить статус</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
     </div>
 
     <div class="panel" id="panel-stats">
@@ -191,7 +196,7 @@
         <div><label><input type="checkbox" id="stat-tags" style="width:auto;margin-right:6px;">Облако тегов</label></div>
         <div><label><input type="checkbox" id="stat-spotlight" style="width:auto;margin-right:6px;">Топ тайтлы года</label></div>
       </div>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-stats"></div>
     </div>
 
@@ -207,7 +212,7 @@
         <div><label>2–4 штуки</label><input type="text" id="newTypePluralFew" placeholder="артбука"></div>
         <div><label>5+ штук</label><input type="text" id="newTypePluralMany" placeholder="артбуков"></div>
       </div>
-      <button class="secondary" onclick="addCustomType()">+ Добавить тип</button>
+      <button class="btn btn-ghost" onclick="addCustomType()">+ Добавить тип</button>
 
       <h2 class="section-h" style="margin-top:26px;">Роли персон (в «Любимом»)</h2>
       <p class="panel-intro">То же самое, но для ролей, которые выбираются у записей с типом «Персона» — Актёр, Режиссёр и т.д.</p>
@@ -215,9 +220,9 @@
       <div class="row" style="margin-top:16px;">
         <div><label>Новая роль</label><input type="text" id="newSubtypeName" placeholder="Например: Продюсер"></div>
       </div>
-      <button class="secondary" onclick="addCustomSubtype()">+ Добавить роль</button>
+      <button class="btn btn-ghost" onclick="addCustomSubtype()">+ Добавить роль</button>
 
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-types"></div>
     </div>
 
@@ -230,7 +235,7 @@
         <h2 class="section-h">Полки</h2>
         <p class="panel-intro">Переименуй, перекрась, удали или добавь свою.</p>
         <div id="catShelvesList"></div>
-        <button class="secondary" onclick="addShelfRow(true)">+ Добавить полку</button>
+        <button class="btn btn-ghost" onclick="addShelfRow(true)">+ Добавить полку</button>
       </div>
 
       <div id="numericBlock" style="display:none;">
@@ -242,10 +247,10 @@
         <h2 class="section-h">Полки (от лучшей к худшей)</h2>
         <p class="panel-intro">Каждая полка — диапазон значений с названием и цветом. Именно эти полки станут строками тир-листа.</p>
         <div id="shelvesList"></div>
-        <button class="secondary" onclick="addShelfRow()">+ Добавить полку</button>
+        <button class="btn btn-ghost" onclick="addShelfRow()">+ Добавить полку</button>
       </div>
 
-      <button onclick="saveSettings()" style="margin-top:20px;">Сохранить</button>
+      <button class="btn-save" onclick="saveSettings()" style="margin-top:20px;">Сохранить</button>
       <div class="status-msg" id="status-grades"></div>
     </div>
 
@@ -257,7 +262,7 @@
         <div><label>Новая категория</label><input type="text" id="newCatName" placeholder="Например: Технические детали"></div>
         <div style="flex:0 0 80px;"><label>Цвет</label><input type="color" id="newCatColor" value="#8b1a1a"></div>
       </div>
-      <button class="secondary" onclick="addCustomCategory()">+ Добавить категорию</button>
+      <button class="btn btn-ghost" onclick="addCustomCategory()">+ Добавить категорию</button>
 
       <h2 class="section-h">Свои теги</h2>
       <p class="panel-intro">Появятся в форме добавления отзыва вместе со встроенными.</p>
@@ -270,10 +275,10 @@
       </div>
       <label>Подсказка (необязательно)</label>
       <input type="text" id="newTagTip" placeholder="Короткое пояснение, что значит тег">
-      <button class="secondary" onclick="addCustomTag()">+ Добавить тег</button>
+      <button class="btn btn-ghost" onclick="addCustomTag()">+ Добавить тег</button>
       <div id="customTagsList" style="margin-top:14px;"></div>
 
-      <button onclick="saveSettings()">Сохранить всё</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить всё</button>
       <div class="status-msg" id="status-tags"></div>
     </div>
 
@@ -289,8 +294,8 @@
       <div class="row" style="margin-top:14px;">
         <div><label>Новая коллекция</label><input type="text" id="newCollectionName" placeholder="Например: Опенинги"></div>
       </div>
-      <button class="secondary" onclick="addCollection()">+ Добавить коллекцию</button>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn btn-ghost" onclick="addCollection()">+ Добавить коллекцию</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-collections"></div>
     </div>
 
@@ -301,8 +306,8 @@
       <label>Или новая папка (название тайтла)</label>
       <input type="text" id="newFolder" placeholder="Например: Neural Cloud">
       <label>Файлы</label>
-      <input type="file" id="fileInput" accept="image/*" multiple>
-      <button onclick="uploadImages()">Загрузить и опубликовать</button>
+      <input type="file" id="fileInput" accept="image/*" multiple class="file-input">
+      <button class="btn btn-primary" style="margin-top:12px;" onclick="uploadImages()">Загрузить и опубликовать</button>
       <div class="status-msg" id="imgStatus"></div>
     </div>
   </main>
