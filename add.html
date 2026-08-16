@@ -128,8 +128,28 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   object-fit: cover;
   border: 1px solid var(--border2);
   border-radius: 2px;
-  margin-top: .6rem;
   display: none;
+  flex-shrink: 0;
+}
+
+.cover-block {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  background: rgba(255,255,255,.015);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.1rem;
+  margin-bottom: 1.25rem;
+}
+.cover-block .cover-preview { margin-top: 1.6rem; } /* выравнивание под инпутом с лейблом */
+.cover-controls { flex: 1; min-width: 0; }
+.cover-controls .field { margin-bottom: .6rem; }
+.cover-upload-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
 }
 
 /* ══ GRADES ══════════════════════════════════════ */
@@ -349,16 +369,34 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
         <span class="checkbox-label">Добавить в Любимое</span>
       </label>
     </div>
-    <div class="field full">
-      <label>Ссылка на обложку</label>
-      <input type="text" id="f-cover" placeholder="https://..." oninput="previewCover(this.value); scheduleBackupCover();">
-      <img id="cover-img" class="cover-preview">
-      <div class="hint" style="margin-top:.4rem;">Или загрузи файл — сожмётся и сконвертируется в WebP автоматически.</div>
-      <input type="file" id="f-cover-upload" accept="image/*" style="margin-top:.4rem;">
-      <button type="button" class="btn btn-ghost" style="margin-top:.4rem;" onclick="uploadCoverFile()">Загрузить как обложку</button>
-      <div id="cover-upload-status" style="font-size:.78rem;margin-top:.3rem;"></div>
-      <input type="hidden" id="f-cover-backup">
+  </div>
+
+  <!-- Обложка — отдельный блок, не часть сетки коротких полей выше,
+       потому что это составной виджет (ссылка + превью + загрузка файла),
+       а не одна строка ввода. -->
+  <h2 class="section-title">Обложка</h2>
+  <div class="cover-block">
+    <img id="cover-img" class="cover-preview">
+    <div class="cover-controls">
+      <div class="field">
+        <label>Ссылка на обложку</label>
+        <input type="text" id="f-cover" placeholder="https://..." oninput="previewCover(this.value); scheduleBackupCover();">
+      </div>
+      <div class="hint">Или загрузи файл — сожмётся и сконвертируется в WebP автоматически.</div>
+      <div class="cover-upload-row">
+        <input type="file" id="f-cover-upload" accept="image/*" class="file-input">
+        <button type="button" class="btn btn-ghost" onclick="uploadCoverFile()">Загрузить как обложку</button>
+      </div>
+      <div id="cover-upload-status" class="status-msg" style="margin:.4rem 0 0;text-align:left;min-height:0;"></div>
     </div>
+    <input type="hidden" id="f-cover-backup">
+  </div>
+
+  <!-- Фавориты — персонажи, которых отзыв упоминает как избранных -->
+  <div class="field full">
+    <label>Персонажи (необязательно)</label>
+    <input type="text" id="f-favorites" placeholder="Kaneki Ken, Touka">
+    <div class="hint" style="margin-top:.4rem;">Через запятую — появятся отдельной строкой под отзывом.</div>
   </div>
 
   <!-- Даты — показываются в зависимости от статуса -->
@@ -405,11 +443,6 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
       </div>
     </div>
     <input type="hidden" id="f-source2" value="">
-  </div>
-
-  <div class="field full" style="margin-top:1rem;">
-    <label>Фавориты</label>
-    <input type="text" id="f-favorites" placeholder="Kaneki Ken, Touka">
   </div>
 
   <!-- Превью -->
@@ -1058,7 +1091,10 @@ function updatePreview() {
 
 function previewCover(url) {
   const img = document.getElementById("cover-img");
-  if (url && url.startsWith("http")) { img.src = url; img.style.display = "block"; }
+  // Раньше проверялось только url.startsWith("http") — из-за этого превью
+  // не показывалось после загрузки файла на сервер (относительный путь
+  // вида "/covers/xxx.webp" такой проверке не проходил).
+  if (url && url.trim()) { img.src = url; img.style.display = "block"; }
   else img.style.display = "none";
 }
 
