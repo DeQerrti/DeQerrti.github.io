@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<script src="/js/theme.js"></script>
 <style>
 body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
 
@@ -208,7 +209,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 <body>
 
 <header>
-  <div class="header-sub">Редактор тир-листов персонажей</div>
+  <div class="header-sub" id="header-sub">Редактор тир-листов персонажей</div>
   <a href="/" class="logo">TasteID</a>
 </header>
 
@@ -342,10 +343,27 @@ function updateDropIndicator(zone, clientX, clientY) {
   zone.insertBefore(dropIndicator, ref);
 }
 
+// ══ КОЛЛЕКЦИЯ ══════════════════════════════════
+// По умолчанию — встроенные "Персонажи". Если открыли с ?collection=X,
+// редактируем именно эту коллекцию (её название и файлы данных отдельные).
+const COLLECTION = new URLSearchParams(location.search).get("collection") || "characters";
+const COLLECTION_LABEL = (window.SITE_TIER_COLLECTIONS || []).find(c => c.id === COLLECTION)?.label
+  || (COLLECTION === "characters" ? "Персонажи" : COLLECTION);
+const DATA_FILE = COLLECTION === "characters" ? "characters-tier.json" : `tier-${COLLECTION}.json`;
+
+document.title = `TasteID — Редактор: ${COLLECTION_LABEL}`;
+document.addEventListener("site-labels-ready", () => {
+  const label = (window.SITE_TIER_COLLECTIONS || []).find(c => c.id === COLLECTION)?.label
+    || (COLLECTION === "characters" ? "Персонажи" : COLLECTION);
+  document.title = `TasteID — Редактор: ${label}`;
+  const headerEl = document.getElementById("header-sub");
+  if (headerEl) headerEl.textContent = `Редактор: ${label}`;
+});
+
 // ══ ЗАГРУЗКА ═══════════════════════════════════
 async function init() {
   try {
-    const res = await fetch("/characters-tier.json?_=" + Date.now());
+    const res = await fetch(`/${DATA_FILE}?_=` + Date.now());
     if (res.ok) data = await res.json();
     else data = [];
   } catch { data = []; }
@@ -667,7 +685,7 @@ function deleteChar(titleId, listId, ti, ci) {
 async function loadFolders() {
   if (foldersCache !== null) return foldersCache;
   try {
-    const res = await fetch("/api/list-chars", { credentials: "include" });
+    const res = await fetch(`/api/list-chars?collection=${encodeURIComponent(COLLECTION)}`, { credentials: "include" });
     const json = await res.json();
     foldersCache = json.folders || [];
   } catch {
@@ -703,7 +721,7 @@ async function loadGallery(folder, title) {
 
   if (!galleryCache[folder]) {
     try {
-      const res  = await fetch(`/api/list-chars?folder=${encodeURIComponent(folder)}`, { credentials: "include" });
+      const res  = await fetch(`/api/list-chars?folder=${encodeURIComponent(folder)}&collection=${encodeURIComponent(COLLECTION)}`, { credentials: "include" });
       const json = await res.json();
       galleryCache[folder] = json.files || [];
     } catch {
@@ -852,7 +870,7 @@ async function uploadCharImage() {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ folder, filename, contentBase64: base64 }),
+      body: JSON.stringify({ folder, filename, contentBase64: base64, basePath: COLLECTION === "characters" ? undefined : COLLECTION }),
     });
     const result = await res.json();
     if (!result.ok) throw new Error(result.error || "Ошибка загрузки");
@@ -985,7 +1003,7 @@ async function saveAll() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ collection: COLLECTION, data }),
     });
     const resp = await res.json();
     if (res.ok) {
