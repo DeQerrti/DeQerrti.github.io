@@ -43,6 +43,7 @@ input::placeholder { color: var(--text-dim); }
 
 .field-subtype { display: none; }
 .field-subtype.visible { display: block; }
+#field-from.hidden-field { display: none; }
 
 .avatar-preview {
   width: 80px; height: 80px;
@@ -243,8 +244,8 @@ input::placeholder { color: var(--text-dim); }
       <button type="button" class="btn-new" style="margin-top:.5rem" onclick="uploadFavImage()">Загрузить и использовать</button>
       <div id="image-upload-status" style="font-size:.8rem;margin-top:.4rem;"></div>
     </div>
-    <div class="field full">
-      <label>Из чего (необязательно)</label>
+    <div class="field full" id="field-from">
+      <label>Откуда (необязательно)</label>
       <input type="text" id="f-from" placeholder="Tokyo Ghoul">
     </div>
   </div>
@@ -282,6 +283,11 @@ const SUBTYPE_LABELS = {
 function onTypeChange() {
   const isPerson = document.getElementById("f-type").value === "person";
   document.getElementById("field-subtype").classList.toggle("visible", isPerson);
+  // «Откуда» имеет смысл только у персонажей — у персон это поле не
+  // просто прячем, а очищаем, чтобы старое значение случайно не
+  // сохранилось при переключении типа.
+  document.getElementById("field-from").classList.toggle("hidden-field", isPerson);
+  if (isPerson) document.getElementById("f-from").value = "";
 }
 
 function previewAvatar(url) {
@@ -409,6 +415,7 @@ function resetToNew() {
   document.getElementById("f-subtype").value = "actor";
   document.getElementById("avatar-img").style.display = "none";
   document.getElementById("field-subtype").classList.remove("visible");
+  document.getElementById("field-from").classList.remove("hidden-field");
   document.getElementById("image-backup-status").textContent = "";
   document.getElementById("image-upload-status").textContent = "";
   document.getElementById("f-image-upload").value = "";
