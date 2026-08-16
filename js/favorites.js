@@ -115,22 +115,13 @@ function favTitleCard(r, index) {
   </div>`;
 }
 
-// Лейблы подтипов персон
-const PERSON_SUBTYPE_LABELS = {
-  actor:    "Актёр",
-  director: "Режиссёр",
-  author:   "Автор",
-  seiyuu:   "Сэйю",
-  artist:   "Художник",
-  composer: "Композитор",
-};
-
-// Карточка персонажа или персоны (из favorites.json)
+// Карточка персонажа или персоны (из favorites.json).
+// Лейблы ролей — из общего SUBTYPE_LABELS (js/config.js).
 function favPersonCard(r, index) {
   const img = r.image || r.image_backup || PH_SQ;
 
   const subLine = r.type === "person"
-    ? (PERSON_SUBTYPE_LABELS[r.subtype] || "Персона")
+    ? (SUBTYPE_LABELS[r.subtype] || "Персона")
     : (r.from || "");
 
   const sub = subLine
