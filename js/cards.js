@@ -13,11 +13,17 @@ function normTitle(s) {
 // (если есть), а если и она не сработала — заглушку. data-tried не даёт
 // зациклиться, если резервная копия тоже окажется битой.
 function coverFallback(img, backupUrl) {
+  imgFallback(img, backupUrl, PH_TALL);
+}
+
+// То же самое, но с произвольной заглушкой — для квадратных аватарок
+// персонажей/персон, где PH_TALL (вертикальный постер) не подходит.
+function imgFallback(img, backupUrl, placeholder) {
   if (!img.dataset.tried && backupUrl) {
     img.dataset.tried = "1";
     img.src = backupUrl;
   } else {
-    img.src = PH_TALL;
+    img.src = placeholder;
   }
 }
 
