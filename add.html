@@ -163,6 +163,27 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
 .grade-btn.active::before { opacity: 1; }
 .grade-btn.active { filter: brightness(1.4); }
 
+/* ══ МОДАЛКА: новый тег / новая категория ════════ */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.hidden { display: none; }
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
+  padding: 1.75rem; width: 100%; max-width: 420px; position: relative; max-height: 90vh; overflow-y: auto; }
+.modal-title { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic;
+  font-size: 1.1rem; color: var(--text-hi); margin-bottom: 1.25rem; }
+.modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+  color: var(--text-dim); cursor: pointer; font-size: 1.1rem; transition: color .15s; }
+.modal-close:hover { color: var(--text-hi); }
+
+.tag-modal-tabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; }
+.tag-modal-tab { flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 2px;
+  color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: .72rem; letter-spacing: .05em;
+  text-transform: uppercase; padding: .55rem; cursor: pointer; transition: all .15s; }
+.tag-modal-tab:hover { color: var(--text); }
+.tag-modal-tab.active { color: var(--text-hi); border-color: var(--red-dim); background: rgba(139,26,26,.1); }
+.tag-modal-tab-panel .btn-save { margin-top: .5rem; }
+#tag-modal-status { margin-top: .75rem; }
+
 /* ══ TAGS ════════════════════════════════════════ */
 .tags-grid {
   display: flex;
@@ -356,7 +377,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   <div class="grades-grid" id="grades-grid"></div>
 
   <!-- Теги -->
-  <h2 class="section-title">Теги</h2>
+  <h2 class="section-title">Теги <button type="button" class="btn-new" onclick="openTagModal()">+ Новый</button></h2>
   <div class="tags-grid" id="tags-grid"></div>
 
   <!-- Сохранить -->
@@ -365,6 +386,49 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
   <div class="status-msg" id="status"></div>
 
 </main>
+
+<!-- Модалка: новый тег / новая категория -->
+<div class="modal-overlay hidden" id="tag-modal-overlay" onclick="closeTagModalOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeTagModal()">✕</button>
+    <div class="modal-title" id="tag-modal-title">Новый тег</div>
+
+    <div class="tag-modal-tabs">
+      <button type="button" class="tag-modal-tab active" data-tab="tag" onclick="switchTagModalTab('tag')">Тег</button>
+      <button type="button" class="tag-modal-tab" data-tab="cat" onclick="switchTagModalTab('cat')">Категория</button>
+    </div>
+
+    <div class="tag-modal-tab-panel" id="tag-modal-tag-panel">
+      <div class="field">
+        <label>Название тега</label>
+        <input type="text" id="tm-tag-name" placeholder="Например: Крутой саундтрек">
+      </div>
+      <div class="field">
+        <label>Категория</label>
+        <div class="select-wrap"><select id="tm-tag-cat"></select></div>
+      </div>
+      <div class="field">
+        <label>Подсказка (необязательно)</label>
+        <input type="text" id="tm-tag-tip" placeholder="Короткое пояснение, что значит тег">
+      </div>
+      <button class="btn-save" id="tm-tag-save" onclick="submitNewTag()">Добавить тег</button>
+    </div>
+
+    <div class="tag-modal-tab-panel" id="tag-modal-cat-panel" style="display:none;">
+      <div class="field">
+        <label>Название категории</label>
+        <input type="text" id="tm-cat-name" placeholder="Например: Технические детали">
+      </div>
+      <div class="field">
+        <label>Цвет</label>
+        <input type="color" id="tm-cat-color" value="#8b1a1a" style="height:42px;padding:.2rem;cursor:pointer;">
+      </div>
+      <button class="btn-save" id="tm-cat-save" onclick="submitNewCategory()">Добавить категорию</button>
+    </div>
+
+    <div class="status-msg" id="tag-modal-status"></div>
+  </div>
+</div>
 
 <script>
 // GRADES, GRADE_ORDER, TAGS_MAP приходят из /js/config.js
@@ -531,6 +595,103 @@ function renderTagsGrid() {
 }
 renderTagsGrid();
 document.addEventListener("tags-map-updated", renderTagsGrid);
+
+// ── Модалка: новый тег / новая категория (без похода в /settings-edit) ──
+function openTagModal() {
+  document.getElementById("tm-tag-name").value = "";
+  document.getElementById("tm-tag-tip").value  = "";
+  document.getElementById("tm-cat-name").value = "";
+  const statusEl = document.getElementById("tag-modal-status");
+  statusEl.textContent = "";
+  statusEl.className = "status-msg";
+  populateTagModalCatSelect();
+  switchTagModalTab("tag");
+  document.getElementById("tag-modal-overlay").classList.remove("hidden");
+}
+function closeTagModal() {
+  document.getElementById("tag-modal-overlay").classList.add("hidden");
+}
+function closeTagModalOnOverlay(e) {
+  if (e.target === document.getElementById("tag-modal-overlay")) closeTagModal();
+}
+function switchTagModalTab(tab) {
+  document.querySelectorAll(".tag-modal-tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.getElementById("tag-modal-tag-panel").style.display = tab === "tag" ? "" : "none";
+  document.getElementById("tag-modal-cat-panel").style.display = tab === "cat" ? "" : "none";
+  document.getElementById("tag-modal-title").textContent = tab === "tag" ? "Новый тег" : "Новая категория";
+}
+function populateTagModalCatSelect() {
+  const select = document.getElementById("tm-tag-cat");
+  const current = select.value;
+  select.innerHTML = Object.entries(CAT_LABELS)
+    .map(([key, label]) => `<option value="${key}">${esc(label)}</option>`).join("");
+  if (current && CAT_LABELS[current] !== undefined) select.value = current;
+}
+
+async function submitNewTag() {
+  const name = document.getElementById("tm-tag-name").value.trim();
+  const cat  = document.getElementById("tm-tag-cat").value;
+  const tip  = document.getElementById("tm-tag-tip").value.trim();
+  const statusEl = document.getElementById("tag-modal-status");
+
+  if (!name) { statusEl.textContent = "Введи название тега"; statusEl.className = "status-msg err"; return; }
+  if (TAGS_MAP[name]) { statusEl.textContent = "Такой тег уже есть"; statusEl.className = "status-msg err"; return; }
+
+  const btn = document.getElementById("tm-tag-save");
+  btn.disabled = true;
+  statusEl.textContent = "Сохраняем…";
+  statusEl.className = "status-msg";
+  try {
+    await patchSiteSettings((settings) => {
+      settings.customTags = settings.customTags || {};
+      settings.customTags[name] = { cat, tip };
+    });
+    TAGS_MAP[name] = { cat, tip };
+    selectedTags.add(name);
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    closeTagModal();
+  } catch (err) {
+    statusEl.textContent = err.message || "Ошибка сохранения";
+    statusEl.className = "status-msg err";
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function submitNewCategory() {
+  const name  = document.getElementById("tm-cat-name").value.trim();
+  const color = document.getElementById("tm-cat-color").value;
+  const statusEl = document.getElementById("tag-modal-status");
+
+  if (!name) { statusEl.textContent = "Введи название категории"; statusEl.className = "status-msg err"; return; }
+
+  const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+  const btn = document.getElementById("tm-cat-save");
+  btn.disabled = true;
+  statusEl.textContent = "Сохраняем…";
+  statusEl.className = "status-msg";
+  try {
+    await patchSiteSettings((settings) => {
+      settings.customCategories = settings.customCategories || {};
+      settings.categoryColors   = settings.categoryColors   || {};
+      settings.customCategories[key] = name;
+      settings.categoryColors[key]   = color;
+    });
+    CAT_LABELS[key] = name;
+    CAT_COLORS[key] = color;
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    switchTagModalTab("tag");
+    populateTagModalCatSelect();
+    document.getElementById("tm-tag-cat").value = key;
+    statusEl.textContent = "Категория добавлена — можно выбрать её выше";
+    statusEl.className = "status-msg ok";
+  } catch (err) {
+    statusEl.textContent = err.message || "Ошибка сохранения";
+    statusEl.className = "status-msg err";
+  } finally {
+    btn.disabled = false;
+  }
+}
 
 // ── Список типов — из TYPE_LABELS (config.js), меняется из /settings-edit ──
 function renderTypeSelect() {
