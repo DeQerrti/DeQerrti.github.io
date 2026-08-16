@@ -119,6 +119,8 @@ async function applyTheme() {
   window.SITE_HIDDEN_TYPES = settings.hiddenTypes || [];
   window.SITE_CUSTOM_TYPE_PLURAL = settings.customTypePlural || {};
   window.SITE_CUSTOM_SOURCES = settings.customSources || {};
+  window.SITE_CUSTOM_SUBTYPES = settings.customSubtypes || {};
+  window.SITE_HIDDEN_SUBTYPES = settings.hiddenSubtypes || [];
   window.SITE_CUSTOM_CATEGORIES = settings.customCategories || {};
   window.SITE_CATEGORY_COLORS = settings.categoryColors || {};
   window.SITE_GRADE_SCALE = settings.gradeScale || null;
