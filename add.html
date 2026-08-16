@@ -342,6 +342,13 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
       <label>Формат (доп.)</label>
       <input type="text" id="f-format" placeholder="TV · 12 эп.">
     </div>
+    <div class="field">
+      <label>&nbsp;</label>
+      <label class="checkbox-wrap" id="fav-wrap" onclick="toggleFavorite()">
+        <input type="checkbox" id="f-favorite" onclick="event.stopPropagation()">
+        <span class="checkbox-label">Добавить в Любимое</span>
+      </label>
+    </div>
     <div class="field full">
       <label>Ссылка на обложку</label>
       <input type="text" id="f-cover" placeholder="https://..." oninput="previewCover(this.value); scheduleBackupCover();">
@@ -351,13 +358,6 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
       <button type="button" class="btn btn-ghost" style="margin-top:.4rem;" onclick="uploadCoverFile()">Загрузить как обложку</button>
       <div id="cover-upload-status" style="font-size:.78rem;margin-top:.3rem;"></div>
       <input type="hidden" id="f-cover-backup">
-    </div>
-    <div class="field full">
-      <label style="margin-bottom:.5rem">Дополнительно</label>
-      <label class="checkbox-wrap" id="fav-wrap" onclick="toggleFavorite()">
-        <input type="checkbox" id="f-favorite" onclick="event.stopPropagation()">
-        <span class="checkbox-label">Добавить в Любимое</span>
-      </label>
     </div>
   </div>
   <div class="hint">
@@ -1211,7 +1211,7 @@ async function saveReview() {
     type:       document.getElementById("f-type").value,
     status,
     favorite:   document.getElementById("f-favorite").checked || false,
-    source:     document.getElementById("f-source").value,
+    source:     url ? document.getElementById("f-source").value : null,
     url2,
     source2:    url2 ? source2 : null,
     year:       document.getElementById("f-year").value.trim()      || null,
