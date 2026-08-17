@@ -21,9 +21,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css">
-<script src="/js/utils.js"></script>
-<script src="/js/theme.js"></script>
+<link rel="stylesheet" href="/style.css?v=2">
+<script src="/js/utils.js?v=2"></script>
+<script src="/js/theme.js?v=2"></script>
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -1220,14 +1220,14 @@ html[data-skin="soft"] .year-divider::after {
   </div>
 </div>
 
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/cards.js"></script>
-<script src="js/now.js"></script>
-<script src="js/favorites.js"></script>
-<script src="js/reviews.js"></script>
-<script src="js/stats.js"></script>
-<script src="js/tierlist.js"></script>
+<script src="js/config.js?v=2"></script>
+<script src="js/api.js?v=2"></script>
+<script src="js/cards.js?v=2"></script>
+<script src="js/now.js?v=2"></script>
+<script src="js/favorites.js?v=2"></script>
+<script src="js/reviews.js?v=2"></script>
+<script src="js/stats.js?v=2"></script>
+<script src="js/tierlist.js?v=2"></script>
 
 <script>
 let _navInit = true;
@@ -1258,7 +1258,13 @@ function switchTab(tabId, btn) {
 // ни какие вкладки скрыты. Раньше клик стоял здесь же синхронно — вкладка
 // успевала отрисоваться со встроенными настройками и через миг
 // перерисовывалась поверх, а mainTab не работал вовсе.
-window.themeReady.then(() => {
+// Обёртка Promise.resolve обязательна. window.themeReady приходит из
+// theme.js, и если браузер по какой-то причине отдаст старую копию
+// этого файла (кэш, сбой загрузки), themeReady окажется undefined —
+// без обёртки здесь падал бы весь блок, и страница навсегда осталась
+// бы на надписи «Загружаем…». Теперь в худшем случае просто откроется
+// первая доступная вкладка.
+Promise.resolve(window.themeReady).then(() => {
   const wanted = window.SITE_INITIAL_TAB;
   const btn =
     (wanted && document.querySelector(`[data-label="nav.${wanted}"]`)) ||

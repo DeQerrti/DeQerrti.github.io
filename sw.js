@@ -2,43 +2,27 @@
 //  SERVICE WORKER
 //
 //  manifest.json объявляет display: standalone, то есть сайт можно
-//  установить как приложение. До этого файла установленное приложение
-//  при плохой сети показывало пустой экран — кэшировать было нечему.
+//  установить как приложение. Без воркера установленное приложение
+//  при плохой сети показывало пустой экран.
 //
-//  Стратегии по типу запроса:
-//    оболочка (html/css/js)  — stale-while-revalidate: мгновенно из кэша,
-//                              обновление подтягивается фоном к следующему разу
-//    данные (*.json)         — сеть вперёд, кэш как запасной вариант:
-//                              свежесть данных важнее скорости
-//    картинки                — сначала кэш: файл под одним именем меняется
-//                              редко, а весит много
-//    /api/* и админка        — вообще не трогаем
+//  ГЛАВНОЕ ПРАВИЛО ЗДЕСЬ: кэш — только запасной аэродром на случай
+//  отсутствия сети, а не источник по умолчанию.
+//
+//  Первая версия работала иначе: оболочка отдавалась из кэша, а
+//  обновление подтягивалось фоном к следующему разу. Для сайта, у
+//  которого разметка и стили живут в разных файлах, это опасно —
+//  достаточно отдать свежий index.html со старым style.css, и страница
+//  разъезжается. Ровно это и случилось при первой выкладке, только
+//  из-за кэша браузера. Воркер такую рассинхронизацию мог бы сделать
+//  постоянной, поэтому теперь всё, из чего собрана страница, берётся
+//  из сети, и лишь при её отсутствии — из кэша.
 // ══════════════════════════════════════════════
 
-const VERSION = "v1";
+// Версия входит в имена кэшей: смена версии выбрасывает всё старое.
+const VERSION = "v2";
 const SHELL_CACHE = `tasteid-shell-${VERSION}`;
 const DATA_CACHE = `tasteid-data-${VERSION}`;
 const IMAGE_CACHE = `tasteid-img-${VERSION}`;
-
-// Минимум, достаточный чтобы главная отрисовалась офлайн.
-// Намеренно короткий список: чем он длиннее, тем выше шанс, что установка
-// воркера целиком провалится из-за одного недоступного файла.
-const SHELL_ASSETS = [
-  "/",
-  "/index.html",
-  "/style.css",
-  "/js/utils.js",
-  "/js/theme.js",
-  "/js/config.js",
-  "/js/api.js",
-  "/js/cards.js",
-  "/js/now.js",
-  "/js/favorites.js",
-  "/js/reviews.js",
-  "/js/stats.js",
-  "/js/tierlist.js",
-  "/manifest.json",
-];
 
 // Страницы админки кэшировать нельзя: их отдаёт _middleware.js только
 // авторизованному, и закэшированная копия обошла бы эту проверку.
@@ -55,13 +39,19 @@ const NEVER_CACHE = [
 
 const IMAGE_PREFIXES = ["/chars/", "/covers/", "/title-covers/", "/covers-backup/", "/icons/"];
 
+// Предварительно кладём только главную — чтобы офлайн вообще было что
+// показать. Остальное попадёт в кэш само, по мере обращения.
+// Списка конкретных файлов здесь намеренно нет: он разъезжался бы с
+// адресами в разметке (там теперь ?v=N) и кэшировал бы не то.
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(SHELL_CACHE)
-      // addAll падает целиком, если хоть один файл не отдался, поэтому
-      // кладём поштучно: пропущенный файл просто догрузится из сети.
-      .then((cache) => Promise.allSettled(SHELL_ASSETS.map((url) => cache.add(url))))
+      // cache: "reload" — обязательно: иначе запрос пойдёт через
+      // HTTP-кэш браузера и воркер законсервирует у себя ту самую
+      // устаревшую копию, от которой мы уходим.
+      .then((cache) => cache.add(new Request("/", { cache: "reload" })))
+      .catch(() => {})
       .then(() => self.skipWaiting())
   );
 });
@@ -84,15 +74,17 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
   if (NEVER_CACHE.some((prefix) => url.pathname.startsWith(prefix))) return;
 
-  if (url.pathname.endsWith(".json")) {
-    event.respondWith(networkFirst(request, DATA_CACHE));
-    return;
-  }
+  // Картинки — единственное, что берём из кэша сразу: файл под одним
+  // именем меняется редко, а весит много. Рассинхронизации разметки
+  // и стилей это вызвать не может.
   if (IMAGE_PREFIXES.some((prefix) => url.pathname.startsWith(prefix))) {
     event.respondWith(cacheFirst(request, IMAGE_CACHE));
     return;
   }
-  event.respondWith(staleWhileRevalidate(event, SHELL_CACHE));
+
+  // Всё остальное — сеть вперёд, кэш только если сети нет.
+  const cacheName = url.pathname.endsWith(".json") ? DATA_CACHE : SHELL_CACHE;
+  event.respondWith(networkFirst(request, cacheName));
 });
 
 // Кладём в кэш только удавшиеся ответы. Без этой проверки в кэш попал бы
@@ -110,6 +102,13 @@ async function networkFirst(request, cacheName) {
   } catch (err) {
     const cached = await caches.match(request);
     if (cached) return cached;
+
+    // Ни сети, ни точного совпадения в кэше. Для перехода по адресу
+    // отдаём главную — иначе браузер покажет служебную страницу ошибки.
+    if (request.mode === "navigate") {
+      const fallback = (await caches.match("/")) || (await caches.match("/index.html"));
+      if (fallback) return fallback;
+    }
     throw err;
   }
 }
@@ -118,31 +117,4 @@ async function cacheFirst(request, cacheName) {
   const cached = await caches.match(request);
   if (cached) return cached;
   return putIfOk(cacheName, request, await fetch(request));
-}
-
-// event нужен целиком, а не только request: фоновую догрузку надо отдать
-// в event.waitUntil, иначе браузер вправе усыпить воркер сразу после
-// ответа из кэша и обновление не доедет.
-async function staleWhileRevalidate(event, cacheName) {
-  const { request } = event;
-  const cached = await caches.match(request);
-  const network = fetch(request)
-    .then((response) => putIfOk(cacheName, request, response))
-    .catch(() => null);
-
-  if (cached) {
-    event.waitUntil(network);
-    return cached;
-  }
-
-  const response = await network;
-  if (response) return response;
-
-  // Ни кэша, ни сети. Для навигации отдаём главную — она в кэше оболочки,
-  // иначе браузер показал бы служебную страницу ошибки.
-  if (request.mode === "navigate") {
-    const fallback = await caches.match("/index.html");
-    if (fallback) return fallback;
-  }
-  return Response.error();
 }
