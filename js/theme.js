@@ -44,10 +44,27 @@ const THEME_PRESETS = {
     skin: "soft",
     defaultAccent: "#6b7f4a",
     "--bg": "#f2ece0", "--bg2": "#ece4d2",
-    "--surface": "#faf7f0", "--surface2": "#eee6d4",
-    "--border": "#e1d8c3", "--border2": "#cabf9f",
+    "--surface": "#f1efdc", "--surface2": "#e2e5c6",
+    "--border": "#d7d0ac", "--border2": "#bfbd8e",
     "--text": "#6b6552", "--text-dim": "#a89f88", "--text-hi": "#332f22",
-    "--radius-card": "22px", "--radius-btn": "999px",
+    "--radius-btn": "999px",
+    // Карточки на Главной/тир-листе — скругление и мягкая тень вместо
+    // резких уголков-скобок из классической темы.
+    "--card-radius": "22px",
+    "--card-border": "none",
+    "--card-shadow": "0 12px 30px -14px rgba(60,50,20,.35)",
+    "--card-shadow-hover": "0 18px 38px -14px rgba(60,50,20,.42)",
+    "--card-corner-display": "none",
+    "--card-img-filter": "none",
+    "--card-img-filter-hover": "none",
+    // Бейджи (тип/дата в углах карточек) — были тёмными как в классической
+    // теме и сливались с обложками; здесь — авокадовые полупрозрачные,
+    // с тёмным текстом, читаемым на светлом фоне.
+    "--badge-bg": "rgba(139,166,102,.55)",
+    "--badge-text": "#2c2a1c",
+    "--badge-text-dim": "#2c2a1c",
+    "--badge-border": "rgba(139,166,102,.6)",
+    "--badge-accent-border": "rgba(139,166,102,.6)",
   },
 };
 
