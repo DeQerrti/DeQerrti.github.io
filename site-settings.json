@@ -7,7 +7,17 @@
   "customTypes": {},
   "hiddenTypes": [],
   "customTypePlural": {},
+  "customSubtypes": {},
+  "hiddenSubtypes": [],
   "hiddenTabs": [],
+  "tabOrder": [
+    "now",
+    "favorites",
+    "reviews",
+    "stats",
+    "tierlist"
+  ],
+  "mainTab": "reviews",
   "hiddenStatsBlocks": [],
   "gradeScale": {
     "type": "categorical",
@@ -106,6 +116,14 @@
       "chars": "Персонажи / мир",
       "special": "Атмосфера / эмоции",
       "genre": "Жанр"
+    },
+    "subtypes": {
+      "actor": "Актёр",
+      "director": "Режиссёр",
+      "author": "Автор",
+      "seiyuu": "Сэйю",
+      "artist": "Художник",
+      "composer": "Композитор"
     }
   }
 }
