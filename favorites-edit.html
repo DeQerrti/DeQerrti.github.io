@@ -222,9 +222,13 @@ input::placeholder { color: var(--text-dim); }
     </div>
     <div class="field full field-subtype" id="field-subtype">
       <label>Роль персоны</label>
-      <div class="select-wrap">
-        <select id="f-subtype"></select>
+      <div class="src-type-wrap" style="width:100%;">
+        <button type="button" class="src-type-btn" style="width:100%;" onclick="toggleSubtypePickerDropdown()">
+          <span id="subtype-picker-label">Актёр</span><span class="src-caret">▾</span>
+        </button>
+        <div class="src-type-dropdown hidden" id="subtype-picker-dropdown"></div>
       </div>
+      <input type="hidden" id="f-subtype" value="actor">
     </div>
     <div class="field full">
       <label>Ссылка на изображение</label>
@@ -235,8 +239,12 @@ input::placeholder { color: var(--text-dim); }
     </div>
     <div class="field full">
       <label>Или загрузить с компьютера</label>
-      <input type="file" id="f-image-upload" accept="image/*" class="file-input">
-      <button type="button" class="btn-new" style="margin-top:.5rem" onclick="uploadFavImage()">Загрузить и использовать</button>
+      <label class="file-btn">
+        <input type="file" id="f-image-upload" accept="image/*" onchange="updateFileBtnName(this)">
+        <span>Выбрать файл</span>
+      </label>
+      <span class="file-btn-name" id="f-image-upload-name"></span>
+      <button type="button" class="btn-new" style="margin-top:.5rem;margin-left:.5rem" onclick="uploadFavImage()">Загрузить и использовать</button>
       <div id="image-upload-status" style="font-size:.8rem;margin-top:.4rem;"></div>
     </div>
     <div class="field full" id="field-from">
@@ -271,16 +279,122 @@ let orderDirty = false;
 let dragSrc    = null; // DOM-элемент, который сейчас тащим
 
 // Список ролей приходит из общего SUBTYPE_LABELS (js/config.js), куда
-// подмешиваются свои роли и переименования из /settings-edit.
-function renderSubtypeSelect() {
-  const select = document.getElementById("f-subtype");
-  const current = select.value;
-  select.innerHTML = Object.entries(SUBTYPE_LABELS)
-    .map(([key, label]) => `<option value="${key}">${esc(label)}</option>`).join("");
-  if (current && SUBTYPE_LABELS[current] !== undefined) select.value = current;
+// подмешиваются свои роли и переименования из /settings-edit. Тот же
+// паттерн выпадающего списка с инлайн-добавлением, что и у источников
+// и типа тайтла в add.html (общие .src-type-* классы теперь в style.css).
+const SUBTYPE_BUILTINS = ["actor","director","author","seiyuu","artist","composer"];
+let subtypePickerOpen = false;
+
+function subtypeLabel(key) {
+  return SUBTYPE_LABELS[key] || SUBTYPE_LABELS.actor;
 }
-renderSubtypeSelect();
-document.addEventListener("tags-map-updated", renderSubtypeSelect);
+
+function syncSubtypePickerLabel() {
+  const key = document.getElementById("f-subtype").value || "actor";
+  document.getElementById("subtype-picker-label").textContent = subtypeLabel(key);
+}
+
+function renderSubtypePickerDropdown() {
+  const dd = document.getElementById("subtype-picker-dropdown");
+  const current = document.getElementById("f-subtype").value || "actor";
+  const options = Object.entries(SUBTYPE_LABELS).map(([key, label]) => `
+    <div class="src-type-option${key === current ? " active" : ""}" onclick="selectSubtypePicker('${key}')">
+      <span>${esc(label)}</span>
+      ${!SUBTYPE_BUILTINS.includes(key) ? `<span class="icon-btn src-type-remove" title="Удалить" onclick="event.stopPropagation(); removeSubtypePicker('${key}')">✕</span>` : ""}
+    </div>`).join("");
+  dd.innerHTML = `
+    <div class="src-type-list">${options}</div>
+    <div class="src-type-add-row">
+      <button type="button" class="btn-new src-type-add-btn" onclick="showAddSubtypeForm()">+ Добавить роль</button>
+    </div>
+    <div class="src-type-add-form hidden" id="subtype-picker-add-form">
+      <input type="text" id="subtype-picker-new-name" placeholder="Например: Продюсер">
+      <button type="button" class="btn-new" onclick="confirmAddSubtype()">Ок</button>
+    </div>
+    <div class="status-msg src-type-status" id="subtype-picker-status"></div>`;
+}
+
+function toggleSubtypePickerDropdown() {
+  const dd = document.getElementById("subtype-picker-dropdown");
+  const isOpen = !dd.classList.contains("hidden");
+  closeSubtypePickerDropdown();
+  if (!isOpen) {
+    renderSubtypePickerDropdown();
+    dd.classList.remove("hidden");
+    subtypePickerOpen = true;
+  }
+}
+
+function closeSubtypePickerDropdown() {
+  if (!subtypePickerOpen) return;
+  document.getElementById("subtype-picker-dropdown")?.classList.add("hidden");
+  subtypePickerOpen = false;
+}
+
+document.addEventListener("click", (e) => {
+  if (!subtypePickerOpen) return;
+  const wrap = document.getElementById("subtype-picker-dropdown")?.closest(".src-type-wrap");
+  if (wrap && !wrap.contains(e.target)) closeSubtypePickerDropdown();
+});
+
+function selectSubtypePicker(key) {
+  document.getElementById("f-subtype").value = key;
+  syncSubtypePickerLabel();
+  closeSubtypePickerDropdown();
+}
+
+function showAddSubtypeForm() {
+  const dd = document.getElementById("subtype-picker-dropdown");
+  dd.querySelector(".src-type-list").style.display = "none";
+  dd.querySelector(".src-type-add-row").style.display = "none";
+  document.getElementById("subtype-picker-add-form").classList.remove("hidden");
+  document.getElementById("subtype-picker-new-name").focus();
+}
+
+async function confirmAddSubtype() {
+  const input = document.getElementById("subtype-picker-new-name");
+  const statusEl = document.getElementById("subtype-picker-status");
+  const name = input.value.trim();
+
+  if (!name) { statusEl.textContent = "Введи название роли"; statusEl.className = "status-msg src-type-status err"; return; }
+  const exists = Object.values(SUBTYPE_LABELS).some(l => l.toLowerCase() === name.toLowerCase());
+  if (exists) { statusEl.textContent = "Такая роль уже есть"; statusEl.className = "status-msg src-type-status err"; return; }
+
+  const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+  statusEl.textContent = "Сохраняем…";
+  statusEl.className = "status-msg src-type-status";
+  try {
+    await patchSiteSettings((settings) => {
+      settings.customSubtypes = settings.customSubtypes || {};
+      settings.customSubtypes[key] = name;
+    });
+    SUBTYPE_LABELS[key] = name;
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    selectSubtypePicker(key);
+  } catch (err) {
+    statusEl.textContent = err.message || "Ошибка сохранения";
+    statusEl.className = "status-msg src-type-status err";
+  }
+}
+
+async function removeSubtypePicker(key) {
+  if (!confirm(`Удалить роль «${SUBTYPE_LABELS[key]}»?`)) return;
+  try {
+    await patchSiteSettings((settings) => {
+      settings.customSubtypes = settings.customSubtypes || {};
+      delete settings.customSubtypes[key];
+    });
+    delete SUBTYPE_LABELS[key];
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    if (subtypePickerOpen) renderSubtypePickerDropdown();
+    if (document.getElementById("f-subtype").value === key) selectSubtypePicker("actor");
+  } catch (err) {
+    alert(err.message || "Ошибка удаления");
+  }
+}
+
+syncSubtypePickerLabel();
+document.addEventListener("tags-map-updated", syncSubtypePickerLabel);
 
 function onTypeChange() {
   const isPerson = document.getElementById("f-type").value === "person";
@@ -415,6 +529,8 @@ function resetToNew() {
   ["f-name","f-image","f-from","f-image-backup"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("f-type").value = "character";
   document.getElementById("f-subtype").value = "actor";
+  syncSubtypePickerLabel();
+  closeSubtypePickerDropdown();
   document.getElementById("avatar-img").style.display = "none";
   document.getElementById("field-subtype").classList.remove("visible");
   document.getElementById("field-from").classList.remove("hidden-field");
@@ -431,6 +547,8 @@ function fillForm(r) {
   document.getElementById("f-from").value    = r.from    || "";
   document.getElementById("f-type").value    = r.type    || "character";
   document.getElementById("f-subtype").value = r.subtype || "actor";
+  syncSubtypePickerLabel();
+  closeSubtypePickerDropdown();
   document.getElementById("image-backup-status").textContent = "";
   document.getElementById("image-upload-status").textContent = "";
   document.getElementById("f-image-upload").value = "";
