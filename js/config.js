@@ -429,18 +429,6 @@ document.addEventListener("site-labels-ready", () => {
   const customSources = window.SITE_CUSTOM_SOURCES || {};
   Object.assign(SOURCE_LABELS, customSources);
 
-  // Роли персон (в «Любимом») — тот же паттерн, что и у типов: свои
-  // роли подмешиваются, скрытые убираются, переименования встроенных
-  // применяются.
-  const subtypeOverrides = overrides.subtypes || {};
-  const customSubtypes = window.SITE_CUSTOM_SUBTYPES || {};
-  const hiddenSubtypes = window.SITE_HIDDEN_SUBTYPES || [];
-  Object.assign(SUBTYPE_LABELS, customSubtypes);
-  for (const key of hiddenSubtypes) delete SUBTYPE_LABELS[key];
-  for (const [key, label] of Object.entries(subtypeOverrides)) {
-    if (SUBTYPE_LABELS[key] !== undefined && label) SUBTYPE_LABELS[key] = label;
-  }
-
   const catOverrides = overrides.categories || {};
   for (const [key, label] of Object.entries(catOverrides)) {
     if (CAT_LABELS[key] !== undefined && label) CAT_LABELS[key] = label;
@@ -460,17 +448,4 @@ document.addEventListener("site-labels-ready", () => {
 const SOURCE_LABELS = {
   teletype: "Teletype",
   other:    "Другое",
-};
-
-// ── Роли персон (в «Любимом», тип «Персона») — единственный источник
-//    правды: раньше дублировалось в favorites-edit.html и js/favorites.js
-//    отдельными копиями, теперь оба места ссылаются сюда. Переименование/
-//    скрытие/добавление ролей — из /settings-edit, панель «Типы».
-const SUBTYPE_LABELS = {
-  actor:    "Актёр",
-  director: "Режиссёр",
-  author:   "Автор",
-  seiyuu:   "Сэйю",
-  artist:   "Художник",
-  composer: "Композитор",
 };
