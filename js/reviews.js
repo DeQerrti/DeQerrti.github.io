@@ -169,13 +169,24 @@ function rvBindCardClicks() {
   if (!grid || grid.dataset.clickBound) return;
   grid.dataset.clickBound = "1";
 
-  grid.addEventListener("click", (e) => {
+  function openFromEvent(e) {
     if (e.target.closest(".review-edit-btn") || e.target.closest(".review-source-link")) return;
     const wrap = e.target.closest(".review-card-wrap");
     if (!wrap) return;
     const idx = parseInt(wrap.dataset.reviewIdx, 10);
     const review = rvLastFiltered[idx];
     if (review) openReviewModal(review);
+  }
+
+  grid.addEventListener("click", openFromEvent);
+
+  // Enter и пробел — то, чего браузер ждёт от role="button".
+  // preventDefault на пробеле обязателен, иначе страница проскроллится.
+  grid.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    if (!e.target.classList?.contains("review-card-wrap")) return;
+    e.preventDefault();
+    openFromEvent(e);
   });
 }
 
@@ -201,9 +212,9 @@ function reviewModalBodyHtml(r) {
 
   return `
     <div class="review-modal-header">
-      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" class="review-modal-cover" onerror="coverFallback(this, '${esc(r.cover_backup || "")}')">
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" class="review-modal-cover" ${coverFallbackAttrs(r.cover, r.cover_backup)}>
       <div>
-        <div class="review-modal-title">${esc(r.title)}</div>
+        <div class="review-modal-title" id="review-modal-title">${esc(r.title)}</div>
         <div class="review-meta-row">${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}</div>
         ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
         ${r.rewatch_count > 0 ? `<div class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">↻ ×${r.rewatch_count}</div>` : ""}
@@ -215,12 +226,21 @@ function reviewModalBodyHtml(r) {
   `;
 }
 
+// Элемент, с которого модалку открыли: на него надо вернуть фокус при
+// закрытии, иначе после Esc фокус улетает в начало страницы и человеку
+// с клавиатуры приходится заново идти до той же карточки.
+let _reviewModalOpener = null;
+
 function openReviewModal(r) {
-  let overlay = document.getElementById("review-modal-overlay");
+  const overlay = document.getElementById("review-modal-overlay");
   if (!overlay) return;
+  _reviewModalOpener = document.activeElement;
   document.getElementById("review-modal-body").innerHTML = reviewModalBodyHtml(r);
   overlay.classList.remove("hidden");
   document.body.style.overflow = "hidden";
+  // Фокус внутрь окна — иначе скринридер продолжит читать страницу
+  // под ним, а Tab уведёт за пределы диалога с первого же нажатия.
+  overlay.querySelector(".review-modal-close")?.focus();
 }
 
 function closeReviewModal() {
@@ -228,6 +248,31 @@ function closeReviewModal() {
   if (!overlay) return;
   overlay.classList.add("hidden");
   document.body.style.overflow = "";
+  _reviewModalOpener?.focus?.();
+  _reviewModalOpener = null;
+}
+
+// Удержание фокуса внутри окна, пока оно открыто: Tab с последнего
+// элемента возвращает на первый, Shift+Tab с первого — на последний.
+function trapReviewModalFocus(e) {
+  const overlay = document.getElementById("review-modal-overlay");
+  if (!overlay || overlay.classList.contains("hidden")) return;
+
+  const focusable = overlay.querySelectorAll(
+    'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  if (!focusable.length) return;
+
+  const first = focusable[0];
+  const last  = focusable[focusable.length - 1];
+
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -238,6 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeReviewModal();
+    if (e.key === "Tab") trapReviewModalFocus(e);
   });
 });
 function sourceBtnHtml(url, source) {
@@ -297,7 +343,13 @@ function reviewCard(r, i) {
     ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
     : "";
 
-  return `<div class="review-card-wrap" data-review-idx="${i}">
+  // tabindex + role: карточка открывает модалку по клику, но до этой
+  // правки была обычным <div> — то есть с клавиатуры отзыв нельзя было
+  // открыть вообще, и возвращать фокус после закрытия окна тоже было
+  // некуда. Ссылки внутри (править, источник) остаются самостоятельными
+  // точками фокуса и обрабатываются раньше — см. rvBindCardClicks.
+  return `<div class="review-card-wrap" data-review-idx="${i}"
+    role="button" tabindex="0" aria-label="Открыть отзыв: ${esc(r.title)}">
     ${editBtn}
     <div class="review-card"
         style="animation-delay:${Math.min(i * 40, 600)}ms;
@@ -305,7 +357,7 @@ function reviewCard(r, i) {
       <div class="review-top">
         <div class="review-cover-col">
           <div class="review-cover">
-            <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="coverFallback(this, '${esc(r.cover_backup || "")}')">
+            <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" ${coverFallbackAttrs(r.cover, r.cover_backup)}>
           </div>
           ${rewatchHtml}
         </div>

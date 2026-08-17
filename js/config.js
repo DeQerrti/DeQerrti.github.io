@@ -83,13 +83,9 @@ async function proxyImagesToDataUrls(container) {
 }
 
 // ── Экранирование HTML ─────────────────────────
-function esc(s) {
-  return String(s ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
+// esc() переехал в js/utils.js — он нужен и страницам, которые config.js
+// не подключают (reviews-order), и лежать в пяти копиях больше не должен.
+// utils.js обязан подключаться раньше config.js.
 
 // ── Признак админа (для UI) ────────────────────
 // tasteid_ui — обычная, не HttpOnly кука, выставляется при логине.

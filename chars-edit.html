@@ -11,18 +11,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/admin.css">
+<script src="/js/utils.js"></script>
 <script src="/js/theme.js"></script>
 <script src="/js/config.js"></script>
 <style>
-body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
 
-header { text-align: center; padding: 2.5rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--red-dim) 20%, var(--red) 50%, var(--red-dim) 80%, transparent); }
-.logo { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic;
-  font-size: clamp(2.2rem, 6vw, 3.5rem); color: var(--text-hi); letter-spacing: .04em; text-decoration: none; display: block; }
-.header-sub { font-family: 'DM Sans', sans-serif; font-size: .6rem; letter-spacing: .3em;
-  text-transform: uppercase; color: var(--text-dim); margin-top: .5rem; }
+header { padding: 2.5rem 1rem 2rem; }
+.logo { font-size: clamp(2.2rem, 6vw, 3.5rem); display: block; }
+.header-sub { font-size: .6rem; margin-top: .5rem; }
 
 main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
 @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
@@ -121,16 +118,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 .tl-row-del:hover { border-color: var(--red); color: var(--red-hi); }
 
 /* ── Модалка ── */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 1000;
-  display: flex; align-items: center; justify-content: center; padding: 1rem; }
-.modal-overlay.hidden { display: none; }
-.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
-  padding: 1.75rem; width: 100%; max-width: 560px; position: relative; max-height: 90vh; overflow-y: auto; }
-.modal-title { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic;
-  font-size: 1.1rem; color: var(--text-hi); margin-bottom: 1.25rem; }
-.modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-  color: var(--text-dim); cursor: pointer; font-size: 1.1rem; transition: color .15s; }
-.modal-close:hover { color: var(--text-hi); }
+.modal { max-width: 560px; }
 
 /* ── Дропдаун папки в модалке ── */
 .folder-select-wrap { position: relative; margin-bottom: 1rem; }
@@ -183,15 +171,14 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 
 /* Кнопки — общие .btn/.btn-primary/.btn-ghost/.btn-green/.btn-dashed/.icon-btn
    теперь в style.css, тут остаются только специфичные для этой страницы. */
-.save-bar { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
-.status-msg { font-family: 'DM Sans', sans-serif; font-size: .75rem; }
+.status-msg { font-size: .75rem; }
 
 .add-tier-row { display: flex; align-items: center; gap: .5rem; padding: .6rem; border: 1px dashed var(--border2); border-radius: 2px; flex-wrap: wrap; }
 .add-tier-row input { flex: 1; min-width: 120px; background: var(--surface2); border: 1px solid var(--border2);
   border-radius: 2px; padding: .5rem .7rem; color: var(--text-hi); font-family: 'Cormorant Garamond', serif; font-size: .95rem; outline: none; }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-.state-box { text-align: center; padding: 3rem; color: var(--text-dim); font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; }
+.state-box { padding: 3rem; font-size: 1rem; }
 .editor-empty { text-align: center; padding: 4rem 2rem; color: var(--text-dim); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; border: 1px dashed var(--border); border-radius: 2px; }
 </style>
 </head>
@@ -383,7 +370,7 @@ function renderSidebar() {
   const list = document.getElementById("title-list");
   list.innerHTML = data.map(t => `
     <div class="title-item${t.id === activeId ? " active" : ""}" draggable="true" data-title-id="${esc(t.id)}" onclick="selectTitle('${esc(t.id)}')">
-      <img class="title-item-cover" src="${esc(t.cover || t.cover_backup || "")}" alt="" onerror="this.style.display='none'">
+      <img class="title-item-cover" src="${esc(t.cover || t.cover_backup || "")}" alt="" data-hide-on-error>
       <div class="title-item-name">${esc(t.title)}</div>
       <button class="title-item-edit" onclick="openEditTitleForm(event,'${esc(t.id)}')" title="Редактировать">✎</button>
       <button class="title-item-del" onclick="deleteTitle(event,'${esc(t.id)}')" title="Удалить">✕</button>
@@ -684,20 +671,14 @@ function renderEditor() {
   bindDragDrop();
 }
 
-function charCardImgFallback(img, backupUrl) {
-  if (!img.dataset.tried && backupUrl && img.src !== backupUrl) {
-    img.dataset.tried = "1";
-    img.src = backupUrl;
-  } else {
-    img.src = "https://placehold.co/72x108/111114/4a4540?text=?";
-  }
-}
+// Заглушка для карточки персонажа — размер под .char-card
+const CHAR_PLACEHOLDER = "https://placehold.co/72x108/111114/4a4540?text=?";
 
 function renderTierRow(title, list, tier, ti) {
   const chars = tier.chars.map((ch, ci) => `
     <div class="char-card" draggable="true"
       data-title="${esc(title.id)}" data-list="${esc(list.id)}" data-tier="${ti}" data-char="${ci}">
-      <img src="${esc(ch.img || ch.img_backup || "")}" alt="${esc(ch.name)}" onerror="charCardImgFallback(this, '${esc(ch.img_backup || "")}')">
+      <img src="${esc(ch.img || ch.img_backup || "")}" alt="${esc(ch.name)}" ${imgFallbackAttrs(ch.img, ch.img_backup, CHAR_PLACEHOLDER)}>
       <div class="char-card-name">${esc(ch.name)}</div>
       <button class="char-card-del" onclick="deleteChar('${esc(title.id)}','${esc(list.id)}',${ti},${ci})">✕</button>
     </div>
@@ -861,8 +842,8 @@ async function loadGallery(folder, title) {
         data-name="${esc(f.name)}" data-url="${esc(f.url)}"
         onclick="selectGalleryItem(this)"
         title="${esc(f.name)}${used ? " (уже добавлен)" : ""}">
-      <img src="${esc(f.url)}" alt="${esc(f.name)}" loading="lazy"
-        onerror="this.src='https://placehold.co/80x120/111114/4a4540?text=?'">
+      <img src="${esc(f.preview || f.url)}" alt="${esc(f.name)}" loading="lazy"
+        data-placeholder="https://placehold.co/80x120/111114/4a4540?text=?">
       <div class="gallery-item-name">${esc(f.name)}</div>
       <div class="gallery-check">✓</div>
     </div>`;
@@ -1185,10 +1166,6 @@ async function saveAll() {
   }
   btn.disabled = false;
   btn.textContent = "✦ Сохранить всё";
-}
-
-function esc(s) {
-  return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
 document.addEventListener("keydown", e => {

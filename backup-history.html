@@ -11,27 +11,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/admin.css">
+<script src="/js/utils.js"></script>
 <script src="/js/theme.js"></script>
 <script src="/js/config.js"></script>
 <style>
-body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
 
-header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--red-dim) 20%, var(--red) 50%, var(--red-dim) 80%, transparent); }
-.logo { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic;
-  font-size: clamp(2.5rem, 6vw, 4rem); color: var(--text-hi); letter-spacing: .04em; text-decoration: none; }
-.header-sub { font-family: 'DM Sans', sans-serif; font-size: .62rem; letter-spacing: .3em;
-  text-transform: uppercase; color: var(--text-dim); margin-top: .6rem; }
+header { padding: 3rem 1rem 2rem; }
+.logo { font-size: clamp(2.5rem, 6vw, 4rem); }
 
 main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 
-#locked { text-align: center; padding: 80px 20px; color: var(--text-dim); }
 #locked a { color: var(--red-hi); }
 .hidden { display: none; }
 
-.hint { font-family: 'DM Sans', sans-serif; font-size: .78rem; color: var(--text-dim);
-  margin-bottom: 1.75rem; line-height: 1.6; }
+.hint { font-size: .78rem; margin-bottom: 1.75rem; line-height: 1.6; }
 
 .file-tabs { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 2rem; }
 .file-tab {
@@ -68,10 +62,8 @@ main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 .btn-mini.danger:hover { color: #f0d0d0; border-color: #a33; background: rgba(163,51,51,.15); }
 .btn-mini:disabled { opacity: .5; cursor: default; }
 
-.state-box { text-align: center; padding: 4rem 2rem; color: var(--text-dim);
-  font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; }
-.spinner { width: 24px; height: 24px; border: 1px solid var(--border2); border-top-color: var(--red);
-  border-radius: 50%; animation: spin .9s linear infinite; margin: 0 auto .75rem; }
+.state-box { padding: 4rem 2rem; font-size: 1.05rem; }
+.spinner { width: 24px; height: 24px; margin: 0 auto .75rem; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .toast {
@@ -237,12 +229,6 @@ function showToast(text, ok) {
   el.textContent = text;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3500);
-}
-
-function esc(s) {
-  return String(s ?? "")
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 init();

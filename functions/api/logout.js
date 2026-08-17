@@ -1,4 +1,4 @@
-import { json, destroySession } from "../_shared.js";
+import { destroySession } from "../_shared.js";
 
 export async function onRequest(context) {
   const { request, env } = context;

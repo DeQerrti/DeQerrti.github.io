@@ -9,22 +9,12 @@ function normTitle(s) {
   return (s || "").toLowerCase().trim().replace(/\s+/g, " ");
 }
 
-// Основная ссылка на обложку не открылась — пробуем резервную копию
-// (если есть), а если и она не сработала — заглушку. data-tried не даёт
-// зациклиться, если резервная копия тоже окажется битой.
-function coverFallback(img, backupUrl) {
-  imgFallback(img, backupUrl, PH_TALL);
-}
-
-// То же самое, но с произвольной заглушкой — для квадратных аватарок
-// персонажей/персон, где PH_TALL (вертикальный постер) не подходит.
-function imgFallback(img, backupUrl, placeholder) {
-  if (!img.dataset.tried && backupUrl) {
-    img.dataset.tried = "1";
-    img.src = backupUrl;
-  } else {
-    img.src = placeholder;
-  }
+// Обработка не открывшихся обложек живёт в js/utils.js: там один
+// делегированный слушатель на весь документ, а шаблоны просто ставят
+// data-fallback / data-placeholder через imgFallbackAttrs().
+// Здесь — только удобная обёртка под вертикальный постер.
+function coverFallbackAttrs(cover, coverBackup) {
+  return imgFallbackAttrs(cover, coverBackup, PH_TALL);
 }
 
 function findReviewForTitle(title, type) {
@@ -107,7 +97,7 @@ function manualCard(r, index) {
     <div class="card" style="animation-delay:0ms">
       <span class="type-tag tag-manual">${esc(tagLabel)}</span>
       ${watchBadge ? `<span class="watch-badge">${esc(watchBadge)}</span>` : ""}
-      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="coverFallback(this, '${esc(r.cover_backup || "")}')">
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" ${coverFallbackAttrs(r.cover, r.cover_backup)}>
       <div class="card-body">
         <div class="card-title">${esc(r.title)}</div>
         ${r.year || info

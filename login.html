@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<script src="/js/utils.js"></script>
 <style>
 body {
   background: var(--bg);
@@ -192,29 +193,66 @@ button:hover::after { border-color: var(--red-hi); }
 </div>
 
 <div class="box">
-  <div class="box-title">Административный вход</div>
-  <label>Пароль</label>
-  <input type="password" id="pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
-  <button onclick="login()">Войти</button>
-  <div class="error" id="err"></div>
+  <!-- Именно <form>, а не пара элементов с onclick: так менеджеры паролей
+       понимают, что это вход, и предлагают сохранить/подставить пароль.
+       autocomplete="current-password" — та же причина. -->
+  <form id="login-form" onsubmit="return login(event)">
+    <div class="box-title">Административный вход</div>
+    <label for="pwd">Пароль</label>
+    <input type="password" id="pwd" name="password" placeholder="••••••••"
+           autocomplete="current-password" required>
+    <button type="submit" id="login-btn">Войти</button>
+    <div class="error" id="err" role="alert" aria-live="polite"></div>
+  </form>
 </div>
 
 <script>
-async function login() {
-  const pwd = document.getElementById("pwd").value;
-  const err = document.getElementById("err");
-  if (!pwd) { err.textContent = "Введите пароль"; return; }
-  const res = await fetch("/api/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password: pwd })
-  });
-  if (res.ok) {
-    window.location.href = "/add";
-  } else {
-    err.textContent = "Неверный пароль";
-    document.getElementById("pwd").value = "";
+async function login(event) {
+  event.preventDefault();
+
+  const input = document.getElementById("pwd");
+  const btn   = document.getElementById("login-btn");
+  const err   = document.getElementById("err");
+  const pwd   = input.value;
+
+  if (!pwd) { err.textContent = "Введите пароль"; return false; }
+
+  err.textContent = "";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: pwd })
+    });
+
+    if (res.ok) {
+      window.location.href = "/add";
+      return false;
+    }
+
+    // Раньше любой не-200 показывался как «Неверный пароль». При
+    // срабатывании рейт-лимита (429) человек видел неверную причину и
+    // продолжал подбирать пароль, хотя вход уже был временно закрыт.
+    // Текст ошибки бэкенд присылает сам — показываем его.
+    let message = "Неверный пароль";
+    try {
+      const data = await res.json();
+      if (data?.error) message = data.error;
+    } catch {
+      // тело не разобралось — остаётся сообщение по умолчанию
+    }
+    err.textContent = message;
+    input.value = "";
+    input.focus();
+  } catch {
+    err.textContent = "Сеть недоступна. Попробуйте ещё раз.";
+  } finally {
+    btn.disabled = false;
   }
+
+  return false;
 }
 </script>
 </body>

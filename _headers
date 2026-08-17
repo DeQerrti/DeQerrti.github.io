@@ -1,13 +1,64 @@
 # Cloudflare Pages читает этот файл автоматически и проставляет
-# заголовки кэширования при раздаче статики.
+# заголовки при раздаче статики. Правила применяются сверху вниз,
+# более конкретный путь дополняет общий.
 
-# Картинки персонажей грузятся напрямую с raw.githubusercontent.com
-# (см. характерных URL в characters-tier.json), а не с этого домена —
-# поэтому правило кэша для /chars/* тут бессмысленно, его убрал.
-# GitHub сам кэширует их на 5 минут и обновляет по content-hash (etag),
-# так что подмена картинки с тем же именем подхватывается сама.
+# ── Безопасность — для всех страниц ────────────
+/*
+  # Не позволяем браузеру угадывать тип файла вопреки Content-Type:
+  # закрывает трюки вида "картинка, которая на самом деле скрипт".
+  X-Content-Type-Options: nosniff
 
-# Иконки и манифест меняются ещё реже
+  # Внешним сайтам уходит только домен-источник, без полного пути.
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Сайт не должен открываться внутри чужого фрейма (кликджекинг).
+  # frame-ancestors в CSP ниже делает то же самое для новых браузеров,
+  # X-Frame-Options оставлен для старых.
+  X-Frame-Options: DENY
+
+  # Ничего из этого сайту не нужно — отзываем заранее.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+  # CSP. Что здесь происходит:
+  #   img-src https: — обложки приходят с произвольных внешних сайтов
+  #     (igdb, placehold.co и что там ещё окажется в reviews.json),
+  #     перечислить их заранее нельзя. Требование https всё же
+  #     отсекает подмешивание картинок по http.
+  #   connect-src — свои /api/* и *.json плюс wsrv.nl: через него
+  #     config.js проксирует картинки перед экспортом тир-листа в PNG.
+  #   script-src cdn.jsdelivr.net — jszip (бэкапы) и html2canvas-pro.
+  #
+  # ВАЖНО про 'unsafe-inline' в script-src: он здесь вынужденно.
+  # Разметка держится на inline-обработчиках (onclick="...") и
+  # встроенных <script>-блоках, поэтому строгую политику включить
+  # нельзя, пока обработчики не переедут на addEventListener.
+  # То есть CSP сейчас ограничивает ИСТОЧНИКИ (никаких чужих доменов,
+  # никаких <object>, никакой подмены <base>), но не защищает от
+  # инъекции инлайнового скрипта. Убрать 'unsafe-inline' — следующий
+  # шаг, он же снимет главное возражение против этой строки.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://wsrv.nl; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'
+
+# ── Картинки, лежащие в этом репозитории ───────
+# Раньше они грузились с raw.githubusercontent.com в обход нашей CDN.
+# Теперь пути относительные (/chars/…, /covers/…), и кэшем управляем мы.
+#
+# immutable здесь нельзя: имена файлов не содержат хэша содержимого,
+# и обложку иногда заменяют на новую под тем же именем. Поэтому час
+# свежести, а дальше неделя stale-while-revalidate — повторные заходы
+# мгновенные, а замена файла доезжает максимум за час.
+/chars/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800
+
+/covers/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800
+
+/title-covers/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800
+
+/covers-backup/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800
+
+# Иконки меняются ещё реже
 /icons/*
   Cache-Control: public, max-age=2592000, immutable
 
@@ -19,6 +70,18 @@
 /style.css
   Cache-Control: public, max-age=86400, must-revalidate
 
+/admin.css
+  Cache-Control: public, max-age=86400, must-revalidate
+
+# Скрипты — та же логика, что и у стилей
+/js/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+# Service worker обязан проверяться заново при каждом заходе, иначе
+# устаревший воркер продолжит раздавать старый кэш.
+/sw.js
+  Cache-Control: no-cache
+
 # og-картинка для шеринга в соцсетях
 /og.jpg
   Cache-Control: public, max-age=604800
@@ -27,3 +90,29 @@
 # из админки сразу видели обычные посетители (без cache-bust в коде)
 /*.json
   Cache-Control: public, max-age=60, must-revalidate
+
+# Админка и API не должны кэшироваться и попадать в поиск
+/api/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
+
+/add
+  X-Robots-Tag: noindex
+
+/chars-edit
+  X-Robots-Tag: noindex
+
+/favorites-edit
+  X-Robots-Tag: noindex
+
+/settings-edit
+  X-Robots-Tag: noindex
+
+/reviews-order
+  X-Robots-Tag: noindex
+
+/backup-history
+  X-Robots-Tag: noindex
+
+/login.html
+  X-Robots-Tag: noindex

@@ -11,20 +11,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/admin.css">
+<script src="/js/utils.js"></script>
 <script src="/js/theme.js"></script>
 <script src="/js/config.js"></script>
 <style>
-.logo {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: clamp(3rem, 8vw, 5.5rem);
-  color: var(--text-hi);
-  letter-spacing: .04em;
-  line-height: 1;
-  text-decoration: none;
-  display: block;
-}
+.logo { display: block; }
 
 input, select {
   width: 100%;
@@ -570,7 +562,7 @@ function renderGroup(type, list) {
     return `
     <div class="entry-row" data-id="${r.id}" data-group="${type}" draggable="true">
       <span class="entry-drag-handle" title="Перетащить">⠿</span>
-      <img class="entry-avatar" src="${esc(r.image || r.image_backup || "")}" onerror="this.style.display='none'" alt="">
+      <img class="entry-avatar" src="${esc(r.image || r.image_backup || "")}" data-hide-on-error alt="">
       <div class="entry-name">${esc(r.name)}</div>
       ${r.from ? `<div class="entry-type">${esc(r.from)}</div>` : ""}
       <div class="entry-type">${esc(typeLabel)}</div>
@@ -753,10 +745,6 @@ async function saveEntry() {
 
   btn.disabled = false;
   btn.textContent = editingId !== null ? "Сохранить изменения" : "Сохранить";
-}
-
-function esc(s) {
-  return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
 loadList();

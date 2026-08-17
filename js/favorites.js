@@ -101,7 +101,7 @@ function favTitleCard(r, index) {
     ${editBtn}
     <div class="card" style="animation-delay:0ms">
       <span class="type-tag ${tagClass}">${esc(tagLabel)}</span>
-      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" onerror="coverFallback(this, '${esc(r.cover_backup || "")}')">
+      <img src="${esc(r.cover || PH_TALL)}" alt="${esc(r.title)}" loading="lazy" ${coverFallbackAttrs(r.cover, r.cover_backup)}>
       <div class="card-body">
         <div class="card-title">${esc(r.title)}</div>
         ${r.year || info
@@ -130,7 +130,7 @@ function favPersonCard(r, index) {
 
   return `<div class="card card-char"
       style="animation-delay:${Math.min(index * 25, 500)}ms">
-    <img src="${esc(img)}" alt="${esc(r.name)}" loading="lazy" onerror="imgFallback(this, '${esc(r.image_backup || "")}', '${PH_SQ}')">
+    <img src="${esc(img)}" alt="${esc(r.name)}" loading="lazy" ${imgFallbackAttrs(r.image, r.image_backup, PH_SQ)}>
     <div class="card-body">
       <div class="card-title">${esc(r.name)}</div>
       ${sub}

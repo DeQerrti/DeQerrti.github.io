@@ -92,7 +92,8 @@ function hexToRgb(hex) {
 function rgbToHsl(r, g, b) {
   r /= 255; g /= 255; b /= 255;
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
+  const l = (max + min) / 2;
+  let h, s;
   if (max === min) { h = s = 0; }
   else {
     const d = max - min;
@@ -160,35 +161,64 @@ async function applyTheme() {
   window.SITE_HIDDEN_STATUSES = new Set(settings.hiddenStatuses || []);
   window.SITE_TIER_COLLECTIONS = settings.tierCollections || null;
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
-  const hiddenTabs = settings.hiddenTabs || [];
+  // Дальше идёт работа с DOM — ждём, пока разметка вообще появится.
+  // Цвета выше применяются сразу, не дожидаясь этого, иначе будет
+  // видно мигание темы по умолчанию.
+  await domReady();
 
-  function applyHiddenTabs() {
-    let activeIsHidden = false;
-    document.querySelectorAll("[data-label^='nav.']").forEach((btn) => {
-      const id = btn.getAttribute("data-label").split(".")[1];
-      if (hiddenTabs.includes(id)) {
-        btn.style.display = "none";
-        if (btn.classList.contains("active")) activeIsHidden = true;
-      }
-    });
-    if (activeIsHidden) {
-      const firstVisible = document.querySelector(".tab-btn:not([style*='display: none'])");
-      if (firstVisible) firstVisible.click();
-    }
-  }
+  applyNavLabels();
+  applyTabPreferences(settings);
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyHiddenTabs);
-  } else {
-    applyHiddenTabs();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", applyNavLabels);
-  } else {
-    applyNavLabels();
-  }
+  // Событие шлём последним: к этому моменту и подписи, и порядок вкладок
+  // уже на месте, а слушатели (config.js, now.js) точно зарегистрированы —
+  // они объявлены в скриптах, которые до DOMContentLoaded успевают
+  // выполниться даже если стоят в конце <body>.
   document.dispatchEvent(new CustomEvent("site-labels-ready"));
+}
+
+// Промис готовности DOM — чтобы не писать одну и ту же ветку readyState
+// по четыре раза.
+function domReady() {
+  if (document.readyState !== "loading") return Promise.resolve();
+  return new Promise((resolve) =>
+    document.addEventListener("DOMContentLoaded", resolve, { once: true })
+  );
+}
+
+// ── Порядок вкладок, скрытые вкладки и стартовая вкладка ──
+// Всё это настраивается в /settings-edit и хранится в site-settings.json
+// (tabOrder / hiddenTabs / mainTab). Раньше публичная страница читала
+// только hiddenTabs, а порядок и стартовую вкладку игнорировала —
+// настройки сохранялись, но ни на что не влияли.
+//
+// Итоговую стартовую вкладку кладём в window.SITE_INITIAL_TAB: сама
+// активация — за index.html, который знает про switchTab().
+function applyTabPreferences(settings) {
+  const nav = document.querySelector("nav");
+  const buttons = Array.from(document.querySelectorAll("[data-label^='nav.']"));
+  if (!buttons.length) return;
+
+  const idOf = (btn) => btn.getAttribute("data-label").split(".")[1];
+  const byId = new Map(buttons.map((btn) => [idOf(btn), btn]));
+  const hidden = new Set(settings.hiddenTabs || []);
+
+  // Порядок: сначала то, что задано явно, затем всё остальное — в том
+  // порядке, в каком оно лежит в разметке. Незнакомые id из настроек
+  // игнорируются сами собой (byId.has отсеивает).
+  const order = (settings.tabOrder || []).filter((id) => byId.has(id));
+  const rest = buttons.map(idOf).filter((id) => !order.includes(id));
+  const finalOrder = [...order, ...rest];
+
+  if (nav) finalOrder.forEach((id) => nav.appendChild(byId.get(id)));
+
+  finalOrder.forEach((id) => {
+    byId.get(id).hidden = hidden.has(id);
+  });
+
+  const visible = finalOrder.filter((id) => !hidden.has(id));
+  const wanted = settings.mainTab;
+  window.SITE_INITIAL_TAB =
+    wanted && visible.includes(wanted) ? wanted : visible[0] || null;
 }
 
 // ── Подписи (вкладки, статусы) — переопределяются из site-settings.json,
@@ -230,4 +260,9 @@ function applyNavLabels() {
   });
 }
 
-applyTheme();
+// Промис выставляем наружу: index.html дожидается его, чтобы не рисовать
+// первую вкладку до того, как станет известно, какая вкладка стартовая.
+// Ошибку глушим — сайт обязан открыться даже без site-settings.json.
+window.themeReady = applyTheme().catch((err) => {
+  console.warn("[theme] настройки не применились:", err);
+});

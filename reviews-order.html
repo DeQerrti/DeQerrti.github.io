@@ -11,16 +11,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/admin.css">
+<script src="/js/utils.js"></script>
 <style>
-body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
 
-header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 1px solid var(--border); position: relative; }
-header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--red-dim) 20%, var(--red) 50%, var(--red-dim) 80%, transparent); }
-.logo { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic;
-  font-size: clamp(2.5rem, 6vw, 4rem); color: var(--text-hi); letter-spacing: .04em; text-decoration: none; }
-.header-sub { font-family: 'DM Sans', sans-serif; font-size: .62rem; letter-spacing: .3em;
-  text-transform: uppercase; color: var(--text-dim); margin-top: .6rem; }
+header { padding: 3rem 1rem 2rem; }
+.logo { font-size: clamp(2.5rem, 6vw, 4rem); }
 
 main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 
@@ -29,8 +25,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
   display: flex; align-items: center; gap: .8rem; }
 .section-title::before { content: ''; width: 16px; height: 1px; background: var(--red); flex-shrink: 0; }
 
-.hint { font-family: 'DM Sans', sans-serif; font-size: .72rem; color: var(--text-dim);
-  margin-bottom: 1.5rem; line-height: 1.5; }
 
 /* ── Сетка drag-and-drop ── */
 .dnd-grid {
@@ -75,14 +69,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
   padding: .15rem .4rem; border-radius: 1px; pointer-events: none; }
 
 /* ── Кнопка сохранить ── */
-.save-bar {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.25rem 0;
-  border-top: 1px solid var(--border);
-  margin-top: 1rem;
-}
+.save-bar { gap: 1.5rem; margin-top: 1rem; }
 .btn-save {
   font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; font-style: italic;
   padding: .7rem 2rem; background: rgba(139,26,26,.12); border: 1px solid rgba(139,26,26,.35);
@@ -93,10 +80,8 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 .save-status.ok  { color: var(--green-hi); }
 .save-status.err { color: #d88; }
 
-.state-box { text-align: center; padding: 4rem 2rem; color: var(--text-dim);
-  font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; }
-.spinner { width: 24px; height: 24px; border: 1px solid var(--border2); border-top-color: var(--red);
-  border-radius: 50%; animation: spin .9s linear infinite; margin: 0 auto .75rem; }
+.state-box { padding: 4rem 2rem; font-size: 1.05rem; }
+.spinner { width: 24px; height: 24px; margin: 0 auto .75rem; }
 </style>
 </head>
 <body>
@@ -154,7 +139,7 @@ function render() {
     return `<div class="dnd-item" draggable="true" data-id="${r.id}">
       <div class="dnd-item-num">${i + 1}</div>
       <img src="${esc(cover)}" alt="${esc(r.title)}"
-        loading="lazy" onerror="this.src='${PH}'">
+        loading="lazy" ${imgFallbackAttrs(r.cover, r.cover_backup, PH)}>
       <div class="dnd-item-body">
         <div class="dnd-item-title">${esc(r.title)}</div>
         <div class="dnd-item-type">${esc(label)}</div>
@@ -268,12 +253,6 @@ async function saveOrder() {
 
   btn.disabled = false;
   btn.textContent = "Сохранить порядок";
-}
-
-function esc(s) {
-  return String(s ?? "")
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 init();

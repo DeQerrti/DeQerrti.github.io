@@ -1,4 +1,4 @@
-import { json, requireAuth, githubGet, githubPut, decodeGithubJson, encodeGithubJson } from "../_shared.js";
+import { json, requireAuth, githubGet, githubPut, encodeGithubJson } from "../_shared.js";
 
 export async function onRequest(context) {
   const { request, env } = context;
