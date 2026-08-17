@@ -135,8 +135,8 @@ function renderAllTimeStats(reviews, completed) {
   return `
     ${isStatVisible("counters")   ? renderCounters(counts, total) : ""}
     ${isStatVisible("donut")      ? renderDonut(counts, total) : ""}
-    ${isStatVisible("watch-bars") ? renderStackedBarChart("По годам просмотра", "watch-bars", watchYearsByType) : ""}
-    ${isStatVisible("release-bars") ? renderStackedBarChart("По годам выхода", "release-bars", releaseYearsByType) : ""}
+    ${isStatVisible("watch-bars") ? renderStackedBarChart(siteLabel("stats", "watchYears", "По годам просмотра"), "watch-bars", watchYearsByType) : ""}
+    ${isStatVisible("release-bars") ? renderStackedBarChart(siteLabel("stats", "releaseYears", "По годам выхода"), "release-bars", releaseYearsByType) : ""}
     ${isStatVisible("grades")     ? renderGradeChart(gradeCounts) : ""}
     ${isStatVisible("rewatch")    ? renderRewatchStats(reviews) : ""}
     ${isStatVisible("tags")       ? renderTagCloud(topTags) : ""}
@@ -159,7 +159,8 @@ function renderYearDigest(year, completed) {
   const total = counts.reduce((s, c) => s + c.val, 0);
 
   if (!total) {
-    return `<div class="state-box">За ${year} год пока нет завершённых тайтлов с оценкой</div>`;
+    const emptyText = siteLabel("stats", "emptyYear", "За {year} год пока нет завершённых с оценкой");
+    return `<div class="state-box">${esc(emptyText.replace("{year}", year))}</div>`;
   }
 
   const gradeCounts = {};
@@ -175,7 +176,7 @@ function renderYearDigest(year, completed) {
 
   return `
     <div id="stats-digest">
-      ${isStatVisible("counters") ? renderCounters(counts, total, `Итоги ${year}`, "завершено") : ""}
+      ${isStatVisible("counters") ? renderCounters(counts, total, `Итоги ${year}`, siteLabel("stats", "completed", "завершено")) : ""}
       ${isStatVisible("donut")    ? renderDonut(counts, total) : ""}
       ${isStatVisible("spotlight") ? renderTitleOfYear(spotlight, year) : ""}
       ${isStatVisible("grades")   ? renderGradeChart(gradeCounts) : ""}
@@ -201,7 +202,10 @@ function statsTopTitlesOfYear(withGrade) {
 
 function renderTitleOfYear(list, year) {
   if (!list.length) return "";
-  const heading = list.length > 1 ? `Тайтлы ${year} года` : `Тайтл ${year} года`;
+  const heading = (list.length > 1
+    ? siteLabel("stats", "spotlightMany", "Тайтлы {year} года")
+    : siteLabel("stats", "spotlightOne", "Тайтл {year} года")
+  ).replace("{year}", year);
   const cards = list.map((r, i) => `<div class="year-spotlight-item">${manualCard(r, i)}</div>`).join("");
   return `<section class="stat-section">
     <h2 class="section-title">🏆 ${esc(heading)}</h2>
@@ -222,12 +226,13 @@ function plural(n, [one, few, many]) {
   return many;
 }
 
-function renderCounters(counts, total, sectionTitle = "Всего", totalLabel = null) {
+function renderCounters(counts, total, sectionTitle = null, totalLabel = null) {
+  sectionTitle = sectionTitle ?? siteLabel("stats", "total", "Всего");
   // По умолчанию — склоняемое "тайтл/тайтла/тайтлов".
   // Если передана строка ("завершено") — используем её как есть без склонения.
   const label = totalLabel !== null
     ? totalLabel
-    : plural(total, ["тайтл", "тайтла", "тайтлов"]);
+    : plural(total, unitForms());
   const items = counts.map(c => {
     const forms = TYPE_PLURAL[c.key];
     const subLabel = forms ? plural(c.val, forms) : c.label;
@@ -244,7 +249,7 @@ function renderCounters(counts, total, sectionTitle = "Всего", totalLabel =
     <h2 class="section-title">${esc(sectionTitle)}</h2>
     <div class="stat-total">
       <span class="stat-total-num" data-target="${total}">0</span>
-      <span class="stat-total-label" ${!totalLabel ? 'data-plural="тайтл|тайтла|тайтлов"' : ""}>${esc(label)}</span>
+      <span class="stat-total-label" ${!totalLabel ? `data-plural="${esc(unitForms().join("|"))}"` : ""}>${esc(label)}</span>
     </div>
     <div class="stat-counters">${items}</div>
   </section>`;
@@ -279,7 +284,7 @@ function renderDonut(counts, total) {
   }).join("");
 
   return `<section class="stat-section">
-    <h2 class="section-title">Разбивка по типам</h2>
+    <h2 class="section-title">${esc(siteLabel("stats", "types", "Разбивка по типам"))}</h2>
     <div class="stat-donut-wrap">
       <svg viewBox="0 0 200 200" class="stat-donut-svg">
         ${segs}
@@ -352,7 +357,7 @@ function renderGradeChart(gradeCounts) {
   }).join("");
 
   return `<section class="stat-section">
-    <h2 class="section-title">Шкала послевкусия</h2>
+    <h2 class="section-title">${esc(siteLabel("stats", "grades", "Шкала послевкусия"))}</h2>
     <div class="grade-bars">${bars}</div>
   </section>`;
 }
@@ -366,11 +371,15 @@ function renderRewatchStats(reviews) {
   const top = [...rewatched].sort((a, b) => b.rewatch_count - a.rewatch_count)[0];
 
   return `<section class="stat-section">
-    <h2 class="section-title">Пересмотры</h2>
+    <h2 class="section-title">${esc(siteLabel("stats", "rewatch", "Пересмотры"))}</h2>
     <div class="stat-counters">
       <div class="stat-counter">
         <div class="stat-counter-val" data-target="${rewatched.length}" style="color:var(--red-hi)">0</div>
-        <div class="stat-counter-label">${esc(plural(rewatched.length, ["тайтл пересмотрен", "тайтла пересмотрено", "тайтлов пересмотрено"]))}</div>
+        <div class="stat-counter-label">${esc(plural(rewatched.length, [
+          siteLabel("stats", "rewatchOne", "тайтл пересмотрен"),
+          siteLabel("stats", "rewatchFew", "тайтла пересмотрено"),
+          siteLabel("stats", "rewatchMany", "тайтлов пересмотрено"),
+        ]))}</div>
       </div>
       <div class="stat-counter">
         <div class="stat-counter-val" data-target="${totalRewatches}" style="color:var(--red-hi)">0</div>
@@ -394,7 +403,7 @@ function renderTagCloud(topTags) {
       data-tip="${esc(info?.tip || "")}">${esc(tag)} <span class="stat-tag-cnt">${cnt}</span></span>`;
   }).join("");
   return `<section class="stat-section">
-    <h2 class="section-title">Частые теги в отзывах</h2>
+    <h2 class="section-title">${esc(siteLabel("stats", "tags", "Частые теги в отзывах"))}</h2>
     <div class="stat-tag-cloud">${items}</div>
   </section>`;
 }

@@ -46,39 +46,39 @@ function renderFavorites({ titles, characters, persons }) {
   // ── Тайтлы ──────────────────────────────────
   html += `<section class="group">
     <div class="section-header">
-      <h2 class="section-title">Тайтлы</h2>
+      <h2 class="section-title">${esc(siteLabel("sections", "favTitles", "Тайтлы"))}</h2>
       ${admin ? `<a href="/reviews-order" class="admin-add-btn">Порядок</a>` : ""}
     </div>
     <div class="grid-now">
       ${titles.length
         ? titles.map((r, i) => favTitleCard(r, i)).join("")
-        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">Пока пусто</div>`}
+        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">${esc(siteLabel("empty", "generic", "Пока пусто"))}</div>`}
     </div>
   </section>`;
 
   // ── Персонажи ────────────────────────────────
   html += `<section class="group">
     <div class="section-header">
-      <h2 class="section-title">Персонажи</h2>
+      <h2 class="section-title">${esc(siteLabel("sections", "favCharacters", "Персонажи"))}</h2>
       ${admin ? `<a href="/favorites-edit" class="admin-add-btn">Добавить</a>` : ""}
     </div>
     <div class="grid-chars">
       ${characters.length
         ? characters.map((r, i) => favPersonCard(r, i)).join("")
-        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">Пока пусто</div>`}
+        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">${esc(siteLabel("empty", "generic", "Пока пусто"))}</div>`}
     </div>
   </section>`;
 
   // ── Персоны ──────────────────────────────────
   html += `<section class="group">
     <div class="section-header">
-      <h2 class="section-title">Персоны</h2>
+      <h2 class="section-title">${esc(siteLabel("sections", "favPersons", "Персоны"))}</h2>
       ${admin ? `<a href="/favorites-edit" class="admin-add-btn">Добавить</a>` : ""}
     </div>
     <div class="grid-chars">
       ${persons.length
         ? persons.map((r, i) => favPersonCard(r, i)).join("")
-        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">Пока пусто</div>`}
+        : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">${esc(siteLabel("empty", "generic", "Пока пусто"))}</div>`}
     </div>
   </section>`;
 

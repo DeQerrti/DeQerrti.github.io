@@ -133,6 +133,7 @@ const sharedBrowserGlobals = [
   "tlYearFiltersHtml",
   "toggleSection",
   "updateFileBtnName",
+  "unitForms",
   // подключаются с CDN по требованию
   "html2canvas",
   "JSZip",

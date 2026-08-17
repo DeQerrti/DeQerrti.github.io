@@ -25,7 +25,7 @@ async function loadReviews() {
   } else {
     document.getElementById("tab-reviews").innerHTML =
       `<div class="state-box">
-        Отзывов пока нет.
+        ${esc(siteLabel("empty", "reviews", "Отзывов пока нет."))}
         ${isAdmin() ? `<div style="margin-top:1.5rem"><a href="/add" class="admin-add-btn">Добавить</a></div>` : ""}
       </div>`;
   }
@@ -59,7 +59,7 @@ function renderReviews(reviews) {
     <div class="rv-toolbar">
       <div class="rv-filters">
         <div class="rv-filter-group">
-          <span class="rv-filter-label">Поиск</span>
+          <span class="rv-filter-label">${esc(siteLabel("filters", "search", "Поиск"))}</span>
           <input
             type="text"
             id="rv-search"
@@ -69,9 +69,9 @@ function renderReviews(reviews) {
             value="${esc(rvState.search)}"
           >
         </div>
-        ${renderRvFilterGroup("type",   "Тип",      types,   TYPE_LABELS,   rvState.type)}
-        ${renderRvFilterGroup("grade",  "Оценка",   grades,  gradeLabels(), rvState.grade)}
-        ${renderRvFilterGroup("source", "Ссылки", sources, SOURCE_LABELS, rvState.source)}
+        ${renderRvFilterGroup("type",   siteLabel("filters", "type", "Тип"),     types,   TYPE_LABELS,   rvState.type)}
+        ${renderRvFilterGroup("grade",  siteLabel("filters", "grade", "Оценка"), grades,  gradeLabels(), rvState.grade)}
+        ${renderRvFilterGroup("source", siteLabel("filters", "source", "Ссылки"), sources, SOURCE_LABELS, rvState.source)}
       </div>
       ${adminBtn}
     </div>
@@ -101,7 +101,7 @@ function gradeLabels() {
 function renderRvFilterGroup(field, title, values, labelsMap, active) {
   if (!values.length) return "";
   const btns = [
-    `<button class="rv-filter-btn${active === "all" ? " active" : ""}" data-field="${field}" data-val="all">Все</button>`,
+    `<button class="rv-filter-btn${active === "all" ? " active" : ""}" data-field="${field}" data-val="all">${esc(siteLabel("filters", "all", "Все"))}</button>`,
     ...values.map(v => {
       const label = labelsMap[v] || v;
       return `<button class="rv-filter-btn${active === v ? " active" : ""}" data-field="${field}" data-val="${esc(v)}">${esc(label)}</button>`;
@@ -153,7 +153,7 @@ function applyRvFilters(reviews) {
 
   if (!filtered.length) {
     grid.innerHTML = `<div class="state-box" style="padding:3rem 1rem;grid-column:1/-1">
-      Ничего не найдено
+      ${esc(siteLabel("empty", "search", "Ничего не найдено"))}
     </div>`;
     return;
   }

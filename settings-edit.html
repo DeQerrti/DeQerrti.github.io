@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
-<link rel="stylesheet" href="/style.css?v=4">
-<link rel="stylesheet" href="/admin.css?v=4">
-<script src="/js/utils.js?v=4"></script>
-<script src="/js/theme.js?v=4"></script>
-<script src="/js/config.js?v=4"></script>
+<link rel="stylesheet" href="/style.css?v=5">
+<link rel="stylesheet" href="/admin.css?v=5">
+<script src="/js/utils.js?v=5"></script>
+<script src="/js/theme.js?v=5"></script>
+<script src="/js/config.js?v=5"></script>
 <style>
   body { display: flex; }
 
@@ -147,6 +147,7 @@
     <button class="side-tab" data-panel="stats">Статистика</button>
     <button class="side-tab" data-panel="grades">Оценки и статусы</button>
     <button class="side-tab" data-panel="collections">Тир-листы</button>
+    <button class="side-tab" data-panel="labels">Подписи</button>
     <a href="/backup-history" class="back" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">🕐 История версий</a>
   </nav>
 
@@ -242,6 +243,20 @@
       <button class="btn btn-ghost" onclick="addCollection()">Добавить коллекцию</button>
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-collections"></div>
+    </div>
+
+    <div class="panel" id="panel-labels">
+      <p class="panel-intro">
+        Все надписи, которые видит посетитель. Пустое поле означает
+        «оставить как есть» — под ним написано значение по умолчанию.
+        Нужно, чтобы сайт не навязывал чужие формулировки: «Шкала
+        послевкусия» уместна для авторской шкалы и странно смотрится при
+        10-балльной, а слово «тайтл» не подходит тому, кто ведёт только
+        книги.
+      </p>
+      <div id="labelsGroups"></div>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
+      <div class="status-msg" id="status-labels"></div>
     </div>
   </main>
 </div>
@@ -641,6 +656,7 @@
     document.getElementById("accent").value = settings.customAccent || "#8b1a1a";
 
     const labels = settings.labels || {};
+    renderLabelsPanel(labels);
     tabLabels = { ...(labels.nav || {}) };
     hiddenTabsState = new Set(settings.hiddenTabs || []);
     const savedOrder = Array.isArray(settings.tabOrder) ? settings.tabOrder.filter(id => TAB_DEFS_BY_ID[id]) : [];
@@ -715,6 +731,92 @@
     // сохранении неизменным — просто больше не рендерится тут в список.
 
     customTags = settings.customTags || {};
+  }
+
+  // ══ ПОДПИСИ ═══════════════════════════════════
+  // Источник правды — DEFAULT_LABELS из js/theme.js. Панель строится
+  // по нему: добавили ключ в реестр — поле здесь появилось само,
+  // отдельно править эту страницу не нужно.
+  //
+  // Группы nav и statuses здесь не показываем: у них уже есть свои
+  // экраны («Вкладки» и «Оценки и статусы»), два места для одного и
+  // того же только запутали бы.
+  const LABEL_GROUP_TITLES = {
+    site:     "Шапка сайта",
+    sections: "Заголовки разделов",
+    filters:  "Фильтры на вкладке «Отзывы»",
+    stats:    "Блоки статистики",
+    units:    "Единица коллекции (склонение)",
+    empty:    "Когда показывать нечего",
+  };
+
+  const LABEL_KEY_TITLES = {
+    "site.subtitle":        "Подзаголовок под названием",
+    "sections.favTitles":   "«Любимое» — тайтлы",
+    "sections.favCharacters": "«Любимое» — персонажи",
+    "sections.favPersons":  "«Любимое» — персоны",
+    "sections.tierTitles":  "Тир-лист — режим тайтлов",
+    "filters.search":       "Поиск",
+    "filters.type":         "Тип",
+    "filters.grade":        "Оценка",
+    "filters.source":       "Ссылки",
+    "filters.all":          "Кнопка «все»",
+    "stats.total":          "Заголовок общего блока",
+    "stats.completed":      "Подпись под числом за год",
+    "stats.types":          "Разбивка по типам",
+    "stats.grades":         "Блок оценок",
+    "stats.rewatch":        "Блок пересмотров",
+    "stats.tags":           "Блок тегов",
+    "stats.watchYears":     "По годам просмотра",
+    "stats.releaseYears":   "По годам выхода",
+    "stats.rewatchOne":     "Пересмотров: 1 …",
+    "stats.rewatchFew":     "Пересмотров: 2–4 …",
+    "stats.rewatchMany":    "Пересмотров: 5+ …",
+    "stats.emptyYear":      "За год ничего нет ({year} подставится)",
+    "stats.spotlightOne":   "Лучшее за год — одно ({year})",
+    "stats.spotlightMany":  "Лучшее за год — несколько ({year})",
+    "units.one":            "Одна штука (1 …)",
+    "units.few":            "Две-четыре (2 …)",
+    "units.many":           "Пять и больше (5 …)",
+    "empty.generic":        "Пустой раздел",
+    "empty.list":           "Пустой список",
+    "empty.reviews":        "Нет отзывов",
+    "empty.search":         "Поиск ничего не нашёл",
+  };
+
+  function renderLabelsPanel(saved) {
+    const box = document.getElementById("labelsGroups");
+    const defaults = typeof DEFAULT_LABELS === "object" ? DEFAULT_LABELS : {};
+
+    box.innerHTML = Object.entries(LABEL_GROUP_TITLES)
+      .filter(([group]) => defaults[group])
+      .map(([group, groupTitle]) => {
+        const rows = Object.entries(defaults[group]).map(([key, fallback]) => {
+          const path = `${group}.${key}`;
+          const value = saved?.[group]?.[key] || "";
+          return `<div style="margin-bottom:10px;">
+            <label>${esc(LABEL_KEY_TITLES[path] || key)}</label>
+            <input type="text" data-label-path="${esc(path)}"
+                   value="${esc(value)}" placeholder="${esc(fallback)}">
+          </div>`;
+        }).join("");
+        return `<h2 class="section-h">${esc(groupTitle)}</h2>${rows}`;
+      })
+      .join("");
+  }
+
+  // Собирает только заполненные поля: пустое означает «значение по
+  // умолчанию», и записывать его в настройки незачем — иначе при
+  // будущей смене формулировки по умолчанию она бы не подхватилась.
+  function collectLabelOverrides() {
+    const out = {};
+    document.querySelectorAll("[data-label-path]").forEach((input) => {
+      const value = input.value.trim();
+      if (!value) return;
+      const [group, key] = input.dataset.labelPath.split(".");
+      (out[group] = out[group] || {})[key] = value;
+    });
+    return out;
   }
 
   async function saveSettings() {
@@ -815,6 +917,9 @@
       hiddenStatuses,
       tierCollections,
       labels: {
+        // Сначала то, что настроено на вкладке «Подписи», затем поля
+        // из остальных экранов — они по этим же группам не пересекаются.
+        ...collectLabelOverrides(),
         nav: { ...tabLabels },
         statuses: {
           archive: archiveLabel,

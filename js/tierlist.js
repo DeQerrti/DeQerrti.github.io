@@ -156,10 +156,10 @@ function tlModeToggleHtml() {
     `<button class="tl-mode-btn${tlState.mode === c.id ? " active" : ""}" data-mode="${esc(c.id)}">${esc(c.label)}</button>`
   ).join("");
   const addBtn = isAdmin()
-    ? `<button class="tl-mode-add-btn" id="tl-add-collection-btn" type="button" title="Новый тир-лист">+</button>`
+    ? `<button class="tl-mode-add-btn" id="tl-add-collection-btn" type="button" title="Новый тир-лист">Создать</button>`
     : "";
   return `<div class="tl-mode-toggle">
-    <button class="tl-mode-btn${tlState.mode === "titles" ? " active" : ""}" data-mode="titles">Тайтлы</button>
+    <button class="tl-mode-btn${tlState.mode === "titles" ? " active" : ""}" data-mode="titles">${esc(siteLabel("sections", "tierTitles", "Тайтлы"))}</button>
     ${collectionBtns}
     ${addBtn}
   </div>`;

@@ -168,5 +168,5 @@ function renderNow({ buckets, completed }) {
       </section>`;
   }
 
-  box.innerHTML = html || `<div class="state-box">Список пуст</div>`;
+  box.innerHTML = html || `<div class="state-box">${esc(siteLabel("empty", "list", "Список пуст"))}</div>`;
 }
