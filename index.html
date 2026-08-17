@@ -126,15 +126,17 @@ section.group { margin-bottom: 3.5rem; }
   display: flex;
   flex-direction: column;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 2px;
+  border: var(--card-border, 1px solid var(--border));
+  border-radius: var(--card-radius, 2px);
   overflow: hidden;
   text-decoration: none;
-  transition: border-color .25s, transform .25s;
+  transition: border-color .25s, transform .25s, box-shadow .25s;
   position: relative;
+  box-shadow: var(--card-shadow, none);
 }
 .card::before {
   content: '';
+  display: var(--card-corner-display, block);
   position: absolute; top: 0; left: 0;
   width: 12px; height: 12px;
   border-top: 1px solid var(--red-dim);
@@ -144,6 +146,7 @@ section.group { margin-bottom: 3.5rem; }
 }
 .card::after {
   content: '';
+  display: var(--card-corner-display, block);
   position: absolute; bottom: 0; right: 0;
   width: 12px; height: 12px;
   border-bottom: 1px solid var(--red-dim);
@@ -154,6 +157,7 @@ section.group { margin-bottom: 3.5rem; }
 .card:hover {
   border-color: var(--border2);
   transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover, var(--card-shadow, none));
 }
 .card:hover::before,
 .card:hover::after {
@@ -167,11 +171,11 @@ section.group { margin-bottom: 3.5rem; }
   object-fit: cover;
   display: block;
   background: var(--surface2);
-  filter: grayscale(.15) brightness(.9);
+  filter: var(--card-img-filter, grayscale(.15) brightness(.9));
   transition: filter .3s;
   flex-shrink: 0;
 }
-.card:hover img { filter: grayscale(0) brightness(.98); }
+.card:hover img { filter: var(--card-img-filter-hover, grayscale(0) brightness(.98)); }
 .card-char img  { aspect-ratio: 1/1; }
 
 .card-body {
@@ -222,23 +226,25 @@ section.group { margin-bottom: 3.5rem; }
   text-transform: uppercase;
   padding: .25rem .55rem;
   z-index: 3;
-  background: rgba(10,10,12,.82);
+  background: var(--badge-bg, rgba(10,10,12,.82));
   backdrop-filter: blur(8px);
+  border-radius: var(--radius-btn, 0px) 0 0 var(--radius-btn, 0px);
 }
 .tag-anime, .tag-manga, .tag-novel, .tag-movie, .tag-show, .tag-manual, .tag-book {
-  color: var(--text-hi);
-  border-bottom: 1px solid rgba(240,236,230,.18);
-  border-left:   1px solid rgba(240,236,230,.18);
+  color: var(--badge-text, var(--text-hi));
+  border-bottom: 1px solid var(--badge-border, rgba(240,236,230,.18));
+  border-left:   1px solid var(--badge-border, rgba(240,236,230,.18));
 }
 
 .watch-badge {
   position: absolute; top: 0; left: 0;
   font-family: 'DM Sans', sans-serif;
   font-size: .58rem; font-weight: 500;
-  color: rgba(240,236,230,.7);
-  background: rgba(10,10,12,.82);
-  border-bottom: 1px solid rgba(139,26,26,.25);
-  border-right: 1px solid rgba(139,26,26,.25);
+  color: var(--badge-text-dim, rgba(240,236,230,.7));
+  background: var(--badge-bg, rgba(10,10,12,.82));
+  border-bottom: 1px solid var(--badge-accent-border, rgba(139,26,26,.25));
+  border-right: 1px solid var(--badge-accent-border, rgba(139,26,26,.25));
+  border-radius: 0 var(--radius-btn, 0px) var(--radius-btn, 0px) 0;
   padding: .25rem .52rem;
   backdrop-filter: blur(8px);
   z-index: 3;
@@ -288,33 +294,20 @@ html[data-skin="soft"] .section-title {
 html[data-skin="soft"] .section-title::before,
 html[data-skin="soft"] .section-title::after { display: none; }
 
-html[data-skin="soft"] .card {
-  border-radius: var(--radius-card, 2px);
-  border: none;
-  box-shadow: 0 12px 30px -14px rgba(60,50,20,.35);
-}
-html[data-skin="soft"] .card::before,
-html[data-skin="soft"] .card::after { display: none; }
-html[data-skin="soft"] .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 38px -14px rgba(60,50,20,.42);
-}
-html[data-skin="soft"] .card img { filter: none; background: #dfe6cd; }
-html[data-skin="soft"] .card:hover img { filter: none; }
-
+/* Позиция и форма бейджей на карточке — сами цвета уже приходят через
+   --badge-* переменные (см. THEME_PRESETS.soft в js/theme.js) и
+   применяются в базовых правилах .type-tag/.watch-badge выше, поэтому
+   здесь только то, что переменной не выразить: отступ от края и полное
+   скругление вместо скругления с одной стороны. */
 html[data-skin="soft"] .type-tag {
   top: .5rem; right: .5rem;
   border-radius: var(--radius-btn, 999px);
-  background: rgba(139,166,102,.28);
-  color: var(--text-hi);
   border: none;
 }
 html[data-skin="soft"] .watch-badge {
   top: .5rem; left: .5rem;
   border-radius: var(--radius-btn, 999px);
-  background: rgba(139,166,102,.28);
   border: none;
-  color: var(--text-hi);
 }
 html[data-skin="soft"] .year-divider::before,
 html[data-skin="soft"] .year-divider::after {
