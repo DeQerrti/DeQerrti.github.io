@@ -277,30 +277,117 @@ select option { background: var(--bg2); }
 }
 .icon-btn:hover { color: var(--text-hi); border-color: var(--red-dim); background: rgba(139,26,26,.08); }
 
-/* Нативный <input type="file"> под общий вид сайта — по умолчанию он
-   рендерится браузером как отдельный чужеродный виджет ("Choose File"),
-   тут просто красим его кнопку-выборщик под .btn-ghost. */
-.file-input {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .76rem;
-  color: var(--text-dim);
+/* Без этого при клике мышью браузер показывает свою белую/системную рамку
+   фокуса поверх кнопок — то, что выглядело как "не прокрасившиеся" кнопки
+   на скриншотах, на самом деле было именно ей. :focus-visible оставляем
+   для навигации с клавиатуры. */
+.btn, .btn-save, .btn-new, .icon-btn, button {
+  outline: none;
 }
-.file-input::file-selector-button {
+.btn:focus-visible, .btn-save:focus-visible, .btn-new:focus-visible,
+.icon-btn:focus-visible, button:focus-visible {
+  outline: 2px solid var(--red-dim);
+  outline-offset: 2px;
+}
+
+/* Нативный <input type="file"> НЕЛЬЗЯ полноценно перекрасить нигде —
+   его подпись "No file chosen" не красится в принципе ни в одном браузере
+   (это системный текст, не CSS-элемент). Поэтому вместо попытки
+   перекрасить нативный виджет — прячем его и рисуем свою кнопку поверх
+   через <label>, с собственной подписью выбранного файла. */
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  padding: .55rem 1.1rem;
+  cursor: pointer;
   font-family: 'DM Sans', sans-serif;
   font-size: .72rem;
   font-weight: 500;
   letter-spacing: .06em;
   text-transform: uppercase;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 2px;
   color: var(--text);
-  padding: .5rem 1rem;
-  margin-right: .75rem;
-  cursor: pointer;
   transition: all .15s;
 }
-.file-input::file-selector-button:hover {
-  border-color: var(--red-dim);
-  color: var(--text-hi);
+.file-btn:hover { border-color: var(--red-dim); color: var(--text-hi); }
+.file-btn input[type="file"] {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
+.file-btn-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .74rem;
+  color: var(--text-dim);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* ══ ВЫПАДАЮЩИЕ СПИСКИ С ИНЛАЙН-ДОБАВЛЕНИЕМ ═══════════════════════
+   Общий компонент: кнопка с текущим значением + выпадающая панель со
+   списком вариантов и формой добавления своего прямо внутри — без
+   похода в отдельные настройки. Используется для источников ссылок,
+   типа тайтла (add.html) и роли персоны (favorites-edit.html). */
+.src-field { margin-bottom: .75rem; }
+
+.src-add-btn {
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 2px;
+  color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: .78rem;
+  padding: .65rem .9rem; width: 100%; text-align: left; cursor: pointer; transition: all .15s;
+}
+.src-add-btn:hover { color: var(--text-hi); border-color: var(--red-dim); background: rgba(139,26,26,.06); }
+.src-add-btn .sub { font-style: italic; margin-left: .3rem; }
+.src-add-btn.hidden { display: none; }
+
+.src-panel.hidden { display: none; }
+.src-panel-row { display: flex; gap: .5rem; align-items: stretch; }
+
+.src-type-wrap { position: relative; flex: 0 0 150px; }
+.src-type-btn {
+  width: 100%; height: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 2px; color: var(--text-hi); font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; padding: .65rem .85rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: .4rem;
+  transition: border-color .2s;
+}
+.src-type-btn:hover { border-color: var(--red-dim); }
+.src-caret { color: var(--text-dim); font-size: .75rem; flex-shrink: 0; }
+
+.src-url-input { flex: 1; }
+
+.src-type-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; min-width: 210px;
+  background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
+  padding: .4rem; z-index: 50; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.src-type-dropdown.hidden { display: none; }
+.src-type-list { max-height: 220px; overflow-y: auto; }
+
+.src-type-option {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  padding: .45rem .55rem; border-radius: 2px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: .8rem; color: var(--text); transition: background .15s;
+}
+.src-type-option:hover { background: rgba(255,255,255,.04); }
+.src-type-option.active { color: var(--red-hi); }
+.src-type-option .icon-btn.src-type-remove { width: 22px; height: 22px; font-size: .65rem; }
+
+.src-type-add-row { border-top: 1px solid var(--border); margin-top: .3rem; padding-top: .3rem; }
+.src-type-add-btn { width: 100%; text-align: center; }
+
+.src-type-add-form { border-top: 1px solid var(--border); margin-top: .3rem; padding-top: .5rem; display: flex; gap: .4rem; }
+.src-type-add-form.hidden { display: none; }
+.src-type-add-form input { flex: 1; padding: .5rem .65rem; font-size: .85rem; }
+.src-type-add-form button { flex-shrink: 0; }
+
+.src-type-status { margin-top: .3rem; text-align: left; font-size: .7rem; }
