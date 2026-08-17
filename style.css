@@ -24,6 +24,30 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── Нативные элементы браузера в тёмном виде ──
+   Полосы прокрутки, календарь у <input type="date">, стрелки у
+   <input type="number">, выпадающий список <select> рисует сам браузер,
+   и по умолчанию он делает их светлыми — на тёмном фоне это те самые
+   белые полосы. Одна строка ниже говорит браузеру, что оформление
+   тёмное, и он перерисовывает всё это сам, без хаков.
+   Тема «Мягкий ботанический» светлая, для неё возвращаем light. */
+:root { color-scheme: dark; }
+html[data-skin="soft"] { color-scheme: light; }
+
+/* Дополнительно подгоняем полосы прокрутки под палитру сайта:
+   color-scheme делает их тёмными, но серыми, а хочется в тон. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--red-dim); }
+
 /* Атрибут hidden должен побеждать любые display из компонентных стилей —
    на нём держится скрытие вкладок из site-settings.json (см. theme.js). */
 [hidden] { display: none !important; }
@@ -170,6 +194,12 @@ main {
 }
 
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+
+/* На телефоне две колонки коротких полей превращаются в две узкие
+   колонки, в которые ничего не влезает — с этой ширины ставим одну. */
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+}
 
 .field { margin-bottom: 1rem; }
 
