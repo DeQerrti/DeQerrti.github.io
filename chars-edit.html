@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 <script src="/js/theme.js"></script>
+<script src="/js/config.js"></script>
 <style>
 body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', serif; min-height: 100vh; }
 
@@ -231,8 +232,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
       </div>
       <div class="field">
         <label>Или загрузить с компьютера</label>
-        <input type="file" id="nt-cover-upload" accept="image/*" class="file-input">
-        <button class="btn btn-ghost" style="margin-top:.5rem" onclick="uploadTitleCoverFile()">Загрузить и использовать</button>
+        <label class="file-btn">
+          <input type="file" id="nt-cover-upload" accept="image/*" onchange="updateFileBtnName(this)">
+          <span>Выбрать файл</span>
+        </label>
+        <span class="file-btn-name" id="nt-cover-upload-name"></span>
+        <button class="btn btn-ghost" style="margin-top:.5rem;margin-left:.5rem" onclick="uploadTitleCoverFile()">Загрузить и использовать</button>
         <div id="nt-cover-upload-status" style="font-family:'DM Sans',sans-serif;font-size:.7rem;margin-top:.3rem"></div>
       </div>
       <div style="display:flex;gap:.5rem">
@@ -285,8 +290,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
     <span class="manual-toggle" onclick="toggleUpload()">⬆ Загрузить с компьютера</span>
     <div class="manual-section" id="upload-section">
       <div class="field">
-        <input type="file" id="m-upload-file" accept="image/*" class="file-input">
-        <button class="btn btn-ghost" style="margin-top:.5rem" onclick="uploadCharImage()">Загрузить и использовать</button>
+        <label class="file-btn">
+          <input type="file" id="m-upload-file" accept="image/*" onchange="updateFileBtnName(this)">
+          <span>Выбрать файл</span>
+        </label>
+        <span class="file-btn-name" id="m-upload-file-name"></span>
+        <button class="btn btn-ghost" style="margin-top:.5rem;margin-left:.5rem" onclick="uploadCharImage()">Загрузить и использовать</button>
         <div id="upload-status" style="font-size:.8rem;margin-top:.4rem;"></div>
       </div>
     </div>
