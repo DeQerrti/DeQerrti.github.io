@@ -11,7 +11,13 @@
 
   #locked { text-align: center; padding: 80px 20px; color: var(--text-dim); width: 100%; }
   #locked a { color: var(--red-hi); }
-  .hidden { display: none; }
+  /* Утилитарный класс должен побеждать любые другие правила отображения
+     (в т.ч. #app { display:flex } ниже) — иначе элемент с id может
+     остаться видимым несмотря на добавленный класс .hidden (баг:
+     настройки на миг показывались разлогиненным пользователям). */
+  .hidden { display: none !important; }
+
+  #app { display: flex; width: 100%; }
 
   #sidebar {
     width: 220px; flex-shrink: 0;
@@ -41,38 +47,37 @@
 
   .theme-grid { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
   .theme-option {
-    border: 2px solid var(--border); border-radius: 8px; padding: 10px 14px;
+    border: 1px solid var(--border2); border-radius: 2px; padding: 10px 14px;
     cursor: pointer; font-size: .85rem; background: var(--surface); color: var(--text);
+    font-family: 'DM Sans', sans-serif; transition: all .15s;
   }
-  .theme-option.selected { border-color: var(--red); color: var(--text-hi); }
+  .theme-option:hover { border-color: var(--red-dim); color: var(--text-hi); }
+  .theme-option.selected { border-color: var(--red); color: var(--text-hi); background: rgba(139,26,26,.08); }
 
-  label { display: block; font-size: .85rem; color: var(--text-dim); margin: 14px 0 6px; }
+  label { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; color: var(--text-dim);
+    letter-spacing: .12em; text-transform: uppercase; margin: 16px 0 6px; }
   input[type="text"], input[type="color"], input[type="number"] {
     background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
-    padding: 8px 10px; border-radius: 6px; font-size: .9rem;
+    padding: 8px 10px; border-radius: 2px; font-size: .9rem; font-family: 'Cormorant Garamond', serif;
+    outline: none; transition: border-color .2s, background .2s;
   }
+  input[type="text"]:focus, input[type="number"]:focus { border-color: var(--red); background: var(--bg2); }
   input[type="color"] { width: 60px; height: 34px; padding: 2px; cursor: pointer; }
   input[type="text"] { width: 100%; box-sizing: border-box; }
 
   .row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 4px; }
   .row > div { flex: 1; min-width: 160px; }
 
-  button {
-    background: var(--red); color: #fff; border: none; padding: 9px 18px;
-    border-radius: 6px; cursor: pointer; font-size: .83rem; margin-top: 10px;
-  }
-  button:hover { background: var(--red-hi); }
-  button.secondary { background: var(--surface2); color: var(--text); }
-  button.icon-btn {
-    background: none; border: 1px solid var(--border2); color: var(--text-dim);
-    width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 4px; font-size: .8rem;
-  }
-  button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); background: none; }
+  /* Кнопки — .btn/.btn-primary/.btn-ghost/.btn-save/.icon-btn теперь общие
+     (style.css); ниже в разметке вместо голых <button> и .secondary/.icon-btn
+     локальных стилей навешаны эти классы явно. */
 
   select {
     background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
-    padding: 8px 10px; border-radius: 6px; width: 100%; box-sizing: border-box;
+    padding: 8px 10px; border-radius: 2px; width: 100%; box-sizing: border-box;
+    font-family: 'Cormorant Garamond', serif; font-size: .95rem; outline: none;
   }
+  select:focus { border-color: var(--red); }
 
   .status-msg { margin-top: 12px; font-size: .83rem; }
 
@@ -89,21 +94,39 @@
   .tab-row {
     display: flex; align-items: center; gap: 10px;
     padding: 8px 0; border-bottom: 1px solid var(--border);
+    transition: opacity .15s, border-color .15s;
   }
   .tab-row input[type="checkbox"] { width: auto; margin: 0; }
   .tab-row .tab-name { flex: 1; font-size: .9rem; }
   .tab-row input[type="text"] { flex: 1; display: none; }
   .tab-row.editing .tab-name { display: none; }
   .tab-row.editing input[type="text"] { display: block; }
+  .tab-row .drag-handle {
+    flex: none; cursor: grab; color: var(--text-dim); font-size: .95rem;
+    line-height: 1; padding: 2px 4px; user-select: none;
+  }
+  .tab-row .drag-handle:active { cursor: grabbing; }
+  .tab-row.dragging { opacity: .4; }
+  .tab-row.drag-over { border-color: var(--red); box-shadow: 0 -1px 0 var(--red); }
+  .tab-row .main-radio-label {
+    display: flex; align-items: center; gap: 5px; flex: none;
+    font-size: .72rem; color: var(--text-dim); cursor: pointer; white-space: nowrap;
+  }
+  .tab-row .main-radio-label input { width: auto; margin: 0; }
 
   .shelf-row {
-    display: flex; align-items: center; gap: 8px;
     padding: 8px 0; border-bottom: 1px solid var(--border);
   }
+  .shelf-row-main { display: flex; align-items: center; gap: 8px; }
   .shelf-row input[type="text"] { flex: 1.4; }
   .shelf-row input[type="number"] { width: 64px; flex: none; }
   .shelf-row input[type="color"] { width: 34px; height: 34px; flex: none; }
   .shelf-row .rng { color: var(--text-dim); font-size: .8rem; }
+  .shelf-row .shelf-desc {
+    width: 100%; margin-top: 6px; background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 2px; color: var(--text);
+    font-size: .78rem; padding: 6px 8px; box-sizing: border-box;
+  }
 </style>
 </head>
 <body>
@@ -114,17 +137,15 @@
   <a href="/" style="color:var(--text-dim);">← На главную</a>
 </div>
 
-<div id="app" class="hidden" style="display:flex; width:100%;">
+<div id="app" class="hidden">
   <nav id="sidebar">
     <a href="/" class="back">← На главную</a>
     <button class="side-tab active" data-panel="appearance">Оформление</button>
     <button class="side-tab" data-panel="tabs">Вкладки</button>
     <button class="side-tab" data-panel="stats">Статистика</button>
-    <button class="side-tab" data-panel="types">Типы</button>
     <button class="side-tab" data-panel="grades">Оценки и статусы</button>
-    <button class="side-tab" data-panel="tags">Теги</button>
     <button class="side-tab" data-panel="collections">Тир-листы</button>
-    <button class="side-tab" data-panel="images">Картинки</button>
+    <a href="/backup-history" class="back" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">🕐 История версий</a>
   </nav>
 
   <main id="main">
@@ -135,13 +156,13 @@
       <div class="theme-grid" id="themeGrid"></div>
       <label>Акцентный цвет (любой)</label>
       <input type="color" id="accent" value="#8b1a1a">
-      <div><button onclick="saveSettings()">Сохранить</button><div class="status-msg" id="status-appearance"></div></div>
+      <div><button class="btn-save" onclick="saveSettings()">Сохранить</button><div class="status-msg" id="status-appearance"></div></div>
     </div>
 
     <div class="panel" id="panel-tabs">
-      <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать.</p>
+      <p class="panel-intro">Галочка — показывать вкладку или нет. Карандаш — переименовать. Перетаскивай за ⠿, чтобы менять порядок. Точка справа — какая вкладка открывается первой (при заходе на сайт и при обновлении страницы).</p>
       <div id="tabsList"></div>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-tabs"></div>
 
       <h2 class="section-h">Статусы (вкладка «Главная»)</h2>
@@ -150,8 +171,8 @@
       <div class="row" style="margin-top:14px;">
         <div><label>Новый статус</label><input type="text" id="newStatusName" placeholder="Например: Брошено"></div>
       </div>
-      <button class="secondary" onclick="addStatusBucket()">+ Добавить статус</button>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn btn-ghost" onclick="addStatusBucket()">+ Добавить статус</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
     </div>
 
     <div class="panel" id="panel-stats">
@@ -172,25 +193,8 @@
         <div><label><input type="checkbox" id="stat-tags" style="width:auto;margin-right:6px;">Облако тегов</label></div>
         <div><label><input type="checkbox" id="stat-spotlight" style="width:auto;margin-right:6px;">Топ тайтлы года</label></div>
       </div>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-stats"></div>
-    </div>
-
-    <div class="panel" id="panel-types">
-      <p class="panel-intro">Переименуй, удали или добавь новый тип. Удаление не трогает уже сохранённые тайтлы этого типа — они просто перестанут появляться в фильтрах по названию.</p>
-      <div id="typesList"></div>
-      <div class="row" style="margin-top:16px;">
-        <div><label>Новый тип</label><input type="text" id="newTypeName" placeholder="Например: Артбук"></div>
-      </div>
-      <p class="panel-intro" style="margin-bottom:8px;">Склонение по числу (необязательно, но без него счётчики на статистике будут просто повторять название типа):</p>
-      <div class="row">
-        <div><label>1 штука</label><input type="text" id="newTypePluralOne" placeholder="артбук"></div>
-        <div><label>2–4 штуки</label><input type="text" id="newTypePluralFew" placeholder="артбука"></div>
-        <div><label>5+ штук</label><input type="text" id="newTypePluralMany" placeholder="артбуков"></div>
-      </div>
-      <button class="secondary" onclick="addCustomType()">+ Добавить тип</button>
-      <button onclick="saveSettings()">Сохранить</button>
-      <div class="status-msg" id="status-types"></div>
     </div>
 
     <div class="panel" id="panel-grades">
@@ -202,7 +206,7 @@
         <h2 class="section-h">Полки</h2>
         <p class="panel-intro">Переименуй, перекрась, удали или добавь свою.</p>
         <div id="catShelvesList"></div>
-        <button class="secondary" onclick="addShelfRow(true)">+ Добавить полку</button>
+        <button class="btn btn-ghost" onclick="addShelfRow(true)">+ Добавить полку</button>
       </div>
 
       <div id="numericBlock" style="display:none;">
@@ -214,39 +218,11 @@
         <h2 class="section-h">Полки (от лучшей к худшей)</h2>
         <p class="panel-intro">Каждая полка — диапазон значений с названием и цветом. Именно эти полки станут строками тир-листа.</p>
         <div id="shelvesList"></div>
-        <button class="secondary" onclick="addShelfRow()">+ Добавить полку</button>
+        <button class="btn btn-ghost" onclick="addShelfRow()">+ Добавить полку</button>
       </div>
 
-      <button onclick="saveSettings()" style="margin-top:20px;">Сохранить</button>
+      <button class="btn-save" onclick="saveSettings()" style="margin-top:20px;">Сохранить</button>
       <div class="status-msg" id="status-grades"></div>
-    </div>
-
-    <div class="panel" id="panel-tags">
-      <h2 class="section-h">Категории тегов</h2>
-      <p class="panel-intro">Переименуй, перекрась, удали (свои) или добавь новую.</p>
-      <div id="allCatsList"></div>
-      <div class="row" style="margin-top:10px;">
-        <div><label>Новая категория</label><input type="text" id="newCatName" placeholder="Например: Технические детали"></div>
-        <div style="flex:0 0 80px;"><label>Цвет</label><input type="color" id="newCatColor" value="#8b1a1a"></div>
-      </div>
-      <button class="secondary" onclick="addCustomCategory()">+ Добавить категорию</button>
-
-      <h2 class="section-h">Свои теги</h2>
-      <p class="panel-intro">Появятся в форме добавления отзыва вместе со встроенными.</p>
-      <div class="row">
-        <div><label>Название тега</label><input type="text" id="newTagName" placeholder="Например: Крутой саундтрек"></div>
-        <div>
-          <label>Категория</label>
-          <select id="newTagCat"></select>
-        </div>
-      </div>
-      <label>Подсказка (необязательно)</label>
-      <input type="text" id="newTagTip" placeholder="Короткое пояснение, что значит тег">
-      <button class="secondary" onclick="addCustomTag()">+ Добавить тег</button>
-      <div id="customTagsList" style="margin-top:14px;"></div>
-
-      <button onclick="saveSettings()">Сохранить всё</button>
-      <div class="status-msg" id="status-tags"></div>
     </div>
 
     <div class="panel" id="panel-collections">
@@ -261,21 +237,9 @@
       <div class="row" style="margin-top:14px;">
         <div><label>Новая коллекция</label><input type="text" id="newCollectionName" placeholder="Например: Опенинги"></div>
       </div>
-      <button class="secondary" onclick="addCollection()">+ Добавить коллекцию</button>
-      <button onclick="saveSettings()">Сохранить</button>
+      <button class="btn btn-ghost" onclick="addCollection()">+ Добавить коллекцию</button>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-collections"></div>
-    </div>
-
-    <div class="panel" id="panel-images">
-      <p class="panel-intro">Выбери папку тайтла и файлы — уменьшатся и сконвертируются в WebP автоматически.</p>
-      <label>Существующая папка (тайтл)</label>
-      <select id="existingFolder"><option value="">— выбрать —</option></select>
-      <label>Или новая папка (название тайтла)</label>
-      <input type="text" id="newFolder" placeholder="Например: Neural Cloud">
-      <label>Файлы</label>
-      <input type="file" id="fileInput" accept="image/*" multiple>
-      <button onclick="uploadImages()">Загрузить и опубликовать</button>
-      <div class="status-msg" id="imgStatus"></div>
     </div>
   </main>
 </div>
@@ -348,7 +312,7 @@
   // иначе уже сохранённые отзывы (grade: "etalon" и т.д.) перестанут
   // находить свою полку.
   function seedCategoricalShelves() {
-    shelves = GRADES_DEF.map(g => ({ key: g.key, name: g.name, color: g.color }));
+    shelves = GRADES_DEF.map(g => ({ key: g.key, name: g.name, color: g.color, desc: g.desc }));
   }
 
   function seedNumericShelves() {
@@ -368,15 +332,19 @@
     const container = document.getElementById(containerId);
     container.innerHTML = shelves.map((s, i) => `
       <div class="shelf-row">
-        <input type="color" value="${s.color}" onchange="shelves[${i}].color=this.value">
-        <input type="text" value="${s.name}" onchange="shelves[${i}].name=this.value" placeholder="Название">
-        ${withRange ? `
-          <span class="rng">от</span>
-          <input type="number" value="${s.min}" onchange="shelves[${i}].min=Number(this.value)">
-          <span class="rng">до</span>
-          <input type="number" value="${s.max}" onchange="shelves[${i}].max=Number(this.value)">
-        ` : ""}
-        <button class="icon-btn" onclick="removeShelfRow(${i}, '${containerId}', ${withRange})">✕</button>
+        <div class="shelf-row-main">
+          <input type="color" value="${s.color}" onchange="shelves[${i}].color=this.value">
+          <input type="text" value="${s.name}" onchange="shelves[${i}].name=this.value" placeholder="Название">
+          ${withRange ? `
+            <span class="rng">от</span>
+            <input type="number" value="${s.min}" onchange="shelves[${i}].min=Number(this.value)">
+            <span class="rng">до</span>
+            <input type="number" value="${s.max}" onchange="shelves[${i}].max=Number(this.value)">
+          ` : ""}
+          <button class="icon-btn" onclick="removeShelfRow(${i}, '${containerId}', ${withRange})">✕</button>
+        </div>
+        <input type="text" class="shelf-desc" value="${(s.desc || "").replace(/"/g, "&quot;")}"
+          onchange="shelves[${i}].desc=this.value" placeholder="Описание — показывается подсказкой при наведении">
       </div>
     `).join("");
   }
@@ -452,7 +420,6 @@
     { id: "midnight", label: "Полночный индиго" },
     { id: "graphite", label: "Тёплый графит" },
     { id: "emerald",  label: "Глубокий изумруд" },
-    { id: "soft",     label: "Мягкий ботанический (прототип, пока только Главная)" },
   ];
   let selectedTheme = "classic";
 
@@ -473,20 +440,81 @@
     { id: "stats", def: "Статистика" },
     { id: "tierlist", def: "Тир-лист" },
   ];
+  const TAB_DEFS_BY_ID = Object.fromEntries(TAB_DEFS.map(t => [t.id, t]));
   let tabLabels = {};
   let hiddenTabsState = new Set();
+  let tabOrderState = TAB_DEFS.map(t => t.id); // порядок id вкладок
+  let mainTabState = "now"; // какая вкладка открывается первой
 
   function renderTabsList() {
     const container = document.getElementById("tabsList");
-    container.innerHTML = TAB_DEFS.map(t => `
-      <div class="tab-row" id="tabrow-${t.id}">
-        <input type="checkbox" id="showtab-${t.id}" ${hiddenTabsState.has(t.id) ? "" : "checked"}
-          onchange="hiddenTabsState.has('${t.id}') ? hiddenTabsState.delete('${t.id}') : hiddenTabsState.add('${t.id}')">
-        <span class="tab-name" id="tabname-${t.id}">${(tabLabels[t.id] || t.def)}</span>
-        <input type="text" id="tabinput-${t.id}" value="${(tabLabels[t.id] || t.def)}">
-        <button class="icon-btn" title="Переименовать" onclick="toggleTabEdit('${t.id}')">✎</button>
+    container.innerHTML = tabOrderState.map((id) => {
+      const def = TAB_DEFS_BY_ID[id];
+      if (!def) return "";
+      return `
+      <div class="tab-row" id="tabrow-${id}" data-id="${id}" draggable="true">
+        <span class="drag-handle" title="Перетащить">⠿</span>
+        <input type="checkbox" id="showtab-${id}" ${hiddenTabsState.has(id) ? "" : "checked"}
+          onchange="hiddenTabsState.has('${id}') ? hiddenTabsState.delete('${id}') : hiddenTabsState.add('${id}')">
+        <span class="tab-name" id="tabname-${id}">${(tabLabels[id] || def.def)}</span>
+        <input type="text" id="tabinput-${id}" value="${(tabLabels[id] || def.def)}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleTabEdit('${id}')">✎</button>
+        <label class="main-radio-label" title="Открывать эту вкладку первой">
+          <input type="radio" name="mainTabRadio" value="${id}" ${mainTabState === id ? "checked" : ""}
+            onchange="mainTabState = '${id}'">
+          Главная страница
+        </label>
       </div>
-    `).join("");
+    `;
+    }).join("");
+    bindTabsDnd();
+  }
+
+  // ── Drag-and-drop порядка вкладок (вертикальный список) ──
+  let tabDragSrc = null;
+
+  function bindTabsDnd() {
+    const container = document.getElementById("tabsList");
+
+    container.querySelectorAll(".tab-row").forEach(row => {
+      row.addEventListener("dragstart", (e) => {
+        tabDragSrc = row;
+        row.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+      });
+      row.addEventListener("dragend", () => {
+        container.querySelectorAll(".tab-row").forEach(el => el.classList.remove("dragging", "drag-over"));
+        tabDragSrc = null;
+      });
+      row.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        if (!tabDragSrc || row === tabDragSrc) return;
+        container.querySelectorAll(".tab-row").forEach(el => el.classList.remove("drag-over"));
+        row.classList.add("drag-over");
+      });
+      row.addEventListener("dragleave", () => row.classList.remove("drag-over"));
+      row.addEventListener("drop", (e) => {
+        e.preventDefault();
+        row.classList.remove("drag-over");
+        if (!tabDragSrc || row === tabDragSrc) return;
+
+        const srcId = tabDragSrc.dataset.id;
+        const targetId = row.dataset.id;
+        const srcIdx = tabOrderState.indexOf(srcId);
+        let targetIdx = tabOrderState.indexOf(targetId);
+        if (srcIdx === -1 || targetIdx === -1) return;
+
+        // Вставляем перед/после target в зависимости от того, выше или ниже курсор середины строки
+        const rect = row.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+
+        tabOrderState.splice(srcIdx, 1);
+        targetIdx = tabOrderState.indexOf(targetId);
+        tabOrderState.splice(before ? targetIdx : targetIdx + 1, 0, srcId);
+
+        renderTabsList();
+      });
+    });
   }
 
   function toggleTabEdit(id) {
@@ -563,84 +591,14 @@
   let allCatLabels = { ...BUILTIN_CAT_DEFAULTS }; // ключ -> название (встроенные + свои)
   let catColors = {};        // ключ -> hex (необязательно, у встроенных по умолчанию нет)
   let customCatKeys = new Set();
-
-  function renderAllCatsList() {
-    const container = document.getElementById("allCatsList");
-    container.innerHTML = Object.keys(allCatLabels).map(key => {
-      const isCustom = customCatKeys.has(key);
-      return `
-      <div class="shelf-row">
-        <input type="color" value="${catColors[key] || "#8b1a1a"}" onchange="catColors['${key}']=this.value">
-        <input type="text" style="flex:1;" id="cat-input-${key}" value="${allCatLabels[key]}">
-        ${isCustom ? `<button class="icon-btn" onclick="removeCategory('${key}')">✕</button>` : ""}
-      </div>`;
-    }).join("");
-  }
-
-  function addCustomCategory() {
-    const name = document.getElementById("newCatName").value.trim();
-    const color = document.getElementById("newCatColor").value;
-    if (!name) return;
-    const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
-    allCatLabels[key] = name;
-    catColors[key] = color;
-    customCatKeys.add(key);
-    document.getElementById("newCatName").value = "";
-    renderAllCatsList();
-    renderTagCatOptions();
-  }
-
-  function removeCategory(key) {
-    delete allCatLabels[key];
-    delete catColors[key];
-    customCatKeys.delete(key);
-    renderAllCatsList();
-    renderTagCatOptions();
-  }
-
-  function renderTagCatOptions() {
-    const select = document.getElementById("newTagCat");
-    const current = select.value;
-    select.innerHTML = Object.entries(allCatLabels).map(([key, label]) => `<option value="${key}">${label}</option>`).join("");
-    if (current && allCatLabels[current] !== undefined) select.value = current;
-  }
-
   let customTags = {};
 
-  function renderCustomTagsList() {
-    const container = document.getElementById("customTagsList");
-    const entries = Object.entries(customTags);
-    if (!entries.length) {
-      container.innerHTML = `<div style="color:var(--text-dim);font-size:.85rem;">Своих тегов пока нет</div>`;
-      return;
-    }
-    const catLabel = (key) => {
-      const opt = document.querySelector(`#newTagCat option[value="${key}"]`);
-      return opt ? opt.textContent : key;
-    };
-    container.innerHTML = entries.map(([name, meta]) => `
-      <div class="list-row">
-        <span class="name">${name} <span class="tag-note">(${catLabel(meta.cat)})</span></span>
-        <button class="icon-btn" onclick="removeCustomTag('${name.replace(/'/g, "\\'")}')">✕</button>
-      </div>
-    `).join("");
-  }
-
-  function addCustomTag() {
-    const name = document.getElementById("newTagName").value.trim();
-    const cat = document.getElementById("newTagCat").value;
-    const tip = document.getElementById("newTagTip").value.trim();
-    if (!name) return;
-    customTags[name] = { cat, tip };
-    document.getElementById("newTagName").value = "";
-    document.getElementById("newTagTip").value = "";
-    renderCustomTagsList();
-  }
-
-  function removeCustomTag(name) {
-    delete customTags[name];
-    renderCustomTagsList();
-  }
+  // Рендер-функции и «+ Добавить» для категорий/тегов убраны вместе с
+  // панелью «Теги» — то же самое делается инлайн в add.html. Состояние
+  // выше (allCatLabels/catColors/customCatKeys/customTags) остаётся:
+  // оно подгружается в loadCurrentSettings() и уходит обратно в
+  // saveSettings() неизменным, чтобы данные не терялись при сохранении
+  // с любой другой вкладки.
 
   const BUILTIN_TYPE_DEFAULTS = {
     anime: "Аниме", manga: "Манга", manhwa: "Манхва", manhua: "Маньхуа",
@@ -652,60 +610,22 @@
   let customTypeKeys = new Set();
   let typePlural = {}; // key -> [1 штука, 2–4 штуки, 5+ штук], только для своих типов
 
-  function renderTypesList() {
-    const container = document.getElementById("typesList");
-    const allKeys = Object.keys(typeLabels);
-    container.innerHTML = allKeys.map(key => {
-      const isCustom = customTypeKeys.has(key);
-      const isHidden = hiddenTypes.has(key);
-      const forms = typePlural[key] || ["", "", ""];
-      const pluralRow = isCustom ? `
-      <div class="list-row" style="border-top:none;padding-top:0;">
-        <span style="width:0;flex:0 0 0;"></span>
-        <input type="text" style="flex:1;" id="type-plural-${key}-0" value="${forms[0] || ""}" placeholder="1 артбук" title="Форма для 1 штуки">
-        <input type="text" style="flex:1;" id="type-plural-${key}-1" value="${forms[1] || ""}" placeholder="2 артбука" title="Форма для 2–4 штук">
-        <input type="text" style="flex:1;" id="type-plural-${key}-2" value="${forms[2] || ""}" placeholder="5 артбуков" title="Форма для 5+ штук">
-      </div>` : "";
-      return `
-      <div class="list-row" style="${isHidden ? "opacity:.4;" : ""}">
-        <input type="text" style="flex:1;" id="type-input-${key}" value="${typeLabels[key]}" ${isHidden ? "disabled" : ""}>
-        <button class="icon-btn" title="${isHidden ? "Показать" : "Скрыть"}" onclick="toggleTypeHidden('${key}')">${isHidden ? "👁" : "🚫"}</button>
-        ${isCustom ? `<button class="icon-btn" title="Удалить совсем" onclick="deleteCustomType('${key}')">✕</button>` : ""}
-      </div>${pluralRow}`;
-    }).join("");
-  }
+  // ── Роли персон (в «Любимом», тип «Персона») ──
+  const BUILTIN_SUBTYPE_DEFAULTS = {
+    actor: "Актёр", director: "Режиссёр", author: "Автор",
+    seiyuu: "Сэйю", artist: "Художник", composer: "Композитор",
+  };
+  let subtypeLabels = {};
+  let hiddenSubtypes = new Set();
+  let customSubtypeKeys = new Set();
 
-  function toggleTypeHidden(key) {
-    if (hiddenTypes.has(key)) hiddenTypes.delete(key); else hiddenTypes.add(key);
-    renderTypesList();
-  }
-
-  function deleteCustomType(key) {
-    delete typeLabels[key];
-    customTypeKeys.delete(key);
-    hiddenTypes.delete(key);
-    delete typePlural[key];
-    renderTypesList();
-  }
-
-  function addCustomType() {
-    const name = document.getElementById("newTypeName").value.trim();
-    if (!name) return;
-    const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
-    typeLabels[key] = name;
-    customTypeKeys.add(key);
-
-    const one  = document.getElementById("newTypePluralOne").value.trim();
-    const few  = document.getElementById("newTypePluralFew").value.trim();
-    const many = document.getElementById("newTypePluralMany").value.trim();
-    if (one && few && many) typePlural[key] = [one, few, many];
-
-    document.getElementById("newTypeName").value = "";
-    document.getElementById("newTypePluralOne").value = "";
-    document.getElementById("newTypePluralFew").value = "";
-    document.getElementById("newTypePluralMany").value = "";
-    renderTypesList();
-  }
+  // Панель «Типы» (типы тайтлов и роли персон) убрана — то же самое
+  // теперь делается инлайн: типы в редакторе отзыва (add.html), роли в
+  // редакторе персон (favorites-edit.html), тем же паттерном выпадающего
+  // списка с добавлением, что и у источников. Состояние выше по-прежнему
+  // подгружается в loadCurrentSettings() и уходит обратно в saveSettings()
+  // неизменным, чтобы данные не терялись при сохранении с любой другой
+  // вкладки.
 
   async function loadCurrentSettings() {
     let settings = {};
@@ -721,6 +641,10 @@
     const labels = settings.labels || {};
     tabLabels = { ...(labels.nav || {}) };
     hiddenTabsState = new Set(settings.hiddenTabs || []);
+    const savedOrder = Array.isArray(settings.tabOrder) ? settings.tabOrder.filter(id => TAB_DEFS_BY_ID[id]) : [];
+    const missing = TAB_DEFS.map(t => t.id).filter(id => !savedOrder.includes(id));
+    tabOrderState = [...savedOrder, ...missing];
+    mainTabState = (settings.mainTab && TAB_DEFS_BY_ID[settings.mainTab]) ? settings.mainTab : "now";
     renderTabsList();
 
     tierCollections = settings.tierCollections
@@ -762,7 +686,14 @@
     customTypeKeys = new Set(Object.keys(settings.customTypes || {}));
     hiddenTypes = new Set(settings.hiddenTypes || []);
     typePlural = JSON.parse(JSON.stringify(settings.customTypePlural || {}));
-    renderTypesList();
+
+    subtypeLabels = { ...BUILTIN_SUBTYPE_DEFAULTS, ...(settings.customSubtypes || {}) };
+    const subtypeOverrides = labels.subtypes || {};
+    for (const [key, val] of Object.entries(subtypeOverrides)) {
+      if (subtypeLabels[key] !== undefined) subtypeLabels[key] = val;
+    }
+    customSubtypeKeys = new Set(Object.keys(settings.customSubtypes || {}));
+    hiddenSubtypes = new Set(settings.hiddenSubtypes || []);
 
     const catOverrides = labels.categories || {};
     allCatLabels = { ...BUILTIN_CAT_DEFAULTS };
@@ -776,17 +707,18 @@
       allCatLabels[key] = label;
       customCatKeys.add(key);
     }
-    renderAllCatsList();
-    renderTagCatOptions();
+    // Панель редактирования тегов/категорий убрана из /settings-edit — то же
+    // самое теперь делается инлайн прямо в редакторе отзыва (add.html).
+    // Состояние выше по-прежнему подгружается и уходит обратно при
+    // сохранении неизменным — просто больше не рендерится тут в список.
 
     customTags = settings.customTags || {};
-    renderCustomTagsList();
   }
 
   async function saveSettings() {
-    TAB_DEFS.forEach(t => {
-      const row = document.getElementById(`tabrow-${t.id}`);
-      if (row && row.classList.contains("editing")) toggleTabEdit(t.id);
+    tabOrderState.forEach(id => {
+      const row = document.getElementById(`tabrow-${id}`);
+      if (row && row.classList.contains("editing")) toggleTabEdit(id);
     });
     const rows = [...statusBuckets, { key: "archive" }];
     rows.forEach(b => {
@@ -798,7 +730,13 @@
       if (row && row.classList.contains("editing")) toggleCollectionEdit(c.id);
     });
 
-    const hiddenTabs = TAB_DEFS.filter(t => !document.getElementById(`showtab-${t.id}`).checked).map(t => t.id);
+    const hiddenTabs = tabOrderState.filter(id => !document.getElementById(`showtab-${id}`).checked);
+    // Если главная вкладка оказалась скрыта — не даём сохранить такую комбинацию молча,
+    // просто подстраховываемся и переключаем на первую видимую.
+    if (hiddenTabs.includes(mainTabState)) {
+      const firstVisible = tabOrderState.find(id => !hiddenTabs.includes(id));
+      if (firstVisible) mainTabState = firstVisible;
+    }
     const hiddenStatuses = [...hiddenStatusesState];
 
     const statKeys = ["counters","donut","watch-bars","release-bars","grades","rewatch","tags","spotlight"];
@@ -828,6 +766,15 @@
     const customTypePlural = {};
     customTypeKeys.forEach(key => { if (typePlural[key]) customTypePlural[key] = typePlural[key]; });
 
+    Object.keys(subtypeLabels).forEach(key => {
+      const input = document.getElementById(`subtype-input-${key}`);
+      if (input) subtypeLabels[key] = input.value;
+    });
+    const customSubtypes = {};
+    customSubtypeKeys.forEach(key => { if (subtypeLabels[key] !== undefined) customSubtypes[key] = subtypeLabels[key]; });
+    const subtypeRenames = {};
+    Object.keys(BUILTIN_SUBTYPE_DEFAULTS).forEach(key => { subtypeRenames[key] = subtypeLabels[key]; });
+
     Object.keys(allCatLabels).forEach(key => {
       const input = document.getElementById(`cat-input-${key}`);
       if (input) allCatLabels[key] = input.value;
@@ -855,7 +802,11 @@
       customTypes,
       hiddenTypes: [...hiddenTypes],
       customTypePlural,
+      customSubtypes,
+      hiddenSubtypes: [...hiddenSubtypes],
       hiddenTabs,
+      tabOrder: tabOrderState,
+      mainTab: mainTabState,
       hiddenStatsBlocks,
       gradeScale,
       statusBuckets,
@@ -868,6 +819,7 @@
         },
         types: typeRenames,
         categories,
+        subtypes: subtypeRenames,
       },
     };
 
@@ -889,84 +841,12 @@
     }
   }
 
-  async function loadFolders() {
-    try {
-      const res = await fetch("/api/list-chars", { credentials: "include" });
-      const data = await res.json();
-      const select = document.getElementById("existingFolder");
-      for (const f of (data.folders || [])) {
-        const opt = document.createElement("option");
-        opt.value = f;
-        opt.textContent = f;
-        select.appendChild(opt);
-      }
-    } catch {}
-  }
-
-  function convertToWebp(file) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        let { width, height } = img;
-        const maxSide = Math.max(width, height);
-        if (maxSide > 1200) {
-          const scale = 1200 / maxSide;
-          width = Math.round(width * scale);
-          height = Math.round(height * scale);
-        }
-        const canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        canvas.getContext("2d").drawImage(img, 0, 0, width, height);
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) return reject(new Error("Не удалось сконвертировать"));
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(",")[1]);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          },
-          "image/webp",
-          0.85
-        );
-      };
-      img.onerror = reject;
-      img.src = URL.createObjectURL(file);
-    });
-  }
-
-  async function uploadImages() {
-    const existing = document.getElementById("existingFolder").value;
-    const newFolder = document.getElementById("newFolder").value.trim();
-    const folder = newFolder || existing;
-    const files = document.getElementById("fileInput").files;
-
-    if (!folder) return flashStatus("imgStatus", false, "Выбери папку или впиши новую");
-    if (!files.length) return flashStatus("imgStatus", false, "Выбери хотя бы один файл");
-
-    let done = 0, failed = 0;
-    for (const file of files) {
-      flashStatus("imgStatus", true, `Обрабатываю ${done + failed + 1} из ${files.length}...`);
-      try {
-        const base64 = await convertToWebp(file);
-        const filename = file.name.replace(/\.[^.]+$/, "") + ".webp";
-        const res = await fetch("/api/upload-char-image", {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ folder, filename, contentBase64: base64 }),
-        });
-        const data = await res.json();
-        if (data.ok) done++; else failed++;
-      } catch {
-        failed++;
-      }
-    }
-    flashStatus("imgStatus", !failed, `Готово: загружено ${done}, ошибок ${failed}.`);
-  }
+  // Панель «Картинки» (загрузка файлов персонажей отсюда) убрана —
+  // то же самое уже есть в редакторе тир-листа персонажей (chars-edit.html),
+  // дублировать смысла не было. loadFolders/convertToWebp/uploadImages
+  // были нужны только ей — удалены вместе с панелью.
 
   loadCurrentSettings();
-  loadFolders();
 </script>
 </body>
 </html>
