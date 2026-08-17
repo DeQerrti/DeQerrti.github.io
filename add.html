@@ -10,9 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="/js/utils.js"></script>
 <script src="/js/theme.js"></script>
 <script src="/js/config.js"></script>
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/admin.css">
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -96,10 +98,7 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
 
 /* ══ HINT ════════════════════════════════════════ */
 .hint {
-  font-family: 'DM Sans', sans-serif;
   font-size: .68rem;
-  color: var(--text-dim);
-  line-height: 1.5;
   padding: .55rem .85rem;
   border: 1px solid var(--border);
   border-radius: 2px;
@@ -184,16 +183,6 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
 .grade-btn.active { filter: brightness(1.4); }
 
 /* ══ МОДАЛКА: новый тег / новая категория ════════ */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 1000;
-  display: flex; align-items: center; justify-content: center; padding: 1rem; }
-.modal-overlay.hidden { display: none; }
-.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
-  padding: 1.75rem; width: 100%; max-width: 420px; position: relative; max-height: 90vh; overflow-y: auto; }
-.modal-title { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic;
-  font-size: 1.1rem; color: var(--text-hi); margin-bottom: 1.25rem; }
-.modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-  color: var(--text-dim); cursor: pointer; font-size: 1.1rem; transition: color .15s; }
-.modal-close:hover { color: var(--text-hi); }
 
 button.icon-btn { background: none; border: 1px solid var(--border2); color: var(--text-dim);
   width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 4px; font-size: .8rem; cursor: pointer; flex-shrink: 0; }
@@ -271,7 +260,7 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
 
 <header>
   <div class="header-eyebrow" id="page-subtitle">Добавить отзыв</div>
-  <a href="/" class="logo" style="text-decoration:none">TasteID</a>
+  <a href="/" class="logo">TasteID</a>
   <div class="header-deco">
     <span></span><span></span><span></span><span></span><span></span>
   </div>

@@ -75,7 +75,7 @@ export async function onRequest(context) {
 
     const fileData = await getRes.json();
     const sha      = fileData.sha;
-    let current    = decodeGithubJson(fileData);
+    const current    = decodeGithubJson(fileData);
 
     const isEdit = review._editId !== undefined && review._editId !== null;
     if (isEdit) {

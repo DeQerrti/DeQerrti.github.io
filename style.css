@@ -24,6 +24,10 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Атрибут hidden должен побеждать любые display из компонентных стилей —
+   на нём держится скрытие вкладок из site-settings.json (см. theme.js). */
+[hidden] { display: none !important; }
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -71,6 +75,10 @@ header::after {
   color: var(--text-hi);
   letter-spacing: .04em;
   line-height: 1;
+  /* На всех страницах, кроме логина, логотип — ссылка на главную.
+     Раньше подчёркивание снималось то инлайновым style, то копией
+     правила на каждой странице. */
+  text-decoration: none;
 }
 
 .header-deco {
@@ -391,3 +399,66 @@ select option { background: var(--bg2); }
 .src-type-add-form button { flex-shrink: 0; }
 
 .src-type-status { margin-top: .3rem; text-align: left; font-size: .7rem; }
+
+/* ══ ЗАГРУЗКА И ПУСТЫЕ СОСТОЯНИЯ ═════════════════
+   Крутилка и «заглушка вместо контента» нужны и публичной странице,
+   и админке — раньше и то и другое было скопировано в трёх файлах. */
+.spinner {
+  width: 28px; height: 28px;
+  border: 1px solid var(--border2);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin .9s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+.state-box {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--text-dim);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* ══ МОДАЛЬНЫЕ ОКНА ══════════════════════════════
+   Одна и та же коробка на главной, в add и в chars-edit.
+   Ширина отличается по страницам — её и переопределяют на месте. */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.85);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.hidden { display: none; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-hi);
+  margin-bottom: 1.25rem;
+}
+
+.modal-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: color .15s;
+}
+.modal-close:hover { color: var(--text-hi); }

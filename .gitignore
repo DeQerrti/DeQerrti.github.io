@@ -1,0 +1,13 @@
+node_modules/
+
+# Локальные переменные окружения Cloudflare Pages / wrangler.
+# ADMIN_PASSWORD и GITHUB_TOKEN не должны попадать в репозиторий.
+.dev.vars
+.env
+.env.*
+.wrangler/
+
+# Служебное
+.DS_Store
+Thumbs.db
+*.log

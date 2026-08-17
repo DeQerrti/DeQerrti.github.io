@@ -219,7 +219,7 @@ function tlTitlesHtml() {
             data-tl-type="${esc(tlTypeLabel(tlInferType(r)))}"
             style="animation-delay:${Math.min(i * 18, 400)}ms">
           <img src="${esc(src)}" alt="${esc(r.title)}" loading="lazy"
-            onerror="imgFallback(this, '${esc(poster ? (posterBackup || "") : "")}', '${placeholder}')">
+            ${imgFallbackAttrs(poster, posterBackup, placeholder)}>
         </div>`;
       }
     }
@@ -313,7 +313,7 @@ function tlCharsHtml(collectionId) {
             data-tl-type="${esc(game.title)}"
             style="height:${tlCharHeight}px;animation-delay:${Math.min(i * 18, 400)}ms">
           <img src="${esc(ch.img || ch.img_backup || "")}" alt="${esc(ch.name)}" loading="lazy"
-            onerror="imgFallback(this, '${esc(ch.img ? (ch.img_backup || "") : "")}', 'https://placehold.co/100x150/111114/4a4540?text=?')">
+            ${imgFallbackAttrs(ch.img, ch.img_backup, "https://placehold.co/100x150/111114/4a4540?text=?")}>
         </div>`;
       }
     }

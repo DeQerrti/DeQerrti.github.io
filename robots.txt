@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Админка и API — не для поиска. Доступ они всё равно не открывают
+# (его проверяет functions/_middleware.js), но и в выдаче им делать нечего.
+Disallow: /api/
+Disallow: /add
+Disallow: /chars-edit
+Disallow: /favorites-edit
+Disallow: /settings-edit
+Disallow: /reviews-order
+Disallow: /backup-history
+Disallow: /login.html
+
+Sitemap: https://tasteid.ru/sitemap.xml

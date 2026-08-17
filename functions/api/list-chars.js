@@ -47,11 +47,21 @@ export async function onRequest(context) {
       return json({ folders });
     }
 
+    // url — то, что попадёт в characters-tier.json и будет отдаваться
+    // посетителям. Это путь на нашем же домене: картинки лежат в этом
+    // репозитории, значит их раздаёт та же CDN, что и весь сайт, — вместо
+    // похода на raw.githubusercontent.com мимо неё.
+    //
+    // preview — та же картинка, но по прямой ссылке на GitHub. Нужна
+    // только для галереи в админке: свежезагруженный файл появится на
+    // сайте лишь после того, как пройдёт деплой, а в галерее его надо
+    // показать сразу.
     const files = items
       .filter(item => item.type === "file" && /\.(png|jpg|jpeg|webp|gif)$/i.test(item.name))
       .map(item => ({
-        name: item.name.replace(/\.[^.]+$/, ""),
-        url:  item.download_url,
+        name:    item.name.replace(/\.[^.]+$/, ""),
+        url:     "/" + item.path.split("/").map(encodeURIComponent).join("/"),
+        preview: item.download_url,
       }));
     return json({ files });
 

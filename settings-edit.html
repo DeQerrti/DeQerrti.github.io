@@ -4,12 +4,14 @@
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/admin.css">
+<script src="/js/utils.js"></script>
 <script src="/js/theme.js"></script>
 <script src="/js/config.js"></script>
 <style>
-  body { margin: 0; padding: 0; display: flex; min-height: 100vh; }
+  body { display: flex; }
 
-  #locked { text-align: center; padding: 80px 20px; color: var(--text-dim); width: 100%; }
+  #locked { width: 100%; }
   #locked a { color: var(--red-hi); }
   /* Утилитарный класс должен побеждать любые другие правила отображения
      (в т.ч. #app { display:flex } ниже) — иначе элемент с id может
