@@ -34,6 +34,21 @@ const THEME_PRESETS = {
     "--border": "#1f3a29", "--border2": "#2c5539",
     "--text": "#8fc4a3", "--text-dim": "#2f5a3f", "--text-hi": "#dcf5e6",
   },
+  // Прототип: не только своя палитра, но и другой визуальный язык —
+  // скруглённые карточки, мягкие тени, крупные курсивные заголовки.
+  // Структурные отличия (не сводимые к цвету) живут в CSS под
+  // [data-skin="soft"] — см. index.html. defaultAccent подставляется,
+  // только если человек ещё не задал свой акцент вручную.
+  soft: {
+    label: "Мягкий ботанический",
+    skin: "soft",
+    defaultAccent: "#6b7f4a",
+    "--bg": "#f2ece0", "--bg2": "#ece4d2",
+    "--surface": "#faf7f0", "--surface2": "#eee6d4",
+    "--border": "#e1d8c3", "--border2": "#cabf9f",
+    "--text": "#6b6552", "--text-dim": "#a89f88", "--text-hi": "#332f22",
+    "--radius-card": "22px", "--radius-btn": "999px",
+  },
 };
 
 const DEFAULT_ACCENT = "#8b1a1a"; // текущий --red по умолчанию
@@ -100,8 +115,10 @@ async function applyTheme() {
   }
 
   const preset = THEME_PRESETS[settings.theme] || null;
-  const accent = accentVariants(settings.customAccent || DEFAULT_ACCENT);
+  const accent = accentVariants(settings.customAccent || preset?.defaultAccent || DEFAULT_ACCENT);
   const vars = { ...(preset || {}), ...accent };
+
+  document.documentElement.setAttribute("data-skin", preset?.skin || "classic");
 
   const declarations = Object.entries(vars)
     .filter(([key]) => key.startsWith("--"))
@@ -119,8 +136,6 @@ async function applyTheme() {
   window.SITE_HIDDEN_TYPES = settings.hiddenTypes || [];
   window.SITE_CUSTOM_TYPE_PLURAL = settings.customTypePlural || {};
   window.SITE_CUSTOM_SOURCES = settings.customSources || {};
-  window.SITE_CUSTOM_SUBTYPES = settings.customSubtypes || {};
-  window.SITE_HIDDEN_SUBTYPES = settings.hiddenSubtypes || [];
   window.SITE_CUSTOM_CATEGORIES = settings.customCategories || {};
   window.SITE_CATEGORY_COLORS = settings.categoryColors || {};
   window.SITE_GRADE_SCALE = settings.gradeScale || null;
@@ -129,9 +144,6 @@ async function applyTheme() {
   window.SITE_TIER_COLLECTIONS = settings.tierCollections || null;
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
   const hiddenTabs = settings.hiddenTabs || [];
-  // Какая вкладка должна открываться первой — читается страницей (index.html)
-  // после события site-labels-ready, вместо всегда захардкоженной "Главная".
-  window.SITE_MAIN_TAB = settings.mainTab || "now";
 
   function applyHiddenTabs() {
     let activeIsHidden = false;
@@ -148,26 +160,9 @@ async function applyTheme() {
     }
   }
 
-  // Переставляет кнопки вкладок в <nav> в порядке, заданном в настройках
-  // (tabOrder — массив id). Вкладки, которых нет в массиве, остаются в конце
-  // в исходном порядке — так старые настройки без tabOrder не ломаются.
-  function applyTabOrder() {
-    const order = settings.tabOrder;
-    if (!Array.isArray(order) || !order.length) return;
-    const nav = document.querySelector("nav");
-    if (!nav) return;
-    const buttons = [...nav.querySelectorAll("[data-label^='nav.']")];
-    const byId = new Map(buttons.map(btn => [btn.getAttribute("data-label").split(".")[1], btn]));
-    order.forEach((id) => {
-      const btn = byId.get(id);
-      if (btn) nav.appendChild(btn);
-    });
-  }
-
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => { applyTabOrder(); applyHiddenTabs(); });
+    document.addEventListener("DOMContentLoaded", applyHiddenTabs);
   } else {
-    applyTabOrder();
     applyHiddenTabs();
   }
 
