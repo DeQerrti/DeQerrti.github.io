@@ -47,7 +47,7 @@ function renderFavorites({ titles, characters, persons }) {
   html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">Тайтлы</h2>
-      ${admin ? `<a href="/reviews-order" class="admin-add-btn">⇅ Порядок</a>` : ""}
+      ${admin ? `<a href="/reviews-order" class="admin-add-btn">Порядок</a>` : ""}
     </div>
     <div class="grid-now">
       ${titles.length
@@ -60,7 +60,7 @@ function renderFavorites({ titles, characters, persons }) {
   html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">Персонажи</h2>
-      ${admin ? `<a href="/favorites-edit" class="admin-add-btn">+ Добавить</a>` : ""}
+      ${admin ? `<a href="/favorites-edit" class="admin-add-btn">Добавить</a>` : ""}
     </div>
     <div class="grid-chars">
       ${characters.length
@@ -73,7 +73,7 @@ function renderFavorites({ titles, characters, persons }) {
   html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">Персоны</h2>
-      ${admin ? `<a href="/favorites-edit" class="admin-add-btn">+ Добавить</a>` : ""}
+      ${admin ? `<a href="/favorites-edit" class="admin-add-btn">Добавить</a>` : ""}
     </div>
     <div class="grid-chars">
       ${persons.length

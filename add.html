@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="/js/utils.js?v=3"></script>
-<script src="/js/theme.js?v=3"></script>
-<script src="/js/config.js?v=3"></script>
-<link rel="stylesheet" href="/style.css?v=3">
-<link rel="stylesheet" href="/admin.css?v=3">
+<script src="/js/utils.js?v=4"></script>
+<script src="/js/theme.js?v=4"></script>
+<script src="/js/config.js?v=4"></script>
+<link rel="stylesheet" href="/style.css?v=4">
+<link rel="stylesheet" href="/admin.css?v=4">
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -312,8 +312,8 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
 
   <!-- Баннер редактирования -->
   <div class="edit-banner" id="edit-banner" style="display:none">
-    <div>✦ Режим редактирования — <span class="edit-banner-title" id="edit-title-hint"></span></div>
-    <button class="btn-new" onclick="resetToNew()">+ Новый отзыв</button>
+    <div>Режим редактирования — <span class="edit-banner-title" id="edit-title-hint"></span></div>
+    <button class="btn-new" onclick="resetToNew()">Новый отзыв</button>
   </div>
 
   <!-- Основное -->
@@ -365,7 +365,7 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
        Отдельного заголовка нет: кнопка «Добавить обложку» и так
        называет раздел, а лишняя строка только удлиняла форму. -->
   <div class="src-field" id="cover-field">
-    <button type="button" class="src-add-btn" id="cover-add-btn" onclick="openCoverPanel()">+ Добавить обложку</button>
+    <button type="button" class="src-add-btn" id="cover-add-btn" onclick="openCoverPanel()">Добавить обложку</button>
     <div class="cover-block hidden" id="cover-panel">
       <img id="cover-img" class="cover-preview">
       <div class="cover-controls">
@@ -393,7 +393,7 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
 
   <!-- Даты — состав полей зависит от статуса (см. updateDateFields) -->
   <div class="sec collapsed" id="sec-dates">
-    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('dates')">+ Добавить дату</button>
+    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('dates')">Добавить дату</button>
     <div class="sec-body">
       <div class="sec-head">
         <span class="sec-title">Даты</span>
@@ -408,11 +408,10 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
   </div>
 
 
-  <!-- Источники -->
-  <div class="hint">Ссылка на отзыв — например, если у тебя уже есть пост об этом тайтле на Teletype или где-то ещё на стороне, можно указать ссылку на него.</div>
-
+  <!-- Источники. Второе поле спрятано до тех пор, пока не понадобится:
+       показывать сразу два предложения «добавить источник» смысла нет. -->
   <div class="src-field" id="src-field-1">
-    <button type="button" class="src-add-btn" id="src-add-btn-1" onclick="openSourcePanel(1)">+ Добавить источник</button>
+    <button type="button" class="src-add-btn" id="src-add-btn-1" onclick="openSourcePanel(1)">Добавить источник</button>
     <div class="src-panel hidden" id="src-panel-1">
       <div class="src-panel-row">
         <div class="src-type-wrap">
@@ -424,13 +423,14 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
         <input type="text" id="f-url" class="src-url-input" placeholder="https://" oninput="onSourceUrlChange(1)">
         <button type="button" class="icon-btn" title="Убрать источник" onclick="closeSourcePanel(1)">✕</button>
       </div>
+      <div class="hint" style="margin:.6rem 0 0;">Ссылка на публикацию отзыва на стороне — например, на Teletype.</div>
+      <button type="button" class="btn-new" id="add-second-source" style="margin-top:.6rem;" onclick="showSecondSource()">Добавить ещё один источник</button>
     </div>
     <input type="hidden" id="f-source" value="teletype">
   </div>
 
-  <div class="src-field" id="src-field-2" style="margin-top:.75rem;">
-    <button type="button" class="src-add-btn" id="src-add-btn-2" onclick="openSourcePanel(2)">+ Добавить источник <span class="sub">— необязательно, если есть дублирующая публикация</span></button>
-    <div class="src-panel hidden" id="src-panel-2">
+  <div class="src-field" id="src-field-2" style="margin-top:.75rem;" hidden>
+    <div class="src-panel" id="src-panel-2">
       <div class="src-panel-row">
         <div class="src-type-wrap">
           <button type="button" class="src-type-btn" id="src-type-btn-2" onclick="toggleTypeDropdown(2)">
@@ -439,63 +439,45 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
           <div class="src-type-dropdown hidden" id="src-type-dropdown-2"></div>
         </div>
         <input type="text" id="f-url2" class="src-url-input" placeholder="https://" oninput="onSourceUrlChange(2)">
-        <button type="button" class="icon-btn" title="Убрать источник" onclick="closeSourcePanel(2)">✕</button>
+        <button type="button" class="icon-btn" title="Убрать источник" onclick="hideSecondSource()">✕</button>
       </div>
     </div>
     <input type="hidden" id="f-source2" value="">
   </div>
 
-  <!-- Превью -->
-  <div class="sec collapsed" id="sec-preview">
-    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('preview')">+ Добавить превью</button>
+  <!-- Текст отзыва: превью и полный текст — один раздел. Это две части
+       одного и того же, разносить их по двум кнопкам было незачем. -->
+  <div class="sec collapsed" id="sec-text">
+    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('text')">Добавить текст отзыва</button>
     <div class="sec-body">
       <div class="sec-head">
-        <span class="sec-title">Превью текст</span>
-        <button type="button" class="icon-btn" title="Свернуть" onclick="toggleEditorSection('preview', false)">✕</button>
+        <span class="sec-title">Текст отзыва</span>
+        <button type="button" class="icon-btn" title="Свернуть" onclick="toggleEditorSection('text', false)">✕</button>
       </div>
       <div class="field">
+        <label>Превью — показывается на карточке</label>
         <textarea id="f-preview" placeholder="Пара предложений о тайтле…" oninput="updatePreview()"></textarea>
         <div class="preview-box" id="preview-out">Здесь появится превью…</div>
       </div>
-    </div>
-  </div>
-
-  <!-- Полный текст -->
-  <div class="sec collapsed" id="sec-fulltext">
-    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('fulltext')">+ Добавить полный текст</button>
-    <div class="sec-body">
-      <div class="sec-head">
-        <span class="sec-title">Полный текст отзыва</span>
-        <button type="button" class="icon-btn" title="Свернуть" onclick="toggleEditorSection('fulltext', false)">✕</button>
-      </div>
-      <div class="field">
+      <div class="field" style="margin-bottom:0;">
+        <label>Полный текст — необязательно</label>
         <textarea id="f-review-full" placeholder="Развёрнутый отзыв — откроется по клику на карточку. Если оставить пустым, при клике покажется превью со ссылкой на источник." style="min-height:220px;"></textarea>
       </div>
     </div>
   </div>
 
-  <!-- Оценка -->
-  <div class="sec collapsed" id="sec-grade">
-    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('grade')">+ Добавить оценку</button>
+  <!-- Оценка и теги — тоже один раздел: и то и другое про «как оценил» -->
+  <div class="sec collapsed" id="sec-gradetags">
+    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('gradetags')">Добавить оценку и теги</button>
     <div class="sec-body">
       <div class="sec-head">
-        <span class="sec-title">Оценка</span>
-        <button type="button" class="icon-btn" title="Свернуть" onclick="toggleEditorSection('grade', false)">✕</button>
+        <span class="sec-title">Оценка и теги</span>
+        <button type="button" class="icon-btn" title="Свернуть" onclick="toggleEditorSection('gradetags', false)">✕</button>
       </div>
       <div class="grades-grid" id="grades-grid"></div>
-    </div>
-  </div>
-
-  <!-- Теги -->
-  <div class="sec collapsed" id="sec-tags">
-    <button type="button" class="src-add-btn sec-toggle" onclick="toggleEditorSection('tags')">+ Добавить теги</button>
-    <div class="sec-body">
-      <div class="sec-head">
-        <span class="sec-title">Теги</span>
-        <button type="button" class="icon-btn" title="Свернуть" onclick="toggleEditorSection('tags', false)">✕</button>
-      </div>
-      <div style="margin-bottom:.75rem;">
-        <button type="button" class="btn-new" onclick="openTagModal()">+ Новый тег</button>
+      <div class="field" style="margin:1.25rem 0 .75rem;">
+        <label>Теги</label>
+        <button type="button" class="btn-new" onclick="openTagModal()">Новый тег</button>
       </div>
       <div class="tags-grid" id="tags-grid"></div>
     </div>
@@ -576,6 +558,22 @@ function syncFavToggle() {
     on ? "В Любимом" : "Добавить в Любимое";
 }
 
+// ── Второй источник ────────────────────────────
+// Показывать сразу два предложения «добавить источник» незачем: второй
+// нужен редко (дублирующая публикация). Поэтому поле спрятано, а
+// предложение добавить его лежит внутри уже открытого первого.
+function showSecondSource() {
+  document.getElementById("src-field-2").hidden = false;
+  document.getElementById("add-second-source").hidden = true;
+}
+
+function hideSecondSource() {
+  document.getElementById("src-field-2").hidden = true;
+  document.getElementById("add-second-source").hidden = false;
+  document.getElementById("f-url2").value = "";
+  document.getElementById("f-source2").value = "";
+}
+
 // ── Сворачиваемые разделы ──────────────────────
 // Свёрнутый раздел — одна строка-кнопка вместо блока полей. Состояние
 // хранится классом collapsed на обёртке, так что кнопка и содержимое
@@ -587,7 +585,7 @@ function toggleEditorSection(name, open) {
   wrap.classList.toggle("collapsed", !shouldOpen);
 }
 
-const EDITOR_SECTIONS = ["dates", "preview", "fulltext", "grade", "tags"];
+const EDITOR_SECTIONS = ["dates", "text", "gradetags"];
 
 function collapseAllSections() {
   EDITOR_SECTIONS.forEach((name) => toggleEditorSection(name, false));
@@ -597,10 +595,9 @@ function collapseAllSections() {
 // существующего отзыва человек не увидит, что там уже что-то есть.
 function openFilledSections(r) {
   if (r.date_start || r.date_end || r.date) toggleEditorSection("dates", true);
-  if (r.preview) toggleEditorSection("preview", true);
-  if (r.review_full) toggleEditorSection("fulltext", true);
-  if (r.grade !== undefined && r.grade !== null && r.grade !== "") toggleEditorSection("grade", true);
-  if ((r.tags || []).length) toggleEditorSection("tags", true);
+  if (r.preview || r.review_full) toggleEditorSection("text", true);
+  const hasGrade = r.grade !== undefined && r.grade !== null && r.grade !== "";
+  if (hasGrade || (r.tags || []).length) toggleEditorSection("gradetags", true);
 }
 
 // ── Даты в зависимости от статуса ──────────────
@@ -859,15 +856,27 @@ function srcIds(n) {
 
 // Разворачивает/сворачивает панель источника в зависимости от того,
 // заполнен ли URL — используется и при ручном открытии, и после fillForm.
+// Приводит вид источника в соответствие с тем, заполнен ли он.
+// Первый источник живёт по схеме «кнопка ↔ панель», второй просто
+// показывается или прячется целиком — он появляется только по
+// требованию из уже открытого первого.
 function syncSourcePanel(n) {
   const ids = srcIds(n);
   const hasUrl = document.getElementById(ids.url).value.trim().length > 0;
   const srcKey = document.getElementById(ids.source).value || "teletype";
   document.getElementById(`src-type-label-${n}`).textContent = sourceLabel(srcKey);
+
+  if (n === 2) {
+    document.getElementById("src-field-2").hidden = !hasUrl;
+    document.getElementById("add-second-source").hidden = hasUrl;
+    return;
+  }
+
   document.getElementById(`src-add-btn-${n}`).classList.toggle("hidden", hasUrl);
   document.getElementById(`src-panel-${n}`).classList.toggle("hidden", !hasUrl);
 }
 
+// Только для первого источника: у второго своя пара показать/спрятать.
 function openSourcePanel(n) {
   const ids = srcIds(n);
   const srcInput = document.getElementById(ids.source);
@@ -903,7 +912,7 @@ function renderTypeDropdown(n) {
   dd.innerHTML = `
     <div class="src-type-list">${options}</div>
     <div class="src-type-add-row">
-      <button type="button" class="btn-new src-type-add-btn" onclick="showAddTypeForm(${n})">+ Добавить</button>
+      <button type="button" class="btn-new src-type-add-btn" onclick="showAddTypeForm(${n})">Добавить</button>
     </div>
     <div class="src-type-add-form hidden" id="src-type-add-form-${n}">
       <input type="text" id="src-type-new-name-${n}" placeholder="Например: Дзен">
@@ -1032,7 +1041,7 @@ function renderTypePickerDropdown() {
   dd.innerHTML = `
     <div class="src-type-list">${options}</div>
     <div class="src-type-add-row">
-      <button type="button" class="btn-new src-type-add-btn" onclick="showAddTypeForm()">+ Добавить тип</button>
+      <button type="button" class="btn-new src-type-add-btn" onclick="showAddTypeForm()">Добавить тип</button>
     </div>
     <div class="src-type-add-form hidden" id="type-picker-add-form" style="flex-direction:column;align-items:stretch;">
       <input type="text" id="type-picker-new-name" placeholder="Например: Артбук" oninput="prefillTypePlural()">
@@ -1191,7 +1200,7 @@ function renderStatusPickerDropdown() {
   dd.innerHTML = `
     <div class="src-type-list">${options}</div>
     <div class="src-type-add-row">
-      <button type="button" class="btn-new src-type-add-btn" onclick="showAddStatusForm()">+ Добавить статус</button>
+      <button type="button" class="btn-new src-type-add-btn" onclick="showAddStatusForm()">Добавить статус</button>
     </div>
     <div class="src-type-add-form hidden" id="status-picker-add-form">
       <input type="text" id="status-picker-new-name" placeholder="Например: Перечитываю">
@@ -1652,8 +1661,8 @@ async function saveReview() {
     const data = await res.json();
     if (res.ok) {
       setStatus("ok", editingId !== null
-        ? `✦ «${title}» обновлён. Сайт обновится через ~30 секунд.`
-        : `✦ «${title}» сохранён. Сайт обновится через ~30 секунд.`);
+        ? `«${title}» обновлён. Сайт обновится через ~30 секунд.`
+        : `«${title}» сохранён. Сайт обновится через ~30 секунд.`);
       if (editingId === null) resetToNew();
     } else {
       setStatus("err", "Ошибка: " + (data.error || "неизвестная"));
@@ -1669,6 +1678,6 @@ async function saveReview() {
 initPage();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=3"></script>
+<script src="js/backup.js?v=4"></script>
 </body>
 </html>

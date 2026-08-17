@@ -25,7 +25,6 @@ async function loadReviews() {
   } else {
     document.getElementById("tab-reviews").innerHTML =
       `<div class="state-box">
-        <div style="font-size:1.5rem;margin-bottom:.75rem">✦</div>
         Отзывов пока нет.
         ${isAdmin() ? `<div style="margin-top:1.5rem"><a href="/add" class="admin-add-btn">Добавить</a></div>` : ""}
       </div>`;

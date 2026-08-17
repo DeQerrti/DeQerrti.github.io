@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
-<link rel="stylesheet" href="/style.css?v=3">
-<link rel="stylesheet" href="/admin.css?v=3">
-<script src="/js/utils.js?v=3"></script>
-<script src="/js/theme.js?v=3"></script>
-<script src="/js/config.js?v=3"></script>
+<link rel="stylesheet" href="/style.css?v=4">
+<link rel="stylesheet" href="/admin.css?v=4">
+<script src="/js/utils.js?v=4"></script>
+<script src="/js/theme.js?v=4"></script>
+<script src="/js/config.js?v=4"></script>
 <style>
   body { display: flex; }
 
@@ -173,7 +173,7 @@
       <div class="row" style="margin-top:14px;">
         <div><label>Новый статус</label><input type="text" id="newStatusName" placeholder="Например: Брошено"></div>
       </div>
-      <button class="btn btn-ghost" onclick="addStatusBucket()">+ Добавить статус</button>
+      <button class="btn btn-ghost" onclick="addStatusBucket()">Добавить статус</button>
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
     </div>
 
@@ -208,7 +208,7 @@
         <h2 class="section-h">Полки</h2>
         <p class="panel-intro">Переименуй, перекрась, удали или добавь свою.</p>
         <div id="catShelvesList"></div>
-        <button class="btn btn-ghost" onclick="addShelfRow(true)">+ Добавить полку</button>
+        <button class="btn btn-ghost" onclick="addShelfRow(true)">Добавить полку</button>
       </div>
 
       <div id="numericBlock" style="display:none;">
@@ -220,7 +220,7 @@
         <h2 class="section-h">Полки (от лучшей к худшей)</h2>
         <p class="panel-intro">Каждая полка — диапазон значений с названием и цветом. Именно эти полки станут строками тир-листа.</p>
         <div id="shelvesList"></div>
-        <button class="btn btn-ghost" onclick="addShelfRow()">+ Добавить полку</button>
+        <button class="btn btn-ghost" onclick="addShelfRow()">Добавить полку</button>
       </div>
 
       <button class="btn-save" onclick="saveSettings()" style="margin-top:20px;">Сохранить</button>
@@ -239,7 +239,7 @@
       <div class="row" style="margin-top:14px;">
         <div><label>Новая коллекция</label><input type="text" id="newCollectionName" placeholder="Например: Опенинги"></div>
       </div>
-      <button class="btn btn-ghost" onclick="addCollection()">+ Добавить коллекцию</button>
+      <button class="btn btn-ghost" onclick="addCollection()">Добавить коллекцию</button>
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-collections"></div>
     </div>

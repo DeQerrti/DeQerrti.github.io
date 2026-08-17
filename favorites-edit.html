@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=3">
-<link rel="stylesheet" href="/admin.css?v=3">
-<script src="/js/utils.js?v=3"></script>
-<script src="/js/theme.js?v=3"></script>
-<script src="/js/config.js?v=3"></script>
+<link rel="stylesheet" href="/style.css?v=4">
+<link rel="stylesheet" href="/admin.css?v=4">
+<script src="/js/utils.js?v=4"></script>
+<script src="/js/theme.js?v=4"></script>
+<script src="/js/config.js?v=4"></script>
 <style>
 .logo { display: block; }
 
@@ -193,8 +193,8 @@ input::placeholder { color: var(--text-dim); }
 <main>
 
   <div class="edit-banner" id="edit-banner" style="display:none">
-    <div>✦ Режим редактирования — <span class="edit-banner-title" id="edit-name-hint"></span></div>
-    <button class="btn-new" onclick="resetToNew()">+ Новая запись</button>
+    <div>Режим редактирования — <span class="edit-banner-title" id="edit-name-hint"></span></div>
+    <button class="btn-new" onclick="resetToNew()">Новая запись</button>
   </div>
 
   <h2 class="section-title">Основное</h2>
@@ -251,7 +251,7 @@ input::placeholder { color: var(--text-dim); }
 
   <div class="list-header" id="list-header" style="display:none">
     <div class="divider-title">Персонажи</div>
-    <button class="btn-save-order" id="btn-save-order" onclick="saveOrder()">✦ Сохранить порядок</button>
+    <button class="btn-save-order" id="btn-save-order" onclick="saveOrder()">Сохранить порядок</button>
   </div>
   <div class="entries-list" id="entries-list-character"></div>
 
@@ -297,7 +297,7 @@ function renderSubtypePickerDropdown() {
   dd.innerHTML = `
     <div class="src-type-list">${options}</div>
     <div class="src-type-add-row">
-      <button type="button" class="btn-new src-type-add-btn" onclick="showAddSubtypeForm()">+ Добавить роль</button>
+      <button type="button" class="btn-new src-type-add-btn" onclick="showAddSubtypeForm()">Добавить роль</button>
     </div>
     <div class="src-type-add-form hidden" id="subtype-picker-add-form">
       <input type="text" id="subtype-picker-new-name" placeholder="Например: Продюсер">
@@ -677,7 +677,7 @@ async function saveOrder() {
       orderDirty = false;
       btn.classList.remove("visible");
       document.getElementById("order-hint").classList.remove("visible");
-      setStatus("ok", "✦ Порядок сохранён. Сайт обновится через ~30 секунд.");
+      setStatus("ok", "Порядок сохранён. Сайт обновится через ~30 секунд.");
     } else {
       setStatus("err", "Ошибка: " + (data.error || "неизвестная"));
     }
@@ -686,7 +686,7 @@ async function saveOrder() {
   }
 
   btn.disabled = false;
-  btn.textContent = "✦ Сохранить порядок";
+  btn.textContent = "Сохранить порядок";
 }
 
 async function saveEntry() {
@@ -732,8 +732,8 @@ async function saveEntry() {
     const data = await res.json();
     if (res.ok) {
       setStatus("ok", editingId !== null
-        ? `✦ «${name}» обновлён. Сайт обновится через ~30 секунд.`
-        : `✦ «${name}» сохранён. Сайт обновится через ~30 секунд.`);
+        ? `«${name}» обновлён. Сайт обновится через ~30 секунд.`
+        : `«${name}» сохранён. Сайт обновится через ~30 секунд.`);
       if (editingId === null) resetToNew();
       setTimeout(loadList, 2000);
     } else {
@@ -750,6 +750,6 @@ async function saveEntry() {
 loadList();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=3"></script>
+<script src="js/backup.js?v=4"></script>
 </body>
 </html>
