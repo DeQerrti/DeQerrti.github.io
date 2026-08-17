@@ -254,6 +254,73 @@ section.group { margin-bottom: 3.5rem; }
 }
 
 /* ══ STATE ═══════════════════════════════════════ */
+/* ══ SOFT SKIN (прототип, пока только Главная) ═══
+   Не только цвет — другая форма компонентов: скруглённые
+   карточки вместо резких уголков-скобок, мягкая тень вместо
+   бордера, пилюльная навигация, крупный курсивный заголовок
+   вместо тонкой линии с засечкой. Всё остальное (сетки,
+   структура страницы) не трогаем — только внешний вид. */
+html[data-skin="soft"] nav {
+  background: rgba(242,236,224,.92);
+}
+html[data-skin="soft"] .tab-btn {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-transform: none;
+  border-radius: var(--radius-btn, 3px);
+  border-bottom: none;
+  margin: .5rem .15rem;
+  padding: .55rem 1.15rem;
+}
+html[data-skin="soft"] .tab-btn.active {
+  color: var(--text-hi);
+  background: var(--surface2);
+}
+html[data-skin="soft"] .tab-btn.active::before { display: none; }
+
+html[data-skin="soft"] .section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  gap: .6rem;
+}
+html[data-skin="soft"] .section-title::before,
+html[data-skin="soft"] .section-title::after { display: none; }
+
+html[data-skin="soft"] .card {
+  border-radius: var(--radius-card, 2px);
+  border: none;
+  box-shadow: 0 12px 30px -14px rgba(60,50,20,.35);
+}
+html[data-skin="soft"] .card::before,
+html[data-skin="soft"] .card::after { display: none; }
+html[data-skin="soft"] .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 38px -14px rgba(60,50,20,.42);
+}
+html[data-skin="soft"] .card img { filter: none; }
+html[data-skin="soft"] .card:hover img { filter: none; }
+
+html[data-skin="soft"] .type-tag {
+  top: .5rem; right: .5rem;
+  border-radius: var(--radius-btn, 999px);
+  background: rgba(255,255,255,.8);
+  color: var(--text-hi);
+  border: none;
+}
+html[data-skin="soft"] .watch-badge {
+  top: .5rem; left: .5rem;
+  border-radius: var(--radius-btn, 999px);
+  background: rgba(255,255,255,.8);
+  border: none;
+  color: var(--text);
+}
+html[data-skin="soft"] .year-divider::before,
+html[data-skin="soft"] .year-divider::after {
+  background: linear-gradient(90deg, transparent, var(--border));
+}
+
 .state-box {
   text-align: center;
   padding: 5rem 2rem;
@@ -1133,7 +1200,7 @@ section.group { margin-bottom: 3.5rem; }
 </script>
 
 <nav>
-  <button class="tab-btn" data-label="nav.now" onclick="switchTab('tab-now', this)">Главная</button>
+  <button class="tab-btn active" data-label="nav.now" onclick="switchTab('tab-now', this)">Главная</button>
   <button class="tab-btn" data-label="nav.favorites" onclick="switchTab('tab-favorites', this)">Любимое</button>
   <button class="tab-btn" data-label="nav.reviews" onclick="switchTab('tab-reviews', this)">Отзывы</button>
   <button class="tab-btn" data-label="nav.stats" onclick="switchTab('tab-stats', this)">Статистика</button>
@@ -1198,26 +1265,8 @@ function switchTab(tabId, btn) {
   if (tabId === "tab-tierlist")  loadTierlist();
 }
 
-// Какая вкладка открывается первой определяется в site-settings.json
-// (mainTab, настраивается в /settings-edit → Вкладки). Ждём, пока theme.js
-// подгрузит настройки и объявит window.SITE_MAIN_TAB, чтобы не мигать
-// сначала "Главной", а потом перескакивать на нужную вкладку.
-let _mainTabActivated = false;
-function activateMainTab() {
-  if (_mainTabActivated) return;
-  _mainTabActivated = true;
-  const mainId = window.SITE_MAIN_TAB || "now";
-  let btn = document.querySelector(`.tab-btn[data-label="nav.${mainId}"]`);
-  if (!btn || btn.style.display === "none") {
-    btn = document.querySelector(".tab-btn:not([style*='display: none'])") || document.querySelector(".tab-btn");
-  }
-  if (btn) btn.click();
-  _navInit = false;
-}
-document.addEventListener("site-labels-ready", activateMainTab, { once: true });
-// Подстраховка на случай, если site-settings.json не загрузится вовсе —
-// не оставляем пользователя с пустой страницей без вкладок.
-setTimeout(activateMainTab, 2000);
+document.querySelector(".tab-btn.active").click();
+_navInit = false;
 </script>
 
 </body>
