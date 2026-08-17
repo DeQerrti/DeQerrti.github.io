@@ -1,5 +1,5 @@
 {
-  "theme": "classic",
+  "theme": "soft",
   "customAccent": "#8b1a1a",
   "customTags": {},
   "customCategories": {},
@@ -8,14 +8,6 @@
   "hiddenTypes": [],
   "customTypePlural": {},
   "hiddenTabs": [],
-  "tabOrder": [
-    "now",
-    "favorites",
-    "reviews",
-    "stats",
-    "tierlist"
-  ],
-  "mainTab": "reviews",
   "hiddenStatsBlocks": [],
   "gradeScale": {
     "type": "categorical",
