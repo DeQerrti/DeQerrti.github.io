@@ -100,6 +100,64 @@ function isAdmin() {
   return document.cookie.split(";").some(c => c.trim().startsWith("tasteid_ui="));
 }
 
+// ── Подпись выбранного файла для .file-btn (см. style.css) ─────
+// Вызывается через onchange у <input type="file"> внутри <label class="file-btn">.
+function updateFileBtnName(input) {
+  const nameEl = document.getElementById(input.id + "-name");
+  if (!nameEl) return;
+  nameEl.textContent = input.files && input.files[0] ? input.files[0].name : "";
+}
+
+// ── Эвристика склонения существительных по числу (1 / 2–4 / 5+) ──
+// Полной автоматики для русского языка не существует — слишком много
+// исключений (человек → люди, окно → окон). Это чистый черновик:
+// правильно угадывает окончания для большинства обычных существительных
+// по типовым правилам склонения, но всегда должен оставаться
+// редактируемым — вызывающий код показывает результат в трёх полях,
+// которые можно поправить, а не подставляет его молча.
+function guessRussianPlural(word) {
+  const w = word.trim();
+  if (!w) return ["", "", ""];
+  const lower = w.toLowerCase();
+  const hushers = ["ж", "ш", "щ", "ч"]; // после них "ы" пишется как "и"
+  const last = lower.slice(-1);
+  const base = lower.slice(0, -1);
+
+  // Существительные на -а/-я (обычно женский род: книга, неделя)
+  if (last === "а") {
+    const softEnding = hushers.includes(base.slice(-1)) || ["г", "к", "х"].includes(base.slice(-1));
+    return [w, base + (softEnding ? "и" : "ы"), base];
+  }
+  if (last === "я") {
+    return [w, base + "и", base + "й"];
+  }
+  // Существительные на -о/-е (средний род: окно, поле) — самая
+  // ненадёжная категория, много исключений, но черновик лучше пустоты.
+  if (last === "о") {
+    return [w, base + "а", base];
+  }
+  if (last === "е") {
+    return [w, base + "я", base + "й"];
+  }
+  // Существительные на -й (трамвай, герой)
+  if (last === "й") {
+    return [w, base + "я", base + "ев"];
+  }
+  // Существительные на -ь — род не определить по написанию (словарь vs
+  // тетрадь), берём мужской род как более частый случай.
+  if (last === "ь") {
+    return [w, base + "я", base + "ей"];
+  }
+  // Согласная на конце — мужской род (артбук, комикс)
+  if (hushers.includes(last)) {
+    return [w, w + "а", w + "ей"];
+  }
+  if (last === "ц") {
+    return [w, w + "а", w + "ев"];
+  }
+  return [w, w + "а", w + "ов"];
+}
+
 // ── Точечное обновление site-settings.json ─────
 // Для мест вне /settings-edit (например, редактор отзыва или тир-лист),
 // где нет всего состояния настроек на руках: подтягивает актуальный
@@ -429,6 +487,18 @@ document.addEventListener("site-labels-ready", () => {
   const customSources = window.SITE_CUSTOM_SOURCES || {};
   Object.assign(SOURCE_LABELS, customSources);
 
+  // Роли персон (в «Любимом») — тот же паттерн, что и у типов: свои
+  // роли подмешиваются, скрытые убираются, переименования встроенных
+  // применяются.
+  const subtypeOverrides = overrides.subtypes || {};
+  const customSubtypes = window.SITE_CUSTOM_SUBTYPES || {};
+  const hiddenSubtypes = window.SITE_HIDDEN_SUBTYPES || [];
+  Object.assign(SUBTYPE_LABELS, customSubtypes);
+  for (const key of hiddenSubtypes) delete SUBTYPE_LABELS[key];
+  for (const [key, label] of Object.entries(subtypeOverrides)) {
+    if (SUBTYPE_LABELS[key] !== undefined && label) SUBTYPE_LABELS[key] = label;
+  }
+
   const catOverrides = overrides.categories || {};
   for (const [key, label] of Object.entries(catOverrides)) {
     if (CAT_LABELS[key] !== undefined && label) CAT_LABELS[key] = label;
@@ -448,4 +518,17 @@ document.addEventListener("site-labels-ready", () => {
 const SOURCE_LABELS = {
   teletype: "Teletype",
   other:    "Другое",
+};
+
+// ── Роли персон (в «Любимом», тип «Персона») — единственный источник
+//    правды: раньше дублировалось в favorites-edit.html и js/favorites.js
+//    отдельными копиями, теперь оба места ссылаются сюда. Переименование/
+//    скрытие/добавление ролей — из /settings-edit, панель «Типы».
+const SUBTYPE_LABELS = {
+  actor:    "Актёр",
+  director: "Режиссёр",
+  author:   "Автор",
+  seiyuu:   "Сэйю",
+  artist:   "Художник",
+  composer: "Композитор",
 };
