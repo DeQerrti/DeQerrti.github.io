@@ -1,5 +1,5 @@
 {
-  "theme": "neomorphism",
+  "theme": "neomorphism-dark",
   "customTags": {},
   "customCategories": {},
   "categoryColors": {
@@ -127,5 +127,10 @@
       "composer": "Композитор"
     }
   },
-  "themeColors": {}
+  "themeColors": {
+    "doodle-dark": {
+      "accent": "#1b3174"
+    }
+  },
+  "presets": []
 }
