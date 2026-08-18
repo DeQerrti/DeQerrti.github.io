@@ -192,6 +192,8 @@ async function applyTheme() {
   window.SITE_HIDDEN_STATUSES = new Set(settings.hiddenStatuses || []);
   window.SITE_TIER_COLLECTIONS = settings.tierCollections || null;
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
+  window.SITE_HIDDEN_FAV_SECTIONS = new Set(settings.hiddenFavSections || []);
+  window.SITE_HIDDEN_TIER_MODES = new Set(settings.hiddenTierModes || []);
   // Дальше идёт работа с DOM — ждём, пока разметка вообще появится.
   // Цвета выше применяются сразу, не дожидаясь этого, иначе будет
   // видно мигание темы по умолчанию.
@@ -347,6 +349,18 @@ function siteLabel(group, key, fallback) {
 // статистики — управляется из /settings-edit.
 function isStatVisible(key) {
   return !(window.SITE_HIDDEN_STATS && window.SITE_HIDDEN_STATS.has(key));
+}
+
+// Используется favorites.js, чтобы решить, показывать ли раздел
+// вкладки «Любимое» — управляется из /settings-edit.
+function isFavSectionVisible(key) {
+  return !(window.SITE_HIDDEN_FAV_SECTIONS && window.SITE_HIDDEN_FAV_SECTIONS.has(key));
+}
+
+// Используется tierlist.js, чтобы решить, показывать ли режим
+// тир-листа — управляется из /settings-edit.
+function isTierModeVisible(key) {
+  return !(window.SITE_HIDDEN_TIER_MODES && window.SITE_HIDDEN_TIER_MODES.has(key));
 }
 
 function applyNavLabels() {

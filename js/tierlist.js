@@ -115,6 +115,10 @@ async function loadTierlist() {
       const reviews  = (cache.reviews || []).filter(r => r.grade);
       tlState.items  = reviews.map(r => ({ review: r, poster: r.cover || null, posterBackup: r.cover_backup || null }));
       tlState.loaded = true;
+      tlEnsureVisibleMode();
+    }
+    if (tlState.mode !== "titles" && !tlState.collections[tlState.mode]?.loaded) {
+      await loadCharGames(tlState.mode);
     }
     tlRender();
   } catch (err) {
@@ -156,11 +160,24 @@ function tlModeToggleHtml() {
   const addBtn = isAdmin()
     ? `<button class="tl-mode-add-btn" id="tl-add-collection-btn" type="button" title="Новый тир-лист">Создать</button>`
     : "";
+  const titlesBtn = isTierModeVisible("titles")
+    ? `<button class="tl-mode-btn${tlState.mode === "titles" ? " active" : ""}" data-mode="titles">${esc(siteLabel("sections", "tierTitles", "Тайтлы"))}</button>`
+    : "";
   return `<div class="tl-mode-toggle">
-    <button class="tl-mode-btn${tlState.mode === "titles" ? " active" : ""}" data-mode="titles">${esc(siteLabel("sections", "tierTitles", "Тайтлы"))}</button>
+    ${titlesBtn}
     ${collectionBtns}
     ${addBtn}
   </div>`;
+}
+
+// Если режим "Тайтлы" скрыт в настройках, а текущий/дефолтный режим
+// как раз он — переключаемся на первую доступную коллекцию, иначе
+// вкладка откроется на кнопке, которой нет.
+function tlEnsureVisibleMode() {
+  if (tlState.mode === "titles" && !isTierModeVisible("titles")) {
+    const first = activeTierCollections()[0];
+    if (first) tlState.mode = first.id;
+  }
 }
 
 // ══ РЕЖИМ ТАЙТЛОВ ═════════════════════════════

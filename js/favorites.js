@@ -44,7 +44,7 @@ function renderFavorites({ titles, characters, persons }) {
   let html    = "";
 
   // ── Тайтлы ──────────────────────────────────
-  html += `<section class="group">
+  if (isFavSectionVisible("favTitles")) html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">${esc(siteLabel("sections", "favTitles", "Тайтлы"))}</h2>
       ${admin ? `<a href="/reviews-order" class="admin-add-btn">Порядок</a>` : ""}
@@ -57,7 +57,7 @@ function renderFavorites({ titles, characters, persons }) {
   </section>`;
 
   // ── Персонажи ────────────────────────────────
-  html += `<section class="group">
+  if (isFavSectionVisible("favCharacters")) html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">${esc(siteLabel("sections", "favCharacters", "Персонажи"))}</h2>
       ${admin ? `<a href="/favorites-edit" class="admin-add-btn">Добавить</a>` : ""}
@@ -70,7 +70,7 @@ function renderFavorites({ titles, characters, persons }) {
   </section>`;
 
   // ── Персоны ──────────────────────────────────
-  html += `<section class="group">
+  if (isFavSectionVisible("favPersons")) html += `<section class="group">
     <div class="section-header">
       <h2 class="section-title">${esc(siteLabel("sections", "favPersons", "Персоны"))}</h2>
       ${admin ? `<a href="/favorites-edit" class="admin-add-btn">Добавить</a>` : ""}
@@ -82,7 +82,7 @@ function renderFavorites({ titles, characters, persons }) {
     </div>
   </section>`;
 
-  box.innerHTML = html;
+  box.innerHTML = html || `<div class="state-box">${esc(siteLabel("empty", "generic", "Пока пусто"))}</div>`;
 }
 
 // Карточка тайтла (из reviews.json с favorite: true)
