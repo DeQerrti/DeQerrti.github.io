@@ -87,7 +87,7 @@ function toggleSection(id) {
 function renderNow({ buckets, completed }) {
   const box = document.getElementById("tab-now");
   const collapsed = getCollapsed();
-  let html = `<style>
+  const html = `<style>
     .now-section-header {
       display: flex;
       align-items: center;

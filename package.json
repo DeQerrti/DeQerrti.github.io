@@ -12,7 +12,9 @@
     "check:json": "node scripts/check-json.js",
     "check": "npm run lint && npm run format:check && npm run check:json && npm run check:assets",
     "dev": "python3 -m http.server 8080",
-    "check:assets": "node scripts/check-assets.js"
+    "check:assets": "node scripts/check-assets.js",
+    "ids:extract": "node scripts/extract-ids.js",
+    "ids:enrich": "node scripts/enrich-ids.js"
   },
   "devDependencies": {
     "eslint": "^9.39.5",
