@@ -263,13 +263,15 @@
 [data-skin="soft"] .tl-mode-btn {
   border-radius: var(--radius-btn, 999px);
 }
-[data-skin="soft"] .tl-row {
+[data-skin="soft"] .tl-row,
+[data-skin="soft"] .tl-editor-row {
   border: none;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--card-shadow);
 }
-[data-skin="soft"] .tl-label {
+[data-skin="soft"] .tl-label,
+[data-skin="soft"] .tl-editor-label {
   border-right-color: var(--bg2);
 }
 [data-skin="soft"] .tl-poster,
@@ -435,6 +437,7 @@ html[data-skin="brutal"] h2 {
 [data-skin="brutal"] .rv-filters,
 [data-skin="brutal"] .stat-counters,
 [data-skin="brutal"] .tl-row,
+[data-skin="brutal"] .tl-editor-row,
 [data-skin="brutal"] .modal,
 [data-skin="brutal"] .review-modal-panel {
   border: 3px solid #000;
@@ -444,7 +447,8 @@ html[data-skin="brutal"] h2 {
 [data-skin="brutal"] .stat-counter {
   border-right: 2px solid #000;
 }
-[data-skin="brutal"] .tl-label {
+[data-skin="brutal"] .tl-label,
+[data-skin="brutal"] .tl-editor-label {
   border-right: 3px solid #000;
 }
 
