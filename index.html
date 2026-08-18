@@ -1150,6 +1150,7 @@ section.group { margin-bottom: 3.5rem; }
   <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-reviews" data-label="nav.reviews" onclick="switchTab('tab-reviews', this)">Отзывы</button>
   <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-stats" data-label="nav.stats" onclick="switchTab('tab-stats', this)">Статистика</button>
   <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tierlist" data-label="nav.tierlist" onclick="switchTab('tab-tierlist', this)">Тир-лист</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-compare" data-label="nav.compare" onclick="switchTab('tab-compare', this)">Сравнение</button>
 </nav>
 
 <main>
@@ -1165,6 +1166,7 @@ section.group { margin-bottom: 3.5rem; }
   </div>
   <div id="tab-stats" role="tabpanel" tabindex="0"     class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Считаем…</div></div>
   <div id="tab-tierlist" role="tabpanel" tabindex="0"  class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем рецензии…</div></div>
+  <div id="tab-compare" role="tabpanel" tabindex="0"  class="tab-content hidden"><div class="state-box"><div class="spinner"></div>Загружаем…</div></div>
 </main>
 
 <!-- Модалка: новый тир-лист (коллекция) — доступна только админу -->
@@ -1189,6 +1191,7 @@ section.group { margin-bottom: 3.5rem; }
 <script src="js/reviews.js?v=12"></script>
 <script src="js/stats.js?v=12"></script>
 <script src="js/tierlist.js?v=12"></script>
+<script src="js/compare.js?v=12"></script>
 
 <script>
 let _navInit = true;
@@ -1212,6 +1215,7 @@ function switchTab(tabId, btn) {
   if (tabId === "tab-reviews")   loadReviews();
   if (tabId === "tab-stats")     loadStats();
   if (tabId === "tab-tierlist")  loadTierlist();
+  if (tabId === "tab-compare")   loadCompare();
 }
 
 // Первую вкладку открываем только после того, как применились настройки

@@ -268,7 +268,14 @@ function applyTabPreferences(settings) {
 // Читать через siteLabel(группа, ключ, запасное значение) — если ключа
 // в настройках нет, вернётся значение отсюда.
 const DEFAULT_LABELS = {
-  nav: { now: "Главная", favorites: "Любимое", reviews: "Отзывы", stats: "Статистика", tierlist: "Тир-лист" },
+  nav: {
+    now: "Главная",
+    favorites: "Любимое",
+    reviews: "Отзывы",
+    stats: "Статистика",
+    tierlist: "Тир-лист",
+    compare: "Сравнение",
+  },
   statuses: { current: "В процессе", onhold: "Отложено", planning: "Планирую", archive: "Архив" },
 
   // Шапка сайта. Само название — бренд и здесь не настраивается.
