@@ -12,6 +12,7 @@
 <script src="/js/api.js?v=12"></script>
 <script src="/js/cards.js?v=12"></script>
 <script src="/js/passports.js?v=12"></script>
+<script src="/js/import.js?v=12"></script>
 <style>
   body { display: flex; }
 
@@ -229,6 +230,7 @@
     <button class="side-tab" data-panel="collections">Тир-листы</button>
     <button class="side-tab" data-panel="labels">Подписи</button>
     <button class="side-tab" data-panel="passports">Паспорта</button>
+    <button class="side-tab" data-panel="import">Импорт</button>
     <a href="/backup-history" class="back" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">История версий</a>
   </nav>
 
@@ -373,6 +375,10 @@
     <div class="panel" id="panel-passports">
       <div id="passportsPanel"><p class="panel-intro">Загружаем…</p></div>
     </div>
+
+    <div class="panel" id="panel-import">
+      <div id="importPanel"><p class="panel-intro">Загружаем…</p></div>
+    </div>
   </main>
 </div>
 
@@ -392,6 +398,7 @@
       // Паспорта грузятся при первом открытии панели, а не вместе со
       // страницей: они тянут reviews.json целиком, а заходят сюда редко.
       if (btn.dataset.panel === "passports") loadPassports();
+      if (btn.dataset.panel === "import") loadImport();
     });
   });
 
