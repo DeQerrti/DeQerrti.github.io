@@ -59,7 +59,7 @@
     if (!/backup-history/.test(location.pathname)) {
       const historyBtn = makeBtn(
         "history-btn",
-        "🕐 История",
+        "История",
         "Посмотреть все сохранённые версии данных и восстановить старую при необходимости",
         "130px"
       );

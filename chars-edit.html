@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=5">
-<link rel="stylesheet" href="/admin.css?v=5">
-<script src="/js/utils.js?v=5"></script>
-<script src="/js/theme.js?v=5"></script>
-<script src="/js/config.js?v=5"></script>
+<link rel="stylesheet" href="/style.css?v=6">
+<link rel="stylesheet" href="/admin.css?v=6">
+<script src="/js/utils.js?v=6"></script>
+<script src="/js/theme.js?v=6"></script>
+<script src="/js/config.js?v=6"></script>
 <style>
 
 header { padding: 2.5rem 1rem 2rem; }
@@ -200,18 +200,18 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
     <div class="new-title-form hidden" id="new-title-form">
       <div class="field">
         <label>Название тайтла *</label>
-        <input type="text" id="nt-name" placeholder="Reverse: 1999">
+        <input type="text" id="nt-name" placeholder="Название">
       </div>
       <div class="field">
   <label>ID (латиница, без пробелов) *</label>
-  <input type="text" id="nt-id" placeholder="reverse1999">
+  <input type="text" id="nt-id" placeholder="korotkij-id">
   <div id="nt-id-hint" style="font-family:'DM Sans',sans-serif;font-size:.6rem;color:var(--text-dim);margin-top:.3rem;display:none">
     ID нельзя менять у существующего тайтла — на него уже могут ссылаться сохранённые данные.
   </div>
 </div>
       <div class="field">
         <label>Папка по умолчанию в chars/ *</label>
-        <input type="text" id="nt-folder" placeholder="Reverse">
+        <input type="text" id="nt-folder" placeholder="имя-папки">
       </div>
       <div class="field">
         <label>Обложка (URL)</label>
@@ -262,10 +262,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 
     <div class="field">
       <label>Имя персонажа *</label>
-      <input type="text" id="m-name" placeholder="Хэарон">
+      <input type="text" id="m-name" placeholder="Имя персонажа">
     </div>
 
-    <span class="manual-toggle" onclick="toggleManual()">✎ Ввести URL вручную</span>
+    <span class="manual-toggle" onclick="toggleManual()">Ввести URL вручную</span>
     <div class="manual-section" id="manual-section">
       <div class="field">
         <label>URL картинки</label>
@@ -374,7 +374,7 @@ function renderSidebar() {
     <div class="title-item${t.id === activeId ? " active" : ""}" draggable="true" data-title-id="${esc(t.id)}" onclick="selectTitle('${esc(t.id)}')">
       <img class="title-item-cover" src="${esc(t.cover || t.cover_backup || "")}" alt="" data-hide-on-error>
       <div class="title-item-name">${esc(t.title)}</div>
-      <button class="title-item-edit" onclick="openEditTitleForm(event,'${esc(t.id)}')" title="Редактировать">✎</button>
+      <button class="title-item-edit" onclick="openEditTitleForm(event,'${esc(t.id)}')" title="Редактировать">Правка</button>
       <button class="title-item-del" onclick="deleteTitle(event,'${esc(t.id)}')" title="Удалить">✕</button>
     </div>
   `).join("");
@@ -1180,6 +1180,6 @@ document.addEventListener("keydown", e => {
 init();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=5"></script>
+<script src="js/backup.js?v=6"></script>
 </body>
 </html>

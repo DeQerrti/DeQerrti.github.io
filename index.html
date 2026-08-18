@@ -21,9 +21,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=5">
-<script src="/js/utils.js?v=5"></script>
-<script src="/js/theme.js?v=5"></script>
+<link rel="stylesheet" href="/style.css?v=6">
+<script src="/js/utils.js?v=6"></script>
+<script src="/js/theme.js?v=6"></script>
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -586,9 +586,10 @@ html[data-skin="soft"] .year-divider::after {
 /* ══ EDIT BUTTON ═════════════════════════════════ */
 .review-edit-btn {
   position: absolute; top: -10px; right: -10px; z-index: 10;
-  width: 28px; height: 28px; border-radius: 50%;
+  height: 26px; padding: 0 .6rem; border-radius: 13px;
   background: var(--surface2); border: 1px solid var(--border2);
-  color: var(--text-dim); font-size: .85rem;
+  color: var(--text-dim); font-size: .68rem;
+  font-family: 'DM Sans', sans-serif; letter-spacing: .04em; white-space: nowrap;
   display: none; align-items: center; justify-content: center;
   text-decoration: none; transition: all .18s;
 }
@@ -1049,13 +1050,14 @@ html[data-skin="soft"] .year-divider::after {
 }
 .tl-mode-add-btn {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.1rem;
+  font-size: .95rem;
   font-weight: 600;
   color: var(--text-dim);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 1px;
-  width: 2.6rem;
+  padding: 0 1rem;
+  white-space: nowrap;
   cursor: pointer;
   transition: color .2s, border-color .2s, background .2s;
 }
@@ -1172,7 +1174,7 @@ html[data-skin="soft"] .year-divider::after {
   <div class="header-deco">
     <span></span><span></span><span></span><span></span><span></span>
   </div>
-  <a href="/settings-edit" id="admin-settings-link" class="hidden" style="position:absolute;top:20px;right:20px;font-size:.75rem;color:var(--text-dim);text-decoration:none;">⚙ Настройки</a>
+  <a href="/settings-edit" id="admin-settings-link" class="hidden" style="position:absolute;top:20px;right:20px;font-size:.75rem;color:var(--text-dim);text-decoration:none;">Настройки</a>
 </header>
 
 <script>
@@ -1220,14 +1222,14 @@ html[data-skin="soft"] .year-divider::after {
   </div>
 </div>
 
-<script src="js/config.js?v=5"></script>
-<script src="js/api.js?v=5"></script>
-<script src="js/cards.js?v=5"></script>
-<script src="js/now.js?v=5"></script>
-<script src="js/favorites.js?v=5"></script>
-<script src="js/reviews.js?v=5"></script>
-<script src="js/stats.js?v=5"></script>
-<script src="js/tierlist.js?v=5"></script>
+<script src="js/config.js?v=6"></script>
+<script src="js/api.js?v=6"></script>
+<script src="js/cards.js?v=6"></script>
+<script src="js/now.js?v=6"></script>
+<script src="js/favorites.js?v=6"></script>
+<script src="js/reviews.js?v=6"></script>
+<script src="js/stats.js?v=6"></script>
+<script src="js/tierlist.js?v=6"></script>
 
 <script>
 let _navInit = true;

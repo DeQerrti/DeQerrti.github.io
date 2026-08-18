@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="/js/utils.js?v=5"></script>
-<script src="/js/theme.js?v=5"></script>
-<script src="/js/config.js?v=5"></script>
-<link rel="stylesheet" href="/style.css?v=5">
-<link rel="stylesheet" href="/admin.css?v=5">
+<script src="/js/utils.js?v=6"></script>
+<script src="/js/theme.js?v=6"></script>
+<script src="/js/config.js?v=6"></script>
+<link rel="stylesheet" href="/style.css?v=6">
+<link rel="stylesheet" href="/admin.css?v=6">
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -321,11 +321,11 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
   <div class="grid">
     <div class="field">
       <label>Название *</label>
-      <input type="text" id="f-title" placeholder="Tokyo Ghoul">
+      <input type="text" id="f-title" placeholder="Название">
     </div>
     <div class="field">
       <label>Год</label>
-      <input type="text" id="f-year" placeholder="2014">
+      <input type="text" id="f-year" placeholder="Год выхода">
     </div>
     <div class="field">
       <label>Тип</label>
@@ -349,7 +349,7 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
     </div>
     <div class="field">
       <label>Формат (доп.)</label>
-      <input type="text" id="f-format" placeholder="TV · 12 эп.">
+      <input type="text" id="f-format" placeholder="Например: 12 серий">
     </div>
     <div class="field">
       <label>&nbsp;</label>
@@ -456,7 +456,7 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
       </div>
       <div class="field">
         <label>Превью — показывается на карточке</label>
-        <textarea id="f-preview" placeholder="Пара предложений о тайтле…" oninput="updatePreview()"></textarea>
+        <textarea id="f-preview" placeholder="Пара предложений — что это и о чём…" oninput="updatePreview()"></textarea>
         <div class="preview-box" id="preview-out">Здесь появится превью…</div>
       </div>
       <div class="field" style="margin-bottom:0;">
@@ -1678,6 +1678,6 @@ async function saveReview() {
 initPage();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=5"></script>
+<script src="js/backup.js?v=6"></script>
 </body>
 </html>

@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=5">
-<link rel="stylesheet" href="/admin.css?v=5">
-<script src="/js/utils.js?v=5"></script>
-<script src="/js/theme.js?v=5"></script>
-<script src="/js/config.js?v=5"></script>
+<link rel="stylesheet" href="/style.css?v=6">
+<link rel="stylesheet" href="/admin.css?v=6">
+<script src="/js/utils.js?v=6"></script>
+<script src="/js/theme.js?v=6"></script>
+<script src="/js/config.js?v=6"></script>
 <style>
 .logo { display: block; }
 
@@ -201,7 +201,7 @@ input::placeholder { color: var(--text-dim); }
   <div class="grid">
     <div class="field">
       <label>Имя *</label>
-      <input type="text" id="f-name" placeholder="Kaneki Ken">
+      <input type="text" id="f-name" placeholder="Имя">
     </div>
     <div class="field">
       <label>Тип</label>
@@ -241,7 +241,7 @@ input::placeholder { color: var(--text-dim); }
     </div>
     <div class="field full" id="field-from">
       <label>Откуда (необязательно)</label>
-      <input type="text" id="f-from" placeholder="Tokyo Ghoul">
+      <input type="text" id="f-from" placeholder="Из какого произведения">
     </div>
   </div>
 
@@ -566,7 +566,7 @@ function renderGroup(type, list) {
       <div class="entry-name">${esc(r.name)}</div>
       ${r.from ? `<div class="entry-type">${esc(r.from)}</div>` : ""}
       <div class="entry-type">${esc(typeLabel)}</div>
-      <button class="entry-edit" onclick="startEdit(${r.id})">✎ Изменить</button>
+      <button class="entry-edit" onclick="startEdit(${r.id})">Изменить</button>
     </div>`;
   }).join("");
   bindDnd(container);
@@ -750,6 +750,6 @@ async function saveEntry() {
 loadList();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=5"></script>
+<script src="js/backup.js?v=6"></script>
 </body>
 </html>

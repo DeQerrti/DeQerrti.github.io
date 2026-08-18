@@ -208,7 +208,7 @@ function renderTitleOfYear(list, year) {
   ).replace("{year}", year);
   const cards = list.map((r, i) => `<div class="year-spotlight-item">${manualCard(r, i)}</div>`).join("");
   return `<section class="stat-section">
-    <h2 class="section-title">🏆 ${esc(heading)}</h2>
+    <h2 class="section-title">${esc(heading)}</h2>
     <div class="year-spotlight-grid">${cards}</div>
   </section>`;
 }

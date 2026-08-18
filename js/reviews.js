@@ -216,7 +216,7 @@ function reviewModalBodyHtml(r) {
         <div class="review-modal-title" id="review-modal-title">${esc(r.title)}</div>
         <div class="review-meta-row">${formatYear ? `<span class="review-format">${esc(formatYear)}</span>` : ""}</div>
         ${dateStr ? `<div class="review-dateline">Ознакомился: <span>${esc(dateStr)}</span></div>` : ""}
-        ${r.rewatch_count > 0 ? `<div class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">↻ ×${r.rewatch_count}</div>` : ""}
+        ${r.rewatch_count > 0 ? `<div class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">Пересмотров: ${r.rewatch_count}</div>` : ""}
         ${grade ? `<div class="grade-chip" style="--gc:${grade.color}" data-tip="${esc(grade.desc)}">${esc(grade.name)}</div>` : ""}
       </div>
     </div>
@@ -317,7 +317,7 @@ function reviewCard(r, i) {
     : "";
 
   const rewatchHtml = r.rewatch_count > 0
-    ? `<div class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">↻ ×${r.rewatch_count}</div>`
+    ? `<div class="review-rewatch" title="Пересмотров: ${r.rewatch_count}">Пересмотров: ${r.rewatch_count}</div>`
     : "";
 
   const formatYear = [r.format, r.year].filter(Boolean).join(" · ");
@@ -339,7 +339,7 @@ function reviewCard(r, i) {
 
   const editId  = r.id ?? encodeURIComponent(r.title);
   const editBtn = isAdmin()
-    ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
+    ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">Править</a>`
     : "";
 
   // tabindex + role: карточка открывает модалку по клику, но до этой
