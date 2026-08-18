@@ -212,6 +212,9 @@ input::placeholder { color: var(--text-dim); }
           <option value="person">Персона</option>
         </select>
       </div>
+      <div style="font-size:.75rem;color:var(--text-dim);margin-top:.4rem;">
+        Не тот раздел нужен? Новые разделы «Любимого» заводятся в <a href="/settings-edit">настройках</a>, на вкладке «Вкладки».
+      </div>
     </div>
     <div class="field full field-subtype" id="field-subtype">
       <label>Роль персоны</label>
@@ -259,6 +262,8 @@ input::placeholder { color: var(--text-dim); }
   <div class="divider-title" id="persons-title" style="display:none">Персоны</div>
   <div class="entries-list" id="entries-list-person"></div>
 
+  <div id="entries-groups-custom"></div>
+
   <div class="order-hint" id="order-hint">Перетащи за ⠿, чтобы изменить порядок, затем нажми «Сохранить порядок»</div>
 
 </main>
@@ -266,8 +271,9 @@ input::placeholder { color: var(--text-dim); }
 <script>
 let editingId  = null;
 let allEntries = [];   // все записи как есть (для поиска при редактировании)
-let charList   = [];   // текущий порядок персонажей
-let personList = [];   // текущий порядок персон
+// Порядок записей по разделам — character/person встроенные, плюс
+// один ключ на каждый свой раздел из /settings-edit (id раздела).
+let groupLists = { character: [], person: [] };
 let orderDirty = false;
 let dragSrc    = null; // DOM-элемент, который сейчас тащим
 
@@ -388,6 +394,31 @@ async function removeSubtypePicker(key) {
 
 syncSubtypePickerLabel();
 document.addEventListener("tags-map-updated", syncSubtypePickerLabel);
+
+// ── Свои разделы «Любимого» (заводятся в /settings-edit) — добавляют
+// свои <option> в «Тип», рядом с встроенными Персонажем и Персоной.
+function favCustomCollections() {
+  return window.SITE_FAV_COLLECTIONS || [];
+}
+
+function populateTypeOptions() {
+  const select = document.getElementById("f-type");
+  const current = select.value;
+  select.querySelectorAll("option[data-custom]").forEach(o => o.remove());
+  favCustomCollections().forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c.id;
+    opt.textContent = c.label;
+    opt.dataset.custom = "1";
+    select.appendChild(opt);
+  });
+  if ([...select.options].some(o => o.value === current)) select.value = current;
+}
+
+document.addEventListener("site-labels-ready", () => {
+  populateTypeOptions();
+  loadList();
+});
 
 function onTypeChange() {
   const isPerson = document.getElementById("f-type").value === "person";
@@ -550,16 +581,21 @@ function fillForm(r) {
 }
 
 // ── Рендер одного из двух списков (персонажи / персоны) ──
+function favTypeLabel(type, subtype) {
+  if (type === "person") return SUBTYPE_LABELS[subtype] || "Персона";
+  if (type === "character") return "Персонаж";
+  return (favCustomCollections().find(c => c.id === type) || {}).label || type;
+}
+
 function renderGroup(type, list) {
   const container = document.getElementById(`entries-list-${type}`);
+  if (!container) return;
   if (!list.length) {
     container.innerHTML = `<div class="entries-empty">Пока пусто</div>`;
     return;
   }
   container.innerHTML = list.map((r) => {
-    const typeLabel = r.type === "person"
-      ? (SUBTYPE_LABELS[r.subtype] || "Персона")
-      : "Персонаж";
+    const typeLabel = favTypeLabel(r.type, r.subtype);
     return `
     <div class="entry-row" data-id="${r.id}" data-group="${type}" draggable="true">
       <span class="entry-drag-handle" title="Перетащить">⠿</span>
@@ -573,16 +609,29 @@ function renderGroup(type, list) {
   bindDnd(container);
 }
 
+// Свои разделы не живут в статичной разметке (как Персонажи/Персоны) —
+// пересобираем их контейнеры перед каждым рендером, по актуальному
+// списку из /settings-edit.
+function renderCustomGroupContainers() {
+  const wrap = document.getElementById("entries-groups-custom");
+  wrap.innerHTML = favCustomCollections().map(c => `
+    <div class="divider-title">${esc(c.label)}</div>
+    <div class="entries-list" id="entries-list-${esc(c.id)}"></div>
+  `).join("");
+}
+
 function renderList() {
-  renderGroup("character", charList);
-  renderGroup("person", personList);
+  renderCustomGroupContainers();
+  Object.keys(groupLists).forEach(type => renderGroup(type, groupLists[type]));
 
-  document.getElementById("persons-title").style.display = personList.length || charList.length ? "flex" : "none";
+  document.getElementById("persons-title").style.display =
+    groupLists.person.length || groupLists.character.length ? "flex" : "none";
 
+  const totalCount = Object.values(groupLists).reduce((n, l) => n + l.length, 0);
   const btn = document.getElementById("btn-save-order");
   const hint = document.getElementById("order-hint");
   btn.classList.toggle("visible", orderDirty);
-  hint.classList.toggle("visible", (charList.length + personList.length) > 1);
+  hint.classList.toggle("visible", totalCount > 1);
 }
 
 // ── Drag-and-drop внутри одного списка (персонажи ИЛИ персоны — раздельно) ──
@@ -610,7 +659,8 @@ function bindDnd(container) {
       if (!dragSrc || row === dragSrc || row.dataset.group !== dragSrc.dataset.group) return;
 
       const group = row.dataset.group;
-      const list  = group === "character" ? charList : personList;
+      const list  = groupLists[group];
+      if (!list) return;
       const srcId = Number(dragSrc.dataset.id);
       const targetId = Number(row.dataset.id);
       const srcIdx = list.findIndex(r => r.id === srcId);
@@ -638,8 +688,11 @@ async function loadList() {
     if (!data.length) return;
 
     allEntries = data;
-    charList   = data.filter(r => r.type === "character");
-    personList = data.filter(r => r.type === "person");
+    groupLists = { character: [], person: [] };
+    favCustomCollections().forEach(c => { groupLists[c.id] = []; });
+    Object.keys(groupLists).forEach(type => {
+      groupLists[type] = data.filter(r => r.type === type);
+    });
     orderDirty = false;
     document.getElementById("list-header").style.display = "flex";
     renderList();
@@ -658,13 +711,13 @@ async function startEdit(id) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// ── Сохранить порядок (обеих групп сразу) ───────
+// ── Сохранить порядок (всех разделов сразу) ─────
 async function saveOrder() {
   const btn = document.getElementById("btn-save-order");
   btn.disabled = true;
   btn.textContent = "Сохраняем…";
 
-  const newOrder = [...charList, ...personList].map(r => r.id);
+  const newOrder = Object.values(groupLists).flat().map(r => r.id);
 
   try {
     const res  = await fetch("/api/save-favorite", {
@@ -748,7 +801,6 @@ async function saveEntry() {
   btn.textContent = editingId !== null ? "Сохранить изменения" : "Сохранить";
 }
 
-loadList();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="js/backup.js?v=12"></script>
