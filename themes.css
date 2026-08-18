@@ -877,6 +877,398 @@ html[data-skin="brutal"] h2 {
   display: none;
 }
 
+/* ══ РИСОВАННЫЙ ══════════════════════════════════
+   Бумага и чернила: тёплый кремовый лист вместо экрана, рукописные
+   шрифты вместо гарнитур, неровные («нарисованные от руки») углы
+   вместо ровных скруглений, плоская тень со сдвигом вместо размытия —
+   как будто прямоугольник обведён маркером не по линейке.
+
+   Рамка везде — реальная тёмная линия (в отличие от неоморфизма, где
+   её нет вовсе): здесь глубина держится на контуре пером, а не на
+   свете. Двух картинок-иллюстраций тема не тянет — весь «рисованный»
+   эффект держится на форме и шрифте, этого достаточно и не плодит
+   лишних файлов, как в brutal с системными шрифтами.
+
+   --doodle-wobble — общее значение неровного border-radius, вынесено
+   переменной, чтобы не повторять четырёхзначный набор в каждом
+   правиле. Есть в двух калибровках: --doodle-wobble (крупные блоки,
+   в px — так их «зерно» не растёт вместе с блоком) и
+   --doodle-wobble-pill (мелкие — в %, чтобы форма не плющилась на
+   разной ширине). */
+[data-skin="doodle"] {
+  color-scheme: light;
+
+  --bg: #faf6ec;
+  --bg2: #f2ecdc;
+  --surface: #fffdf7;
+  --surface2: #f5efe0;
+  --border: #2e2a26;
+  --border2: #2e2a26;
+  --text: #2e2a26;
+  --text-dim: #7a7266;
+  --text-hi: #1c1915;
+
+  --doodle-wobble: 255px 15px 225px 15px/15px 225px 15px 255px;
+  --doodle-wobble-pill: 40% 60% 55% 45% / 45% 40% 60% 55%;
+  /* Та же идея, но в px: на широкой невысокой полосе (кнопки-аккордеоны,
+     чип оценки во всю ширину карточки) процентная формула выше
+     растягивается в лист/линзу — здесь скругление не зависит от того,
+     насколько элемент широкий. */
+  --doodle-wobble-wide: 22px 9px 20px 11px/11px 20px 9px 22px;
+
+  /* Визуальный язык */
+  --radius-btn: 999px;
+  --card-radius: 20px;
+  --card-border: 2px solid var(--text);
+  --card-shadow: 3px 4px 0 rgba(46, 42, 38, 0.85);
+  --card-shadow-hover: 5px 6px 0 rgba(46, 42, 38, 0.85);
+  --card-corner-display: none;
+  --card-img-filter: sepia(0.06) contrast(1.02);
+  --card-img-filter-hover: sepia(0.02) contrast(1.05);
+
+  --badge-bg: rgba(46, 42, 38, 0.78);
+  --badge-text: #fdf9ee;
+  --badge-text-dim: #e2dccb;
+  --badge-border: rgba(255, 255, 255, 0.5);
+  --badge-accent-border: transparent;
+
+  --tint: rgba(46, 42, 38, 0.05);
+  --tint-hi: rgba(46, 42, 38, 0.09);
+  --tint-line: rgba(46, 42, 38, 0.18);
+  --tint-line-hi: rgba(46, 42, 38, 0.3);
+
+  --scrim: rgba(28, 25, 21, 0.55);
+  --poster-scrim: rgba(46, 42, 38, 0.5);
+  --nav-bg: rgba(250, 246, 236, 0.94);
+  --shadow: rgba(46, 42, 38, 0.85);
+  --shadow-soft: rgba(46, 42, 38, 0.25);
+
+  --ok: #3f8f5f;
+  --ok-wash: rgba(63, 143, 95, 0.12);
+  --ok-fill: rgba(63, 143, 95, 0.22);
+  --ok-line: rgba(63, 143, 95, 0.45);
+  --err: #d1495b;
+}
+
+/* Заголовки — крупный маркер, остальной интерфейс — разборчивый
+   рукописный: Caveat читается только в больших кеглях, для кнопок и
+   тегов нужен более прямой Patrick Hand, иначе мелкий текст плывёт. */
+[data-skin="doodle"] .logo,
+[data-skin="doodle"] .section-title,
+[data-skin="doodle"] .modal-title,
+[data-skin="doodle"] .tab-btn,
+[data-skin="doodle"] .btn-save,
+[data-skin="doodle"] .card-title,
+[data-skin="doodle"] .review-title {
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  font-style: normal;
+}
+[data-skin="doodle"] .type-tag,
+[data-skin="doodle"] .watch-badge,
+[data-skin="doodle"] .rtag,
+[data-skin="doodle"] .grade-chip,
+[data-skin="doodle"] .btn,
+[data-skin="doodle"] .btn-new,
+[data-skin="doodle"] .icon-btn,
+[data-skin="doodle"] .tag-toggle,
+[data-skin="doodle"] .file-tab,
+[data-skin="doodle"] .theme-option,
+[data-skin="doodle"] .admin-add-btn,
+[data-skin="doodle"] .review-source-link,
+[data-skin="doodle"] .rv-filter-btn,
+[data-skin="doodle"] .tl-filter,
+[data-skin="doodle"] .tl-mode-btn,
+[data-skin="doodle"] .tl-label-name,
+[data-skin="doodle"] input,
+[data-skin="doodle"] select,
+[data-skin="doodle"] textarea {
+  font-family: "Patrick Hand", cursive;
+}
+
+/* ── Шапка и навигация: прямую линию заменяет волнистая, нарисованная
+   маской по тому же принципу, что лианы мягкой темы — просто вместо
+   отдельного SVG-файла инлайновый data-uri, узор совсем маленький. ── */
+[data-skin="doodle"] header {
+  border-bottom: none;
+}
+[data-skin="doodle"] header::after {
+  height: 6px;
+  background: var(--red);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 6'%3E%3Cpath d='M0 3 Q 5 0 10 3 T 20 3' stroke='%23000' fill='none' stroke-width='2.4'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 6'%3E%3Cpath d='M0 3 Q 5 0 10 3 T 20 3' stroke='%23000' fill='none' stroke-width='2.4'/%3E%3C/svg%3E");
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-size: 20px 6px;
+  -webkit-mask-size: 20px 6px;
+}
+[data-skin="doodle"] nav {
+  border-bottom: none;
+}
+[data-skin="doodle"] .tab-btn {
+  border: none;
+  background: transparent;
+  border-radius: var(--doodle-wobble-pill);
+  margin: 0.5rem 0.25rem;
+  padding: 0.5rem 1.15rem;
+}
+[data-skin="doodle"] .tab-btn.active {
+  color: var(--text-hi);
+  background: var(--accent-wash);
+  border: 2px solid var(--text);
+  transform: rotate(-1deg);
+}
+[data-skin="doodle"] .tab-btn.active::before {
+  display: none;
+}
+
+/* ── Заголовки разделов и разделители ── */
+[data-skin="doodle"] .section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  gap: 0.5rem;
+}
+[data-skin="doodle"] .section-title::before,
+[data-skin="doodle"] .section-title::after {
+  display: none;
+}
+[data-skin="doodle"] .year-divider::before,
+[data-skin="doodle"] .year-divider::after {
+  height: 6px;
+  background: var(--text-dim);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 6'%3E%3Cpath d='M0 3 Q 5 0 10 3 T 20 3' stroke='%23000' fill='none' stroke-width='2.4'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 6'%3E%3Cpath d='M0 3 Q 5 0 10 3 T 20 3' stroke='%23000' fill='none' stroke-width='2.4'/%3E%3C/svg%3E");
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-size: 20px 6px;
+  -webkit-mask-size: 20px 6px;
+}
+
+/* ── Бейджи на обложках ── */
+[data-skin="doodle"] .type-tag,
+[data-skin="doodle"] .watch-badge {
+  top: 0.5rem;
+  border-radius: var(--doodle-wobble-pill);
+  border: 1.5px solid var(--badge-border);
+  backdrop-filter: none;
+}
+[data-skin="doodle"] .type-tag {
+  right: 0.5rem;
+  transform: rotate(2deg);
+}
+[data-skin="doodle"] .watch-badge {
+  left: 0.5rem;
+  transform: rotate(-2deg);
+}
+
+/* ── Карточки отзывов: лёгкий вразнобой поворот по кругу из трёх,
+   чтобы сетка не выглядела наштампованной под линейку. При наведении
+   карточка выпрямляется и «приподнимается» — то же чувство, что при
+   взятии листка со стола. ── */
+[data-skin="doodle"] .review-card {
+  border: var(--card-border);
+  border-radius: var(--doodle-wobble);
+  box-shadow: var(--card-shadow);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+[data-skin="doodle"] .review-card-wrap:nth-child(3n + 1) .review-card {
+  transform: rotate(-0.6deg);
+}
+[data-skin="doodle"] .review-card-wrap:nth-child(3n + 2) .review-card {
+  transform: rotate(0.4deg);
+}
+[data-skin="doodle"] .review-card-wrap:nth-child(3n) .review-card {
+  transform: rotate(-0.3deg);
+}
+[data-skin="doodle"] .review-card-wrap:hover .review-card {
+  transform: rotate(0deg) translate(-2px, -3px);
+  box-shadow: var(--card-shadow-hover);
+}
+[data-skin="doodle"] .review-card img {
+  border-radius: 245px 10px 215px 10px/10px 215px 10px 245px;
+}
+
+/* ── Панель фильтров и поиск ──
+   Поле поиска — единственный пунктирный элемент темы: пунктир читается
+   как «впиши сюда», сплошная линия — как уже нарисованный контур. */
+[data-skin="doodle"] .rv-filters {
+  border: 2px solid var(--text);
+  border-radius: 30px 10px 30px 10px/10px 30px 10px 30px;
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+}
+[data-skin="doodle"] .rv-search-input {
+  border: 1.5px dashed var(--border2);
+  background: var(--bg);
+}
+[data-skin="doodle"] .rv-filter-btn,
+[data-skin="doodle"] .rtag,
+[data-skin="doodle"] .review-source-link {
+  border: 1.5px solid var(--text);
+  border-radius: var(--doodle-wobble-pill);
+  background: var(--surface);
+}
+[data-skin="doodle"] .admin-add-btn,
+[data-skin="doodle"] .grade-chip {
+  border: 1.5px solid var(--text);
+  border-radius: var(--doodle-wobble-wide);
+  background: var(--surface);
+}
+[data-skin="doodle"] .rv-filter-btn.active {
+  background: var(--accent-fill);
+  border-color: var(--red);
+  color: var(--text-hi);
+}
+
+/* ── Статистика и тир-лист ── */
+[data-skin="doodle"] .stat-counters {
+  border: 2px solid var(--text);
+  border-radius: 26px 8px 26px 8px/8px 26px 8px 26px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="doodle"] .stat-counter {
+  border-right: 1.5px dashed var(--border2);
+}
+[data-skin="doodle"] .tl-filter,
+[data-skin="doodle"] .tl-mode-btn {
+  border: 1.5px solid var(--text);
+  border-radius: var(--doodle-wobble-pill);
+  background: var(--surface);
+}
+[data-skin="doodle"] .tl-filter.active,
+[data-skin="doodle"] .tl-mode-btn.active {
+  background: var(--accent-fill);
+  border-color: var(--red);
+  color: var(--text-hi);
+}
+[data-skin="doodle"] .tl-row,
+[data-skin="doodle"] .tl-editor-row {
+  border: 2px solid var(--text);
+  border-radius: 26px 8px 26px 8px/8px 26px 8px 26px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="doodle"] .tl-label,
+[data-skin="doodle"] .tl-editor-label {
+  border-right: 1.5px dashed var(--border2);
+}
+/* Постеры узкие и высокие — тот же процентный wobble-pill на таком
+   соотношении сторон схлопывается в яйцо и обрезает картинку с
+   подписью. Фиксированный небольшой радиус вместо переменной. */
+[data-skin="doodle"] .tl-poster,
+[data-skin="doodle"] .tl-char-poster {
+  border-radius: 14px 8px 14px 8px/8px 14px 8px 14px;
+}
+
+/* ── Поля и кнопки в админке ── */
+[data-skin="doodle"] input,
+[data-skin="doodle"] select,
+[data-skin="doodle"] textarea {
+  background: var(--surface);
+  border: 1.5px dashed var(--border2);
+  border-radius: 10px;
+}
+[data-skin="doodle"] input:focus,
+[data-skin="doodle"] select:focus,
+[data-skin="doodle"] textarea:focus {
+  border-style: solid;
+  border-color: var(--red);
+}
+[data-skin="doodle"] input[type="color"] {
+  border-radius: 8px;
+  border-style: solid;
+}
+[data-skin="doodle"] .btn,
+[data-skin="doodle"] .btn-new,
+[data-skin="doodle"] .theme-option,
+[data-skin="doodle"] .icon-btn,
+[data-skin="doodle"] .file-tab,
+[data-skin="doodle"] .tag-toggle {
+  border: 1.5px solid var(--text);
+  border-radius: var(--doodle-wobble-pill);
+  background: var(--surface);
+  box-shadow: 2px 3px 0 rgba(46, 42, 38, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+/* Кнопки-аккордеоны на всю ширину строки — тот же приём, но со
+   спокойным скруглением из --doodle-wobble-wide (см. её комментарий
+   выше), иначе широкая плашка съезжает в лист/линзу. */
+[data-skin="doodle"] .src-add-btn,
+[data-skin="doodle"] .src-type-btn,
+[data-skin="doodle"] .tl-mode-add-btn {
+  border: 1.5px solid var(--text);
+  border-radius: var(--doodle-wobble-wide);
+  background: var(--surface);
+  box-shadow: 2px 3px 0 rgba(46, 42, 38, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+[data-skin="doodle"] .btn:hover,
+[data-skin="doodle"] .btn-new:hover,
+[data-skin="doodle"] .src-add-btn:hover,
+[data-skin="doodle"] .src-type-btn:hover,
+[data-skin="doodle"] .tl-mode-add-btn:hover,
+[data-skin="doodle"] .theme-option:hover,
+[data-skin="doodle"] .icon-btn:hover,
+[data-skin="doodle"] .file-tab:hover,
+[data-skin="doodle"] .tag-toggle:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 4px 0 rgba(46, 42, 38, 0.4);
+}
+[data-skin="doodle"] .theme-option.selected,
+[data-skin="doodle"] .tag-toggle.active {
+  background: var(--accent-fill);
+  border-color: var(--red);
+  color: var(--text-hi);
+}
+[data-skin="doodle"] .fav-toggle.on {
+  color: var(--red);
+}
+[data-skin="doodle"] .sec-body,
+[data-skin="doodle"] .modal,
+[data-skin="doodle"] .review-modal-panel {
+  border: 2px solid var(--text);
+  border-radius: 26px 8px 26px 8px/8px 26px 8px 26px;
+  box-shadow: var(--card-shadow);
+}
+
+/* Главная кнопка — крупный маркерный ярлык: толстый контур, плоская
+   чернильная тень со сдвигом, лёгкий поворот. При нажатии «вжимается»
+   в собственную тень — то же чувство отклика, что у brutal, но
+   мягче и без острых углов. */
+[data-skin="doodle"] .btn-save {
+  background: var(--red);
+  color: #fff;
+  border: 2.5px solid var(--text-hi);
+  border-radius: 30px 10px 30px 10px/10px 30px 10px 30px;
+  box-shadow: 4px 5px 0 var(--text-hi);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  transform: rotate(-0.4deg);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+[data-skin="doodle"] .btn-save:hover {
+  background: var(--red-hi);
+  transform: rotate(-0.4deg) translate(-2px, -2px);
+  box-shadow: 6px 7px 0 var(--text-hi);
+}
+[data-skin="doodle"] .btn-save:active {
+  transform: translate(2px, 3px);
+  box-shadow: 1px 1px 0 var(--text-hi);
+}
+[data-skin="doodle"] .btn-save::before,
+[data-skin="doodle"] .btn-save::after {
+  display: none;
+}
+
 /* ══ УКРАШЕНИЯ «МЯГКОГО БОТАНИЧЕСКОГО» ═══════════
    Лианы по обоим краям экрана: тема ботаническая, а поля на широких
    мониторах оставались пустыми.

@@ -24,6 +24,7 @@ const THEME_PRESETS = {
   soft:    { label: "Мягкий ботанический", defaultAccent: "#6b7f4a" },
   brutal:  { label: "Брутализм", defaultAccent: "#ff4d00" },
   neomorphism: { label: "Неоморфизм", defaultAccent: "#7c6fe0" },
+  doodle: { label: "Рисованный", defaultAccent: "#ef6a52" },
 };
 
 // Для выпадающих списков и сеток выбора: [{ id, label }]
