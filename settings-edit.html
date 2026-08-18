@@ -57,6 +57,26 @@
   .theme-option:hover { border-color: var(--red-dim); color: var(--text-hi); }
   .theme-option.selected { border-color: var(--red); color: var(--text-hi); background: var(--accent-wash); }
 
+  /* Попап выбора тёмная/светлая под пилюлей стиля. Позиционируется от
+     .theme-group, а не от самой пилюли, — так рамка попапа не скачет,
+     если пилюля меняет ширину (например, у неё появляется подпись
+     "— тёмная" после выбора). */
+  .theme-group { position: relative; }
+  .theme-popover {
+    position: absolute; top: calc(100% + 6px); left: 0; z-index: 20;
+    display: flex; flex-direction: column; gap: 2px; min-width: 150px;
+    background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
+    padding: 5px; box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  }
+  .theme-popover.hidden { display: none; }
+  .theme-popover button {
+    background: none; border: none; text-align: left; padding: 8px 10px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: .82rem; color: var(--text);
+    border-radius: 1px; transition: background .12s, color .12s;
+  }
+  .theme-popover button:hover { background: var(--surface2); color: var(--text-hi); }
+  .theme-popover button.current { color: var(--red-hi); }
+
   label { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; color: var(--text-dim);
     letter-spacing: .12em; text-transform: uppercase; margin: 16px 0 6px; }
   input[type="text"], input[type="color"], input[type="number"] {
@@ -468,20 +488,93 @@
   // светлой выглядела бы случайным набором.
   let themeColors = {};
 
+  // Тёмная/светлая пара живёт под одним базовым id (soft/soft-dark,
+  // classic/classic-light…) — группируем по нему, а не по общему
+  // списку, иначе десять пилюль в ряд плохо читаются. Какая из двух
+  // тёмная, а какая светлая — смотрим по-настоящему в themes.css
+  // (color-scheme), а не угадываем по суффиксу: он у разных пар стоит
+  // на разных сторонах (у классической светлая — новая, суффикс у
+  // неё; у остальных наоборот, суффикс у тёмной).
+  function themeIsDark(skin) {
+    for (const sheet of document.styleSheets) {
+      let rules;
+      try {
+        rules = sheet.cssRules;
+      } catch {
+        continue;
+      }
+      if (!rules) continue;
+      if (sheet.ownerNode && sheet.ownerNode.id === "theme-overrides") continue;
+      for (const rule of rules) {
+        if (!rule.selectorText) continue;
+        const sel = rule.selectorText.replace(/\s+/g, "");
+        if (sel === `[data-skin="${skin}"]` || sel === `html[data-skin="${skin}"]`) {
+          const cs = rule.style.getPropertyValue("color-scheme").trim();
+          if (cs) return cs === "dark";
+        }
+      }
+    }
+    return false;
+  }
+
+  function themeGroups() {
+    const groups = {};
+    for (const t of THEMES) {
+      const key = t.id.replace(/-dark$|-light$/, "");
+      const g = (groups[key] = groups[key] || { key, label: null, light: null, dark: null });
+      if (!/-dark$|-light$/.test(t.id)) g.label = t.label;
+      if (themeIsDark(t.id)) g.dark = t;
+      else g.light = t;
+    }
+    return Object.values(groups);
+  }
+
+  let openThemeGroup = null;
+
   function renderThemeGrid() {
     const grid = document.getElementById("themeGrid");
-    grid.innerHTML = THEMES.map(t =>
-      `<div class="theme-option${t.id === selectedTheme ? " selected" : ""}" data-theme="${t.id}">${t.label}</div>`
-    ).join("");
+    const groups = themeGroups();
+    grid.innerHTML = groups
+      .map(g => {
+        const active = [g.light, g.dark].find(v => v && v.id === selectedTheme);
+        const mode = active ? (g.dark && active.id === g.dark.id ? " — тёмная" : " — светлая") : "";
+        return `<div class="theme-group">
+        <div class="theme-option${active ? " selected" : ""}" data-group="${g.key}">${g.label}${mode}</div>
+        <div class="theme-popover hidden" id="popover-${g.key}">
+          ${g.light ? `<button type="button" class="${g.light.id === selectedTheme ? "current" : ""}" data-theme="${g.light.id}">Светлая</button>` : ""}
+          ${g.dark ? `<button type="button" class="${g.dark.id === selectedTheme ? "current" : ""}" data-theme="${g.dark.id}">Тёмная</button>` : ""}
+        </div>
+      </div>`;
+      })
+      .join("");
+
     grid.querySelectorAll(".theme-option").forEach(el => {
-      el.onclick = () => {
-        selectedTheme = el.dataset.theme;
+      el.onclick = e => {
+        e.stopPropagation();
+        const key = el.dataset.group;
+        openThemeGroup = openThemeGroup === key ? null : key;
+        grid.querySelectorAll(".theme-popover").forEach(p => {
+          p.classList.toggle("hidden", p.id !== `popover-${openThemeGroup}`);
+        });
+      };
+    });
+    grid.querySelectorAll(".theme-popover button").forEach(btn => {
+      btn.onclick = e => {
+        e.stopPropagation();
+        selectedTheme = btn.dataset.theme;
+        openThemeGroup = null;
         renderThemeGrid();
         renderPalette();
         previewPalette();
       };
     });
   }
+
+  document.addEventListener("click", () => {
+    if (!openThemeGroup) return;
+    openThemeGroup = null;
+    document.querySelectorAll(".theme-popover").forEach(p => p.classList.add("hidden"));
+  });
 
   // ── Палитра темы ─────────────────────────────
   // Цвета темы по умолчанию читаем прямо из подключённых стилей:
