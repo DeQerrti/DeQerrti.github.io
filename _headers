@@ -38,6 +38,16 @@
   # шаг, он же снимет главное возражение против этой строки.
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://wsrv.nl; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'
 
+# ── HTML-страницы: всегда перепроверять у сервера ──
+# Тот же баг, что уже чинили для style.css/themes.css/js: без этого
+# правила браузер может закэшировать саму разметку по эвристике и
+# показывать старую версию сайта, пока не сделаешь жёсткое обновление.
+/
+  Cache-Control: no-cache
+
+/*.html
+  Cache-Control: no-cache
+
 # ── Картинки, лежащие в этом репозитории ───────
 # Раньше они грузились с raw.githubusercontent.com в обход нашей CDN.
 # Теперь пути относительные (/chars/…, /covers/…), и кэшем управляем мы.
@@ -116,21 +126,31 @@
 
 /add
   X-Robots-Tag: noindex
+  Cache-Control: no-cache
 
 /chars-edit
   X-Robots-Tag: noindex
+  Cache-Control: no-cache
 
 /favorites-edit
   X-Robots-Tag: noindex
+  Cache-Control: no-cache
 
 /settings-edit
   X-Robots-Tag: noindex
+  Cache-Control: no-cache
 
 /reviews-order
   X-Robots-Tag: noindex
+  Cache-Control: no-cache
 
 /backup-history
   X-Robots-Tag: noindex
+  Cache-Control: no-cache
+
+/login
+  X-Robots-Tag: noindex
+  Cache-Control: no-cache
 
 /login.html
   X-Robots-Tag: noindex
