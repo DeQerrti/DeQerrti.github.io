@@ -79,9 +79,19 @@
 
   label { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; color: var(--text-dim);
     letter-spacing: .12em; text-transform: uppercase; margin: 16px 0 6px; }
-  input[type="text"], input[type="color"], input[type="number"] {
+  /* Голый input, а не input[type="text"]: у [data-skin="…"] input в
+     themes.css специфичность выше (добавлен атрибутный селектор), и
+     он спокойно перебивает эту строку в темах, которые сами её не
+     задают. С input[type="text"] специфичность была бы та же, что у
+     темы, а этот инлайновый <style> идёт в разметке позже — при
+     равенстве побеждал бы он, и поля были бы квадратными и с
+     одинаковой сплошной рамкой в любой теме (например, пунктир
+     рисованной темы никогда бы не появлялся). Ширину/высоту для
+     конкретных type= ниже это не задевает — они не пересекаются по
+     свойствам с тем, что перебивают темы. */
+  input, select {
     background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
-    padding: 8px 10px; border-radius: 2px; font-size: .9rem; font-family: 'Cormorant Garamond', serif;
+    border-radius: 2px; padding: 8px 10px; font-size: .9rem; font-family: 'Cormorant Garamond', serif;
     outline: none; transition: border-color .2s, background .2s;
   }
   input[type="text"]:focus, input[type="number"]:focus { border-color: var(--red); background: var(--bg2); }
@@ -95,10 +105,10 @@
      (style.css); ниже в разметке вместо голых <button> и .secondary/.icon-btn
      локальных стилей навешаны эти классы явно. */
 
+  /* Фон/рамка/радиус — уже в общем правиле input, select выше;
+     здесь только то, что нужно именно select. */
   select {
-    background: var(--surface2); border: 1px solid var(--border2); color: var(--text-hi);
-    padding: 8px 10px; border-radius: 2px; width: 100%; box-sizing: border-box;
-    font-family: 'Cormorant Garamond', serif; font-size: .95rem; outline: none;
+    width: 100%; box-sizing: border-box; font-size: .95rem;
   }
   select:focus { border-color: var(--red); }
 
