@@ -183,7 +183,20 @@
         <button class="btn-save" onclick="saveSettings()">Сохранить</button>
         <button type="button" class="pal-reset" onclick="resetPalette()">Вернуть все цвета темы</button>
       </div>
-      <div class="status-msg" id="status-appearance"></div>
+
+      <h2 class="section-h">Мои шаблоны</h2>
+      <p class="panel-intro">Снимок текущих цветов под своим именем. Переключишься на другую тему — он останется здесь, и можно будет вернуться одним кликом, не вспоминая, что и как было подогнано. «Применить» — только подставляет цвета в форму, чтобы они стали видны на сайте, нужно ещё нажать «Сохранить» выше.</p>
+      <div id="presetsList"></div>
+      <div class="row" style="margin-top: 14px">
+        <div>
+          <label>Название шаблона</label>
+          <input type="text" id="newPresetName" placeholder="Например: Хэллоуин" />
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost" onclick="saveAsPreset()">
+        Сохранить текущие цвета как шаблон
+      </button>
+      <div class="status-msg" id="status-presets"></div>
     </div>
 
     <div class="panel" id="panel-tabs">
@@ -468,6 +481,13 @@
   // светлой выглядела бы случайным набором.
   let themeColors = {};
 
+  // Именованные снимки палитры: [{ id, name, skin, colors }]. В отличие
+  // от themeColors (один слот на тему, теряется при переключении вида
+  // визуального языка на другой), это отдельная библиотека — можно
+  // держать сколько угодно вариантов даже для одной темы и вернуться
+  // к любому из них позже.
+  let presetsState = [];
+
   function renderThemeGrid() {
     const grid = document.getElementById("themeGrid");
     grid.innerHTML = THEMES.map(t =>
@@ -481,6 +501,55 @@
         previewPalette();
       };
     });
+  }
+
+  // ── Мои шаблоны ───────────────────────────────
+  function renderPresetsList() {
+    const box = document.getElementById("presetsList");
+    if (!presetsState.length) {
+      box.innerHTML = `<p class="pal-hint">Пока пусто — подгони цвета ниже и сохрани как шаблон.</p>`;
+      return;
+    }
+    box.innerHTML = presetsState.map(p => `
+      <div class="tab-row" id="presetrow-${p.id}">
+        <span class="tab-name" style="flex:1;">${esc(p.name)}
+          <span class="pal-hint">— ${esc((THEME_PRESETS[p.skin] || {}).label || p.skin)}</span>
+        </span>
+        <button class="icon-btn" title="Применить" onclick="applyPreset('${p.id}')">✓</button>
+        <button class="icon-btn" title="Удалить" onclick="removePreset('${p.id}')">✕</button>
+      </div>
+    `).join("");
+  }
+
+  // Снимок берём уже разрешённым (defaults + свои правки слиты в один
+  // объект), а не просто ссылкой на themeColors[selectedTheme]: иначе
+  // сброс цветов темы или правки в другом шаблоне задним числом
+  // поменяли бы то, что уже сохранено под этим именем.
+  function saveAsPreset() {
+    const input = document.getElementById("newPresetName");
+    const name = input.value.trim();
+    if (!name) return;
+    const defaults = themeDefaults(selectedTheme);
+    const own = themeColors[selectedTheme] || {};
+    const colors = { ...defaults, ...own };
+    presetsState.push({ id: slugify(name), name, skin: selectedTheme, colors });
+    input.value = "";
+    renderPresetsList();
+  }
+
+  function applyPreset(id) {
+    const p = presetsState.find(p => p.id === id);
+    if (!p) return;
+    selectedTheme = p.skin;
+    themeColors[p.skin] = { ...p.colors };
+    renderThemeGrid();
+    renderPalette();
+    previewPalette();
+  }
+
+  function removePreset(id) {
+    presetsState = presetsState.filter(p => p.id !== id);
+    renderPresetsList();
   }
 
   // ── Палитра темы ─────────────────────────────
@@ -792,8 +861,10 @@
     if (settings.customAccent && !themeHasOwnAccent && !(themeColors[selectedTheme] || {}).accent) {
       (themeColors[selectedTheme] = themeColors[selectedTheme] || {}).accent = settings.customAccent;
     }
+    presetsState = JSON.parse(JSON.stringify(settings.presets || []));
     renderThemeGrid();
     renderPalette();
+    renderPresetsList();
 
     const labels = settings.labels || {};
     renderLabelsPanel(labels);
@@ -976,6 +1047,20 @@
     return out;
   }
 
+  // Та же чистка, что и в prunePalette: шаблон под удалённую тему
+  // висел бы в файле мёртвым грузом и в списке смысла не имеет.
+  function prunePresets() {
+    return presetsState
+      .filter(p => THEME_PRESETS[p.skin])
+      .map(p => {
+        const kept = {};
+        for (const [key, value] of Object.entries(p.colors || {})) {
+          if (/^#[0-9a-f]{6}$/i.test(value)) kept[key] = value;
+        }
+        return { id: p.id, name: p.name, skin: p.skin, colors: kept };
+      });
+  }
+
   async function saveSettings() {
     tabOrderState.forEach(id => {
       const row = document.getElementById(`tabrow-${id}`);
@@ -1058,6 +1143,7 @@
       ...rawSettings,
       theme: selectedTheme,
       themeColors: prunePalette(),
+      presets: prunePresets(),
       customTags,
       customCategories: customCategoriesPayload,
       categoryColors,
