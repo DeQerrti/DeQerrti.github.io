@@ -124,9 +124,15 @@ function renderNow({ buckets, completed }) {
     .now-section-body.hidden { display: none; }
   </style>`;
 
+  // Секции копятся отдельно от html: тот всегда начинается с блока
+  // <style> выше, то есть пустым не бывает никогда. Раньше заглушка
+  // «список пуст» висела на `html || …` и поэтому не показывалась —
+  // на пустых данных вкладка оставалась просто белым листом.
+  let sections = "";
+
   for (const bucket of buckets) {
     if (window.SITE_HIDDEN_STATUSES?.has(bucket.key)) continue;
-    if (bucket.items.length) html += makeSection(bucket.key, bucket.label, bucket.items, collapsed);
+    if (bucket.items.length) sections += makeSection(bucket.key, bucket.label, bucket.items, collapsed);
   }
 
   // ── Архив — группируем по году ─────────────────
@@ -153,7 +159,7 @@ function renderNow({ buckets, completed }) {
         </div>`;
     }
 
-    html += `
+    sections += `
       <section class="group now-section" data-section="archive">
         <div class="now-section-header" onclick="toggleSection('archive')">
           <h2 class="section-title" style="margin-bottom:0;cursor:pointer;user-select:none">
@@ -168,5 +174,6 @@ function renderNow({ buckets, completed }) {
       </section>`;
   }
 
-  box.innerHTML = html || `<div class="state-box">${esc(siteLabel("empty", "list", "Список пуст"))}</div>`;
+  box.innerHTML = html +
+    (sections || `<div class="state-box">${esc(siteLabel("empty", "list", "Список пуст"))}</div>`);
 }
