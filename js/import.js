@@ -1,22 +1,16 @@
 // ══════════════════════════════════════════════
-//  IMPORT — перенос списка аниме и манги из чужих сервисов
-//  Зависит от: utils.js, config.js, api.js
+//  IMPORT — перенос списка из чужих сервисов
+//  Зависит от: utils.js, config.js, api.js, import-formats.js
 //
 //  Рассчитано на человека, который переезжает со своим списком в
-//  несколько сотен тайтлов. Поэтому импорт не «кнопка вслепую», а три
-//  шага: загрузил файл — увидел, что нашлось, и сам решил, как их
+//  несколько сотен записей. Поэтому импорт не «кнопка вслепую», а три
+//  шага: загрузил файл — увидел, что нашлось, и сам решил, как его
 //  оценки и статусы ложатся в твои — подтвердил. Сюрпризов быть не
 //  должно: чужая выгрузка попадает в паспорт только после явного да.
 //
-//  Разбирается XML в формате MyAnimeList — фактический стандарт для
-//  списков аниме и манги. Родными его выгружают сам MAL и Шикимори;
-//  для остальных сервисов существуют конвертеры в него же. Внутри
-//  формата лежат и аниме, и манга (а значит манхва, маньхуа и ранобэ),
-//  поэтому импорт не про один сервис и не про один вид контента.
-//
-//  Ключ сопоставления — series_animedb_id, то есть номер MAL: Шикимори
-//  использует его напрямую, AniList хранит рядом со своим
-//  (см. js/external-ids.js).
+//  Разбор форматов живёт отдельно, в js/import-formats.js: сервисов
+//  много, у каждого свои причуды, и держать их вперемешку с экраном
+//  было бы больно. Здесь — только то, что человек видит и решает.
 // ══════════════════════════════════════════════
 
 const IMPORT_ANILIST_ENDPOINT = "https://graphql.anilist.co";
@@ -24,48 +18,9 @@ const IMPORT_BATCH = 50; // AniList отдаёт до 50 записей за с�
 
 // Служебное значение в списке статусов: «здесь и сейчас завести свой».
 // Чаще всего это «Брошено» — статуса с таким смыслом у большинства нет,
-// а тайтлы под ним терять жалко. Уводить человека в другой раздел
+// а записи под ним терять жалко. Уводить человека в другой раздел
 // нельзя: разобранный файл живёт в памяти страницы и при уходе пропадёт.
 const NEW_STATUS_VALUE = "__new__";
-
-// Статусы MyAnimeList. Названия у аниме и манги разные («Watching» и
-// «Reading»), но смысл один — сводим к общим ключам, чтобы человеку
-// не пришлось настраивать одно и то же дважды.
-const MAL_STATUS_KEYS = {
-  watching: "Смотрю / читаю",
-  completed: "Просмотрено / прочитано",
-  onhold: "Отложено",
-  dropped: "Брошено",
-  plantowatch: "В планах",
-};
-
-function normalizeMalStatus(raw) {
-  const s = (raw || "").toLowerCase().replace(/[\s_-]/g, "");
-  if (s === "watching" || s === "reading") return "watching";
-  if (s === "completed") return "completed";
-  if (s === "onhold") return "onhold";
-  if (s === "dropped") return "dropped";
-  if (s === "plantowatch" || s === "plantoread") return "plantowatch";
-  return null;
-}
-
-// MAL-овские типы записи в наши. Всё, чего нет в таблице, станет тем,
-// что человек выберет для типа по умолчанию.
-const MAL_TYPE_MAP = {
-  tv: "anime",
-  ova: "anime",
-  ona: "anime",
-  special: "anime",
-  movie: "anime", // в списке аниме «Movie» — это полнометражка, а не кино
-  music: "anime",
-  manga: "manga",
-  manhwa: "manhwa",
-  manhua: "manhua",
-  novel: "novel",
-  lightnovel: "novel",
-  oneshot: "manga",
-  doujinshi: "manga",
-};
 
 let importData = null; // разобранная выгрузка
 let importStep = "file"; // file | map | done
@@ -73,60 +28,6 @@ let importBusy = false;
 let importStatusMap = {};
 let importScoreMap = {};
 let importSkipExisting = true;
-
-// ── Разбор выгрузки ────────────────────────────
-
-function parseMalExport(text) {
-  const doc = new DOMParser().parseFromString(text, "application/xml");
-  if (doc.querySelector("parsererror")) {
-    throw new Error("Файл не читается как XML. Выгрузка с Шикимори иногда приходит в архиве — распакуй его сначала.");
-  }
-
-  const entries = [...doc.querySelectorAll("anime, manga")];
-  if (!entries.length) {
-    throw new Error("В файле нет ни одной записи. Нужна выгрузка списка аниме или манги в формате MyAnimeList.");
-  }
-
-  const text_ = (el, tag) => el.querySelector(tag)?.textContent?.trim() || "";
-  const items = [];
-  let skipped = 0;
-
-  for (const el of entries) {
-    const isManga = el.tagName.toLowerCase() === "manga";
-    const malId = Number(text_(el, isManga ? "manga_mangadb_id" : "series_animedb_id"));
-    const title = text_(el, "series_title") || text_(el, "manga_title");
-    if (!malId || !title) { skipped++; continue; }
-
-    const rawStatus = text_(el, "my_status");
-    const status = normalizeMalStatus(rawStatus);
-    const score = Number(text_(el, "my_score")) || 0;
-    const rawType = (text_(el, "series_type") || text_(el, "manga_type") || "").toLowerCase().replace(/[\s_-]/g, "");
-
-    items.push({
-      malId,
-      title,
-      kind: isManga ? "manga" : "anime",
-      type: MAL_TYPE_MAP[rawType] || (isManga ? "manga" : "anime"),
-      status,
-      rawStatus: rawStatus || "—",
-      score, // 0 = не оценено
-      rewatch: Number(text_(el, "my_times_watched")) || 0,
-      dateStart: cleanMalDate(text_(el, "my_start_date")),
-      dateEnd: cleanMalDate(text_(el, "my_finish_date")),
-    });
-  }
-
-  if (!items.length) {
-    throw new Error("Записи в файле есть, но ни у одной нет номера и названия — разобрать нечего.");
-  }
-  return { items, skipped };
-}
-
-// MAL пишет «не заполнено» как 0000-00-00; такая дата хуже, чем никакой.
-function cleanMalDate(value) {
-  if (!value || /^0{4}-0{2}-0{2}$/.test(value)) return null;
-  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null;
-}
 
 // ── Умолчания для соответствий ─────────────────
 // Расставляются сами, но человек их правит: смысл шага именно в этом.
@@ -145,13 +46,33 @@ function defaultStatusMap() {
   };
 }
 
-// Десять баллов на N полок: делим шкалу пропорционально. Балл 10
-// попадает на лучшую полку, 1 — на худшую, остальное между ними.
+// Оценки. Шкала нигде не зашита: у MAL десятка, у Goodreads пятёрка,
+// у Letterboxd половинки звёзд. Берём значения, которые реально
+// встретились в файле, и раскладываем их по полкам пропорционально —
+// лучшее к лучшей, худшее к худшей.
+function scoresInFile() {
+  const values = new Set();
+  for (const item of importData.items) {
+    if (item.score > 0) values.add(item.score);
+  }
+  return [...values].sort((a, b) => b - a);
+}
+
 function defaultScoreMap() {
   const shelves = GRADE_ORDER;
+  const scores = scoresInFile();
+  if (!scores.length) return {};
+
+  // Границы берём у сервиса, а не из файла. Иначе у человека, который
+  // ставил только 8, 9 и 10, восьмёрка уехала бы на худшую полку —
+  // хотя по десятибалльной шкале это «хорошо».
+  const max = importData.scaleMax || Math.max(...scores);
+  const min = importData.scaleMin ?? Math.min(...scores);
+  const span = max - min || 1;
+
   const map = {};
-  for (let score = 1; score <= 10; score++) {
-    const position = (10 - score) / 9; // 0 — лучшее, 1 — худшее
+  for (const score of scores) {
+    const position = Math.min(Math.max((max - score) / span, 0), 1); // 0 — лучшее
     const idx = Math.min(Math.round(position * (shelves.length - 1)), shelves.length - 1);
     map[score] = shelves[idx];
   }
@@ -185,32 +106,68 @@ function renderImport() {
 function importFileHtml() {
   return `
     <p class="panel-intro">
-      Перенос списка аниме и манги. Нужен файл выгрузки в формате XML — том
-      же, что у MyAnimeList: на Шикимори это Профиль → Настройки → Списки →
-      Экспорт, на MAL — Profile → Export. С других сервисов подойдёт файл,
-      сконвертированный в этот же формат.
-      Ничего никуда не отправляется — файл разбирается прямо здесь, а в паспорт
-      записывается только после того, как ты подтвердишь.
+      Перенос списка из другого сервиса. Формат узнаётся сам, ничего выбирать
+      не нужно. Файл разбирается прямо здесь и никуда не отправляется, а в
+      паспорт попадает только после того, как ты подтвердишь.
     </p>
+    <div class="imp-sources">
+      <div class="imp-source">
+        <div class="imp-source-what">Аниме и манга</div>
+        <div class="imp-source-who">MyAnimeList, Шикимори — файл XML</div>
+      </div>
+      <div class="imp-source">
+        <div class="imp-source-what">Книги</div>
+        <div class="imp-source-who">Goodreads — файл CSV</div>
+      </div>
+      <div class="imp-source">
+        <div class="imp-source-what">Фильмы</div>
+        <div class="imp-source-who">Letterboxd — файл CSV</div>
+      </div>
+    </div>
     <div class="imp-actions">
       <label class="imp-file-btn">
-        <input type="file" id="imp-file" accept=".xml,application/xml,text/xml">
+        <input type="file" id="imp-file" accept=".xml,.csv,application/xml,text/xml,text/csv">
         <span>Выбрать файл выгрузки</span>
       </label>
     </div>
     <div class="status-msg" id="imp-status"></div>`;
 }
 
-// Что из выгрузки уже есть в паспорте — считаем по номеру MAL.
-function splitImportItems() {
-  const mine = new Map();
-  for (const r of cache.reviews || []) {
-    if (r.ids?.mal) mine.set(r.ids.mal, r);
+// Что из выгрузки уже есть в паспорте.
+//
+// Сначала по номерам — это не ошибается никогда. Но у Letterboxd
+// номеров нет вовсе, так что для фильмов остаётся название с годом.
+// Для фильма это приемлемо: у него одно каноническое название и один
+// год выхода, в отличие от аниме, где под одним именем идут три
+// сезона (см. историю с «Jujutsu Kaisen» в js/passports.js).
+function importMatchKeys(item) {
+  const keys = [];
+  for (const [base, value] of Object.entries(item.ids || {})) {
+    if (value) keys.push(`${base}:${value}`);
   }
+  const year = item.year ? String(item.year).slice(0, 4) : "";
+  keys.push(`t:${normTitle(item.title)}|${item.type || ""}|${year}`);
+  return keys;
+}
+
+function splitImportItems() {
+  // Индекс своих отзывов. Неоднозначные ключи выбрасываем: лучше
+  // посчитать запись новой, чем приписать чужую оценку не тому тайтлу.
+  const index = new Map();
+  const ambiguous = new Set();
+  for (const r of cache.reviews || []) {
+    for (const key of importMatchKeys(r)) {
+      if (index.has(key) && index.get(key) !== r) ambiguous.add(key);
+      else index.set(key, r);
+    }
+  }
+  for (const key of ambiguous) index.delete(key);
+
   const fresh = [];
   const existing = [];
   for (const item of importData.items) {
-    (mine.has(item.malId) ? existing : fresh).push(item);
+    const hit = importMatchKeys(item).some((k) => index.has(k));
+    (hit ? existing : fresh).push(item);
   }
   return { fresh, existing };
 }
@@ -224,11 +181,11 @@ function importMapHtml() {
   }
   const scored = importData.items.filter((i) => i.score > 0).length;
 
-  const statusRows = Object.keys(MAL_STATUS_KEYS)
+  const statusRows = Object.keys(IMPORT_STATUS_KEYS)
     .filter((key) => byStatus[key])
     .map((key) => `
       <div class="imp-row" id="imp-statusrow-${key}">
-        <div class="imp-from">${esc(MAL_STATUS_KEYS[key])} <span class="imp-count">${byStatus[key]}</span></div>
+        <div class="imp-from">${esc(IMPORT_STATUS_KEYS[key])} <span class="imp-count">${byStatus[key]}</span></div>
         <div class="imp-arrow">→</div>
         <select class="imp-select" data-status="${key}">
           <option value="">не импортировать</option>
@@ -245,31 +202,33 @@ function importMapHtml() {
         <button class="btn btn-ghost" data-cancel-status="${key}" type="button">Отмена</button>
       </div>`).join("");
 
-  const scoreRows = [];
-  for (let score = 10; score >= 1; score--) {
+  const scoreRows = scoresInFile().map((score) => {
     const n = importData.items.filter((i) => i.score === score).length;
-    if (!n) continue;
-    scoreRows.push(`
+    return `
       <div class="imp-row">
-        <div class="imp-from">${score} из 10 <span class="imp-count">${n}</span></div>
+        <div class="imp-from">${esc(String(score))} <span class="imp-count">${n}</span></div>
         <div class="imp-arrow">→</div>
-        <select class="imp-select" data-score="${score}">
+        <select class="imp-select" data-score="${esc(String(score))}">
           <option value="">без оценки</option>
           ${GRADE_ORDER.map((key) =>
             `<option value="${esc(key)}"${importScoreMap[score] === key ? " selected" : ""}>${esc(GRADES[key]?.name || key)}</option>`
           ).join("")}
         </select>
-      </div>`);
-  }
+      </div>`;
+  });
+
+  const noCovers = importData.items.some((i) => i.type === "movie");
 
   return `
+    <p class="imp-source-line">Узнан формат: <strong>${esc(importData.source)}</strong></p>
     <div class="imp-summary">
       ${impStat(importData.items.length, "в выгрузке")}
       ${impStat(fresh.length, "новых")}
       ${impStat(existing.length, "уже есть")}
       ${impStat(scored, "с оценкой")}
     </div>
-    ${importData.skipped ? `<p class="imp-note">${importData.skipped} записей пропущено — у них нет номера или названия.</p>` : ""}
+    ${importData.skipped ? `<p class="imp-note">${importData.skipped} записей пропущено — у них нет названия.</p>` : ""}
+    ${noCovers ? `<p class="imp-note">Обложек у фильмов в выгрузке нет, и взять их бесплатно неоткуда — приедут без картинок. Аниме, манга и книги обложки получат.</p>` : ""}
 
     <h2 class="section-h">Статусы</h2>
     <p class="panel-intro">Слева то, что стоит в выгрузке, справа — куда это ляжет у тебя.</p>
@@ -277,8 +236,9 @@ function importMapHtml() {
 
     <h2 class="section-h">Оценки</h2>
     <p class="panel-intro">
-      Десятибалльная шкала на твои полки. Расставлено поровну — поправь, если
-      у тебя другое представление о том, что такое «восьмёрка».
+      Шкала сервиса (от ${esc(String(importData.scaleMin ?? 1))} до
+      ${esc(String(importData.scaleMax ?? 10))}) разложена на твои полки поровну.
+      Поправь, если у тебя другое представление о том, что такое «восьмёрка».
     </p>
     ${scoreRows.join("") || `<p class="imp-note">В выгрузке нет ни одной оценки.</p>`}
 
@@ -370,11 +330,22 @@ async function createStatusFromImport(malKey) {
   }
 }
 
-// ── Обложки и номера AniList ───────────────────
-// В выгрузке их нет: MAL отдаёт только номер и название. Без обложки
-// сотня импортированных карточек выглядит пустыми рамками, поэтому
-// дозапрашиваем — тем же способом, что и scripts/enrich-ids.js, и так
-// же без ключей. Не получилось — не беда, тайтлы всё равно переедут.
+// ── Обложки ────────────────────────────────────
+// В выгрузках их нет ни у кого. Что можно достать без ключей:
+//
+//   аниме и манга — у AniList по номеру MAL, тем же способом, что и
+//   scripts/enrich-ids.js; заодно приезжает номер AniList и год;
+//
+//   книги — прямой ссылкой на Open Library по ISBN, даже без запроса:
+//   ?default=false заставляет её отдать 404 вместо пустой картинки,
+//   а с битой ссылкой сайт и так умеет (см. imgFallbackAttrs);
+//
+//   фильмы — никак. У TMDB нужен ключ, а в выгрузке Letterboxd нет
+//   даже номера. Приедут без обложек, и это честно сказано на экране.
+
+function openLibraryCover(isbn13) {
+  return `https://covers.openlibrary.org/b/isbn/${isbn13}-L.jpg?default=false`;
+}
 
 async function fetchAnilistMeta(malIds, onProgress) {
   const query = `
@@ -432,31 +403,41 @@ async function runImport() {
   }
 
   status.className = "status-msg";
-  status.textContent = "Спрашиваем обложки у AniList…";
-  const meta = await fetchAnilistMeta(
-    selected.map((i) => i.malId),
-    (done, total) => { status.textContent = `Спрашиваем обложки у AniList… ${done} из ${total}`; }
-  );
+
+  // Обложки есть только у аниме и манги — их и спрашиваем. Книгам
+  // хватит прямой ссылки по ISBN, фильмам взять неоткуда.
+  const malIds = selected.map((i) => i.ids?.mal).filter(Boolean);
+  let meta = new Map();
+  if (malIds.length) {
+    meta = await fetchAnilistMeta(malIds, (done, total) => {
+      status.textContent = `Спрашиваем обложки у AniList… ${done} из ${total}`;
+    });
+  }
 
   const payload = selected.map((item) => {
-    const extra = meta.get(item.malId);
-    const ids = { mal: item.malId };
+    const extra = item.ids?.mal ? meta.get(item.ids.mal) : null;
+    const ids = { ...(item.ids || {}) };
     if (extra?.id) ids.anilist = extra.id;
+
+    const cover =
+      extra?.coverImage?.large ||
+      (ids.isbn13 ? openLibraryCover(ids.isbn13) : null);
+
     return {
       title: item.title,
       type: item.type,
       status: importStatusMap[item.status],
       grade: item.score ? importScoreMap[item.score] || null : null,
-      year: extra?.startDate?.year ? String(extra.startDate.year) : null,
-      cover: extra?.coverImage?.large || null,
+      year: item.year || (extra?.startDate?.year ? String(extra.startDate.year) : null),
+      cover,
       rewatch_count: item.rewatch || 0,
       date_start: item.dateStart,
       date_end: item.dateEnd,
-      ids,
+      ids: Object.keys(ids).length ? ids : undefined,
     };
   });
 
-  status.textContent = `Записываем ${payload.length} тайтлов…`;
+  status.textContent = `Записываем ${payload.length} записей…`;
   try {
     const res = await fetch("/api/import-reviews", {
       method: "POST",
@@ -488,7 +469,7 @@ function bindImport() {
     status.className = "status-msg";
     status.textContent = "Читаем файл…";
     try {
-      const parsed = parseMalExport(await file.text());
+      const parsed = parseImportFile(await file.text(), file.name);
       // Перечитываем свои отзывы перед разбором: после предыдущего
       // импорта кэш сброшен, а без него «уже есть» посчиталось бы
       // нулём и вторая пачка приехала бы дублями.
@@ -608,6 +589,28 @@ function importStyles() {
     }
     .imp-arrow { color: var(--text-dim); flex-shrink: 0; }
     .imp-select { width: auto; min-width: 11rem; flex-shrink: 0; }
+
+    .imp-sources {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 2px;
+      overflow: hidden; margin: 1.2rem 0;
+    }
+    .imp-source { background: var(--surface); padding: .8rem .9rem; }
+    .imp-source-what {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 600; color: var(--text-hi);
+    }
+    .imp-source-who {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .68rem; color: var(--text-dim); margin-top: .2rem;
+    }
+    .imp-source-line {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .78rem; color: var(--text-dim); margin: 0 0 1rem;
+    }
+    .imp-source-line strong { color: var(--text-hi); font-weight: 500; }
 
     .imp-newstatus {
       display: flex; gap: .5rem; align-items: center;

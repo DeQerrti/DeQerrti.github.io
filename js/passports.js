@@ -113,7 +113,7 @@ function parsePassport(text) {
 // пишут по-разному. Название остаётся запасным вариантом для записей,
 // у которых номера ещё нет.
 
-const ID_MATCH_ORDER = ["mal", "anilist", "tmdb", "igdb", "hardcover_edition"];
+const ID_MATCH_ORDER = ["mal", "anilist", "tmdb", "igdb", "hardcover_edition", "goodreads", "isbn13"];
 
 function matchKeys(item) {
   const keys = [];

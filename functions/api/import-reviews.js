@@ -1,6 +1,6 @@
 import { json, requireAuth, githubGet, githubPut, decodeGithubJson, encodeGithubJson } from "../_shared.js";
 
-// Перенос списка с Шикимори, MyAnimeList или AniList.
+// Перенос списка из чужих сервисов (аниме, манга, книги, фильмы).
 //
 // Отдельный эндпоинт, а не save-review в цикле: тот пишет по коммиту на
 // отзыв, и список в пятьсот тайтлов означал бы пятьсот коммитов и столько
@@ -26,7 +26,7 @@ function sanitize(item) {
 
   const ids = {};
   if (item.ids && typeof item.ids === "object") {
-    for (const key of ["mal", "anilist", "tmdb", "igdb", "hardcover_edition"]) {
+    for (const key of ["mal", "anilist", "tmdb", "igdb", "hardcover_edition", "goodreads", "isbn13"]) {
       const value = num(item.ids[key]);
       if (value) ids[key] = value;
     }
@@ -81,10 +81,32 @@ export async function onRequest(context) {
     const sha = fileData.sha;
     const current = decodeGithubJson(fileData);
 
-    const byMal = new Map();
+    // Индекс по всему, чем запись можно опознать. Номера надёжнее, но
+    // есть не везде: Letterboxd не отдаёт их вовсе, поэтому для фильмов
+    // остаётся название с типом и годом. Ключ, под которым оказалось
+    // больше одной записи, выбрасываем — лучше завести дубль, чем
+    // переписать чужую оценку поверх не той записи.
+    const keysOf = (r) => {
+      const keys = [];
+      for (const [base, value] of Object.entries(r.ids || {})) {
+        if (value) keys.push(`${base}:${value}`);
+      }
+      const title = String(r.title || "").toLowerCase().trim().replace(/\s+/g, " ");
+      const year = r.year ? String(r.year).slice(0, 4) : "";
+      keys.push(`t:${title}|${r.type || ""}|${year}`);
+      return keys;
+    };
+
+    const index = new Map();
+    const ambiguous = new Set();
     for (const review of current) {
-      if (review?.ids?.mal) byMal.set(review.ids.mal, review);
+      for (const key of keysOf(review)) {
+        if (index.has(key) && index.get(key) !== review) ambiguous.add(key);
+        else index.set(key, review);
+      }
     }
+    for (const key of ambiguous) index.delete(key);
+
     let maxId = current.reduce((m, r) => Math.max(m, r.id ?? 0), 0);
 
     let added = 0;
@@ -92,9 +114,10 @@ export async function onRequest(context) {
 
     for (const raw of incoming) {
       const item = sanitize(raw);
-      if (!item.title || !item.ids?.mal) continue;
+      if (!item.title) continue;
 
-      const existing = byMal.get(item.ids.mal);
+      const itemKeys = keysOf(item);
+      const existing = itemKeys.map((k) => index.get(k)).find(Boolean);
       if (existing) {
         if (!body.overwrite) continue;
         // Обновляем только то, что пришло из выгрузки. Текст отзыва,
@@ -106,6 +129,10 @@ export async function onRequest(context) {
         if (item.date_start) existing.date_start = item.date_start;
         if (item.date_end) existing.date_end = item.date_end;
         existing.ids = { ...(existing.ids || {}), ...item.ids };
+        // Появившиеся номера делают запись опознаваемой и в следующий раз.
+        for (const key of keysOf(existing)) {
+          if (!index.has(key)) index.set(key, existing);
+        }
         updated++;
         continue;
       }
@@ -134,7 +161,12 @@ export async function onRequest(context) {
         id: maxId,
         ids: item.ids,
       });
-      byMal.set(item.ids.mal, current[current.length - 1]);
+      // Кладём в индекс сразу: если в одной выгрузке одна и та же
+      // запись встретится дважды, второй раз она уже найдётся.
+      const fresh = current[current.length - 1];
+      for (const key of keysOf(fresh)) {
+        if (!index.has(key)) index.set(key, fresh);
+      }
       added++;
     }
 
