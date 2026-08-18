@@ -919,9 +919,12 @@ html[data-skin="brutal-dark"] h2 {
 [data-skin="brutal-dark"] header {
   border-bottom: 4px solid #fff;
 }
+/* В светлой версии сплошная акцентная полоса работает как громкий
+   бренд-росчерк на спокойном фоне — на чёрном фоне рядом с белой
+   рамкой она читается как случайная деталь, а не приём. Здесь и без
+   неё есть чёткая белая линия под шапкой. */
 [data-skin="brutal-dark"] header::after {
-  height: 8px;
-  background: var(--red);
+  display: none;
 }
 [data-skin="brutal-dark"] nav {
   border-bottom: 4px solid #fff;
