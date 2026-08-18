@@ -287,10 +287,14 @@ section.group { margin-bottom: 3.5rem; }
 .card { animation: fadeUp .3s ease both; }
 
 /* ══ REVIEWS GRID ════════════════════════════════ */
-.reviews-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
-@media (min-width: 700px)  { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1050px) { .reviews-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 1400px) { .reviews-grid { grid-template-columns: repeat(4, 1fr); } }
+/* minmax(0, 1fr), а не просто 1fr: колонка по умолчанию не даёт себе стать
+   уже min-content своего содержимого, а карточка отзыва с обложкой в 150px
+   и текстом внутри как раз шире экрана телефона — из-за этого вся страница
+   уезжала вбок примерно на 20px. */
+.reviews-grid { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 700px)  { .reviews-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1050px) { .reviews-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1400px) { .reviews-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
 /* ══ REVIEW CARD ═════════════════════════════════ */
 .review-card-wrap { position: relative; height: 100%; }
@@ -866,6 +870,12 @@ section.group { margin-bottom: 3.5rem; }
     font-size: .58rem;
     padding: .32rem .7rem;
   }
+
+  /* На телефоне 2.5rem полей с каждой стороны съедали пятую часть экрана,
+     а обложка в 150px оставляла тексту отзыва колонку в два слова. */
+  main { padding-left: 1.1rem; padding-right: 1.1rem; }
+  .review-top { gap: .8rem; padding: .9rem; }
+  .review-cover-col { width: 108px; }
 }
 
 /* ══ REVIEW FILTERS ══════════════════════════════ */
