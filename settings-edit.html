@@ -1016,6 +1016,15 @@
     renderStatusesList();
   }
 
+  // Статус можно завести и из «Импорта», не уходя с разобранного файла
+  // (js/import.js). Тогда эта панель осталась бы со старым списком, и
+  // её «Сохранить» затёрло бы только что заведённый статус — поэтому
+  // импорт зовёт этот хук сразу после записи настроек.
+  function onStatusBucketsChanged(buckets) {
+    statusBuckets = JSON.parse(JSON.stringify(buckets));
+    renderStatusesList();
+  }
+
   const BUILTIN_CAT_DEFAULTS = {
     visual: "Визуал / звук",
     plot: "Сюжет / нарратив",

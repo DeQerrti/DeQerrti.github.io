@@ -17,6 +17,12 @@
 const IMPORT_ANILIST_ENDPOINT = "https://graphql.anilist.co";
 const IMPORT_BATCH = 50; // AniList отдаёт до 50 записей за страницу
 
+// Служебное значение в списке статусов: «здесь и сейчас завести свой».
+// Чаще всего это «Брошено» — статуса с таким смыслом у большинства нет,
+// а тайтлы под ним терять жалко. Уводить человека в другой раздел
+// нельзя: разобранный файл живёт в памяти страницы и при уходе пропадёт.
+const NEW_STATUS_VALUE = "__new__";
+
 // Статусы MyAnimeList. Названия у аниме и манги разные («Watching» и
 // «Reading»), но смысл один — сводим к общим ключам, чтобы человеку
 // не пришлось настраивать одно и то же дважды.
@@ -214,7 +220,7 @@ function importMapHtml() {
   const statusRows = Object.keys(MAL_STATUS_KEYS)
     .filter((key) => byStatus[key])
     .map((key) => `
-      <div class="imp-row">
+      <div class="imp-row" id="imp-statusrow-${key}">
         <div class="imp-from">${esc(MAL_STATUS_KEYS[key])} <span class="imp-count">${byStatus[key]}</span></div>
         <div class="imp-arrow">→</div>
         <select class="imp-select" data-status="${key}">
@@ -223,7 +229,13 @@ function importMapHtml() {
           ${activeStatusBuckets().map((b) =>
             `<option value="${esc(b.key)}"${importStatusMap[key] === b.key ? " selected" : ""}>${esc(b.label)}</option>`
           ).join("")}
+          <option value="${NEW_STATUS_VALUE}">+ завести свой статус…</option>
         </select>
+      </div>
+      <div class="imp-newstatus hidden" id="imp-newstatus-${key}">
+        <input type="text" id="imp-newstatus-name-${key}" placeholder="Например: Брошено" maxlength="40">
+        <button class="btn btn-ghost" data-create-status="${key}" type="button">Завести</button>
+        <button class="btn btn-ghost" data-cancel-status="${key}" type="button">Отмена</button>
       </div>`).join("");
 
   const scoreRows = [];
@@ -297,6 +309,58 @@ function impStat(value, label) {
     <div class="imp-stat-value">${value}</div>
     <div class="imp-stat-label">${esc(label)}</div>
   </div>`;
+}
+
+// ── Заведение статуса на месте ─────────────────
+
+async function createStatusFromImport(malKey) {
+  const input = document.getElementById(`imp-newstatus-name-${malKey}`);
+  const status = document.getElementById("imp-status");
+  const name = input.value.trim();
+  if (!name) { input.focus(); return; }
+
+  const existing = activeStatusBuckets().find(
+    (b) => b.label.toLowerCase() === name.toLowerCase()
+  );
+  if (existing) {
+    // Такой статус уже есть — просто выбираем его, а не плодим двойник.
+    importStatusMap[malKey] = existing.key;
+    renderImport();
+    return;
+  }
+
+  // Ключ строится так же, как в панели «Оценки и статусы», чтобы
+  // заведённое отсюда ничем не отличалось от заведённого там.
+  const key =
+    "status_" +
+    name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) +
+    "_" + Date.now().toString(36).slice(-4);
+
+  status.className = "status-msg";
+  status.textContent = `Заводим статус «${name}»…`;
+  try {
+    const saved = await patchSiteSettings((settings) => {
+      const current = settings.statusBuckets?.length
+        ? settings.statusBuckets
+        : DEFAULT_STATUS_BUCKETS.map((b) => ({ ...b, removable: false }));
+      settings.statusBuckets = [...current, { key, label: name, removable: true }];
+    });
+
+    // Статус должен появиться сразу и здесь, и на самом сайте.
+    window.SITE_STATUS_BUCKETS = saved.statusBuckets;
+    // Панель «Оценки и статусы» держит свою копию списка, и её
+    // сохранение затёрло бы новый статус. Даём ей знать.
+    if (typeof onStatusBucketsChanged === "function") {
+      onStatusBucketsChanged(saved.statusBuckets);
+    }
+
+    importStatusMap[malKey] = key;
+    status.textContent = `Статус «${name}» заведён.`;
+    renderImport();
+  } catch (err) {
+    status.className = "status-msg err";
+    status.textContent = `Не получилось завести статус: ${err.message}`;
+  }
 }
 
 // ── Обложки и номера AniList ───────────────────
@@ -417,7 +481,12 @@ function bindImport() {
     status.className = "status-msg";
     status.textContent = "Читаем файл…";
     try {
-      importData = parseMalExport(await file.text());
+      const parsed = parseMalExport(await file.text());
+      // Перечитываем свои отзывы перед разбором: после предыдущего
+      // импорта кэш сброшен, а без него «уже есть» посчиталось бы
+      // нулём и вторая пачка приехала бы дублями.
+      await fetchReviews();
+      importData = parsed;
       importStatusMap = defaultStatusMap();
       importScoreMap = defaultScoreMap();
       importStep = "map";
@@ -429,7 +498,35 @@ function bindImport() {
   });
 
   document.querySelectorAll("[data-status]").forEach((sel) => {
-    sel.addEventListener("change", () => { importStatusMap[sel.dataset.status] = sel.value; });
+    sel.addEventListener("change", () => {
+      const malKey = sel.dataset.status;
+      if (sel.value === NEW_STATUS_VALUE) {
+        // Возвращаем список к прошлому выбору: служебный пункт не
+        // должен остаться выбранным, если человек передумает.
+        sel.value = importStatusMap[malKey] || "";
+        const form = document.getElementById(`imp-newstatus-${malKey}`);
+        form.classList.remove("hidden");
+        document.getElementById(`imp-newstatus-name-${malKey}`).focus();
+        return;
+      }
+      importStatusMap[malKey] = sel.value;
+    });
+  });
+
+  document.querySelectorAll("[data-create-status]").forEach((btn) => {
+    btn.addEventListener("click", () => createStatusFromImport(btn.dataset.createStatus));
+  });
+  document.querySelectorAll("[data-cancel-status]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.getElementById(`imp-newstatus-${btn.dataset.cancelStatus}`).classList.add("hidden");
+    });
+  });
+  document.querySelectorAll(".imp-newstatus input").forEach((input) => {
+    input.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      createStatusFromImport(input.id.replace("imp-newstatus-name-", ""));
+    });
   });
   document.querySelectorAll("[data-score]").forEach((sel) => {
     sel.addEventListener("change", () => { importScoreMap[sel.dataset.score] = sel.value; });
@@ -504,6 +601,13 @@ function importStyles() {
     }
     .imp-arrow { color: var(--text-dim); flex-shrink: 0; }
     .imp-select { width: auto; min-width: 11rem; flex-shrink: 0; }
+
+    .imp-newstatus {
+      display: flex; gap: .5rem; align-items: center;
+      padding: .6rem 0 .8rem; flex-wrap: wrap;
+    }
+    .imp-newstatus.hidden { display: none; }
+    .imp-newstatus input { width: auto; flex: 1; min-width: 10rem; }
 
     @media (max-width: 520px) {
       .imp-row { flex-wrap: wrap; }
