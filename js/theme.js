@@ -21,10 +21,15 @@
 // акцент вручную.
 const THEME_PRESETS = {
   classic: { label: "Классический" },
-  soft:    { label: "Мягкий ботанический", defaultAccent: "#6b7f4a" },
-  brutal:  { label: "Брутализм", defaultAccent: "#ff4d00" },
+  "classic-light": { label: "Классический светлый" },
+  soft: { label: "Мягкий ботанический", defaultAccent: "#6b7f4a" },
+  "soft-dark": { label: "Мягкий ботанический тёмный", defaultAccent: "#7fae5a" },
+  brutal: { label: "Брутализм", defaultAccent: "#ff4d00" },
+  "brutal-dark": { label: "Брутализм тёмный", defaultAccent: "#ff4d00" },
   neomorphism: { label: "Неоморфизм", defaultAccent: "#7c6fe0" },
+  "neomorphism-dark": { label: "Неоморфизм тёмный", defaultAccent: "#8a7bf0" },
   doodle: { label: "Рисованный", defaultAccent: "#ef6a52" },
+  "doodle-dark": { label: "Рисованный тёмный", defaultAccent: "#ff8a5c" },
 };
 
 // Для выпадающих списков и сеток выбора: [{ id, label }]
