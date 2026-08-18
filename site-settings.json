@@ -127,6 +127,10 @@
       "composer": "Композитор"
     }
   },
-  "themeColors": {},
+  "themeColors": {
+    "doodle-dark": {
+      "accent": "#36299e"
+    }
+  },
   "presets": []
 }
