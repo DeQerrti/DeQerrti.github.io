@@ -84,14 +84,17 @@
 [data-skin="soft"] {
   color-scheme: light;
 
+  /* Фон — тёплый кремовый, панели и карточки — приглушённый авокадо.
+     Раньше --surface был почти белым (#fbf8f0) и блоки выглядели
+     «голыми»: в тёплой зелёной теме белый читается как дырка в макете. */
   --bg: #f4efe3;
   --bg2: #ece5d5;
-  --surface: #fbf8f0;
-  --surface2: #e8e6d0;
-  --border: #d9d2b8;
-  --border2: #b9b591;
-  --text: #5d6150;
-  --text-dim: #9a9782;
+  --surface: #e9edd8;
+  --surface2: #dee4c5;
+  --border: #d0d7b4;
+  --border2: #b3bd90;
+  --text: #555c48;
+  --text-dim: #8b9077;
   --text-hi: #2f3a26;
 
   /* Визуальный язык */
@@ -107,8 +110,8 @@
   /* Бейджи на карточках: в тёмных темах они тёмные, здесь на светлых
      обложках такие сливались бы — поэтому шалфейные с тёмным текстом. */
   --badge-bg: rgba(125, 143, 95, 0.9);
-  --badge-text: #fbf8f0;
-  --badge-text-dim: #f1eee2;
+  --badge-text: #f7f4e8;
+  --badge-text-dim: #ebe7d6;
   --badge-border: transparent;
   --badge-accent-border: transparent;
 }
@@ -201,8 +204,17 @@
 }
 [data-skin="soft"] .btn-save,
 [data-skin="soft"] .sec-body,
-[data-skin="soft"] .modal {
+[data-skin="soft"] .modal,
+[data-skin="soft"] .review-modal-panel {
   border-radius: 16px;
+}
+
+/* Подложка модалок в базовой теме — почти чёрная (85% чёрного). На
+   светлой теме это выглядит как выключенный свет, поэтому здесь она
+   мягкая и в тон: затемняет ровно настолько, чтобы фон ушёл назад. */
+[data-skin="soft"] .modal-overlay,
+[data-skin="soft"] .review-modal-overlay {
+  background: rgba(58, 62, 40, 0.42);
 }
 
 /* Публичные карточки и панели: базовые стили дают им прямые углы и
@@ -221,11 +233,23 @@
   border-radius: 14px;
 }
 
-[data-skin="soft"] .rv-toolbar {
+/* Панель фильтров. Скруглять надо именно .rv-filters — это inline-flex
+   коробка с падингом; .rv-toolbar же тянется на всю ширину строки и
+   фон на ней превращался в пустую растянутую плашку. */
+[data-skin="soft"] .rv-filters {
   border: none;
   border-radius: 18px;
   background: var(--surface);
   box-shadow: var(--card-shadow);
+}
+/* Поле поиска лежит внутри .rv-filters — на общем фоне оно бы слилось,
+   поэтому оно светлее панели, а не темнее. */
+[data-skin="soft"] .rv-search-input {
+  background: var(--bg);
+}
+[data-skin="soft"] .rv-search-input:focus {
+  background: #fbf8ee;
+  border-color: var(--border2);
 }
 [data-skin="soft"] .rv-filter-btn,
 [data-skin="soft"] .rv-search-input,
@@ -235,6 +259,41 @@
 [data-skin="soft"] .review-source-link {
   border-radius: var(--radius-btn, 999px);
 }
+/* Статистика и тир-лист: те же прямые углы из базовой темы, что и у
+   панели фильтров, — приводим к общему скруглению. */
+[data-skin="soft"] .stat-counters {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="soft"] .stat-counter {
+  border-right-color: var(--bg2);
+}
+[data-skin="soft"] .tl-filter,
+[data-skin="soft"] .tl-mode-btn {
+  border-radius: var(--radius-btn, 999px);
+}
+[data-skin="soft"] .tl-row {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="soft"] .tl-label {
+  border-right-color: var(--bg2);
+}
+[data-skin="soft"] .tl-poster,
+[data-skin="soft"] .tl-char-poster {
+  border-radius: 12px;
+}
+[data-skin="soft"] .tl-filter.active,
+[data-skin="soft"] .tl-mode-btn.active {
+  background: rgba(125, 143, 95, 0.24);
+  border-color: transparent;
+  color: var(--text-hi);
+}
+
 [data-skin="soft"] .rv-filter-btn.active {
   background: rgba(125, 143, 95, 0.24);
   border-color: transparent;

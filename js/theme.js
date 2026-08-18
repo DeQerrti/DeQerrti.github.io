@@ -117,6 +117,7 @@ async function applyTheme() {
   window.SITE_LABELS = mergeLabels(settings.labels);
   window.SITE_LABEL_OVERRIDES = settings.labels || {};
   window.SITE_CUSTOM_TAGS = settings.customTags || {};
+  window.SITE_HIDDEN_TAGS = settings.hiddenTags || [];
   window.SITE_CUSTOM_TYPES = settings.customTypes || {};
   window.SITE_HIDDEN_TYPES = settings.hiddenTypes || [];
   window.SITE_CUSTOM_TYPE_PLURAL = settings.customTypePlural || {};

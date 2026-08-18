@@ -425,6 +425,11 @@ const TAGS_MAP = {
   "Биография":      { cat: "special", tip: "Реальный человек или основано на реальных событиях" },
 };
 
+// Снимок встроенных тегов, сделанный до того, как в TAGS_MAP подмешаются
+// пользовательские. Нужен редактору тегов: встроенный тег нельзя просто
+// удалить из объекта — его удаление и переименование живут в hiddenTags.
+const BUILTIN_TAG_NAMES = new Set(Object.keys(TAGS_MAP));
+
 const TAG_CAT_CLASS = {
   visual:  "rtag-visual",
   plot:    "rtag-plot",
@@ -441,6 +446,10 @@ const CAT_LABELS = {
   genre:   "Жанр",
 };
 
+// Ключи встроенных категорий — по той же причине, что и BUILTIN_TAG_NAMES:
+// их можно переименовать и покрасить, но не удалить.
+const BUILTIN_CAT_KEYS = new Set(Object.keys(CAT_LABELS));
+
 // Заполняется только для пользовательских категорий (у встроенных цвета нет —
 // они все выглядят нейтрально). ключ → hex-цвет.
 const CAT_COLORS = {};
@@ -452,6 +461,12 @@ const CAT_COLORS = {};
 document.addEventListener("site-labels-ready", () => {
   const custom = window.SITE_CUSTOM_TAGS || {};
   Object.assign(TAGS_MAP, custom);
+
+  // Скрытые теги — тот же приём, что и с типами/ролями: встроенный тег
+  // нельзя вырезать из этого файла, поэтому удаление и переименование
+  // встроенного тега складывается в hiddenTags, а новое имя (если оно
+  // есть) уже пришло выше в customTags.
+  for (const name of window.SITE_HIDDEN_TAGS || []) delete TAGS_MAP[name];
 
   const overrides = window.SITE_LABEL_OVERRIDES || {};
 

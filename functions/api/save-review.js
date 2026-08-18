@@ -61,6 +61,58 @@ export async function onRequest(context) {
     }
   }
 
+  // ── Переименование или удаление тега во всех отзывах ──
+  // Приходит { _rename_tag: { from: "Старое имя", to: "Новое имя" } };
+  // to === null (или пустая строка) означает «удалить тег отовсюду».
+  //
+  // Отзывы хранят теги строками, поэтому правку названия нельзя оставить
+  // только в site-settings.json: старые отзывы остались бы со строкой,
+  // которой больше нет в справочнике, — без подсказки и без цвета.
+  if (review._rename_tag && typeof review._rename_tag === "object") {
+    const from = String(review._rename_tag.from || "").trim();
+    const to   = String(review._rename_tag.to   || "").trim();
+    if (!from) return json({ error: "Не указан тег" }, 400);
+
+    try {
+      const getRes = await githubGet(repo, path, ghToken);
+      if (!getRes.ok) {
+        const errText = await getRes.text();
+        return json({ error: `GitHub GET failed: ${getRes.status} — ${errText}` }, 500);
+      }
+
+      const fileData = await getRes.json();
+      const sha      = fileData.sha;
+      const current  = decodeGithubJson(fileData);
+
+      let touched = 0;
+      const updated = current.map((r) => {
+        if (!Array.isArray(r.tags) || !r.tags.includes(from)) return r;
+        touched++;
+        // Через Set, чтобы переименование в уже существующий тег
+        // не оставило дубль в одном отзыве.
+        const tags = [...new Set(r.tags.map((t) => (t === from ? to : t)).filter(Boolean))];
+        return { ...r, tags };
+      });
+
+      if (!touched) return json({ ok: true, touched: 0 });
+
+      const content = encodeGithubJson(updated);
+      const message = to
+        ? `tags: rename "${from}" → "${to}"`
+        : `tags: remove "${from}"`;
+      const putRes = await githubPut(repo, path, content, sha, message, ghToken);
+
+      if (!putRes.ok) {
+        const err = await putRes.json();
+        return json({ error: `GitHub PUT failed: ${putRes.status} — ${err.message}` }, 500);
+      }
+
+      return json({ ok: true, touched });
+    } catch (e) {
+      return json({ error: e.message }, 500);
+    }
+  }
+
   // ── Обычное сохранение / редактирование отзыва ─
   if (!review.title) {
     return json({ error: "Нужно название" }, 400);

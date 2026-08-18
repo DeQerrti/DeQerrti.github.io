@@ -10,12 +10,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="/js/utils.js?v=9"></script>
-<script src="/js/theme.js?v=9"></script>
-<script src="/js/config.js?v=9"></script>
-<link rel="stylesheet" href="/style.css?v=9">
-<link rel="stylesheet" href="/admin.css?v=9">
-<link rel="stylesheet" href="/themes.css?v=9">
+<script src="/js/utils.js?v=10"></script>
+<script src="/js/theme.js?v=10"></script>
+<script src="/js/config.js?v=10"></script>
+<link rel="stylesheet" href="/style.css?v=10">
+<link rel="stylesheet" href="/admin.css?v=10">
+<link rel="stylesheet" href="/themes.css?v=10">
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -242,8 +242,44 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
   text-transform: uppercase; padding: .55rem; cursor: pointer; transition: all .15s; }
 .tag-modal-tab:hover { color: var(--text); }
 .tag-modal-tab.active { color: var(--text-hi); border-color: var(--red-dim); background: rgba(139,26,26,.1); }
-.tag-modal-tab-panel .btn-save { margin-top: .5rem; }
 #tag-modal-status { margin-top: .75rem; }
+
+/* Модалка одновременно и форма, и список существующих записей —
+   в 420px это уже тесно. */
+#tag-modal-overlay .modal { max-width: 520px; }
+
+.tm-actions { display: flex; align-items: center; gap: .9rem; flex-wrap: wrap; margin-top: .5rem; }
+.tm-link { background: none; border: none; padding: 0; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: .72rem; color: var(--text-dim);
+  text-decoration: underline; text-underline-offset: 3px; }
+.tm-link:hover { color: var(--text-hi); }
+.tm-danger { color: #d88; }
+.tm-danger:hover { color: #e8a4a4; }
+
+.tm-color-row { display: flex; align-items: center; gap: .9rem; }
+.tm-color-row input[type=color] { width: 64px; height: 42px; padding: .2rem; cursor: pointer; }
+.tm-note { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim); }
+
+.tm-list-head { display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  margin: 1.5rem 0 .6rem; padding-top: 1.1rem; border-top: 1px solid var(--border);
+  font-family: 'DM Sans', sans-serif; font-size: .62rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-dim); }
+.tm-list-head input { width: 140px; font-size: .7rem; padding: .25rem .5rem; }
+
+.tm-list { max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: .1rem; }
+.tm-group { font-family: 'DM Sans', sans-serif; font-size: .58rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-dim); margin: .7rem 0 .2rem; }
+.tm-group:first-child { margin-top: 0; }
+.tm-row { display: flex; align-items: center; gap: .6rem; width: 100%; text-align: left;
+  background: none; border: 1px solid transparent; border-radius: 3px; padding: .3rem .5rem;
+  cursor: pointer; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .74rem; }
+.tm-row:hover { border-color: var(--border2); color: var(--text-hi); }
+.tm-row.active { border-color: var(--red-dim); background: rgba(139,26,26,.1); color: var(--text-hi); }
+.tm-row-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tm-row-note { font-size: .64rem; color: var(--text-dim); flex-shrink: 0; }
+.tm-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  border: 1px solid var(--border2); }
+.tm-empty { font-family: 'DM Sans', sans-serif; font-size: .72rem; color: var(--text-dim); padding: .4rem 0; }
 
 /* ══ TAGS ════════════════════════════════════════ */
 .tags-grid {
@@ -515,7 +551,17 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
         <label>Подсказка (необязательно)</label>
         <input type="text" id="tm-tag-tip" placeholder="Короткое пояснение, что значит тег">
       </div>
-      <button class="btn-save" id="tm-tag-save" onclick="submitNewTag()">Добавить тег</button>
+      <div class="tm-actions">
+        <button class="btn-save" id="tm-tag-save" onclick="submitTag()">Добавить тег</button>
+        <button type="button" class="tm-link" id="tm-tag-cancel" onclick="resetTagForm()" hidden>Отмена</button>
+        <button type="button" class="tm-link tm-danger" id="tm-tag-del" onclick="deleteTag()" hidden>Удалить</button>
+      </div>
+
+      <div class="tm-list-head">
+        <span>Существующие теги</span>
+        <input type="search" id="tm-tag-search" placeholder="Поиск" oninput="renderTmTagList()">
+      </div>
+      <div class="tm-list" id="tm-tag-list"></div>
     </div>
 
     <div class="tag-modal-tab-panel" id="tag-modal-cat-panel" style="display:none;">
@@ -525,9 +571,20 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
       </div>
       <div class="field">
         <label>Цвет</label>
-        <input type="color" id="tm-cat-color" value="#8b1a1a" style="height:42px;padding:.2rem;cursor:pointer;">
+        <div class="tm-color-row">
+          <input type="color" id="tm-cat-color" value="#8b1a1a" oninput="markCatColorSet()">
+          <button type="button" class="tm-link" id="tm-cat-nocolor" onclick="clearCatColor()" hidden>Без цвета</button>
+          <span class="tm-note" id="tm-cat-colornote" hidden>Цвет не задан — теги будут нейтральными</span>
+        </div>
       </div>
-      <button class="btn-save" id="tm-cat-save" onclick="submitNewCategory()">Добавить категорию</button>
+      <div class="tm-actions">
+        <button class="btn-save" id="tm-cat-save" onclick="submitCategory()">Добавить категорию</button>
+        <button type="button" class="tm-link" id="tm-cat-cancel" onclick="resetCatForm()" hidden>Отмена</button>
+        <button type="button" class="tm-link tm-danger" id="tm-cat-del" onclick="deleteCategory()" hidden>Удалить</button>
+      </div>
+
+      <div class="tm-list-head"><span>Категории</span></div>
+      <div class="tm-list" id="tm-cat-list"></div>
     </div>
 
     <div class="status-msg" id="tag-modal-status"></div>
@@ -743,16 +800,34 @@ function renderTagsGrid() {
 renderTagsGrid();
 document.addEventListener("tags-map-updated", renderTagsGrid);
 
-// ── Модалка: новый тег / новая категория (без похода в /settings-edit) ──
+// ── Модалка: теги и категории ──────────────────
+//    Раньше правка тегов жила в /settings-edit; её убрали оттуда, а сюда
+//    добавить забыли — теперь и создание, и редактирование в одном месте:
+//    форма сверху работает в двух режимах, режим задаётся выбором строки
+//    в списке под ней.
+//
+//    Встроенные теги и категории лежат в js/config.js и из объекта их не
+//    вычеркнуть, поэтому удаление встроенного тега — это запись его имени
+//    в settings.hiddenTags, а переименование — hiddenTags + новая запись
+//    в customTags. Для встроенных категорий удаления нет вовсе: на них
+//    завязаны встроенные теги. См. BUILTIN_TAG_NAMES / BUILTIN_CAT_KEYS.
+
+let tmTagEdit = null;      // имя редактируемого тега или null — тогда режим создания
+let tmCatEdit = null;      // ключ редактируемой категории или null
+let tmCatColorSet = true;  // задан ли цвет у категории в форме
+
+function tmStatus(text, kind) {
+  const el = document.getElementById("tag-modal-status");
+  el.textContent = text || "";
+  el.className = "status-msg" + (kind ? " " + kind : "");
+}
+
 function openTagModal() {
-  document.getElementById("tm-tag-name").value = "";
-  document.getElementById("tm-tag-tip").value  = "";
-  document.getElementById("tm-cat-name").value = "";
-  const statusEl = document.getElementById("tag-modal-status");
-  statusEl.textContent = "";
-  statusEl.className = "status-msg";
-  populateTagModalCatSelect();
+  document.getElementById("tm-tag-search").value = "";
+  resetTagForm();
+  resetCatForm();
   switchTagModalTab("tag");
+  tmStatus("");
   document.getElementById("tag-modal-overlay").classList.remove("hidden");
 }
 function closeTagModal() {
@@ -765,80 +840,356 @@ function switchTagModalTab(tab) {
   document.querySelectorAll(".tag-modal-tab").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
   document.getElementById("tag-modal-tag-panel").style.display = tab === "tag" ? "" : "none";
   document.getElementById("tag-modal-cat-panel").style.display = tab === "cat" ? "" : "none";
-  document.getElementById("tag-modal-title").textContent = tab === "tag" ? "Новый тег" : "Новая категория";
+  document.getElementById("tag-modal-overlay").dataset.tab = tab;
+  tmSyncTitle();
+}
+function tmSyncTitle() {
+  const tab = document.getElementById("tag-modal-overlay").dataset.tab || "tag";
+  const title = tab === "tag"
+    ? (tmTagEdit ? "Правка тега" : "Новый тег")
+    : (tmCatEdit ? "Правка категории" : "Новая категория");
+  document.getElementById("tag-modal-title").textContent = title;
 }
 function populateTagModalCatSelect() {
   const select = document.getElementById("tm-tag-cat");
   const current = select.value;
   select.innerHTML = Object.entries(CAT_LABELS)
-    .map(([key, label]) => `<option value="${key}">${esc(label)}</option>`).join("");
+    .map(([key, label]) => `<option value="${esc(key)}">${esc(label)}</option>`).join("");
   if (current && CAT_LABELS[current] !== undefined) select.value = current;
 }
 
-async function submitNewTag() {
+// ── Списки существующих ────────────────────────
+// Клик по строке делегирован на контейнер: имена тегов приходят от
+// пользователя и в inline-onclick их пришлось бы экранировать дважды.
+document.getElementById("tm-tag-list").addEventListener("click", (e) => {
+  const row = e.target.closest(".tm-row");
+  if (row) editTag(row.dataset.name);
+});
+document.getElementById("tm-cat-list").addEventListener("click", (e) => {
+  const row = e.target.closest(".tm-row");
+  if (row) editCategory(row.dataset.key);
+});
+
+function renderTmTagList() {
+  const box = document.getElementById("tm-tag-list");
+  const q = document.getElementById("tm-tag-search").value.trim().toLowerCase();
+
+  const byCat = {};
+  Object.keys(TAGS_MAP)
+    .filter(name => !q || name.toLowerCase().includes(q))
+    .sort((a, b) => a.localeCompare(b, "ru"))
+    .forEach(name => {
+      const cat = TAGS_MAP[name].cat || "special";
+      (byCat[cat] = byCat[cat] || []).push(name);
+    });
+
+  // Сначала категории в их обычном порядке, затем осиротевшие (категорию
+  // удалили, а тег на неё ещё смотрит) — чтобы такой тег не пропал из списка.
+  const order = Object.keys(CAT_LABELS).filter(key => byCat[key]);
+  Object.keys(byCat).forEach(key => { if (!order.includes(key)) order.push(key); });
+
+  if (!order.length) {
+    box.innerHTML = `<div class="tm-empty">${q ? "Ничего не найдено" : "Тегов пока нет"}</div>`;
+    return;
+  }
+
+  box.innerHTML = order.map(key => {
+    const rows = byCat[key].map(name => `
+      <button type="button" class="tm-row${name === tmTagEdit ? " active" : ""}" data-name="${esc(name)}">
+        <span class="tm-row-name">${esc(name)}</span>
+        <span class="tm-row-note">✎</span>
+      </button>`).join("");
+    return `<div class="tm-group">${esc(CAT_LABELS[key] || key)}</div>${rows}`;
+  }).join("");
+}
+
+function renderTmCatList() {
+  const box = document.getElementById("tm-cat-list");
+  const counts = {};
+  Object.values(TAGS_MAP).forEach(info => {
+    const key = info.cat || "special";
+    counts[key] = (counts[key] || 0) + 1;
+  });
+
+  box.innerHTML = Object.keys(CAT_LABELS).map(key => {
+    const color = tmSafeColor(CAT_COLORS[key]);
+    const dot = `<span class="tm-dot" style="background:${color || "transparent"}"></span>`;
+    const used = counts[key] || 0;
+    return `<button type="button" class="tm-row${key === tmCatEdit ? " active" : ""}" data-key="${esc(key)}">
+      ${dot}<span class="tm-row-name">${esc(CAT_LABELS[key])}</span>
+      <span class="tm-row-note">${used}</span>
+      <span class="tm-row-note">✎</span>
+    </button>`;
+  }).join("");
+}
+
+// Цвет приходит из site-settings.json, а подставляется в атрибут style —
+// пропускаем только настоящий hex, чтобы туда нельзя было дописать своё.
+function tmSafeColor(value) {
+  return /^#[0-9a-f]{3,8}$/i.test(value || "") ? value : "";
+}
+
+// ── Теги: форма ────────────────────────────────
+function tmSyncTagForm() {
+  const editing = tmTagEdit !== null;
+  document.getElementById("tm-tag-save").textContent = editing ? "Сохранить тег" : "Добавить тег";
+  document.getElementById("tm-tag-cancel").hidden = !editing;
+  document.getElementById("tm-tag-del").hidden = !editing;
+  tmSyncTitle();
+}
+function resetTagForm() {
+  tmTagEdit = null;
+  document.getElementById("tm-tag-name").value = "";
+  document.getElementById("tm-tag-tip").value  = "";
+  populateTagModalCatSelect();
+  tmSyncTagForm();
+  renderTmTagList();
+}
+function editTag(name) {
+  const info = TAGS_MAP[name];
+  if (!info) return;
+  tmTagEdit = name;
+  document.getElementById("tm-tag-name").value = name;
+  document.getElementById("tm-tag-tip").value  = info.tip || "";
+  populateTagModalCatSelect();
+  if (CAT_LABELS[info.cat] !== undefined) document.getElementById("tm-tag-cat").value = info.cat;
+  tmSyncTagForm();
+  renderTmTagList();
+  tmStatus("");
+}
+
+// Отзывы хранят теги строками, поэтому имя правится ещё и в reviews.json.
+// Пустое `to` означает «убрать тег из всех отзывов».
+async function applyTagToReviews(from, to) {
+  const res = await fetch("/api/save-review", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ _rename_tag: { from, to } }),
+  });
+  if (!res.ok) {
+    let message = "Справочник обновлён, но старые отзывы поправить не удалось";
+    try { message = (await res.json()).error || message; } catch {}
+    throw new Error(message);
+  }
+}
+
+async function submitTag() {
   const name = document.getElementById("tm-tag-name").value.trim();
   const cat  = document.getElementById("tm-tag-cat").value;
   const tip  = document.getElementById("tm-tag-tip").value.trim();
-  const statusEl = document.getElementById("tag-modal-status");
+  const from = tmTagEdit;
 
-  if (!name) { statusEl.textContent = "Введи название тега"; statusEl.className = "status-msg err"; return; }
-  if (TAGS_MAP[name]) { statusEl.textContent = "Такой тег уже есть"; statusEl.className = "status-msg err"; return; }
+  if (!name) { tmStatus("Введи название тега", "err"); return; }
+  if (name !== from && TAGS_MAP[name]) { tmStatus("Такой тег уже есть", "err"); return; }
 
   const btn = document.getElementById("tm-tag-save");
   btn.disabled = true;
-  statusEl.textContent = "Сохраняем…";
-  statusEl.className = "status-msg";
+  tmStatus("Сохраняем…");
   try {
     await patchSiteSettings((settings) => {
       settings.customTags = settings.customTags || {};
+      const hidden = new Set(settings.hiddenTags || []);
+      if (from) {
+        delete settings.customTags[from];
+        if (BUILTIN_TAG_NAMES.has(from) && from !== name) hidden.add(from);
+      }
+      hidden.delete(name);
       settings.customTags[name] = { cat, tip };
+      settings.hiddenTags = [...hidden];
     });
+
+    if (from && from !== name) await applyTagToReviews(from, name);
+
+    if (from && from !== name) {
+      delete TAGS_MAP[from];
+      if (selectedTags.has(from)) { selectedTags.delete(from); selectedTags.add(name); }
+    }
     TAGS_MAP[name] = { cat, tip };
-    selectedTags.add(name);
+    if (!from) selectedTags.add(name);
     document.dispatchEvent(new CustomEvent("tags-map-updated"));
-    closeTagModal();
+
+    if (from) {
+      resetTagForm();
+      tmStatus(from === name ? "Тег обновлён" : `Тег переименован в «${name}»`, "ok");
+    } else {
+      closeTagModal();
+    }
   } catch (err) {
-    statusEl.textContent = err.message || "Ошибка сохранения";
-    statusEl.className = "status-msg err";
+    tmStatus(err.message || "Ошибка сохранения", "err");
   } finally {
     btn.disabled = false;
   }
 }
 
-async function submitNewCategory() {
+async function deleteTag() {
+  const name = tmTagEdit;
+  if (!name) return;
+  if (!confirm(`Удалить тег «${name}»?\n\nОн пропадёт и из уже сохранённых отзывов.`)) return;
+
+  const btn = document.getElementById("tm-tag-del");
+  btn.disabled = true;
+  tmStatus("Удаляем…");
+  try {
+    await patchSiteSettings((settings) => {
+      settings.customTags = settings.customTags || {};
+      delete settings.customTags[name];
+      const hidden = new Set(settings.hiddenTags || []);
+      if (BUILTIN_TAG_NAMES.has(name)) hidden.add(name);
+      settings.hiddenTags = [...hidden];
+    });
+    await applyTagToReviews(name, "");
+
+    delete TAGS_MAP[name];
+    selectedTags.delete(name);
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    resetTagForm();
+    tmStatus("Тег удалён", "ok");
+  } catch (err) {
+    tmStatus(err.message || "Ошибка удаления", "err");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── Категории: форма ───────────────────────────
+function markCatColorSet() {
+  tmCatColorSet = true;
+  tmSyncCatForm();
+}
+function clearCatColor() {
+  tmCatColorSet = false;
+  tmSyncCatForm();
+}
+function tmSyncCatForm() {
+  const editing = tmCatEdit !== null;
+  document.getElementById("tm-cat-save").textContent = editing ? "Сохранить категорию" : "Добавить категорию";
+  document.getElementById("tm-cat-cancel").hidden = !editing;
+  // Встроенную категорию удалить нельзя: на ней висят встроенные теги
+  // из config.js, и после удаления они остались бы без категории.
+  document.getElementById("tm-cat-del").hidden = !editing || BUILTIN_CAT_KEYS.has(tmCatEdit);
+  document.getElementById("tm-cat-nocolor").hidden = !tmCatColorSet;
+  document.getElementById("tm-cat-colornote").hidden = tmCatColorSet;
+  tmSyncTitle();
+}
+function resetCatForm() {
+  tmCatEdit = null;
+  tmCatColorSet = true;
+  document.getElementById("tm-cat-name").value = "";
+  document.getElementById("tm-cat-color").value = "#8b1a1a";
+  tmSyncCatForm();
+  renderTmCatList();
+}
+function editCategory(key) {
+  if (CAT_LABELS[key] === undefined) return;
+  tmCatEdit = key;
+  const color = tmSafeColor(CAT_COLORS[key]);
+  tmCatColorSet = !!color;
+  document.getElementById("tm-cat-name").value  = CAT_LABELS[key];
+  document.getElementById("tm-cat-color").value = color || "#8b1a1a";
+  tmSyncCatForm();
+  renderTmCatList();
+  tmStatus("");
+}
+
+async function submitCategory() {
   const name  = document.getElementById("tm-cat-name").value.trim();
   const color = document.getElementById("tm-cat-color").value;
-  const statusEl = document.getElementById("tag-modal-status");
+  const editKey = tmCatEdit;
 
-  if (!name) { statusEl.textContent = "Введи название категории"; statusEl.className = "status-msg err"; return; }
+  if (!name) { tmStatus("Введи название категории", "err"); return; }
 
-  const key = "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) + "_" + Date.now().toString(36).slice(-4);
+  const key = editKey || (
+    "custom_" + name.toLowerCase().replace(/[^a-zа-я0-9]+/gi, "_").slice(0, 30) +
+    "_" + Date.now().toString(36).slice(-4)
+  );
+  const builtin = BUILTIN_CAT_KEYS.has(key);
+
   const btn = document.getElementById("tm-cat-save");
   btn.disabled = true;
-  statusEl.textContent = "Сохраняем…";
-  statusEl.className = "status-msg";
+  tmStatus("Сохраняем…");
   try {
     await patchSiteSettings((settings) => {
       settings.customCategories = settings.customCategories || {};
       settings.categoryColors   = settings.categoryColors   || {};
-      settings.customCategories[key] = name;
-      settings.categoryColors[key]   = color;
+      if (builtin) {
+        // Встроенный ключ переименовывается через общий механизм подписей,
+        // тот же, что и у типов/ролей в /settings-edit.
+        settings.labels = settings.labels || {};
+        settings.labels.categories = settings.labels.categories || {};
+        settings.labels.categories[key] = name;
+      } else {
+        settings.customCategories[key] = name;
+      }
+      if (tmCatColorSet) settings.categoryColors[key] = color;
+      else delete settings.categoryColors[key];
     });
+
     CAT_LABELS[key] = name;
-    CAT_COLORS[key] = color;
+    if (tmCatColorSet) CAT_COLORS[key] = color;
+    else delete CAT_COLORS[key];
     document.dispatchEvent(new CustomEvent("tags-map-updated"));
-    switchTagModalTab("tag");
     populateTagModalCatSelect();
-    document.getElementById("tm-tag-cat").value = key;
-    statusEl.textContent = "Категория добавлена — можно выбрать её выше";
-    statusEl.className = "status-msg ok";
+
+    if (editKey) {
+      resetCatForm();
+      tmStatus("Категория обновлена", "ok");
+    } else {
+      resetCatForm();
+      switchTagModalTab("tag");
+      populateTagModalCatSelect();
+      document.getElementById("tm-tag-cat").value = key;
+      tmStatus("Категория добавлена — можно выбрать её выше", "ok");
+    }
   } catch (err) {
-    statusEl.textContent = err.message || "Ошибка сохранения";
-    statusEl.className = "status-msg err";
+    tmStatus(err.message || "Ошибка сохранения", "err");
   } finally {
     btn.disabled = false;
   }
 }
+
+async function deleteCategory() {
+  const key = tmCatEdit;
+  if (!key || BUILTIN_CAT_KEYS.has(key)) return;
+
+  const used = Object.values(TAGS_MAP).filter(info => info.cat === key).length;
+  if (used) {
+    const word = used % 10 === 1 && used % 100 !== 11 ? "тег"
+      : (used % 10 >= 2 && used % 10 <= 4 && (used % 100 < 12 || used % 100 > 14) ? "тега" : "тегов");
+    tmStatus(`В категории ещё ${used} ${word} — сначала перенеси их в другую`, "err");
+    return;
+  }
+  if (!confirm(`Удалить категорию «${CAT_LABELS[key]}»?`)) return;
+
+  const btn = document.getElementById("tm-cat-del");
+  btn.disabled = true;
+  tmStatus("Удаляем…");
+  try {
+    await patchSiteSettings((settings) => {
+      if (settings.customCategories) delete settings.customCategories[key];
+      if (settings.categoryColors)   delete settings.categoryColors[key];
+    });
+    delete CAT_LABELS[key];
+    delete CAT_COLORS[key];
+    document.dispatchEvent(new CustomEvent("tags-map-updated"));
+    populateTagModalCatSelect();
+    resetCatForm();
+    tmStatus("Категория удалена", "ok");
+  } catch (err) {
+    tmStatus(err.message || "Ошибка удаления", "err");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Списки в модалке живут на том же справочнике, что и сетка тегов на
+// странице, — перерисовываем их тем же событием.
+document.addEventListener("tags-map-updated", () => {
+  renderTmTagList();
+  renderTmCatList();
+});
+resetTagForm();
+resetCatForm();
 
 // ── Источники ссылок — источник выбирается прямо в инлайн-меню под
 //    кнопкой «+ Добавить источник», без похода в отдельную модалку.
@@ -1679,6 +2030,6 @@ async function saveReview() {
 initPage();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=9"></script>
+<script src="js/backup.js?v=10"></script>
 </body>
 </html>

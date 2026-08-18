@@ -6,6 +6,8 @@ import globals from "globals";
 // явно, иначе no-undef ругался бы на каждое обращение.
 // Список сгенерирован из объявлений верхнего уровня в js/*.js.
 const sharedBrowserGlobals = [
+  "BUILTIN_CAT_KEYS",
+  "BUILTIN_TAG_NAMES",
   "CAT_COLORS",
   "CAT_LABELS",
   "COLLAPSE_KEY",

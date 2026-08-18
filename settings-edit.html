@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
-<link rel="stylesheet" href="/style.css?v=9">
-<link rel="stylesheet" href="/admin.css?v=9">
-<link rel="stylesheet" href="/themes.css?v=9">
-<script src="/js/utils.js?v=9"></script>
-<script src="/js/theme.js?v=9"></script>
-<script src="/js/config.js?v=9"></script>
+<link rel="stylesheet" href="/style.css?v=10">
+<link rel="stylesheet" href="/admin.css?v=10">
+<link rel="stylesheet" href="/themes.css?v=10">
+<script src="/js/utils.js?v=10"></script>
+<script src="/js/theme.js?v=10"></script>
+<script src="/js/config.js?v=10"></script>
 <style>
   body { display: flex; }
 
@@ -644,12 +644,20 @@
   // неизменным, чтобы данные не терялись при сохранении с любой другой
   // вкладки.
 
+  // Сырой site-settings.json как он лежит в репозитории. saveSettings()
+  // строит payload поверх него, а не с нуля: часть настроек добавляется
+  // из других редакторов (свои источники ссылок, скрытые теги) и этой
+  // страницей не управляется — без базового объекта они терялись бы при
+  // любом сохранении отсюда.
+  let rawSettings = {};
+
   async function loadCurrentSettings() {
     let settings = {};
     try {
       const res = await fetch("/site-settings.json");
       if (res.ok) settings = await res.json();
     } catch {}
+    rawSettings = settings;
 
     selectedTheme = settings.theme || "classic";
     renderThemeGrid();
@@ -898,6 +906,7 @@
     if (scaleType !== "categorical") gradeScale.numericMax = Number(document.getElementById("numericMax").value) || 10;
 
     const payload = {
+      ...rawSettings,
       theme: selectedTheme,
       customAccent: document.getElementById("accent").value,
       customTags,
