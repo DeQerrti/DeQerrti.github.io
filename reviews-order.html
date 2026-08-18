@@ -10,10 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=10">
-<link rel="stylesheet" href="/admin.css?v=10">
-<link rel="stylesheet" href="/themes.css?v=10">
-<script src="/js/utils.js?v=10"></script>
+<link rel="stylesheet" href="/style.css?v=11">
+<link rel="stylesheet" href="/admin.css?v=11">
+<link rel="stylesheet" href="/themes.css?v=11">
+<script src="/js/utils.js?v=11"></script>
 <style>
 
 header { padding: 3rem 1rem 2rem; }
@@ -65,7 +65,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 .dnd-item-type { font-family: 'DM Sans', sans-serif; font-size: .6rem; color: var(--text-dim);
   margin-top: .2rem; text-transform: uppercase; letter-spacing: .08em; }
 
-.dnd-item-num { position: absolute; top: 4px; left: 4px; background: rgba(10,10,12,.8);
+.dnd-item-num { position: absolute; top: 4px; left: 4px; background: var(--poster-scrim);
   color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: .6rem;
   padding: .15rem .4rem; border-radius: 1px; pointer-events: none; }
 
@@ -73,13 +73,13 @@ main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 6rem; }
 .save-bar { gap: 1.5rem; margin-top: 1rem; }
 .btn-save {
   font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; font-style: italic;
-  padding: .7rem 2rem; background: rgba(139,26,26,.12); border: 1px solid rgba(139,26,26,.35);
+  padding: .7rem 2rem; background: var(--accent-fill); border: 1px solid var(--accent-line);
   border-radius: 2px; color: var(--text-hi); cursor: pointer; transition: background .2s, border-color .2s;
 }
 
 .save-status { font-family: 'DM Sans', sans-serif; font-size: .78rem; }
 .save-status.ok  { color: var(--green-hi); }
-.save-status.err { color: #d88; }
+.save-status.err { color: var(--err); }
 
 .state-box { padding: 4rem 2rem; font-size: 1.05rem; }
 .spinner { width: 24px; height: 24px; margin: 0 auto .75rem; }
@@ -259,6 +259,6 @@ async function saveOrder() {
 init();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=10"></script>
+<script src="js/backup.js?v=11"></script>
 </body>
 </html>

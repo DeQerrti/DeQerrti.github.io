@@ -21,10 +21,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=10">
-<link rel="stylesheet" href="/themes.css?v=10">
-<script src="/js/utils.js?v=10"></script>
-<script src="/js/theme.js?v=10"></script>
+<link rel="stylesheet" href="/style.css?v=11">
+<link rel="stylesheet" href="/themes.css?v=11">
+<script src="/js/utils.js?v=11"></script>
+<script src="/js/theme.js?v=11"></script>
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -37,7 +37,7 @@ nav {
   gap: 0;
   padding: 0;
   border-bottom: 1px solid var(--border);
-  background: rgba(10,10,12,.95);
+  background: var(--nav-bg);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -242,7 +242,7 @@ section.group { margin-bottom: 3.5rem; }
   text-transform: uppercase;
   padding: .25rem .55rem;
   z-index: 3;
-  background: var(--badge-bg, rgba(10,10,12,.82));
+  background: var(--badge-bg, var(--poster-scrim));
   backdrop-filter: blur(8px);
   border-radius: var(--radius-btn, 0px) 0 0 var(--radius-btn, 0px);
 }
@@ -257,9 +257,9 @@ section.group { margin-bottom: 3.5rem; }
   font-family: 'DM Sans', sans-serif;
   font-size: .58rem; font-weight: 500;
   color: var(--badge-text-dim, rgba(240,236,230,.7));
-  background: var(--badge-bg, rgba(10,10,12,.82));
-  border-bottom: 1px solid var(--badge-accent-border, rgba(139,26,26,.25));
-  border-right: 1px solid var(--badge-accent-border, rgba(139,26,26,.25));
+  background: var(--badge-bg, var(--poster-scrim));
+  border-bottom: 1px solid var(--badge-accent-border, var(--accent-fill-hi));
+  border-right: 1px solid var(--badge-accent-border, var(--accent-fill-hi));
   border-radius: 0 var(--radius-btn, 0px) var(--radius-btn, 0px) 0;
   padding: .25rem .52rem;
   backdrop-filter: blur(8px);
@@ -369,7 +369,7 @@ section.group { margin-bottom: 3.5rem; }
 
 .review-modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,.72);
+  background: var(--scrim);
   display: flex; align-items: center; justify-content: center;
   z-index: 500;
   padding: 24px;
@@ -448,9 +448,9 @@ section.group { margin-bottom: 3.5rem; }
   cursor: default;
 }
 .rtag-visual, .rtag-plot, .rtag-chars, .rtag-special {
-  background: rgba(240,236,230,.07);
+  background: var(--tint);
   color: #c8c0b8;
-  border: 1px solid rgba(240,236,230,.15);
+  border: 1px solid var(--tint-line);
 }
 .rtag-custom {
   background: color-mix(in srgb, var(--tag-color, #f0ece6) 12%, transparent);
@@ -466,7 +466,7 @@ section.group { margin-bottom: 3.5rem; }
   font-size: .68rem; padding: .35rem .7rem;
   border-radius: 2px; border: 1px solid var(--border2);
   white-space: nowrap; z-index: 9999;
-  pointer-events: none; box-shadow: 0 6px 24px rgba(0,0,0,.8);
+  pointer-events: none; box-shadow: 0 6px 24px var(--shadow);
 }
 .rtag[data-tip]:hover::before {
   content: '';
@@ -504,7 +504,7 @@ section.group { margin-bottom: 3.5rem; }
   padding: .5rem .9rem; border-radius: 2px;
   border: 1px solid var(--border2); white-space: nowrap;
   z-index: 9999; pointer-events: none;
-  box-shadow: 0 6px 24px rgba(0,0,0,.8);
+  box-shadow: 0 6px 24px var(--shadow);
 }
 .grade-chip[data-tip]:hover::before {
   content: '';
@@ -527,8 +527,8 @@ section.group { margin-bottom: 3.5rem; }
 }
 .source-teletype { background: rgba(180,176,170,.06); border-color: rgba(180,176,170,.2); color: #706860; }
 .source-teletype:hover { background: rgba(180,176,170,.14); border-color: rgba(180,176,170,.4); color: #a09888; }
-.source-other    { background: rgba(139,26,26,.08);  border-color: rgba(139,26,26,.25);  color: var(--red); }
-.source-other:hover    { background: rgba(139,26,26,.18);  border-color: rgba(192,57,43,.5);   color: var(--red-hi); }
+.source-other    { background: var(--accent-wash);  border-color: var(--accent-fill-hi);  color: var(--red); }
+.source-other:hover    { background: var(--accent-fill-hi);  border-color: var(--red-hi);   color: var(--red-hi); }
 
 .source-dot-teletype { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; background: #706860; }
 .source-dot-other    { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; background: var(--red); }
@@ -634,7 +634,7 @@ section.group { margin-bottom: 3.5rem; }
 .year-spotlight-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: flex-start; }
 .year-spotlight-item { width: 160px; }
 .year-spotlight-item .card {
-  box-shadow: 0 0 0 1px var(--red-dim), 0 0 28px rgba(139,26,26,.22);
+  box-shadow: 0 0 0 1px var(--red-dim), 0 0 28px var(--accent-fill-hi);
 }
 
 .stat-export-row { margin-top: -1.5rem; margin-bottom: 3.5rem; }
@@ -804,7 +804,7 @@ section.group { margin-bottom: 3.5rem; }
   max-width: 260px;
   min-width: 160px;
   width: max-content;
-  box-shadow: 0 12px 40px rgba(0,0,0,.9);
+  box-shadow: 0 12px 40px var(--shadow);
   opacity: 0;
   transition: opacity .12s;
 }
@@ -898,7 +898,7 @@ section.group { margin-bottom: 3.5rem; }
 }
 .rv-filter-btn:hover { color: var(--text); border-color: var(--border2); }
 .rv-filter-btn.active {
-  background: rgba(139,26,26,.15);
+  background: var(--accent-fill);
   border-color: var(--red);
   color: var(--text-hi);
 }
@@ -1027,19 +1027,19 @@ section.group { margin-bottom: 3.5rem; }
 }
 .modal .field input[type="text"]:focus { border-color: var(--red); background: var(--bg2); }
 .modal .btn-save {
-  width: 100%; background: rgba(139,26,26,.12); border: 1px solid rgba(139,26,26,.35);
+  width: 100%; background: var(--accent-fill); border: 1px solid var(--accent-line);
   border-radius: 2px; color: var(--text-hi); font-family: 'Playfair Display', serif;
   font-size: 1rem; font-weight: 700; font-style: italic; letter-spacing: .06em;
   padding: .8rem; cursor: pointer; transition: background .2s, border-color .2s;
 }
-.modal .btn-save:hover { background: rgba(139,26,26,.22); border-color: var(--red); }
+.modal .btn-save:hover { background: var(--accent-fill-hi); border-color: var(--red); }
 .modal .btn-save:disabled { opacity: .4; cursor: not-allowed; }
 .modal .status-msg {
   font-family: 'DM Sans', sans-serif; font-size: .78rem; text-align: center;
   margin-top: .85rem; min-height: 1.2rem; letter-spacing: .03em;
 }
 .modal .status-msg.ok  { color: var(--green-hi); }
-.modal .status-msg.err { color: #d88; }
+.modal .status-msg.err { color: var(--err); }
 
 /* ── Переключатель тир-листов внутри игры ── */
 .tl-char-lists {
@@ -1171,14 +1171,14 @@ section.group { margin-bottom: 3.5rem; }
   </div>
 </div>
 
-<script src="js/config.js?v=10"></script>
-<script src="js/api.js?v=10"></script>
-<script src="js/cards.js?v=10"></script>
-<script src="js/now.js?v=10"></script>
-<script src="js/favorites.js?v=10"></script>
-<script src="js/reviews.js?v=10"></script>
-<script src="js/stats.js?v=10"></script>
-<script src="js/tierlist.js?v=10"></script>
+<script src="js/config.js?v=11"></script>
+<script src="js/api.js?v=11"></script>
+<script src="js/cards.js?v=11"></script>
+<script src="js/now.js?v=11"></script>
+<script src="js/favorites.js?v=11"></script>
+<script src="js/reviews.js?v=11"></script>
+<script src="js/stats.js?v=11"></script>
+<script src="js/tierlist.js?v=11"></script>
 
 <script>
 let _navInit = true;

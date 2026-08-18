@@ -10,12 +10,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=10">
-<link rel="stylesheet" href="/admin.css?v=10">
-<link rel="stylesheet" href="/themes.css?v=10">
-<script src="/js/utils.js?v=10"></script>
-<script src="/js/theme.js?v=10"></script>
-<script src="/js/config.js?v=10"></script>
+<link rel="stylesheet" href="/style.css?v=11">
+<link rel="stylesheet" href="/admin.css?v=11">
+<link rel="stylesheet" href="/themes.css?v=11">
+<script src="/js/utils.js?v=11"></script>
+<script src="/js/theme.js?v=11"></script>
+<script src="/js/config.js?v=11"></script>
 <style>
 
 header { padding: 2.5rem 1rem 2rem; }
@@ -75,12 +75,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 .tl-label-input { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; font-size: .85rem;
   color: var(--tl-color, var(--text-hi)); text-align: center; background: none; border: none;
   outline: none; width: 100%; cursor: pointer; line-height: 1.2; padding: 0; }
-.tl-label-input:focus { background: rgba(255,255,255,.04); border-radius: 2px; }
+.tl-label-input:focus { background: var(--tint-hi); border-radius: 2px; }
 .tl-color-input { width: 20px; height: 20px; border: 1px solid var(--border2); border-radius: 2px; padding: 0; cursor: pointer; background: none; }
 
 .tl-editor-cards { flex: 1; display: flex; flex-wrap: wrap; gap: .4rem; padding: .6rem;
   background: var(--surface); align-content: flex-start; min-height: 90px; position: relative; }
-.tl-editor-cards.drag-over { background: rgba(139,26,26,.06); }
+.tl-editor-cards.drag-over { background: var(--accent-wash); }
 
 /* ── Drop indicator — вертикальная красная черта ── */
 .drop-indicator {
@@ -102,7 +102,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 6rem; display: gr
 .char-card img { width: 100%; height: 108px; object-fit: contain; object-position: center top; display: block; filter: brightness(.85); pointer-events: none; background: var(--surface); }
 .char-card-name { font-family: 'DM Sans', sans-serif; font-size: .52rem; color: var(--text); padding: .2rem .3rem; text-align: center; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .char-card-del { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%;
-  background: rgba(10,10,12,.85); border: none; color: var(--text-dim); font-size: .65rem; cursor: pointer;
+  background: var(--poster-scrim); border: none; color: var(--text-dim); font-size: .65rem; cursor: pointer;
   display: none; align-items: center; justify-content: center; line-height: 1; padding: 0; transition: color .15s; }
 .char-card:hover .char-card-del { display: flex; }
 .char-card-del:hover { color: var(--red-hi); }
@@ -1181,6 +1181,6 @@ document.addEventListener("keydown", e => {
 init();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=10"></script>
+<script src="js/backup.js?v=11"></script>
 </body>
 </html>

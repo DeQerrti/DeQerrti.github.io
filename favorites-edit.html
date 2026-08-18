@@ -10,12 +10,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=10">
-<link rel="stylesheet" href="/admin.css?v=10">
-<link rel="stylesheet" href="/themes.css?v=10">
-<script src="/js/utils.js?v=10"></script>
-<script src="/js/theme.js?v=10"></script>
-<script src="/js/config.js?v=10"></script>
+<link rel="stylesheet" href="/style.css?v=11">
+<link rel="stylesheet" href="/admin.css?v=11">
+<link rel="stylesheet" href="/themes.css?v=11">
+<script src="/js/utils.js?v=11"></script>
+<script src="/js/theme.js?v=11"></script>
+<script src="/js/config.js?v=11"></script>
 <style>
 .logo { display: block; }
 
@@ -85,8 +85,8 @@ input::placeholder { color: var(--text-dim); }
   letter-spacing: .07em;
   text-transform: uppercase;
   color: var(--green-hi);
-  background: rgba(106,184,122,.08);
-  border: 1px solid rgba(106,184,122,.3);
+  background: var(--ok-wash);
+  border: 1px solid var(--ok-line);
   border-radius: 2px;
   padding: .35rem .85rem;
   cursor: pointer;
@@ -94,7 +94,7 @@ input::placeholder { color: var(--text-dim); }
   white-space: nowrap;
   display: none;
 }
-.btn-save-order:hover { background: rgba(106,184,122,.18); border-color: var(--green-hi); }
+.btn-save-order:hover { background: var(--ok-fill); border-color: var(--green-hi); }
 .btn-save-order.visible { display: block; }
 .btn-save-order:disabled { opacity: .4; cursor: not-allowed; }
 
@@ -751,6 +751,6 @@ async function saveEntry() {
 loadList();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=10"></script>
+<script src="js/backup.js?v=11"></script>
 </body>
 </html>

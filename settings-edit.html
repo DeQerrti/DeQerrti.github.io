@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
-<link rel="stylesheet" href="/style.css?v=10">
-<link rel="stylesheet" href="/admin.css?v=10">
-<link rel="stylesheet" href="/themes.css?v=10">
-<script src="/js/utils.js?v=10"></script>
-<script src="/js/theme.js?v=10"></script>
-<script src="/js/config.js?v=10"></script>
+<link rel="stylesheet" href="/style.css?v=11">
+<link rel="stylesheet" href="/admin.css?v=11">
+<link rel="stylesheet" href="/themes.css?v=11">
+<script src="/js/utils.js?v=11"></script>
+<script src="/js/theme.js?v=11"></script>
+<script src="/js/config.js?v=11"></script>
 <style>
   body { display: flex; }
 
@@ -55,7 +55,7 @@
     font-family: 'DM Sans', sans-serif; transition: all .15s;
   }
   .theme-option:hover { border-color: var(--red-dim); color: var(--text-hi); }
-  .theme-option.selected { border-color: var(--red); color: var(--text-hi); background: rgba(139,26,26,.08); }
+  .theme-option.selected { border-color: var(--red); color: var(--text-hi); background: var(--accent-wash); }
 
   label { display: block; font-family: 'DM Sans', sans-serif; font-size: .65rem; color: var(--text-dim);
     letter-spacing: .12em; text-transform: uppercase; margin: 16px 0 6px; }
@@ -130,6 +130,23 @@
     border: 1px solid var(--border2); border-radius: 2px; color: var(--text);
     font-size: .78rem; padding: 6px 8px; box-sizing: border-box;
   }
+
+  /* Палитра темы */
+  .pal-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+  }
+  .pal-row input[type="color"] { width: 40px; height: 32px; flex: none; }
+  .pal-text { flex: 1; min-width: 0; }
+  .pal-name { font-size: .88rem; color: var(--text-hi); }
+  .pal-hint { font-size: .74rem; color: var(--text-dim); margin-top: 1px; }
+  .pal-reset {
+    flex: none; background: none; border: none; cursor: pointer; padding: 0;
+    font-family: 'DM Sans', sans-serif; font-size: .72rem; color: var(--text-dim);
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  .pal-reset:hover { color: var(--text-hi); }
+  .pal-foot { display: flex; align-items: center; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -156,11 +173,17 @@
     <h1>Настройки сайта</h1>
 
     <div class="panel active" id="panel-appearance">
-      <p class="panel-intro">Тема и акцентный цвет.</p>
+      <p class="panel-intro">Тема задаёт не только цвета, но и форму: скругления, рамки, тени, вид навигации.</p>
       <div class="theme-grid" id="themeGrid"></div>
-      <label>Акцентный цвет (любой)</label>
-      <input type="color" id="accent" value="#8b1a1a">
-      <div><button class="btn-save" onclick="saveSettings()">Сохранить</button><div class="status-msg" id="status-appearance"></div></div>
+
+      <h2 class="section-h">Палитра</h2>
+      <p class="panel-intro">Весь сайт собран из десяти цветов ниже — подсветки, тени и рамки считаются от них, отдельно их задавать не нужно. Правки видно сразу, но применятся они только после «Сохранить». У каждой темы своя палитра: подогнал одну — на другой она останется прежней.</p>
+      <div id="paletteList"></div>
+      <div class="pal-foot">
+        <button class="btn-save" onclick="saveSettings()">Сохранить</button>
+        <button type="button" class="pal-reset" onclick="resetPalette()">Вернуть все цвета темы</button>
+      </div>
+      <div class="status-msg" id="status-appearance"></div>
     </div>
 
     <div class="panel" id="panel-tabs">
@@ -440,14 +463,114 @@
 
   let selectedTheme = "classic";
 
+  // Свои цвета по темам: { skin: { "--bg": "#…", accent: "#…" } }.
+  // Отдельно для каждой темы — палитра, подогнанная под тёмную, на
+  // светлой выглядела бы случайным набором.
+  let themeColors = {};
+
   function renderThemeGrid() {
     const grid = document.getElementById("themeGrid");
     grid.innerHTML = THEMES.map(t =>
       `<div class="theme-option${t.id === selectedTheme ? " selected" : ""}" data-theme="${t.id}">${t.label}</div>`
     ).join("");
     grid.querySelectorAll(".theme-option").forEach(el => {
-      el.onclick = () => { selectedTheme = el.dataset.theme; renderThemeGrid(); };
+      el.onclick = () => {
+        selectedTheme = el.dataset.theme;
+        renderThemeGrid();
+        renderPalette();
+        previewPalette();
+      };
     });
+  }
+
+  // ── Палитра темы ─────────────────────────────
+  // Цвета темы по умолчанию читаем прямо из подключённых стилей:
+  // :root в style.css плюс блок [data-skin="…"] в themes.css. Так
+  // список не приходится дублировать здесь — а именно из-за такой
+  // копии список тем однажды уже разъехался с реестром.
+  function themeDefaults(skin) {
+    const base = {};
+    const themed = {};
+    for (const sheet of document.styleSheets) {
+      let rules;
+      try { rules = sheet.cssRules; } catch { continue; }
+      if (!rules) continue;
+      // Стиль, который theme.js дописывает в <head>, — это уже
+      // применённые переопределения, а не значения темы.
+      if (sheet.ownerNode && sheet.ownerNode.id === "theme-overrides") continue;
+      for (const rule of rules) {
+        if (!rule.selectorText) continue;
+        const sel = rule.selectorText.replace(/\s+/g, "");
+        const target = sel === ":root" ? base
+          : (sel === `[data-skin="${skin}"]` || sel === `html[data-skin="${skin}"]`) ? themed
+          : null;
+        if (!target) continue;
+        for (const { key } of PALETTE_TOKENS) {
+          const value = rule.style.getPropertyValue(key).trim();
+          if (value) target[key] = value;
+        }
+      }
+    }
+    const out = { ...base, ...themed };
+    out.accent = (THEME_PRESETS[skin] && THEME_PRESETS[skin].defaultAccent) || DEFAULT_ACCENT;
+    return out;
+  }
+
+  const PALETTE_ROWS = [...PALETTE_TOKENS,
+    { key: "accent", label: "Акцент", hint: "Активные кнопки, ссылки, подсветки" }];
+
+  function renderPalette() {
+    const defaults = themeDefaults(selectedTheme);
+    const own = themeColors[selectedTheme] || {};
+    const box = document.getElementById("paletteList");
+    box.innerHTML = PALETTE_ROWS.map(t => {
+      const custom = own[t.key];
+      return `<div class="pal-row">
+        <input type="color" data-token="${t.key}" value="${custom || defaults[t.key] || "#000000"}">
+        <div class="pal-text">
+          <div class="pal-name">${t.label}</div>
+          <div class="pal-hint">${t.hint}</div>
+        </div>
+        <button type="button" class="pal-reset" data-reset="${t.key}"${custom ? "" : " hidden"}>Цвет темы</button>
+      </div>`;
+    }).join("");
+
+    box.querySelectorAll('input[type="color"]').forEach(input => {
+      input.oninput = () => {
+        (themeColors[selectedTheme] = themeColors[selectedTheme] || {})[input.dataset.token] = input.value;
+        box.querySelector(`[data-reset="${input.dataset.token}"]`).hidden = false;
+        previewPalette();
+      };
+    });
+    box.querySelectorAll(".pal-reset").forEach(btn => {
+      btn.onclick = () => {
+        if (themeColors[selectedTheme]) delete themeColors[selectedTheme][btn.dataset.reset];
+        renderPalette();
+        previewPalette();
+      };
+    });
+  }
+
+  function resetPalette() {
+    delete themeColors[selectedTheme];
+    renderPalette();
+    previewPalette();
+  }
+
+  // Предпросмотр прямо на этой странице: инлайновый стиль на <html>
+  // перебивает и тему, и переопределения из theme.js.
+  function previewPalette() {
+    const root = document.documentElement;
+    root.setAttribute("data-skin", selectedTheme);
+    const own = themeColors[selectedTheme] || {};
+    for (const { key } of PALETTE_TOKENS) {
+      if (own[key]) root.style.setProperty(key, own[key]);
+      else root.style.removeProperty(key);
+    }
+    const accent = own.accent || themeDefaults(selectedTheme).accent;
+    for (const [key, value] of Object.entries(accentVariants(accent))) {
+      root.style.setProperty(key, value);
+    }
   }
 
   const TAB_DEFS = [
@@ -660,8 +783,17 @@
     rawSettings = settings;
 
     selectedTheme = settings.theme || "classic";
+    themeColors = JSON.parse(JSON.stringify(settings.themeColors || {}));
+    // Раньше акцент был один на весь сайт (customAccent) и тянулся за
+    // человеком во все темы — в том числе в те, у которых есть свой
+    // акцент по умолчанию. Переносим его в палитру текущей темы, но
+    // только если своего у неё нет: тот же порядок, что и в theme.js.
+    const themeHasOwnAccent = !!(THEME_PRESETS[selectedTheme] || {}).defaultAccent;
+    if (settings.customAccent && !themeHasOwnAccent && !(themeColors[selectedTheme] || {}).accent) {
+      (themeColors[selectedTheme] = themeColors[selectedTheme] || {}).accent = settings.customAccent;
+    }
     renderThemeGrid();
-    document.getElementById("accent").value = settings.customAccent || "#8b1a1a";
+    renderPalette();
 
     const labels = settings.labels || {};
     renderLabelsPanel(labels);
@@ -827,6 +959,20 @@
     return out;
   }
 
+  // Пустые объекты в site-settings.json не нужны — они копятся при
+  // каждом «сбросить» и потом читаются как «тут что-то настроено».
+  function prunePalette() {
+    const out = {};
+    for (const [skin, colors] of Object.entries(themeColors)) {
+      const kept = {};
+      for (const [key, value] of Object.entries(colors || {})) {
+        if (/^#[0-9a-f]{6}$/i.test(value)) kept[key] = value;
+      }
+      if (Object.keys(kept).length) out[skin] = kept;
+    }
+    return out;
+  }
+
   async function saveSettings() {
     tabOrderState.forEach(id => {
       const row = document.getElementById(`tabrow-${id}`);
@@ -908,7 +1054,7 @@
     const payload = {
       ...rawSettings,
       theme: selectedTheme,
-      customAccent: document.getElementById("accent").value,
+      themeColors: prunePalette(),
       customTags,
       customCategories: customCategoriesPayload,
       categoryColors,
@@ -938,6 +1084,10 @@
         subtypes: subtypeRenames,
       },
     };
+
+    // Глобальный акцент переехал в палитру темы при загрузке —
+    // в файле он больше не нужен.
+    delete payload.customAccent;
 
     const activePanel = document.querySelector(".panel.active").id.replace("panel-", "");
     const statusId = `status-${activePanel}`;

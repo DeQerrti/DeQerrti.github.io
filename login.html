@@ -10,9 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=10">
-<link rel="stylesheet" href="/themes.css?v=10">
-<script src="/js/utils.js?v=10"></script>
+<link rel="stylesheet" href="/style.css?v=11">
+<link rel="stylesheet" href="/themes.css?v=11">
+<script src="/js/utils.js?v=11"></script>
 <style>
 body {
   background: var(--bg);
@@ -135,8 +135,8 @@ input[type="password"]::placeholder { letter-spacing: .05em; color: var(--text-d
 
 button {
   width: 100%;
-  background: rgba(139,26,26,.12);
-  border: 1px solid rgba(139,26,26,.35);
+  background: var(--accent-fill);
+  border: 1px solid var(--accent-line);
   border-radius: 2px;
   color: var(--text-hi);
   font-family: 'Playfair Display', serif;
@@ -166,7 +166,7 @@ button::after {
   transition: border-color .2s;
 }
 button:hover {
-  background: rgba(139,26,26,.22);
+  background: var(--accent-fill-hi);
   border-color: var(--red);
 }
 button:hover::before,
@@ -175,7 +175,7 @@ button:hover::after { border-color: var(--red-hi); }
 .error {
   font-family: 'DM Sans', sans-serif;
   font-size: .72rem;
-  color: #d88;
+  color: var(--err);
   text-align: center;
   margin-top: .85rem;
   min-height: 1rem;

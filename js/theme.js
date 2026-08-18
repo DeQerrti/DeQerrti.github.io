@@ -34,15 +34,66 @@ function themeOptions() {
 
 const DEFAULT_ACCENT = "#8b1a1a"; // текущий --red по умолчанию
 
-// Строим hi/dim-варианты акцентного цвета через регулировку светлоты (HSL)
+// ── Палитра темы ───────────────────────────────
+// Девять цветов, из которых собран весь сайт, плюс акцент отдельно.
+// Всё остальное — полупрозрачные подсветки, тени, подложки — считается
+// от них (см. :root в style.css и accentVariants ниже), поэтому менять
+// руками нужно только эти десять.
+//
+// Список читает экран настроек: добавить сюда строку достаточно, чтобы
+// в настройках появился ещё один цвет.
+const PALETTE_TOKENS = [
+  { key: "--bg", label: "Фон страницы", hint: "Самый нижний слой" },
+  { key: "--bg2", label: "Фон второго уровня", hint: "Поля ввода, вложенные подложки" },
+  { key: "--surface", label: "Блоки и карточки", hint: "Карточки, панели, модалки" },
+  { key: "--surface2", label: "Блоки второго уровня", hint: "Вкладки, чипы, поле поиска" },
+  { key: "--border", label: "Границы", hint: "Тонкие разделители" },
+  { key: "--border2", label: "Границы заметные", hint: "Рамки кнопок и полей" },
+  { key: "--text", label: "Основной текст", hint: "Тело отзывов и подписи" },
+  { key: "--text-dim", label: "Приглушённый текст", hint: "Даты, вторичные пометки" },
+  { key: "--text-hi", label: "Заголовки", hint: "Названия, яркий текст" },
+];
+
+// Строим hi/dim-варианты акцентного цвета через регулировку светлоты (HSL),
+// а заливки и рамки — через альфу того же цвета. Из-за этого смена акцента
+// перекрашивает и кнопки, и активные фильтры, и подсветки — раньше они
+// были литералами rgba(139,26,26,…) и на акцент не реагировали.
 function accentVariants(hex) {
   const { r, g, b } = hexToRgb(hex);
   const [h, s, l] = rgbToHsl(r, g, b);
+  const alpha = (a) => `rgba(${r}, ${g}, ${b}, ${a})`;
   return {
     "--red": hex,
     "--red-hi": hslToHex(h, s, Math.min(l + 18, 92)),
     "--red-dim": hslToHex(h, s, Math.max(l - 18, 6)),
+    "--accent-wash": alpha(0.08),
+    "--accent-fill": alpha(0.15),
+    "--accent-fill-hi": alpha(0.25),
+    "--accent-line": alpha(0.38),
   };
+}
+
+// Цвет из настроек может прийти каким угодно — в CSS он попадает в
+// объявление, поэтому пропускаем только настоящий hex.
+function isHex(value) {
+  return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value);
+}
+
+// Свои цвета хранятся отдельно для каждой темы: themeColors[skin].
+// Иначе подогнанная под тёмную тему палитра переезжала бы на светлую.
+function themePalette(settings, skin) {
+  const all = settings.themeColors || {};
+  return all[skin] || {};
+}
+
+function resolveAccent(settings, skin) {
+  const own = themePalette(settings, skin).accent;
+  if (isHex(own)) return own;
+  // Свой акцент темы важнее старого глобального customAccent: иначе
+  // однажды выбранный тёмно-красный тянулся бы за человеком во все темы.
+  if (isHex(THEME_PRESETS[skin]?.defaultAccent)) return THEME_PRESETS[skin].defaultAccent;
+  if (isHex(settings.customAccent)) return settings.customAccent;
+  return DEFAULT_ACCENT;
 }
 
 function hexToRgb(hex) {
@@ -100,17 +151,24 @@ async function applyTheme() {
   const skin = THEME_PRESETS[settings.theme] ? settings.theme : "classic";
   document.documentElement.setAttribute("data-skin", skin);
 
-  // Акцент задаётся отдельно от темы и всегда идёт последним, чтобы
-  // перебить значение из блока темы. Стиль добавляется в конец <head>,
-  // то есть после themes.css — при равной специфичности выигрывает он.
-  const accent = accentVariants(
-    settings.customAccent || THEME_PRESETS[skin]?.defaultAccent || DEFAULT_ACCENT
-  );
-  const declarations = Object.entries(accent)
+  // Свои цвета и акцент идут последними, чтобы перебить значения из
+  // блока темы. Стиль добавляется в конец <head>, то есть после
+  // themes.css — при равной специфичности выигрывает он.
+  const palette = themePalette(settings, skin);
+  const overrides = {};
+  for (const { key } of PALETTE_TOKENS) {
+    if (isHex(palette[key])) overrides[key] = palette[key];
+  }
+  Object.assign(overrides, accentVariants(resolveAccent(settings, skin)));
+
+  const declarations = Object.entries(overrides)
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
 
   const style = document.createElement("style");
+  // id нужен экрану настроек: он читает значения тем прямо из
+  // стилей и должен уметь пропустить уже применённые правки.
+  style.id = "theme-overrides";
   style.textContent = `:root { ${declarations} }`;
   document.head.appendChild(style);
 

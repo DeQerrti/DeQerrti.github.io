@@ -33,6 +33,8 @@
 /* ══ ПОЛНОЧНЫЙ ИНДИГО ════════════════════════════ */
 [data-skin="midnight"] {
   color-scheme: dark;
+  --nav-bg: rgba(6, 7, 15, 0.95);
+  --poster-scrim: rgba(6, 7, 15, 0.82);
   --bg: #06070f;
   --bg2: #0a0c1c;
   --surface: #0f1228;
@@ -47,6 +49,8 @@
 /* ══ ТЁПЛЫЙ ГРАФИТ ═══════════════════════════════ */
 [data-skin="graphite"] {
   color-scheme: dark;
+  --nav-bg: rgba(15, 11, 8, 0.95);
+  --poster-scrim: rgba(15, 11, 8, 0.82);
   --bg: #0f0b08;
   --bg2: #180f0a;
   --surface: #1c140d;
@@ -61,6 +65,8 @@
 /* ══ ГЛУБОКИЙ ИЗУМРУД ════════════════════════════ */
 [data-skin="emerald"] {
   color-scheme: dark;
+  --nav-bg: rgba(5, 10, 7, 0.95);
+  --poster-scrim: rgba(5, 10, 7, 0.82);
   --bg: #050a07;
   --bg2: #08130d;
   --surface: #0d1811;
@@ -114,11 +120,32 @@
   --badge-text-dim: #ebe7d6;
   --badge-border: transparent;
   --badge-accent-border: transparent;
+
+  /* Нейтральные подсветки в :root — осветление (белый с малой альфой):
+     на тёмном фоне это работает, на кремовом такой слой не виден вовсе.
+     Здесь они, наоборот, затемняют. */
+  --tint: rgba(58, 62, 40, 0.05);
+  --tint-hi: rgba(58, 62, 40, 0.09);
+  --tint-line: rgba(58, 62, 40, 0.14);
+  --tint-line-hi: rgba(58, 62, 40, 0.24);
+
+  --scrim: rgba(58, 62, 40, 0.42);
+  --poster-scrim: rgba(125, 143, 95, 0.9);
+  --nav-bg: rgba(244, 239, 227, 0.92);
+  --shadow: rgba(58, 62, 40, 0.28);
+  --shadow-soft: rgba(58, 62, 40, 0.16);
+
+  /* Служебные цвета из :root рассчитаны на тёмный фон и на кремовом
+     светятся неоном — здесь приглушённые. */
+  --ok: #5d8a4a;
+  --ok-wash: rgba(93, 138, 74, 0.12);
+  --ok-fill: rgba(93, 138, 74, 0.22);
+  --ok-line: rgba(93, 138, 74, 0.4);
+  --err: #b4553f;
 }
 
 /* Структурные отличия темы — то, что переменной не выразить */
 [data-skin="soft"] nav {
-  background: rgba(244, 239, 227, 0.92);
   border-bottom-color: var(--border);
 }
 [data-skin="soft"] .tab-btn {
@@ -199,22 +226,32 @@
 [data-skin="soft"] .btn,
 [data-skin="soft"] .btn-new,
 [data-skin="soft"] .src-add-btn,
-[data-skin="soft"] .src-type-btn {
+[data-skin="soft"] .src-type-btn,
+[data-skin="soft"] .tl-mode-add-btn,
+[data-skin="soft"] .theme-option,
+[data-skin="soft"] .icon-btn,
+[data-skin="soft"] .file-tab,
+[data-skin="soft"] .tag-toggle,
+[data-skin="soft"] input[type="color"] {
   border-radius: var(--radius-btn, 999px);
+}
+/* Кружок в input[type=color] съедает почти всё поле — здесь оставляем
+   скруглённый прямоугольник, а не пилюлю. */
+[data-skin="soft"] input[type="color"] {
+  border-radius: 10px;
+}
+
+/* Декоративные уголки у «Сохранить» — приём прямоугольной темы.
+   На скруглённой кнопке они торчат обрубками по углам. */
+[data-skin="soft"] .btn-save::before,
+[data-skin="soft"] .btn-save::after {
+  display: none;
 }
 [data-skin="soft"] .btn-save,
 [data-skin="soft"] .sec-body,
 [data-skin="soft"] .modal,
 [data-skin="soft"] .review-modal-panel {
   border-radius: 16px;
-}
-
-/* Подложка модалок в базовой теме — почти чёрная (85% чёрного). На
-   светлой теме это выглядит как выключенный свет, поэтому здесь она
-   мягкая и в тон: затемняет ровно настолько, чтобы фон ушёл назад. */
-[data-skin="soft"] .modal-overlay,
-[data-skin="soft"] .review-modal-overlay {
-  background: rgba(58, 62, 40, 0.42);
 }
 
 /* Публичные карточки и панели: базовые стили дают им прямые углы и

@@ -20,6 +20,40 @@
   --text-hi:  #f0ece6;
   --green:    #4a8c5c;
   --green-hi: #6ab87a;
+
+  /* ── Производные акцента ──
+     Полупрозрачные заливки и рамки акцентного цвета. Раньше по всему
+     коду были рассыпаны литералы var(--accent-fill) — из-за них смена
+     акцента (и тем более темы) половину кнопок не трогала. Значения
+     ниже запасные: theme.js пересчитывает их от выбранного акцента и
+     дописывает своим <style> в конец <head>. */
+  --accent-wash:    rgba(139, 26, 26, 0.08);
+  --accent-fill:    rgba(139, 26, 26, 0.15);
+  --accent-fill-hi: rgba(139, 26, 26, 0.25);
+  --accent-line:    rgba(139, 26, 26, 0.38);
+
+  /* Успех — то же самое для зелёного */
+  --ok:      #6ab87a;
+  --ok-wash: rgba(106, 184, 122, 0.08);
+  --ok-fill: rgba(106, 184, 122, 0.18);
+  --ok-line: rgba(106, 184, 122, 0.3);
+  --err:     #d88;
+
+  /* ── Нейтральные подсветки ──
+     Едва заметная заливка и рамка «поверх фона». В тёмной теме это
+     осветление, в светлой — наоборот затемнение, поэтому значения
+     задаёт тема, а не акцент. */
+  --tint:         rgba(255, 255, 255, 0.025);
+  --tint-hi:      rgba(255, 255, 255, 0.05);
+  --tint-line:    rgba(240, 236, 230, 0.12);
+  --tint-line-hi: rgba(240, 236, 230, 0.22);
+
+  /* Затемнения: подложка модалок, плашки поверх обложек, тени */
+  --scrim:        rgba(0, 0, 0, 0.85);
+  --poster-scrim: rgba(10, 10, 12, 0.82);
+  --nav-bg:       rgba(10, 10, 12, 0.95);
+  --shadow:       rgba(0, 0, 0, 0.8);
+  --shadow-soft:  rgba(0, 0, 0, 0.4);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -149,8 +183,8 @@ main {
 }
 
 .edit-banner {
-  background: rgba(139,26,26,.08);
-  border: 1px solid rgba(139,26,26,.25);
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-fill-hi);
   border-radius: 2px;
   padding: .75rem 1.1rem;
   margin-bottom: 2.5rem;
@@ -167,7 +201,7 @@ main {
 
 .btn-new {
   background: none;
-  border: 1px solid rgba(139,26,26,.35);
+  border: 1px solid var(--accent-line);
   border-radius: 2px;
   color: var(--red-hi);
   font-family: 'DM Sans', sans-serif;
@@ -179,7 +213,7 @@ main {
   flex-shrink: 0;
 }
 
-.btn-new:hover { background: rgba(139,26,26,.15); border-color: var(--red-hi); }
+.btn-new:hover { background: var(--accent-fill); border-color: var(--red-hi); }
 
 .section-title {
   font-family: 'Playfair Display', serif;
@@ -235,8 +269,8 @@ select option { background: var(--bg2); }
 
 .btn-save {
   width: 100%;
-  background: rgba(139,26,26,.12);
-  border: 1px solid rgba(139,26,26,.35);
+  background: var(--accent-fill);
+  border: 1px solid var(--accent-line);
   border-radius: 2px;
   color: var(--text-hi);
   font-family: 'Playfair Display', serif;
@@ -251,7 +285,7 @@ select option { background: var(--bg2); }
 }
 
 .btn-save:hover {
-  background: rgba(139,26,26,.22);
+  background: var(--accent-fill-hi);
   border-color: var(--red);
 }
 
@@ -268,7 +302,7 @@ select option { background: var(--bg2); }
 
 .status-msg.ok  { color: var(--green-hi); }
 
-.status-msg.err { color: #d88; }
+.status-msg.err { color: var(--err); }
 
 /* ══ BUTTONS — общий язык для всех редакторов и настроек ═════════
    Раньше .btn/.btn-ghost/.btn-primary/.icon-btn были продублированы
@@ -288,13 +322,13 @@ select option { background: var(--bg2); }
   border: 1px solid;
   background: none;
 }
-.btn-primary { background: rgba(139,26,26,.12); border-color: rgba(139,26,26,.35); color: var(--text-hi); }
-.btn-primary:hover { background: rgba(139,26,26,.22); border-color: var(--red); }
+.btn-primary { background: var(--accent-fill); border-color: var(--accent-line); color: var(--text-hi); }
+.btn-primary:hover { background: var(--accent-fill-hi); border-color: var(--red); }
 .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
 .btn-ghost { background: none; border-color: var(--border2); color: var(--text-dim); }
 .btn-ghost:hover { border-color: var(--red-dim); color: var(--text); }
-.btn-green { background: rgba(106,184,122,.08); border-color: rgba(106,184,122,.3); color: var(--green-hi); }
-.btn-green:hover { background: rgba(106,184,122,.18); border-color: var(--green-hi); }
+.btn-green { background: var(--ok-wash); border-color: var(--ok-line); color: var(--green-hi); }
+.btn-green:hover { background: var(--ok-fill); border-color: var(--green-hi); }
 .btn-green:disabled { opacity: .4; cursor: not-allowed; }
 .btn-dashed { background: none; border-style: dashed; border-color: var(--border2); color: var(--text-dim); }
 .btn-dashed:hover { border-color: var(--green-hi); color: var(--green-hi); }
@@ -313,7 +347,7 @@ select option { background: var(--bg2); }
   align-items: center;
   justify-content: center;
 }
-.icon-btn:hover { color: var(--text-hi); border-color: var(--red-dim); background: rgba(139,26,26,.08); }
+.icon-btn:hover { color: var(--text-hi); border-color: var(--red-dim); background: var(--accent-wash); }
 
 /* Без этого при клике мышью браузер показывает свою белую/системную рамку
    фокуса поверх кнопок — то, что выглядело как "не прокрасившиеся" кнопки
@@ -383,7 +417,7 @@ select option { background: var(--bg2); }
   color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: .78rem;
   padding: .65rem .9rem; width: 100%; text-align: left; cursor: pointer; transition: all .15s;
 }
-.src-add-btn:hover { color: var(--text-hi); border-color: var(--red-dim); background: rgba(139,26,26,.06); }
+.src-add-btn:hover { color: var(--text-hi); border-color: var(--red-dim); background: var(--accent-wash); }
 .src-add-btn .sub { font-style: italic; margin-left: .3rem; }
 .src-add-btn.hidden { display: none; }
 
@@ -406,7 +440,7 @@ select option { background: var(--bg2); }
 .src-type-dropdown {
   position: absolute; top: calc(100% + 4px); left: 0; min-width: 210px;
   background: var(--surface); border: 1px solid var(--border2); border-radius: 2px;
-  padding: .4rem; z-index: 50; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  padding: .4rem; z-index: 50; box-shadow: 0 8px 24px var(--shadow-soft);
 }
 .src-type-dropdown.hidden { display: none; }
 .src-type-list { max-height: 220px; overflow-y: auto; }
@@ -416,7 +450,7 @@ select option { background: var(--bg2); }
   padding: .45rem .55rem; border-radius: 2px; cursor: pointer;
   font-family: 'DM Sans', sans-serif; font-size: .8rem; color: var(--text); transition: background .15s;
 }
-.src-type-option:hover { background: rgba(255,255,255,.04); }
+.src-type-option:hover { background: var(--tint-hi); }
 .src-type-option.active { color: var(--red-hi); }
 .src-type-option .icon-btn.src-type-remove { width: 22px; height: 22px; font-size: .65rem; }
 
@@ -456,7 +490,7 @@ select option { background: var(--bg2); }
    Ширина отличается по страницам — её и переопределяют на месте. */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,.85);
+  background: var(--scrim);
   z-index: 1000;
   display: flex; align-items: center; justify-content: center;
   padding: 1rem;
