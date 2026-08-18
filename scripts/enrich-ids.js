@@ -91,17 +91,31 @@ async function fetchBatch(ids) {
 const malByAnilist = new Map();
 let noMal = 0;
 
-for (let i = 0; i < uniqueIds.length; i += BATCH) {
-  const chunk = uniqueIds.slice(i, i + BATCH);
-  process.stdout.write(`Запрос ${Math.floor(i / BATCH) + 1}: ${chunk.length} номеров… `);
-  const media = await fetchBatch(chunk);
-  for (const item of media) {
-    // idMal бывает null: у записей, которых на MAL нет вовсе.
-    if (item.idMal) malByAnilist.set(item.id, item.idMal);
-    else noMal++;
+// Сбой сети — самый вероятный исход у того, кто запускает это первый
+// раз, поэтому падать стектрейсом нельзя: по нему непонятно, что
+// делать. Ловим и объясняем словами. Файл при этом не трогаем вовсе,
+// так что повторный запуск ничего не испортит.
+try {
+  for (let i = 0; i < uniqueIds.length; i += BATCH) {
+    const chunk = uniqueIds.slice(i, i + BATCH);
+    process.stdout.write(`Запрос ${Math.floor(i / BATCH) + 1}: ${chunk.length} номеров… `);
+    const media = await fetchBatch(chunk);
+    for (const item of media) {
+      // idMal бывает null: у записей, которых на MAL нет вовсе.
+      if (item.idMal) malByAnilist.set(item.id, item.idMal);
+      else noMal++;
+    }
+    console.log(`получено ${media.length}`);
+    if (i + BATCH < uniqueIds.length) await sleep(PAUSE_MS);
   }
-  console.log(`получено ${media.length}`);
-  if (i + BATCH < uniqueIds.length) await sleep(PAUSE_MS);
+} catch (e) {
+  console.error("\n\nНе получилось спросить AniList.");
+  console.error(`Причина: ${e.message}`);
+  console.error("\nЧто это обычно значит:");
+  console.error("  • нет интернета или его блокирует сеть/VPN;");
+  console.error("  • AniList прилёг — тогда просто попробуй позже.");
+  console.error("\nreviews.json не тронут, запускать заново безопасно.");
+  process.exit(1);
 }
 
 let filled = 0;
@@ -118,3 +132,7 @@ writeFileSync(FILE, JSON.stringify(reviews, null, 2), "utf8");
 
 console.log(`\nПроставлено номеров MAL: ${filled}`);
 if (noMal) console.log(`Без номера на MAL (такой записи там нет): ${noMal}`);
+console.log("\nГотово. Осталось сохранить изменения:");
+console.log("  git add reviews.json");
+console.log('  git commit -m "reviews: номера MyAnimeList"');
+console.log("  git push");
