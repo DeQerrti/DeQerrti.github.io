@@ -30,54 +30,6 @@
   color-scheme: dark;
 }
 
-/* ══ ПОЛНОЧНЫЙ ИНДИГО ════════════════════════════ */
-[data-skin="midnight"] {
-  color-scheme: dark;
-  --nav-bg: rgba(6, 7, 15, 0.95);
-  --poster-scrim: rgba(6, 7, 15, 0.82);
-  --bg: #06070f;
-  --bg2: #0a0c1c;
-  --surface: #0f1228;
-  --surface2: #181c3a;
-  --border: #242a52;
-  --border2: #363d72;
-  --text: #a8acd8;
-  --text-dim: #3e4270;
-  --text-hi: #e6e8fa;
-}
-
-/* ══ ТЁПЛЫЙ ГРАФИТ ═══════════════════════════════ */
-[data-skin="graphite"] {
-  color-scheme: dark;
-  --nav-bg: rgba(15, 11, 8, 0.95);
-  --poster-scrim: rgba(15, 11, 8, 0.82);
-  --bg: #0f0b08;
-  --bg2: #180f0a;
-  --surface: #1c140d;
-  --surface2: #2c1f13;
-  --border: #3a2a18;
-  --border2: #523a22;
-  --text: #c9a97e;
-  --text-dim: #5c4326;
-  --text-hi: #f5e2c4;
-}
-
-/* ══ ГЛУБОКИЙ ИЗУМРУД ════════════════════════════ */
-[data-skin="emerald"] {
-  color-scheme: dark;
-  --nav-bg: rgba(5, 10, 7, 0.95);
-  --poster-scrim: rgba(5, 10, 7, 0.82);
-  --bg: #050a07;
-  --bg2: #08130d;
-  --surface: #0d1811;
-  --surface2: #15271b;
-  --border: #1f3a29;
-  --border2: #2c5539;
-  --text: #8fc4a3;
-  --text-dim: #2f5a3f;
-  --text-hi: #dcf5e6;
-}
-
 /* ══ МЯГКИЙ БОТАНИЧЕСКИЙ ═════════════════════════
    Светлая тема и единственная, которая меняет не только палитру:
    скруглённые карточки, мягкие тени вместо рамок, навигация пилюлями,
@@ -335,4 +287,280 @@
   background: rgba(125, 143, 95, 0.24);
   border-color: transparent;
   color: var(--text-hi);
+}
+
+/* ══ БРУТАЛИЗМ ═══════════════════════════════════
+   Противоположность мягкой теме и намеренный слом базовой: вместо
+   тонких линий и приглушённых тонов — жирные чёрные рамки, прямые
+   углы, жёсткие тени со смещением без размытия и один кричащий цвет.
+
+   Шрифты тоже другие. Базовые Playfair Display и Cormorant Garamond —
+   это про изящество, здесь они всё портят, поэтому заголовки уходят в
+   моноширинный, а текст — в голый гротеск. Оба системные: тема не
+   тянет ни одного лишнего файла.
+
+   Селекторы шрифтов начинаются с html[data-skin=…], а не просто
+   [data-skin=…]: собственные <style> страниц подключаются ПОСЛЕ
+   themes.css, и при равной специфичности выигрывали бы они. Лишний
+   html поднимает вес и снимает вопрос без !important. */
+[data-skin="brutal"] {
+  color-scheme: light;
+
+  --bg: #e9e7df;
+  --bg2: #dcd9cd;
+  /* Белый здесь не «недоделанный блок», а приём: белый прямоугольник в
+     жирной чёрной рамке — основа этого стиля. */
+  --surface: #ffffff;
+  --surface2: #f1efe7;
+  --border: #000000;
+  --border2: #000000;
+  --text: #000000;
+  --text-dim: #6b6b6b;
+  --text-hi: #000000;
+
+  /* Визуальный язык: нулевые скругления, толстые рамки, тень —
+     сплошной чёрный прямоугольник со сдвигом, без размытия. */
+  --radius-btn: 0;
+  --card-radius: 0;
+  --card-border: 3px solid #000;
+  --card-shadow: 6px 6px 0 #000;
+  --card-shadow-hover: 10px 10px 0 var(--red);
+  --card-corner-display: none;
+  --card-img-filter: contrast(1.08) saturate(1.05);
+  --card-img-filter-hover: contrast(1.15) saturate(1.15);
+
+  --badge-bg: #000;
+  --badge-text: #fff;
+  --badge-text-dim: #d8d8d8;
+  --badge-border: transparent;
+  --badge-accent-border: transparent;
+
+  --tint: rgba(0, 0, 0, 0.06);
+  --tint-hi: rgba(0, 0, 0, 0.11);
+  --tint-line: #000;
+  --tint-line-hi: #000;
+
+  --scrim: rgba(0, 0, 0, 0.72);
+  --poster-scrim: #000;
+  --nav-bg: #e9e7df;
+  --shadow: #000;
+  --shadow-soft: rgba(0, 0, 0, 0.4);
+
+  --ok: #007a2f;
+  --ok-wash: rgba(0, 122, 47, 0.14);
+  --ok-fill: rgba(0, 122, 47, 0.24);
+  --ok-line: #007a2f;
+  --err: #d00000;
+}
+
+/* ── Шрифты ── */
+html[data-skin="brutal"] * {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-style: normal;
+}
+html[data-skin="brutal"] .logo,
+html[data-skin="brutal"] .section-title,
+html[data-skin="brutal"] .modal-title,
+html[data-skin="brutal"] .tab-btn,
+html[data-skin="brutal"] .btn-save,
+html[data-skin="brutal"] .card-title,
+html[data-skin="brutal"] .review-title,
+html[data-skin="brutal"] h1,
+html[data-skin="brutal"] h2 {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── Шапка и навигация ── */
+[data-skin="brutal"] .logo {
+  text-transform: uppercase;
+}
+[data-skin="brutal"] header {
+  border-bottom: 4px solid #000;
+}
+/* Мягкий градиент под шапкой базовой темы — здесь сплошная полоса
+   акцента во всю ширину. */
+[data-skin="brutal"] header::after {
+  height: 8px;
+  background: var(--red);
+}
+[data-skin="brutal"] nav {
+  border-bottom: 4px solid #000;
+}
+[data-skin="brutal"] .tab-btn {
+  text-transform: uppercase;
+  border: 3px solid #000;
+  border-bottom: 3px solid #000;
+  margin: 0.5rem 0.2rem;
+  padding: 0.5rem 1.1rem;
+  background: var(--surface);
+}
+[data-skin="brutal"] .tab-btn.active {
+  background: #000;
+  color: var(--bg);
+}
+[data-skin="brutal"] .tab-btn.active::before {
+  display: none;
+}
+
+/* ── Заголовки ── */
+[data-skin="brutal"] .section-title {
+  text-transform: uppercase;
+  font-size: 1.4rem;
+}
+/* Тонкая засечка перед заголовком превращается в залитый квадрат */
+[data-skin="brutal"] .section-title::before {
+  width: 14px;
+  height: 14px;
+  background: var(--red);
+}
+[data-skin="brutal"] .section-title::after {
+  display: none;
+}
+[data-skin="brutal"] .year-divider::before,
+[data-skin="brutal"] .year-divider::after {
+  background: #000;
+  height: 2px;
+}
+
+/* ── Карточки и панели ── */
+[data-skin="brutal"] .review-card {
+  border: 3px solid #000;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="brutal"] .review-card-wrap:hover .review-card {
+  box-shadow: var(--card-shadow-hover);
+}
+[data-skin="brutal"] .rv-filters,
+[data-skin="brutal"] .stat-counters,
+[data-skin="brutal"] .tl-row,
+[data-skin="brutal"] .modal,
+[data-skin="brutal"] .review-modal-panel {
+  border: 3px solid #000;
+  border-radius: 0;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="brutal"] .stat-counter {
+  border-right: 2px solid #000;
+}
+[data-skin="brutal"] .tl-label {
+  border-right: 3px solid #000;
+}
+
+/* ── Бейджи на обложках ── */
+[data-skin="brutal"] .type-tag,
+[data-skin="brutal"] .watch-badge {
+  top: 0;
+  border-radius: 0;
+  border: none;
+  backdrop-filter: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+[data-skin="brutal"] .type-tag {
+  right: 0;
+}
+[data-skin="brutal"] .watch-badge {
+  left: 0;
+}
+
+/* ── Поля и кнопки ── */
+[data-skin="brutal"] input,
+[data-skin="brutal"] select,
+[data-skin="brutal"] textarea {
+  background: var(--surface);
+  border: 2px solid #000;
+  border-radius: 0;
+}
+[data-skin="brutal"] .btn,
+[data-skin="brutal"] .btn-new,
+[data-skin="brutal"] .src-add-btn,
+[data-skin="brutal"] .src-type-btn,
+[data-skin="brutal"] .tl-mode-add-btn,
+[data-skin="brutal"] .theme-option,
+[data-skin="brutal"] .icon-btn,
+[data-skin="brutal"] .file-tab,
+[data-skin="brutal"] .tag-toggle,
+[data-skin="brutal"] .rtag,
+[data-skin="brutal"] .grade-chip,
+[data-skin="brutal"] .review-source-link,
+[data-skin="brutal"] .rv-filter-btn,
+[data-skin="brutal"] .rv-search-input,
+[data-skin="brutal"] .admin-add-btn,
+[data-skin="brutal"] .tl-filter,
+[data-skin="brutal"] .tl-mode-btn,
+[data-skin="brutal"] .sec-body,
+[data-skin="brutal"] input[type="color"] {
+  border-radius: 0;
+  border-color: #000;
+}
+[data-skin="brutal"] .rv-filter-btn.active,
+[data-skin="brutal"] .tl-filter.active,
+[data-skin="brutal"] .tl-mode-btn.active,
+[data-skin="brutal"] .theme-option.selected,
+[data-skin="brutal"] .tag-toggle.active {
+  background: #000;
+  border-color: #000;
+  color: var(--bg);
+}
+
+/* Главная кнопка: заливка акцентом, жёсткая тень, при нажатии кнопка
+   уезжает в тень — единственная анимация, которую тема себе позволяет. */
+[data-skin="brutal"] .btn-save {
+  background: var(--red);
+  color: #fff;
+  border: 3px solid #000;
+  border-radius: 0;
+  box-shadow: 6px 6px 0 #000;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+[data-skin="brutal"] .btn-save:hover {
+  background: var(--red);
+  box-shadow: 3px 3px 0 #000;
+  transform: translate(3px, 3px);
+}
+[data-skin="brutal"] .btn-save::before,
+[data-skin="brutal"] .btn-save::after {
+  display: none;
+}
+
+/* Плашки-теги и ссылки на источник: в базовой теме у них едва заметные
+   рамки — здесь всё обводится чёрным, иначе на белом они пропадают. */
+[data-skin="brutal"] .rtag,
+[data-skin="brutal"] .review-source-link,
+[data-skin="brutal"] .admin-add-btn,
+[data-skin="brutal"] .tag-toggle {
+  border-color: #000;
+  color: var(--text);
+  background: var(--surface);
+}
+[data-skin="brutal"] .admin-add-btn,
+[data-skin="brutal"] .tl-mode-add-btn {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Тонкие рамки в 1px базовой темы здесь везде становятся жирными:
+   на этом стиль и держится. Собрано одним правилом, чтобы не гоняться
+   за каждым компонентом по отдельности. */
+[data-skin="brutal"] .src-add-btn,
+[data-skin="brutal"] .src-type-btn,
+[data-skin="brutal"] .file-btn,
+[data-skin="brutal"] .fav-toggle,
+[data-skin="brutal"] .sec-body,
+[data-skin="brutal"] .btn,
+[data-skin="brutal"] .btn-new,
+[data-skin="brutal"] .icon-btn,
+[data-skin="brutal"] input,
+[data-skin="brutal"] select,
+[data-skin="brutal"] textarea {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #000;
+}
+[data-skin="brutal"] .fav-toggle.on {
+  background: var(--red);
+  color: #fff;
 }

@@ -20,11 +20,9 @@
 // defaultAccent подставляется, только если человек не выбрал свой
 // акцент вручную.
 const THEME_PRESETS = {
-  classic:  { label: "Классический" },
-  midnight: { label: "Полночный индиго" },
-  graphite: { label: "Тёплый графит" },
-  emerald:  { label: "Глубокий изумруд" },
-  soft:     { label: "Мягкий ботанический", defaultAccent: "#6b7f4a" },
+  classic: { label: "Классический" },
+  soft:    { label: "Мягкий ботанический", defaultAccent: "#6b7f4a" },
+  brutal:  { label: "Брутализм", defaultAccent: "#ff4d00" },
 };
 
 // Для выпадающих списков и сеток выбора: [{ id, label }]

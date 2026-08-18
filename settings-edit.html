@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
-<link rel="stylesheet" href="/style.css?v=11">
-<link rel="stylesheet" href="/admin.css?v=11">
-<link rel="stylesheet" href="/themes.css?v=11">
-<script src="/js/utils.js?v=11"></script>
-<script src="/js/theme.js?v=11"></script>
-<script src="/js/config.js?v=11"></script>
+<link rel="stylesheet" href="/style.css?v=12">
+<link rel="stylesheet" href="/admin.css?v=12">
+<link rel="stylesheet" href="/themes.css?v=12">
+<script src="/js/utils.js?v=12"></script>
+<script src="/js/theme.js?v=12"></script>
+<script src="/js/config.js?v=12"></script>
 <style>
   body { display: flex; }
 
@@ -964,6 +964,9 @@
   function prunePalette() {
     const out = {};
     for (const [skin, colors] of Object.entries(themeColors)) {
+      // Палитры удалённых тем в файле не нужны — иначе они копятся
+      // навсегда и читаются как настройки существующей темы.
+      if (!THEME_PRESETS[skin]) continue;
       const kept = {};
       for (const [key, value] of Object.entries(colors || {})) {
         if (/^#[0-9a-f]{6}$/i.test(value)) kept[key] = value;

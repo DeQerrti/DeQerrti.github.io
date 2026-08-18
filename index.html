@@ -21,10 +21,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=11">
-<link rel="stylesheet" href="/themes.css?v=11">
-<script src="/js/utils.js?v=11"></script>
-<script src="/js/theme.js?v=11"></script>
+<link rel="stylesheet" href="/style.css?v=12">
+<link rel="stylesheet" href="/themes.css?v=12">
+<script src="/js/utils.js?v=12"></script>
+<script src="/js/theme.js?v=12"></script>
 <style>
 /* ══ NOIR PALETTE ════════════════════════════════ */
 
@@ -449,13 +449,13 @@ section.group { margin-bottom: 3.5rem; }
 }
 .rtag-visual, .rtag-plot, .rtag-chars, .rtag-special {
   background: var(--tint);
-  color: #c8c0b8;
+  color: var(--text);
   border: 1px solid var(--tint-line);
 }
 .rtag-custom {
-  background: color-mix(in srgb, var(--tag-color, #f0ece6) 12%, transparent);
-  color: var(--tag-color, #c8c0b8);
-  border: 1px solid color-mix(in srgb, var(--tag-color, #f0ece6) 30%, transparent);
+  background: color-mix(in srgb, var(--tag-color, var(--text-hi)) 12%, transparent);
+  color: var(--tag-color, var(--text));
+  border: 1px solid color-mix(in srgb, var(--tag-color, var(--text-hi)) 30%, transparent);
 }
 
 .rtag[data-tip]:hover::after {
@@ -525,12 +525,12 @@ section.group { margin-bottom: 3.5rem; }
   transition: background .2s, color .2s, border-color .2s;
   border: 1px solid;
 }
-.source-teletype { background: rgba(180,176,170,.06); border-color: rgba(180,176,170,.2); color: #706860; }
-.source-teletype:hover { background: rgba(180,176,170,.14); border-color: rgba(180,176,170,.4); color: #a09888; }
+.source-teletype { background: var(--tint); border-color: var(--tint-line); color: var(--text-dim); }
+.source-teletype:hover { background: var(--tint-hi); border-color: var(--tint-line-hi); color: var(--text); }
 .source-other    { background: var(--accent-wash);  border-color: var(--accent-fill-hi);  color: var(--red); }
 .source-other:hover    { background: var(--accent-fill-hi);  border-color: var(--red-hi);   color: var(--red-hi); }
 
-.source-dot-teletype { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; background: #706860; }
+.source-dot-teletype { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; background: var(--text-dim); }
 .source-dot-other    { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; background: var(--red); }
 
 /* ══ EDIT BUTTON ═════════════════════════════════ */
@@ -1171,14 +1171,14 @@ section.group { margin-bottom: 3.5rem; }
   </div>
 </div>
 
-<script src="js/config.js?v=11"></script>
-<script src="js/api.js?v=11"></script>
-<script src="js/cards.js?v=11"></script>
-<script src="js/now.js?v=11"></script>
-<script src="js/favorites.js?v=11"></script>
-<script src="js/reviews.js?v=11"></script>
-<script src="js/stats.js?v=11"></script>
-<script src="js/tierlist.js?v=11"></script>
+<script src="js/config.js?v=12"></script>
+<script src="js/api.js?v=12"></script>
+<script src="js/cards.js?v=12"></script>
+<script src="js/now.js?v=12"></script>
+<script src="js/favorites.js?v=12"></script>
+<script src="js/reviews.js?v=12"></script>
+<script src="js/stats.js?v=12"></script>
+<script src="js/tierlist.js?v=12"></script>
 
 <script>
 let _navInit = true;

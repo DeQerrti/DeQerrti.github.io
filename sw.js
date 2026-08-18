@@ -19,7 +19,7 @@
 // ══════════════════════════════════════════════
 
 // Версия входит в имена кэшей: смена версии выбрасывает всё старое.
-const VERSION = "v4";
+const VERSION = "v5";
 const SHELL_CACHE = `tasteid-shell-${VERSION}`;
 const DATA_CACHE = `tasteid-data-${VERSION}`;
 const IMAGE_CACHE = `tasteid-img-${VERSION}`;
