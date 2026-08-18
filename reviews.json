@@ -220,7 +220,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 224
+    "id": 224,
+    "ids": {
+      "anilist": 145369
+    }
   },
   {
     "title": "Dai Dark",
@@ -240,7 +243,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 223
+    "id": 223,
+    "ids": {
+      "anilist": 105263
+    }
   },
   {
     "title": "Pick Me Up!",
@@ -260,7 +266,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 222
+    "id": 222,
+    "ids": {
+      "anilist": 159441
+    }
   },
   {
     "title": "Gokurakugai",
@@ -280,7 +289,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 221
+    "id": 221,
+    "ids": {
+      "anilist": 150378
+    }
   },
   {
     "title": "Sangnamja",
@@ -300,7 +312,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 220
+    "id": 220,
+    "ids": {
+      "anilist": 129956
+    }
   },
   {
     "title": "Kono Ko Shirimasen ka?",
@@ -320,7 +335,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 219
+    "id": 219,
+    "ids": {
+      "anilist": 141487
+    }
   },
   {
     "title": "Choinui Sidae",
@@ -340,7 +358,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 218
+    "id": 218,
+    "ids": {
+      "anilist": 127993
+    }
   },
   {
     "title": "Eleceed",
@@ -360,7 +381,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 217
+    "id": 217,
+    "ids": {
+      "anilist": 106929
+    }
   },
   {
     "title": "SSS-geup Jugeoya Saneun Hunter",
@@ -380,7 +404,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 216
+    "id": 216,
+    "ids": {
+      "anilist": 128067
+    }
   },
   {
     "title": "Jeonjijeok Dokja Sijeom",
@@ -400,7 +427,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 215
+    "id": 215,
+    "ids": {
+      "anilist": 119257
+    }
   },
   {
     "title": "Majo to Kishi wa Ikinokoru",
@@ -420,7 +450,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 214
+    "id": 214,
+    "ids": {
+      "anilist": 144619
+    }
   },
   {
     "title": "Medalist",
@@ -440,7 +473,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 213
+    "id": 213,
+    "ids": {
+      "anilist": 118371
+    }
   },
   {
     "title": "Kijin Gentoushou",
@@ -460,7 +496,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 212
+    "id": 212,
+    "ids": {
+      "anilist": 139499
+    }
   },
   {
     "title": "Kusuriya no Hitorigoto",
@@ -480,7 +519,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 211
+    "id": 211,
+    "ids": {
+      "anilist": 99022
+    }
   },
   {
     "title": "Iphagyongbyeong",
@@ -500,7 +542,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 210
+    "id": 210,
+    "ids": {
+      "anilist": 126297
+    }
   },
   {
     "title": "Gwicholli",
@@ -520,7 +565,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 209
+    "id": 209,
+    "ids": {
+      "anilist": 180410
+    }
   },
   {
     "title": "R15+ ja Dame desu ka?",
@@ -540,7 +588,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 208
+    "id": 208,
+    "ids": {
+      "anilist": 148936
+    }
   },
   {
     "title": "Sousou no Frieren",
@@ -560,7 +611,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 207
+    "id": 207,
+    "ids": {
+      "anilist": 118586
+    }
   },
   {
     "title": "Clevatess: Majuu no Ou to Akago to Kabane no Yuusha",
@@ -580,7 +634,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 206
+    "id": 206,
+    "ids": {
+      "anilist": 122693
+    }
   },
   {
     "title": "Musa Mallihaeng",
@@ -600,7 +657,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 205
+    "id": 205,
+    "ids": {
+      "anilist": 122082
+    }
   },
   {
     "title": "Kim Bujang",
@@ -620,7 +680,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 204
+    "id": 204,
+    "ids": {
+      "anilist": 141626
+    }
   },
   {
     "title": "Blue Lock",
@@ -640,7 +703,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 203
+    "id": 203,
+    "ids": {
+      "anilist": 106130
+    }
   },
   {
     "title": "Chamgyoyuk",
@@ -660,7 +726,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 202
+    "id": 202,
+    "ids": {
+      "anilist": 128521
+    }
   },
   {
     "title": "Academy-eseo Saranamgi",
@@ -680,7 +749,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 201
+    "id": 201,
+    "ids": {
+      "anilist": 172619
+    }
   },
   {
     "title": "Gachiakuta",
@@ -700,7 +772,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 200
+    "id": 200,
+    "ids": {
+      "anilist": 144946
+    }
   },
   {
     "title": "Kingdom of Raah",
@@ -740,7 +815,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 198
+    "id": 198,
+    "ids": {
+      "anilist": 154056
+    }
   },
   {
     "title": "Hyeonsil Quest",
@@ -760,7 +838,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 197
+    "id": 197,
+    "ids": {
+      "anilist": 141705
+    }
   },
   {
     "title": "After God",
@@ -780,7 +861,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 196
+    "id": 196,
+    "ids": {
+      "anilist": 138577
+    }
   },
   {
     "title": "Ajuutan",
@@ -800,7 +884,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 195
+    "id": 195,
+    "ids": {
+      "anilist": 104515
+    }
   },
   {
     "title": "Tsugumi Project",
@@ -840,7 +927,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 193
+    "id": 193,
+    "ids": {
+      "anilist": 144957
+    }
   },
   {
     "title": "Muhanui Mabeopsa",
@@ -860,7 +950,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 192
+    "id": 192,
+    "ids": {
+      "anilist": 159930
+    }
   },
   {
     "title": "О движении Земли",
@@ -882,7 +975,10 @@
     "review_full": null,
     "grade": null,
     "tags": [],
-    "id": 191
+    "id": 191,
+    "ids": {
+      "anilist": 151514
+    }
   },
   {
     "title": "Chi. Chikyuu no Undou ni Tsuite",
@@ -902,7 +998,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 190
+    "id": 190,
+    "ids": {
+      "anilist": 124139
+    }
   },
   {
     "title": "Atnomen",
@@ -942,7 +1041,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 188
+    "id": 188,
+    "ids": {
+      "anilist": 170399
+    }
   },
   {
     "title": "Fujimi no Tokkouhei",
@@ -962,7 +1064,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 187
+    "id": 187,
+    "ids": {
+      "anilist": 118671
+    }
   },
   {
     "title": "Hwasangwihwan",
@@ -982,7 +1087,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 186
+    "id": 186,
+    "ids": {
+      "anilist": 132144
+    }
   },
   {
     "title": "Eommareul Mannareo Ganeun Gil",
@@ -1002,7 +1110,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 185
+    "id": 185,
+    "ids": {
+      "anilist": 187189
+    }
   },
   {
     "title": "Uma Musume: Cinderella Gray",
@@ -1022,7 +1133,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 184
+    "id": 184,
+    "ids": {
+      "anilist": 119247
+    }
   },
   {
     "title": "Real",
@@ -1042,7 +1156,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 183
+    "id": 183,
+    "ids": {
+      "anilist": 30657
+    }
   },
   {
     "title": "Dasi Han Beon, Bin Sogeuro",
@@ -1062,7 +1179,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 182
+    "id": 182,
+    "ids": {
+      "anilist": 139339
+    }
   },
   {
     "title": "Kaminaki Sekai no Kamisama Katsudou",
@@ -1082,7 +1202,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 181
+    "id": 181,
+    "ids": {
+      "anilist": 130965
+    }
   },
   {
     "title": "Tongari Boushi no Atelier",
@@ -1102,7 +1225,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 158
+    "id": 158,
+    "ids": {
+      "anilist": 98263
+    }
   },
   {
     "title": "Dorohedoro 2",
@@ -1133,7 +1259,10 @@
       "Почти без кринжа",
       "Жесть"
     ],
-    "id": 110
+    "id": 110,
+    "ids": {
+      "anilist": 173172
+    }
   },
   {
     "title": "Re:Zero",
@@ -1166,7 +1295,10 @@
       "Жесть",
       "Слабая режиссура"
     ],
-    "id": 102
+    "id": 102,
+    "ids": {
+      "anilist": 21355
+    }
   },
   {
     "title": "Saya no Uta",
@@ -1241,7 +1373,10 @@
     "review_full": null,
     "grade": null,
     "tags": [],
-    "id": 27
+    "id": 27,
+    "ids": {
+      "anilist": 30642
+    }
   },
   {
     "title": "ALLfiring",
@@ -1443,7 +1578,10 @@
       "Много кринжа",
       "Сюжет удивил"
     ],
-    "id": 10
+    "id": 10,
+    "ids": {
+      "anilist": 156092
+    }
   },
   {
     "title": "Reverse: 1999",
@@ -1516,7 +1654,10 @@
       "Философия"
     ],
     "fav_order": 9,
-    "id": 1
+    "id": 1,
+    "ids": {
+      "anilist": 74489
+    }
   },
   {
     "title": "Fate/strange Fake",
@@ -1552,7 +1693,10 @@
       "Сюжет удивил",
       "Абсолют синема"
     ],
-    "id": 16
+    "id": 16,
+    "ids": {
+      "anilist": 166617
+    }
   },
   {
     "title": "Jujutsu Kaisen",
@@ -1584,7 +1728,10 @@
       "Картонные чары",
       "Дырявый сеттинг"
     ],
-    "id": 15
+    "id": 15,
+    "ids": {
+      "anilist": 172463
+    }
   },
   {
     "title": "Yuusha Kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",
@@ -1618,7 +1765,10 @@
       "Лор важнее сюжета",
       "Слабая режиссура"
     ],
-    "id": 14
+    "id": 14,
+    "ids": {
+      "anilist": 167152
+    }
   },
   {
     "title": "Peaky Blinders: The Immortal Man",
@@ -1676,7 +1826,10 @@
       "Философия",
       "Серая мораль"
     ],
-    "id": 18
+    "id": 18,
+    "ids": {
+      "anilist": 50006
+    }
   },
   {
     "title": "Dolphin Tale",
@@ -1728,7 +1881,10 @@
       "Картонные чары",
       "Дырявый сеттинг"
     ],
-    "id": 160
+    "id": 160,
+    "ids": {
+      "anilist": 198372
+    }
   },
   {
     "title": "The Day of the Jackal",
@@ -1793,7 +1949,10 @@
       "Философия"
     ],
     "fav_order": 10,
-    "id": 3
+    "id": 3,
+    "ids": {
+      "anilist": 85611
+    }
   },
   {
     "title": "Tokyo Ghoul",
@@ -1826,7 +1985,10 @@
       "Серая мораль",
       "Философия"
     ],
-    "id": 4
+    "id": 4,
+    "ids": {
+      "anilist": 63327
+    }
   },
   {
     "title": "Arknights: Endfield",
@@ -1887,7 +2049,10 @@
       "Жесть",
       "Серая мораль"
     ],
-    "id": 24
+    "id": 24,
+    "ids": {
+      "hardcover_edition": 32349247
+    }
   },
   {
     "title": "One Battle After Another",
@@ -1977,7 +2142,10 @@
       "Без кринжа",
       "Чистый кайф"
     ],
-    "id": 113
+    "id": 113,
+    "ids": {
+      "hardcover_edition": 18780509
+    }
   },
   {
     "title": "The Stranger in the Woods",
@@ -2055,7 +2223,10 @@
       "Чистый кайф",
       "Проседает"
     ],
-    "id": 115
+    "id": 115,
+    "ids": {
+      "hardcover_edition": 13589059
+    }
   },
   {
     "title": "The Nibelungenlied",
@@ -2103,7 +2274,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 112
+    "id": 112,
+    "ids": {
+      "anilist": 153007
+    }
   },
   {
     "title": "The Plague",
@@ -2129,7 +2303,10 @@
       "Жесть",
       "Без кринжа"
     ],
-    "id": 117
+    "id": 117,
+    "ids": {
+      "hardcover_edition": 2707798
+    }
   },
   {
     "title": "Peak",
@@ -2156,7 +2333,10 @@
       "Философия",
       "Жесть"
     ],
-    "id": 111
+    "id": 111,
+    "ids": {
+      "anilist": 41237
+    }
   },
   {
     "title": "The Gadfly",
@@ -2178,7 +2358,10 @@
     "tags": [
       "Почти без кринжа"
     ],
-    "id": 118
+    "id": 118,
+    "ids": {
+      "hardcover_edition": 336595
+    }
   },
   {
     "title": "The Wind-Up Bird Chronicle",
@@ -2208,7 +2391,10 @@
       "Философия",
       "Чистый кайф"
     ],
-    "id": 119
+    "id": 119,
+    "ids": {
+      "hardcover_edition": 30387653
+    }
   },
   {
     "title": "Wuthering Waves",
@@ -2266,7 +2452,10 @@
     "review_full": null,
     "grade": null,
     "tags": [],
-    "id": 107
+    "id": 107,
+    "ids": {
+      "anilist": 184347
+    }
   },
   {
     "title": "Milana",
@@ -2345,7 +2534,10 @@
       "Без кринжа",
       "Философия"
     ],
-    "id": 120
+    "id": 120,
+    "ids": {
+      "hardcover_edition": 13043033
+    }
   },
   {
     "title": "Lies of P",
@@ -2465,7 +2657,10 @@
       "Жесть",
       "Философия"
     ],
-    "id": 121
+    "id": 121,
+    "ids": {
+      "hardcover_edition": 16019337
+    }
   },
   {
     "title": "Cheolhyeolgeomga Sanyanggaeui Hoegwi",
@@ -2486,7 +2681,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 106
+    "id": 106,
+    "ids": {
+      "anilist": 163824
+    }
   },
   {
     "title": "План перерождённого наёмника",
@@ -2534,7 +2732,10 @@
       "Крутой протагонист",
       "Почти без кринжа"
     ],
-    "id": 122
+    "id": 122,
+    "ids": {
+      "hardcover_edition": 29610060
+    }
   },
   {
     "title": "Jujutsu Kaisen",
@@ -2562,7 +2763,10 @@
       "Дырявый сеттинг",
       "Почти без кринжа"
     ],
-    "id": 159
+    "id": 159,
+    "ids": {
+      "anilist": 101517
+    }
   },
   {
     "title": "The Call of Cthulhu",
@@ -2668,7 +2872,10 @@
       "Философия",
       "Чистый кайф"
     ],
-    "id": 179
+    "id": 179,
+    "ids": {
+      "anilist": 119521
+    }
   },
   {
     "title": "Arcane 2",
@@ -2728,7 +2935,10 @@
     "tags": [
       "Философия"
     ],
-    "id": 126
+    "id": 126,
+    "ids": {
+      "hardcover_edition": 30889271
+    }
   },
   {
     "title": "The Fall of the House of Usher",
@@ -2770,7 +2980,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 177
+    "id": 177,
+    "ids": {
+      "anilist": 96821
+    }
   },
   {
     "title": "Ssaumdokak",
@@ -2796,7 +3009,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 154
+    "id": 154,
+    "ids": {
+      "anilist": 121991
+    }
   },
   {
     "title": "Green Blood",
@@ -2823,7 +3039,10 @@
       "Чистый кайф",
       "Серая мораль"
     ],
-    "id": 178
+    "id": 178,
+    "ids": {
+      "anilist": 66099
+    }
   },
   {
     "title": "American Made",
@@ -2927,7 +3146,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 135
+    "id": 135,
+    "ids": {
+      "hardcover_edition": 30607196
+    }
   },
   {
     "title": "The Sunlit Man",
@@ -2957,7 +3179,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 134
+    "id": 134,
+    "ids": {
+      "hardcover_edition": 30607198
+    }
   },
   {
     "title": "Narcos",
@@ -3099,7 +3324,10 @@
       "Оригинальный сеттинг",
       "Без кринжа"
     ],
-    "id": 170
+    "id": 170,
+    "ids": {
+      "anilist": 30149
+    }
   },
   {
     "title": "Roma soy yo",
@@ -3124,7 +3352,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 131
+    "id": 131,
+    "ids": {
+      "hardcover_edition": 30715991
+    }
   },
   {
     "title": "1984",
@@ -3155,7 +3386,10 @@
       "Жесть",
       "Философия"
     ],
-    "id": 128
+    "id": 128,
+    "ids": {
+      "hardcover_edition": 29258002
+    }
   },
   {
     "title": "For Whom the Bell Tolls",
@@ -3183,7 +3417,10 @@
       "Философия",
       "Жесть"
     ],
-    "id": 129
+    "id": 129,
+    "ids": {
+      "hardcover_edition": 13000935
+    }
   },
   {
     "title": "The German War: A Nation Under Arms",
@@ -3212,7 +3449,10 @@
       "Философия",
       "Серая мораль"
     ],
-    "id": 130
+    "id": 130,
+    "ids": {
+      "hardcover_edition": 2909159
+    }
   },
   {
     "title": "Harakiri",
@@ -3274,7 +3514,10 @@
       "Жесть",
       "Чистый кайф"
     ],
-    "id": 132
+    "id": 132,
+    "ids": {
+      "hardcover_edition": 30391522
+    }
   },
   {
     "title": "The Rithmatist",
@@ -3325,7 +3568,10 @@
       "Чеховские ружья",
       "Чистый кайф"
     ],
-    "id": 168
+    "id": 168,
+    "ids": {
+      "anilist": 124301
+    }
   },
   {
     "title": "Elantris",
@@ -3352,7 +3598,10 @@
       "Затягивает сразу",
       "До титров"
     ],
-    "id": 138
+    "id": 138,
+    "ids": {
+      "hardcover_edition": 30769393
+    }
   },
   {
     "title": "The Emperor's Soul",
@@ -3403,7 +3652,10 @@
       "Проседает",
       "Долгая раскачка"
     ],
-    "id": 162
+    "id": 162,
+    "ids": {
+      "anilist": 30003
+    }
   },
   {
     "title": "Genshin Impact",
@@ -3464,7 +3716,10 @@
       "Жесть",
       "Чистый кайф"
     ],
-    "id": 76
+    "id": 76,
+    "ids": {
+      "anilist": 145064
+    }
   },
   {
     "title": "Honkai: Star Rail",
@@ -3519,7 +3774,10 @@
       "Почти без кринжа",
       "Философия"
     ],
-    "id": 75
+    "id": 75,
+    "ids": {
+      "anilist": 155783
+    }
   },
   {
     "title": "Corpus Christi",
@@ -3569,7 +3827,10 @@
       "Философия",
       "Чистый кайф"
     ],
-    "id": 175
+    "id": 175,
+    "ids": {
+      "anilist": 33285
+    }
   },
   {
     "title": "The Boxer",
@@ -3595,7 +3856,10 @@
       "Чистый кайф",
       "Без кринжа"
     ],
-    "id": 157
+    "id": 157,
+    "ids": {
+      "anilist": 119174
+    }
   },
   {
     "title": "Oshi no Ko",
@@ -3621,7 +3885,10 @@
       "Проседает",
       "Картонные чары"
     ],
-    "id": 77
+    "id": 77,
+    "ids": {
+      "anilist": 150672
+    }
   },
   {
     "title": "Vinland Saga",
@@ -3654,7 +3921,10 @@
       "Серая мораль"
     ],
     "fav_order": 14,
-    "id": 29
+    "id": 29,
+    "ids": {
+      "anilist": 136430
+    }
   },
   {
     "title": "Helck",
@@ -3683,7 +3953,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 166
+    "id": 166,
+    "ids": {
+      "anilist": 86720
+    }
   },
   {
     "title": "Na Honjaman Level Up",
@@ -3713,7 +3986,10 @@
       "Слабый ГГ",
       "Много кринжа"
     ],
-    "id": 151
+    "id": 151,
+    "ids": {
+      "anilist": 105398
+    }
   },
   {
     "title": "Warbreaker",
@@ -3741,7 +4017,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 140
+    "id": 140,
+    "ids": {
+      "hardcover_edition": 28188510
+    }
   },
   {
     "title": "12 Angry Men",
@@ -3810,7 +4089,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 167
+    "id": 167,
+    "ids": {
+      "anilist": 123314
+    }
   },
   {
     "title": "Рыцарь огня",
@@ -3832,7 +4114,10 @@
     "review_full": null,
     "grade": null,
     "tags": [],
-    "id": 105
+    "id": 105,
+    "ids": {
+      "anilist": 136087
+    }
   },
   {
     "title": "Mistborn",
@@ -3866,7 +4151,10 @@
       "Философия",
       "Чистый кайф"
     ],
-    "id": 139
+    "id": 139,
+    "ids": {
+      "hardcover_edition": 66352
+    }
   },
   {
     "title": "Akira",
@@ -3890,7 +4178,10 @@
       "Жесть",
       "Слитый финал"
     ],
-    "id": 164
+    "id": 164,
+    "ids": {
+      "anilist": 30664
+    }
   },
   {
     "title": "Shinai naru Boku e Satsui wo Komete",
@@ -3919,7 +4210,10 @@
       "Почти без кринжа",
       "Жесть"
     ],
-    "id": 180
+    "id": 180,
+    "ids": {
+      "anilist": 106867
+    }
   },
   {
     "title": "Love Advice from the Great Duke of Hell",
@@ -3972,7 +4266,10 @@
       "Сюжетные дыры",
       "Рояли в кустах"
     ],
-    "id": 163
+    "id": 163,
+    "ids": {
+      "anilist": 44440
+    }
   },
   {
     "title": "Insaeng Jonmang",
@@ -3995,7 +4292,10 @@
       "Сюжет удивил",
       "Чистый кайф"
     ],
-    "id": 176
+    "id": 176,
+    "ids": {
+      "anilist": 123646
+    }
   },
   {
     "title": "Heads",
@@ -4018,7 +4318,10 @@
       "Жесть",
       "Философия"
     ],
-    "id": 171
+    "id": 171,
+    "ids": {
+      "anilist": 32179
+    }
   },
   {
     "title": "Made in Abyss",
@@ -4052,7 +4355,10 @@
       "Серая мораль"
     ],
     "id": 30,
-    "fav_order": 21
+    "fav_order": 21,
+    "ids": {
+      "anilist": 114745
+    }
   },
   {
     "title": "Gekiryuuchi",
@@ -4074,7 +4380,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 169
+    "id": 169,
+    "ids": {
+      "anilist": 45010
+    }
   },
   {
     "title": "Shadows House",
@@ -4103,7 +4412,10 @@
       "Почти без кринжа",
       "Сюжет удивил"
     ],
-    "id": 79
+    "id": 79,
+    "ids": {
+      "anilist": 139093
+    }
   },
   {
     "title": "King Richard",
@@ -4147,7 +4459,10 @@
     "tags": [
       "Чистый кайф"
     ],
-    "id": 173
+    "id": 173,
+    "ids": {
+      "anilist": 86640
+    }
   },
   {
     "title": "The Grand Budapest Hotel",
@@ -4236,7 +4551,10 @@
       "Философия",
       "Серая мораль"
     ],
-    "id": 80
+    "id": 80,
+    "ids": {
+      "anilist": 116589
+    }
   },
   {
     "title": "They Shall Not Grow Old",
@@ -4290,7 +4608,10 @@
       "Хорни вайб",
       "Лор важнее сюжета"
     ],
-    "id": 81
+    "id": 81,
+    "ids": {
+      "anilist": 108465
+    }
   },
   {
     "title": "Heike Monogatari",
@@ -4319,7 +4640,10 @@
       "Без кринжа",
       "Философия"
     ],
-    "id": 78
+    "id": 78,
+    "ids": {
+      "anilist": 138714
+    }
   },
   {
     "title": "Arcane",
@@ -4389,7 +4713,10 @@
       "Жесть",
       "Философия"
     ],
-    "id": 82
+    "id": 82,
+    "ids": {
+      "anilist": 114535
+    }
   },
   {
     "title": "The Wolf House",
@@ -4449,7 +4776,10 @@
       "Чеховские ружья",
       "Проседает"
     ],
-    "id": 165
+    "id": 165,
+    "ids": {
+      "anilist": 33031
+    }
   },
   {
     "title": "Odd Taxi",
@@ -4477,7 +4807,10 @@
       "Живые герои",
       "Без кринжа"
     ],
-    "id": 84
+    "id": 84,
+    "ids": {
+      "anilist": 128547
+    }
   },
   {
     "title": "Shingeki no Kyojin",
@@ -4511,7 +4844,10 @@
       "Жесть",
       "Философия"
     ],
-    "id": 88
+    "id": 88,
+    "ids": {
+      "anilist": 53390
+    }
   },
   {
     "title": "Wonder Egg Priority",
@@ -4539,7 +4875,10 @@
       "Философия",
       "Сюжет удивил"
     ],
-    "id": 86
+    "id": 86,
+    "ids": {
+      "anilist": 124845
+    }
   },
   {
     "title": "Beastars",
@@ -4565,7 +4904,10 @@
       "Чеховские ружья",
       "Почти без кринжа"
     ],
-    "id": 83
+    "id": 83,
+    "ids": {
+      "anilist": 114194
+    }
   },
   {
     "title": "Kimetsu no Yaiba",
@@ -4595,7 +4937,10 @@
       "Слабый ГГ",
       "Много кринжа"
     ],
-    "id": 156
+    "id": 156,
+    "ids": {
+      "anilist": 87216
+    }
   },
   {
     "title": "Yakusoku no Neverland",
@@ -4627,7 +4972,10 @@
       "Почти без кринжа",
       "Философия"
     ],
-    "id": 155
+    "id": 155,
+    "ids": {
+      "anilist": 87423
+    }
   },
   {
     "title": "Chainsaw Man",
@@ -4657,7 +5005,10 @@
       "Много кринжа",
       "Жесть"
     ],
-    "id": 145
+    "id": 145,
+    "ids": {
+      "anilist": 105778
+    }
   },
   {
     "title": "Watashitachi no Shiawase na Jikan",
@@ -4680,7 +5031,10 @@
       "Стеклище",
       "Живые герои"
     ],
-    "id": 143
+    "id": 143,
+    "ids": {
+      "anilist": 11734
+    }
   },
   {
     "title": "Shokuryou Jinrui: Starving Anonymous",
@@ -4709,7 +5063,10 @@
       "Философия",
       "Серая мораль"
     ],
-    "id": 152
+    "id": 152,
+    "ids": {
+      "anilist": 97764
+    }
   },
   {
     "title": "Gyakusatsu Happy End",
@@ -4731,7 +5088,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 153
+    "id": 153,
+    "ids": {
+      "anilist": 129006
+    }
   },
   {
     "title": "Farewell My Concubine",
@@ -4789,7 +5149,10 @@
       "Живые герои",
       "Без кринжа"
     ],
-    "id": 90
+    "id": 90,
+    "ids": {
+      "anilist": 578
+    }
   },
   {
     "title": "1917",
@@ -4846,7 +5209,10 @@
       "Жесть",
       "Чистый кайф"
     ],
-    "id": 85
+    "id": 85,
+    "ids": {
+      "anilist": 105228
+    }
   },
   {
     "title": "Human",
@@ -4919,7 +5285,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 103
+    "id": 103,
+    "ids": {
+      "anilist": 113981
+    }
   },
   {
     "title": "Muse Dash",
@@ -4993,7 +5362,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 150
+    "id": 150,
+    "ids": {
+      "anilist": 95719
+    }
   },
   {
     "title": "Head Full of Honey",
@@ -5101,7 +5473,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 97
+    "id": 97,
+    "ids": {
+      "anilist": 97922
+    }
   },
   {
     "title": "The Dark Knight",
@@ -5153,7 +5528,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 142
+    "id": 142,
+    "ids": {
+      "anilist": 97999
+    }
   },
   {
     "title": "Hellblade: Senua's Sacrifice",
@@ -5240,7 +5618,10 @@
       "Философия"
     ],
     "fav_order": 15,
-    "id": 35
+    "id": 35,
+    "ids": {
+      "anilist": 323
+    }
   },
   {
     "title": "Serial Experiments Lain",
@@ -5265,7 +5646,10 @@
       "Жесть",
       "Философия"
     ],
-    "id": 39
+    "id": 39,
+    "ids": {
+      "anilist": 339
+    }
   },
   {
     "title": "LUPIN THE IIIRD: Chikemuri no Ishikawa Goemon",
@@ -5294,7 +5678,10 @@
       "Чистый кайф",
       "До титров"
     ],
-    "id": 94
+    "id": 94,
+    "ids": {
+      "anilist": 97619
+    }
   },
   {
     "title": "LUPIN THE IIIRD: Jigen Daisuke no Bohyou",
@@ -5321,7 +5708,10 @@
       "Чеховские ружья",
       "До титров"
     ],
-    "id": 93
+    "id": 93,
+    "ids": {
+      "anilist": 20978
+    }
   },
   {
     "title": "Texhnolyze",
@@ -5384,7 +5774,10 @@
       "Философия"
     ],
     "id": 40,
-    "fav_order": 17
+    "fav_order": 17,
+    "ids": {
+      "anilist": 885
+    }
   },
   {
     "title": "Shigurui",
@@ -5415,7 +5808,10 @@
       "Философия"
     ],
     "fav_order": 18,
-    "id": 38
+    "id": 38,
+    "ids": {
+      "anilist": 2216
+    }
   },
   {
     "title": "Hideout",
@@ -5437,7 +5833,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 161
+    "id": 161,
+    "ids": {
+      "anilist": 28361
+    }
   },
   {
     "title": "Onani Master Kurosawa",
@@ -5459,7 +5858,10 @@
     "tags": [
       "Чистый кайф"
     ],
-    "id": 148
+    "id": 148,
+    "ids": {
+      "anilist": 38967
+    }
   },
   {
     "title": "Fate/Zero",
@@ -5495,7 +5897,10 @@
       "Серая мораль"
     ],
     "fav_order": 19,
-    "id": 31
+    "id": 31,
+    "ids": {
+      "anilist": 11741
+    }
   },
   {
     "title": "Casshern Sins",
@@ -5526,7 +5931,10 @@
       "Философия",
       "Жесть"
     ],
-    "id": 89
+    "id": 89,
+    "ids": {
+      "anilist": 4981
+    }
   },
   {
     "title": "All You Need Is Kill",
@@ -5551,7 +5959,10 @@
       "Чистый кайф",
       "Почти без кринжа"
     ],
-    "id": 146
+    "id": 146,
+    "ids": {
+      "anilist": 85215
+    }
   },
   {
     "title": "Hurejasik",
@@ -5573,7 +5984,10 @@
     "tags": [
       "Жесть"
     ],
-    "id": 147
+    "id": 147,
+    "ids": {
+      "anilist": 86964
+    }
   },
   {
     "title": "Psycho-Pass",
@@ -5629,7 +6043,10 @@
       "Топ рисовка",
       "Чистый кайф"
     ],
-    "id": 149
+    "id": 149,
+    "ids": {
+      "anilist": 60079
+    }
   },
   {
     "title": "Come and See",
@@ -5689,7 +6106,10 @@
       "Серая мораль"
     ],
     "fav_order": 22,
-    "id": 32
+    "id": 32,
+    "ids": {
+      "anilist": 11061
+    }
   },
   {
     "title": "Steins;Gate",
@@ -5716,7 +6136,10 @@
       "Почти без кринжа",
       "Философия"
     ],
-    "id": 87
+    "id": 87,
+    "ids": {
+      "anilist": 9253
+    }
   },
   {
     "title": "One Punch-Man",
@@ -5736,7 +6159,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 104
+    "id": 104,
+    "ids": {
+      "anilist": 74347
+    }
   },
   {
     "title": "Watchmen",
@@ -5800,7 +6226,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 95
+    "id": 95,
+    "ids": {
+      "anilist": 21087
+    }
   },
   {
     "title": "Saiteihen no Otoko",
@@ -5824,7 +6253,10 @@
       "Серая мораль",
       "Хорни вайб"
     ],
-    "id": 172
+    "id": 172,
+    "ids": {
+      "anilist": 84387
+    }
   },
   {
     "title": "91 Days",
@@ -5853,7 +6285,10 @@
       "Философия",
       "Чистый кайф"
     ],
-    "id": 96
+    "id": 96,
+    "ids": {
+      "anilist": 21711
+    }
   },
   {
     "title": "Jumyou wo Kaitotte Moratta. Ichinen ni Tsuki, Ichimanen de",
@@ -5877,7 +6312,10 @@
       "Чистый кайф",
       "Живые герои"
     ],
-    "id": 144
+    "id": 144,
+    "ids": {
+      "anilist": 97553
+    }
   },
   {
     "title": "Samurai Champloo",
@@ -5903,7 +6341,10 @@
       "Почти без кринжа",
       "Чистый кайф"
     ],
-    "id": 99
+    "id": 99,
+    "ids": {
+      "anilist": 205
+    }
   },
   {
     "title": "Ergo Proxy",
@@ -5932,7 +6373,10 @@
       "Философия"
     ],
     "id": 36,
-    "fav_order": 23
+    "fav_order": 23,
+    "ids": {
+      "anilist": 790
+    }
   },
   {
     "title": "Paprika",
@@ -5961,7 +6405,10 @@
       "Чистый кайф"
     ],
     "id": 37,
-    "fav_order": 13
+    "fav_order": 13,
+    "ids": {
+      "anilist": 1943
+    }
   },
   {
     "title": "Shutter Island",
@@ -6015,7 +6462,10 @@
       "До титров",
       "Чистый кайф"
     ],
-    "id": 98
+    "id": 98,
+    "ids": {
+      "anilist": 2001
+    }
   },
   {
     "title": "The Intouchables",
@@ -6062,7 +6512,10 @@
       "Чеховские ружья",
       "Проседает"
     ],
-    "id": 92
+    "id": 92,
+    "ids": {
+      "anilist": 20661
+    }
   },
   {
     "title": "NEEDY GIRL OVERDOSE",
@@ -6082,7 +6535,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 227
+    "id": 227,
+    "ids": {
+      "anilist": 202102
+    }
   },
   {
     "title": "Yomi no Tsugai",
@@ -6102,7 +6558,10 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 226
+    "id": 226,
+    "ids": {
+      "anilist": 195600
+    }
   },
   {
     "title": "Nippon Sangoku",
@@ -6122,6 +6581,9 @@
     "preview": null,
     "grade": null,
     "tags": [],
-    "id": 28
+    "id": 28,
+    "ids": {
+      "anilist": 206914
+    }
   }
 ]
