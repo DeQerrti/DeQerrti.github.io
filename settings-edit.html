@@ -230,6 +230,11 @@
       </div>
       <button class="btn btn-ghost" onclick="addStatusBucket()">Добавить статус</button>
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
+
+      <h2 class="section-h">Разделы вкладки «Любимое»</h2>
+      <p class="panel-intro">Галочка — показывать раздел. Карандаш — переименовать.</p>
+      <div id="favSectionsList"></div>
+      <button class="btn-save" onclick="saveSettings()">Сохранить</button>
     </div>
 
     <div class="panel" id="panel-stats">
@@ -283,6 +288,14 @@
     </div>
 
     <div class="panel" id="panel-collections">
+      <p class="panel-intro">
+        Режимы тир-листа — переключатель вверху вкладки. "Тайтлы" встроен и
+        считается по твоим отзывам с оценками, своих картинок у него нет —
+        поэтому удалить нельзя, только скрыть или переименовать.
+      </p>
+      <div id="tierModesList"></div>
+
+      <h2 class="section-h">Коллекции</h2>
       <p class="panel-intro">
         Помимо "Тайтлы" в тир-листе можно завести отдельные коллекции — как
         "Персонажи" сейчас, только про что угодно (опенинги, версии сюжета
@@ -446,6 +459,79 @@
       .replace(/[^a-zа-я0-9]+/gi, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 40) + "-" + Date.now().toString(36).slice(-4);
+  }
+
+  // ── Режим тир-листа «Тайтлы» ───────────────────
+  // Не элемент tierCollections: у коллекций своя папка с картинками
+  // и редактор, а «Тайтлы» — это просто вид тир-листа поверх reviews.json,
+  // хранить для него нечего. Поэтому отдельные переменные, тот же
+  // визуальный паттерн (.tab-row), что у статусов и коллекций.
+  let tierTitlesLabel = "Тайтлы";
+  let hiddenTierModesState = new Set();
+
+  function renderTierModesList() {
+    const container = document.getElementById("tierModesList");
+    container.innerHTML = `
+      <div class="tab-row" id="tiermoderow-titles">
+        <input type="checkbox" id="showtiermode-titles" ${hiddenTierModesState.has("titles") ? "" : "checked"}
+          onchange="hiddenTierModesState.has('titles') ? hiddenTierModesState.delete('titles') : hiddenTierModesState.add('titles')">
+        <span class="tab-name" id="tiermodename-titles">${esc(tierTitlesLabel)}</span>
+        <input type="text" id="tiermodeinput-titles" value="${esc(tierTitlesLabel)}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleTierModeEdit('titles')">✎</button>
+      </div>
+    `;
+  }
+
+  function toggleTierModeEdit(id) {
+    const row = document.getElementById(`tiermoderow-${id}`);
+    const editing = row.classList.toggle("editing");
+    if (!editing) {
+      const val = document.getElementById(`tiermodeinput-${id}`).value.trim();
+      tierTitlesLabel = val || "Тайтлы";
+      document.getElementById(`tiermodename-${id}`).textContent = tierTitlesLabel;
+    }
+  }
+
+  // ── Разделы вкладки «Любимое» ──────────────────
+  // Три встроенных раздела, каждый со своим источником данных
+  // (тайтлы — reviews.json с флагом favorite, персонажи/персоны —
+  // favorites.json по type) — поэтому список фиксированный, не
+  // add/remove, как у статусов. Добавить принципиально новый раздел
+  // («Любимое» про что-то ещё) — отдельная задача: нужен свой тип
+  // данных и место, куда его добавлять, а не просто ещё одна строка
+  // в этом списке.
+  const FAV_SECTIONS = [
+    { key: "favTitles", def: "Тайтлы" },
+    { key: "favCharacters", def: "Персонажи" },
+    { key: "favPersons", def: "Персоны" },
+  ];
+  let favSectionLabels = {};
+  let hiddenFavSectionsState = new Set();
+
+  function renderFavSectionsList() {
+    const container = document.getElementById("favSectionsList");
+    container.innerHTML = FAV_SECTIONS.map(s => {
+      const label = favSectionLabels[s.key] || s.def;
+      return `
+      <div class="tab-row" id="favsecrow-${s.key}">
+        <input type="checkbox" id="showfavsec-${s.key}" ${hiddenFavSectionsState.has(s.key) ? "" : "checked"}
+          onchange="hiddenFavSectionsState.has('${s.key}') ? hiddenFavSectionsState.delete('${s.key}') : hiddenFavSectionsState.add('${s.key}')">
+        <span class="tab-name" id="favsecname-${s.key}">${esc(label)}</span>
+        <input type="text" id="favsecinput-${s.key}" value="${esc(label)}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleFavSecEdit('${s.key}')">✎</button>
+      </div>`;
+    }).join("");
+  }
+
+  function toggleFavSecEdit(key) {
+    const row = document.getElementById(`favsecrow-${key}`);
+    const editing = row.classList.toggle("editing");
+    if (!editing) {
+      const val = document.getElementById(`favsecinput-${key}`).value.trim();
+      const def = FAV_SECTIONS.find(s => s.key === key).def;
+      favSectionLabels[key] = val || def;
+      document.getElementById(`favsecname-${key}`).textContent = favSectionLabels[key];
+    }
   }
 
   function renderCollectionsList() {
@@ -913,6 +999,18 @@
       : [{ id: "characters", label: "Персонажи" }];
     renderCollectionsList();
 
+    tierTitlesLabel = (labels.sections && labels.sections.tierTitles) || "Тайтлы";
+    hiddenTierModesState = new Set(settings.hiddenTierModes || []);
+    renderTierModesList();
+
+    favSectionLabels = {
+      favTitles: (labels.sections && labels.sections.favTitles) || "Тайтлы",
+      favCharacters: (labels.sections && labels.sections.favCharacters) || "Персонажи",
+      favPersons: (labels.sections && labels.sections.favPersons) || "Персоны",
+    };
+    hiddenFavSectionsState = new Set(settings.hiddenFavSections || []);
+    renderFavSectionsList();
+
     const statuses = labels.statuses || {};
     const builtinDefaults = [
       { key: "current", label: "В процессе", removable: false },
@@ -983,22 +1081,22 @@
   //
   // Группы nav и statuses здесь не показываем: у них уже есть свои
   // экраны («Вкладки» и «Оценки и статусы»), два места для одного и
-  // того же только запутали бы.
+  // того же только запутали бы. sections — та же история: переехала
+  // в «Вкладки» (favTitles/favCharacters/favPersons, там же теперь
+  // видимость) и в «Тир-листы» (tierTitles, рядом с переименованием
+  // «Персонажи»). empty вообще убрана из редактируемых — это тексты
+  // «пусто»/«ничего не найдено», для обычного человека не то, что
+  // стоит настраивать; DEFAULT_LABELS.empty в js/theme.js остаётся
+  // как есть и продолжает работать, просто без своего поля здесь.
   const LABEL_GROUP_TITLES = {
     site:     "Шапка сайта",
-    sections: "Заголовки разделов",
     filters:  "Фильтры на вкладке «Отзывы»",
     stats:    "Блоки статистики",
     units:    "Единица коллекции (склонение)",
-    empty:    "Когда показывать нечего",
   };
 
   const LABEL_KEY_TITLES = {
     "site.subtitle":        "Подзаголовок под названием",
-    "sections.favTitles":   "«Любимое» — тайтлы",
-    "sections.favCharacters": "«Любимое» — персонажи",
-    "sections.favPersons":  "«Любимое» — персоны",
-    "sections.tierTitles":  "Тир-лист — режим тайтлов",
     "filters.search":       "Поиск",
     "filters.type":         "Тип",
     "filters.grade":        "Оценка",
@@ -1021,10 +1119,6 @@
     "units.one":            "Одна штука (1 …)",
     "units.few":            "Две-четыре (2 …)",
     "units.many":           "Пять и больше (5 …)",
-    "empty.generic":        "Пустой раздел",
-    "empty.list":           "Пустой список",
-    "empty.reviews":        "Нет отзывов",
-    "empty.search":         "Поиск ничего не нашёл",
   };
 
   function renderLabelsPanel(saved) {
@@ -1092,6 +1186,14 @@
     tierCollections.forEach(c => {
       const row = document.getElementById(`collrow-${c.id}`);
       if (row && row.classList.contains("editing")) toggleCollectionEdit(c.id);
+    });
+    {
+      const row = document.getElementById("tiermoderow-titles");
+      if (row && row.classList.contains("editing")) toggleTierModeEdit("titles");
+    }
+    FAV_SECTIONS.forEach(s => {
+      const row = document.getElementById(`favsecrow-${s.key}`);
+      if (row && row.classList.contains("editing")) toggleFavSecEdit(s.key);
     });
 
     const hiddenTabs = tabOrderState.filter(id => !document.getElementById(`showtab-${id}`).checked);
@@ -1177,6 +1279,8 @@
       statusBuckets,
       hiddenStatuses,
       tierCollections,
+      hiddenTierModes: [...hiddenTierModesState],
+      hiddenFavSections: [...hiddenFavSectionsState],
       labels: {
         // Сначала то, что настроено на вкладке «Подписи», затем поля
         // из остальных экранов — они по этим же группам не пересекаются.
@@ -1184,6 +1288,10 @@
         nav: { ...tabLabels },
         statuses: {
           archive: archiveLabel,
+        },
+        sections: {
+          tierTitles: tierTitlesLabel,
+          ...favSectionLabels,
         },
         types: typeRenames,
         categories,
