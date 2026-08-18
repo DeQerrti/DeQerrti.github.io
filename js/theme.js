@@ -191,6 +191,7 @@ async function applyTheme() {
   window.SITE_STATUS_BUCKETS = settings.statusBuckets || null;
   window.SITE_HIDDEN_STATUSES = new Set(settings.hiddenStatuses || []);
   window.SITE_TIER_COLLECTIONS = settings.tierCollections || null;
+  window.SITE_FAV_COLLECTIONS = settings.favCollections || [];
   window.SITE_HIDDEN_STATS = new Set(settings.hiddenStatsBlocks || []);
   window.SITE_HIDDEN_FAV_SECTIONS = new Set(settings.hiddenFavSections || []);
   window.SITE_HIDDEN_TIER_MODES = new Set(settings.hiddenTierModes || []);

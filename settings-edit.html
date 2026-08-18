@@ -234,6 +234,17 @@
       <h2 class="section-h">Разделы вкладки «Любимое»</h2>
       <p class="panel-intro">Галочка — показывать раздел. Карандаш — переименовать.</p>
       <div id="favSectionsList"></div>
+
+      <p class="panel-intro" style="margin-top:18px;">
+        Помимо Тайтлов/Персонажей/Персон можно завести свой раздел — например,
+        "Места" или "Пейринги". Новые записи для него добавляются там же, где
+        персонажи и персоны — на странице /favorites-edit.
+      </p>
+      <div id="favCollectionsList"></div>
+      <div class="row" style="margin-top:14px;">
+        <div><label>Новый раздел</label><input type="text" id="newFavCollectionName" placeholder="Например: Места"></div>
+      </div>
+      <button class="btn btn-ghost" onclick="addFavCollection()">Добавить раздел</button>
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
     </div>
 
@@ -493,13 +504,11 @@
   }
 
   // ── Разделы вкладки «Любимое» ──────────────────
-  // Три встроенных раздела, каждый со своим источником данных
-  // (тайтлы — reviews.json с флагом favorite, персонажи/персоны —
-  // favorites.json по type) — поэтому список фиксированный, не
-  // add/remove, как у статусов. Добавить принципиально новый раздел
-  // («Любимое» про что-то ещё) — отдельная задача: нужен свой тип
-  // данных и место, куда его добавлять, а не просто ещё одна строка
-  // в этом списке.
+  // Три встроенных раздела: у "Тайтлы" свой источник (reviews.json,
+  // флаг favorite), у "Персонажи"/"Персоны" — favorites.json по type.
+  // Их нельзя удалить (данные не самостоятельные), только скрыть и
+  // переименовать — список ниже фиксированный. Свои разделы поверх
+  // этих трёх заводятся отдельно, ниже (favCollections).
   const FAV_SECTIONS = [
     { key: "favTitles", def: "Тайтлы" },
     { key: "favCharacters", def: "Персонажи" },
@@ -532,6 +541,56 @@
       favSectionLabels[key] = val || def;
       document.getElementById(`favsecname-${key}`).textContent = favSectionLabels[key];
     }
+  }
+
+  // ── Свои разделы «Любимого» — в отличие от FAV_SECTIONS это не
+  // фиксированный список: их заводят по кнопке, у каждого есть галочка
+  // (скрыть) и удаление, как у коллекций тир-листа. Данные записей
+  // живут в favorites.json с type = id раздела — своей папки с
+  // картинками, в отличие от тир-листа, у них нет, поэтому создание
+  // проще: не нужен модальный шаг с загрузкой.
+  let favCollections = [];
+
+  function renderFavCollectionsList() {
+    const container = document.getElementById("favCollectionsList");
+    container.innerHTML = favCollections.map(c => `
+      <div class="tab-row" id="favcollrow-${c.id}">
+        <input type="checkbox" id="showfavcoll-${c.id}" ${hiddenFavSectionsState.has(c.id) ? "" : "checked"}
+          onchange="hiddenFavSectionsState.has('${c.id}') ? hiddenFavSectionsState.delete('${c.id}') : hiddenFavSectionsState.add('${c.id}')">
+        <span class="tab-name" id="favcollname-${c.id}">${esc(c.label)}</span>
+        <input type="text" id="favcollinput-${c.id}" value="${esc(c.label)}">
+        <button class="icon-btn" title="Переименовать" onclick="toggleFavCollectionEdit('${c.id}')">✎</button>
+        <button class="icon-btn" title="Удалить" onclick="removeFavCollection('${c.id}')">✕</button>
+      </div>
+    `).join("");
+  }
+
+  function toggleFavCollectionEdit(id) {
+    const row = document.getElementById(`favcollrow-${id}`);
+    const editing = row.classList.toggle("editing");
+    if (!editing) {
+      const val = document.getElementById(`favcollinput-${id}`).value.trim();
+      const c = favCollections.find(c => c.id === id);
+      if (c) {
+        c.label = val || c.label;
+        document.getElementById(`favcollname-${id}`).textContent = c.label;
+      }
+    }
+  }
+
+  function addFavCollection() {
+    const name = document.getElementById("newFavCollectionName").value.trim();
+    if (!name) return;
+    favCollections.push({ id: slugify(name), label: name });
+    document.getElementById("newFavCollectionName").value = "";
+    renderFavCollectionsList();
+  }
+
+  function removeFavCollection(id) {
+    if (!confirm("Удалить раздел? Уже добавленные записи останутся в данных, но перестанут где-либо отображаться.")) return;
+    favCollections = favCollections.filter(c => c.id !== id);
+    hiddenFavSectionsState.delete(id);
+    renderFavCollectionsList();
   }
 
   function renderCollectionsList() {
@@ -1011,6 +1070,11 @@
     hiddenFavSectionsState = new Set(settings.hiddenFavSections || []);
     renderFavSectionsList();
 
+    favCollections = settings.favCollections
+      ? JSON.parse(JSON.stringify(settings.favCollections))
+      : [];
+    renderFavCollectionsList();
+
     const statuses = labels.statuses || {};
     const builtinDefaults = [
       { key: "current", label: "В процессе", removable: false },
@@ -1195,6 +1259,10 @@
       const row = document.getElementById(`favsecrow-${s.key}`);
       if (row && row.classList.contains("editing")) toggleFavSecEdit(s.key);
     });
+    favCollections.forEach(c => {
+      const row = document.getElementById(`favcollrow-${c.id}`);
+      if (row && row.classList.contains("editing")) toggleFavCollectionEdit(c.id);
+    });
 
     const hiddenTabs = tabOrderState.filter(id => !document.getElementById(`showtab-${id}`).checked);
     // Если главная вкладка оказалась скрыта — не даём сохранить такую комбинацию молча,
@@ -1281,6 +1349,7 @@
       tierCollections,
       hiddenTierModes: [...hiddenTierModesState],
       hiddenFavSections: [...hiddenFavSectionsState],
+      favCollections,
       labels: {
         // Сначала то, что настроено на вкладке «Подписи», затем поля
         // из остальных экранов — они по этим же группам не пересекаются.

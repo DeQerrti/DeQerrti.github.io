@@ -24,7 +24,7 @@ async function loadFavorites() {
     const characters = favData.filter(r => r.type === "character");
     const persons    = favData.filter(r => r.type === "person");
 
-    cache.fav = { titles, characters, persons };
+    cache.fav = { titles, characters, persons, favData };
     renderFavorites(cache.fav);
 
   } catch (err) {
@@ -38,7 +38,7 @@ async function loadFavorites() {
   }
 }
 
-function renderFavorites({ titles, characters, persons }) {
+function renderFavorites({ titles, characters, persons, favData }) {
   const box   = document.getElementById("tab-favorites");
   const admin = isAdmin();
   let html    = "";
@@ -81,6 +81,25 @@ function renderFavorites({ titles, characters, persons }) {
         : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">${esc(siteLabel("empty", "generic", "Пока пусто"))}</div>`}
     </div>
   </section>`;
+
+  // ── Свои разделы (сверх Тайтлов/Персонажей/Персон) ─
+  // Данные — те же записи favorites.json, отфильтрованные по своему
+  // type; список самих разделов заводится в /settings-edit.
+  (window.SITE_FAV_COLLECTIONS || []).forEach(c => {
+    if (!isFavSectionVisible(c.id)) return;
+    const entries = favData.filter(r => r.type === c.id);
+    html += `<section class="group">
+      <div class="section-header">
+        <h2 class="section-title">${esc(c.label)}</h2>
+        ${admin ? `<a href="/favorites-edit" class="admin-add-btn">Добавить</a>` : ""}
+      </div>
+      <div class="grid-chars">
+        ${entries.length
+          ? entries.map((r, i) => favPersonCard(r, i)).join("")
+          : `<div class="state-box" style="padding:2rem 1rem;grid-column:1/-1;font-size:.95rem">${esc(siteLabel("empty", "generic", "Пока пусто"))}</div>`}
+      </div>
+    </section>`;
+  });
 
   box.innerHTML = html || `<div class="state-box">${esc(siteLabel("empty", "generic", "Пока пусто"))}</div>`;
 }
