@@ -1,6 +1,5 @@
 {
-  "theme": "soft",
-  "customAccent": "#b31e1e",
+  "theme": "brutal",
   "customTags": {},
   "customCategories": {},
   "categoryColors": {
@@ -127,5 +126,6 @@
       "artist": "Художник",
       "composer": "Композитор"
     }
-  }
+  },
+  "themeColors": {}
 }
