@@ -5,18 +5,16 @@
 //  Зависит от: config.js, api.js, cards.js
 // ══════════════════════════════════════════════
 
-const TL_FILTERS = [
-  ["all",    "Всё"],
-  ["anime",  "Аниме"],
-  ["manga",  "Манга"],
-  ["novel",  "Ранобэ"],
-  ["movie",  "Фильмы"],
-  ["show",   "Сериалы"],
-  ["book",   "Книги"],
-  ["game",   "Игры"],
-  ["gacha",  "Гача"],
-  ["manhwa", "Манхва"],
-  ["manhua", "Маньхуа"],
+// Здесь раньше лежал жёсткий список типов. Из-за него в фильтрах
+// висели «Ранобэ» и «Маньхуа», даже когда с такой оценкой ничего не
+// было, — кнопка открывала заведомо пустой тир-лист. Теперь типы
+// берутся из самих данных, как это давно сделано на вкладке «Отзывы»,
+// а здесь остаётся только желаемый порядок: знакомые типы идут в
+// привычной последовательности, новые (в том числе добавленные через
+// настройки) — следом, по алфавиту.
+const TL_TYPE_ORDER = [
+  "anime", "manga", "manhwa", "manhua", "novel",
+  "movie", "show", "dorama", "book", "game", "gacha",
 ];
 
 function tlInferType(r) { return r.type || "anime"; }
@@ -230,10 +228,31 @@ function tlTitlesHtml() {
   return html;
 }
 
+// Типы, которые реально встречаются среди оценённого. Подписи берём из
+// TYPE_LABELS, поэтому переименование типа в настройках подхватывается
+// здесь само, как и появление нового.
+function tlPresentTypes() {
+  const present = [...new Set(tlState.items.map((item) => tlInferType(item.review)))];
+  const known = TL_TYPE_ORDER.filter((t) => present.includes(t));
+  const rest = present
+    .filter((t) => !TL_TYPE_ORDER.includes(t))
+    .sort((a, b) => tlTypeLabel(a).localeCompare(tlTypeLabel(b), "ru"));
+  return [...known, ...rest];
+}
+
 function tlFiltersHtml() {
-  const btns = TL_FILTERS.map(([val, label]) =>
-    `<button class="tl-filter${tlState.filter === val ? " active" : ""}" data-tl-type="${val}">${label}</button>`
-  ).join("");
+  const types = tlPresentTypes();
+
+  // Один-единственный тип — выбирать не из чего, панель только мешает
+  if (types.length < 2) return "";
+
+  const all = siteLabel("filters", "all", "Всё");
+  const btns = [["all", all], ...types.map((t) => [t, tlTypeLabel(t)])]
+    .map(
+      ([val, label]) =>
+        `<button class="tl-filter${tlState.filter === val ? " active" : ""}" data-tl-type="${esc(val)}">${esc(label)}</button>`
+    )
+    .join("");
   return `<div class="tl-filters">${btns}</div>`;
 }
 

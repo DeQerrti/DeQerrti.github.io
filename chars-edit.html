@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=6">
-<link rel="stylesheet" href="/admin.css?v=6">
-<script src="/js/utils.js?v=6"></script>
-<script src="/js/theme.js?v=6"></script>
-<script src="/js/config.js?v=6"></script>
+<link rel="stylesheet" href="/style.css?v=7">
+<link rel="stylesheet" href="/admin.css?v=7">
+<script src="/js/utils.js?v=7"></script>
+<script src="/js/theme.js?v=7"></script>
+<script src="/js/config.js?v=7"></script>
 <style>
 
 header { padding: 2.5rem 1rem 2rem; }
@@ -374,7 +374,7 @@ function renderSidebar() {
     <div class="title-item${t.id === activeId ? " active" : ""}" draggable="true" data-title-id="${esc(t.id)}" onclick="selectTitle('${esc(t.id)}')">
       <img class="title-item-cover" src="${esc(t.cover || t.cover_backup || "")}" alt="" data-hide-on-error>
       <div class="title-item-name">${esc(t.title)}</div>
-      <button class="title-item-edit" onclick="openEditTitleForm(event,'${esc(t.id)}')" title="Редактировать">Правка</button>
+      <button class="title-item-edit" onclick="openEditTitleForm(event,'${esc(t.id)}')" title="Редактировать">✎</button>
       <button class="title-item-del" onclick="deleteTitle(event,'${esc(t.id)}')" title="Удалить">✕</button>
     </div>
   `).join("");
@@ -1180,6 +1180,6 @@ document.addEventListener("keydown", e => {
 init();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=6"></script>
+<script src="js/backup.js?v=7"></script>
 </body>
 </html>

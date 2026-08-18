@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
-<link rel="stylesheet" href="/style.css?v=6">
-<link rel="stylesheet" href="/admin.css?v=6">
-<script src="/js/utils.js?v=6"></script>
-<script src="/js/theme.js?v=6"></script>
-<script src="/js/config.js?v=6"></script>
+<link rel="stylesheet" href="/style.css?v=7">
+<link rel="stylesheet" href="/admin.css?v=7">
+<script src="/js/utils.js?v=7"></script>
+<script src="/js/theme.js?v=7"></script>
+<script src="/js/config.js?v=7"></script>
 <style>
   body { display: flex; }
 
@@ -400,7 +400,7 @@
       <div class="tab-row" id="collrow-${c.id}">
         <span class="tab-name" id="collname-${c.id}" style="flex:1;">${c.label}</span>
         <input type="text" id="collinput-${c.id}" value="${c.label}">
-        <button class="icon-btn" title="Переименовать" onclick="toggleCollectionEdit('${c.id}')">Правка</button>
+        <button class="icon-btn" title="Переименовать" onclick="toggleCollectionEdit('${c.id}')">✎</button>
         ${c.id !== "characters" ? `<button class="icon-btn" title="Удалить" onclick="removeCollection('${c.id}')">✕</button>` : ""}
       </div>
     `).join("");
@@ -475,7 +475,7 @@
           onchange="hiddenTabsState.has('${id}') ? hiddenTabsState.delete('${id}') : hiddenTabsState.add('${id}')">
         <span class="tab-name" id="tabname-${id}">${(tabLabels[id] || def.def)}</span>
         <input type="text" id="tabinput-${id}" value="${(tabLabels[id] || def.def)}">
-        <button class="icon-btn" title="Переименовать" onclick="toggleTabEdit('${id}')">Правка</button>
+        <button class="icon-btn" title="Переименовать" onclick="toggleTabEdit('${id}')">✎</button>
         <label class="main-radio-label" title="Открывать эту вкладку первой">
           <input type="radio" name="mainTabRadio" value="${id}" ${mainTabState === id ? "checked" : ""}
             onchange="mainTabState = '${id}'">
@@ -559,7 +559,7 @@
           onchange="hiddenStatusesState.has('${b.key}') ? hiddenStatusesState.delete('${b.key}') : hiddenStatusesState.add('${b.key}')">
         <span class="tab-name" id="statusname-${b.key}">${b.label}</span>
         <input type="text" id="statusinput-${b.key}" value="${b.label}">
-        <button class="icon-btn" title="Переименовать" onclick="toggleStatusEdit('${b.key}')">Правка</button>
+        <button class="icon-btn" title="Переименовать" onclick="toggleStatusEdit('${b.key}')">✎</button>
         ${b.removable !== false ? `<button class="icon-btn" title="Удалить" onclick="removeStatusBucket('${b.key}')">✕</button>` : ""}
       </div>
     `).join("");

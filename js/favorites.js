@@ -94,7 +94,7 @@ function favTitleCard(r, index) {
 
   const editId  = r.id ?? encodeURIComponent(r.title);
   const editBtn = isAdmin()
-    ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">Править</a>`
+    ? `<a href="/add?edit=${editId}" class="review-edit-btn" title="Редактировать">✎</a>`
     : "";
 
   return `<div class="review-card-wrap" style="animation-delay:${Math.min(index * 25, 600)}ms">
