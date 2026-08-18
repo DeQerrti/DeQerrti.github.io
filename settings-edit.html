@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки сайта — TasteID</title>
-<link rel="stylesheet" href="/style.css?v=7">
-<link rel="stylesheet" href="/admin.css?v=7">
-<script src="/js/utils.js?v=7"></script>
-<script src="/js/theme.js?v=7"></script>
-<script src="/js/config.js?v=7"></script>
+<link rel="stylesheet" href="/style.css?v=9">
+<link rel="stylesheet" href="/admin.css?v=9">
+<link rel="stylesheet" href="/themes.css?v=9">
+<script src="/js/utils.js?v=9"></script>
+<script src="/js/theme.js?v=9"></script>
+<script src="/js/config.js?v=9"></script>
 <style>
   body { display: flex; }
 
@@ -432,12 +433,11 @@
     renderCollectionsList();
   }
 
-  const THEMES = [
-    { id: "classic",  label: "Классический" },
-    { id: "midnight", label: "Полночный индиго" },
-    { id: "graphite", label: "Тёплый графит" },
-    { id: "emerald",  label: "Глубокий изумруд" },
-  ];
+  // Список тем берётся из реестра в js/theme.js. Раньше здесь лежала
+  // своя копия — и она успела разъехаться: темы «Мягкий ботанический»
+  // в ней не было вовсе, то есть выбрать её из настроек было нельзя.
+  const THEMES = typeof themeOptions === "function" ? themeOptions() : [];
+
   let selectedTheme = "classic";
 
   function renderThemeGrid() {

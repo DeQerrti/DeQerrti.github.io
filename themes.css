@@ -1,0 +1,242 @@
+/* ══════════════════════════════════════════════
+   THEMES.CSS — все темы оформления сайта
+
+   Каждая тема это один блок [data-skin="имя"]. Атрибут проставляет
+   js/theme.js по значению theme из site-settings.json.
+
+   Что здесь лежит:
+     • палитра темы (--bg, --surface, --border, --text…);
+     • переменные «визуального языка» — скругления, тени, рамки
+       карточек, вид бейджей;
+     • структурные правила, которые переменной не выразить
+       (например, навигация пилюлями вместо подчёркивания).
+
+   Чего здесь НЕТ: акцентный цвет. Его человек задаёт отдельно в
+   настройках, и theme.js подставляет его последним, поверх темы.
+   Тема может лишь предложить свой акцент по умолчанию — это
+   указывается в js/theme.js, в реестре THEME_PRESETS.
+
+   Чтобы добавить тему: блок сюда + строка в THEME_PRESETS. Больше
+   ничего править не нужно — список в настройках строится по реестру.
+
+   Подключать ПОСЛЕ style.css и admin.css: правила тем специфичнее
+   базовых за счёт [data-skin], но порядок делает намерение явным.
+   ══════════════════════════════════════════════ */
+
+/* ══ КЛАССИЧЕСКАЯ ════════════════════════════════
+   Значения по умолчанию живут в :root в style.css — здесь тема
+   названа явно, чтобы список скинов читался целиком в одном файле. */
+[data-skin="classic"] {
+  color-scheme: dark;
+}
+
+/* ══ ПОЛНОЧНЫЙ ИНДИГО ════════════════════════════ */
+[data-skin="midnight"] {
+  color-scheme: dark;
+  --bg: #06070f;
+  --bg2: #0a0c1c;
+  --surface: #0f1228;
+  --surface2: #181c3a;
+  --border: #242a52;
+  --border2: #363d72;
+  --text: #a8acd8;
+  --text-dim: #3e4270;
+  --text-hi: #e6e8fa;
+}
+
+/* ══ ТЁПЛЫЙ ГРАФИТ ═══════════════════════════════ */
+[data-skin="graphite"] {
+  color-scheme: dark;
+  --bg: #0f0b08;
+  --bg2: #180f0a;
+  --surface: #1c140d;
+  --surface2: #2c1f13;
+  --border: #3a2a18;
+  --border2: #523a22;
+  --text: #c9a97e;
+  --text-dim: #5c4326;
+  --text-hi: #f5e2c4;
+}
+
+/* ══ ГЛУБОКИЙ ИЗУМРУД ════════════════════════════ */
+[data-skin="emerald"] {
+  color-scheme: dark;
+  --bg: #050a07;
+  --bg2: #08130d;
+  --surface: #0d1811;
+  --surface2: #15271b;
+  --border: #1f3a29;
+  --border2: #2c5539;
+  --text: #8fc4a3;
+  --text-dim: #2f5a3f;
+  --text-hi: #dcf5e6;
+}
+
+/* ══ МЯГКИЙ БОТАНИЧЕСКИЙ ═════════════════════════
+   Светлая тема и единственная, которая меняет не только палитру:
+   скруглённые карточки, мягкие тени вместо рамок, навигация пилюлями,
+   крупные курсивные заголовки. Служит образцом того, как тема задаёт
+   собственный визуальный язык, а не только цвета.
+
+   Палитра: тёплый кремовый фон, шалфейно-оливковая зелень, глубокий
+   тёмно-зелёный для текста. Контраст текста к фону держится выше 7:1,
+   чтобы читалось на солнце и на плохих экранах. */
+[data-skin="soft"] {
+  color-scheme: light;
+
+  --bg: #f4efe3;
+  --bg2: #ece5d5;
+  --surface: #fbf8f0;
+  --surface2: #e8e6d0;
+  --border: #d9d2b8;
+  --border2: #b9b591;
+  --text: #5d6150;
+  --text-dim: #9a9782;
+  --text-hi: #2f3a26;
+
+  /* Визуальный язык */
+  --radius-btn: 999px;
+  --card-radius: 20px;
+  --card-border: none;
+  --card-shadow: 0 10px 26px -14px rgba(58, 62, 40, 0.32);
+  --card-shadow-hover: 0 18px 38px -16px rgba(58, 62, 40, 0.42);
+  --card-corner-display: none;
+  --card-img-filter: saturate(0.96);
+  --card-img-filter-hover: saturate(1.05);
+
+  /* Бейджи на карточках: в тёмных темах они тёмные, здесь на светлых
+     обложках такие сливались бы — поэтому шалфейные с тёмным текстом. */
+  --badge-bg: rgba(125, 143, 95, 0.9);
+  --badge-text: #fbf8f0;
+  --badge-text-dim: #f1eee2;
+  --badge-border: transparent;
+  --badge-accent-border: transparent;
+}
+
+/* Структурные отличия темы — то, что переменной не выразить */
+[data-skin="soft"] nav {
+  background: rgba(244, 239, 227, 0.92);
+  border-bottom-color: var(--border);
+}
+[data-skin="soft"] .tab-btn {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-radius: var(--radius-btn, 3px);
+  border-bottom: none;
+  margin: 0.5rem 0.15rem;
+  padding: 0.55rem 1.25rem;
+}
+[data-skin="soft"] .tab-btn.active {
+  color: var(--text-hi);
+  background: rgba(125, 143, 95, 0.24);
+}
+[data-skin="soft"] .tab-btn.active::before {
+  display: none;
+}
+
+/* Заголовки — крупные, курсивные, без линеек-засечек */
+[data-skin="soft"] .section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  gap: 0.6rem;
+}
+[data-skin="soft"] .section-title::before,
+[data-skin="soft"] .section-title::after {
+  display: none;
+}
+
+/* Шапка: вместо резкой красной полосы — мягкий градиент */
+[data-skin="soft"] header {
+  border-bottom-color: var(--border);
+}
+[data-skin="soft"] header::after {
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(125, 143, 95, 0.5) 35%,
+    rgba(125, 143, 95, 0.7) 50%,
+    rgba(125, 143, 95, 0.5) 65%,
+    transparent
+  );
+}
+
+/* Бейджи: цвета приходят переменными выше, здесь только форма и отступ */
+[data-skin="soft"] .type-tag,
+[data-skin="soft"] .watch-badge {
+  top: 0.5rem;
+  border-radius: var(--radius-btn, 999px);
+  border: none;
+  backdrop-filter: none;
+}
+[data-skin="soft"] .type-tag {
+  right: 0.5rem;
+}
+[data-skin="soft"] .watch-badge {
+  left: 0.5rem;
+}
+
+[data-skin="soft"] .year-divider::before,
+[data-skin="soft"] .year-divider::after {
+  background: linear-gradient(90deg, transparent, var(--border));
+}
+
+/* Поля ввода и кнопки в админке — скруглённые, на светлой подложке */
+[data-skin="soft"] input,
+[data-skin="soft"] select,
+[data-skin="soft"] textarea {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: 12px;
+}
+[data-skin="soft"] .btn,
+[data-skin="soft"] .btn-new,
+[data-skin="soft"] .src-add-btn,
+[data-skin="soft"] .src-type-btn {
+  border-radius: var(--radius-btn, 999px);
+}
+[data-skin="soft"] .btn-save,
+[data-skin="soft"] .sec-body,
+[data-skin="soft"] .modal {
+  border-radius: 16px;
+}
+
+/* Публичные карточки и панели: базовые стили дают им прямые углы и
+   тонкую рамку — в этой теме вместо них скругление и мягкая тень.
+   Собрано отдельным блоком, потому что переменных для этих элементов
+   в базовом CSS нет, а заводить их ради одной темы избыточно. */
+[data-skin="soft"] .review-card {
+  border: none;
+  border-radius: var(--card-radius, 20px);
+  box-shadow: var(--card-shadow);
+}
+[data-skin="soft"] .review-card-wrap:hover .review-card {
+  box-shadow: var(--card-shadow-hover);
+}
+[data-skin="soft"] .review-card img {
+  border-radius: 14px;
+}
+
+[data-skin="soft"] .rv-toolbar {
+  border: none;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+}
+[data-skin="soft"] .rv-filter-btn,
+[data-skin="soft"] .rv-search-input,
+[data-skin="soft"] .admin-add-btn,
+[data-skin="soft"] .rtag,
+[data-skin="soft"] .grade-chip,
+[data-skin="soft"] .review-source-link {
+  border-radius: var(--radius-btn, 999px);
+}
+[data-skin="soft"] .rv-filter-btn.active {
+  background: rgba(125, 143, 95, 0.24);
+  border-color: transparent;
+  color: var(--text-hi);
+}

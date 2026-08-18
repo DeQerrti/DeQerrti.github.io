@@ -24,6 +24,7 @@ const sharedBrowserGlobals = [
   "TAGS_MAP",
   "TAG_CAT_CLASS",
   "THEME_PRESETS",
+  "themeOptions",
   "TIER_ROWS",
   "TL_TYPE_ORDER",
   "tlPresentTypes",

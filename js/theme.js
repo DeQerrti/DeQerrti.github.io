@@ -5,68 +5,32 @@
 //  тогда переопределение цветов происходит без "мигания".
 // ══════════════════════════════════════════════
 
+// ── Реестр тем ─────────────────────────────────
+// Здесь только опись: идентификатор, человеческое название и акцент
+// по умолчанию. Сами цвета и визуальный язык каждой темы лежат в
+// themes.css, в блоке [data-skin="<id>"].
+//
+// Раньше палитры были прописаны прямо здесь, объектами, а структурные
+// отличия темы — в <style> внутри index.html. Из-за этого тема не
+// доходила до страниц админки, а добавление новой означало правку
+// разметки. Теперь добавить тему это блок в themes.css плюс строка
+// ниже; список в настройках строится по этому реестру, так что его
+// тоже трогать не нужно.
+//
+// defaultAccent подставляется, только если человек не выбрал свой
+// акцент вручную.
 const THEME_PRESETS = {
-  classic: {
-    label: "Классический",
-    "--bg": "#0a0a0c", "--bg2": "#0f0f12",
-    "--surface": "#111114", "--surface2": "#1a1a1f",
-    "--border": "#222228", "--border2": "#333338",
-    "--text": "#b8b0a8", "--text-dim": "#4a4540", "--text-hi": "#f0ece6",
-  },
-  midnight: {
-    label: "Полночный индиго",
-    "--bg": "#06070f", "--bg2": "#0a0c1c",
-    "--surface": "#0f1228", "--surface2": "#181c3a",
-    "--border": "#242a52", "--border2": "#363d72",
-    "--text": "#a8acd8", "--text-dim": "#3e4270", "--text-hi": "#e6e8fa",
-  },
-  graphite: {
-    label: "Тёплый графит",
-    "--bg": "#0f0b08", "--bg2": "#180f0a",
-    "--surface": "#1c140d", "--surface2": "#2c1f13",
-    "--border": "#3a2a18", "--border2": "#523a22",
-    "--text": "#c9a97e", "--text-dim": "#5c4326", "--text-hi": "#f5e2c4",
-  },
-  emerald: {
-    label: "Глубокий изумруд",
-    "--bg": "#050a07", "--bg2": "#08130d",
-    "--surface": "#0d1811", "--surface2": "#15271b",
-    "--border": "#1f3a29", "--border2": "#2c5539",
-    "--text": "#8fc4a3", "--text-dim": "#2f5a3f", "--text-hi": "#dcf5e6",
-  },
-  // Прототип: не только своя палитра, но и другой визуальный язык —
-  // скруглённые карточки, мягкие тени, крупные курсивные заголовки.
-  // Структурные отличия (не сводимые к цвету) живут в CSS под
-  // [data-skin="soft"] — см. index.html. defaultAccent подставляется,
-  // только если человек ещё не задал свой акцент вручную.
-  soft: {
-    label: "Мягкий ботанический",
-    skin: "soft",
-    defaultAccent: "#6b7f4a",
-    "--bg": "#f2ece0", "--bg2": "#ece4d2",
-    "--surface": "#f1efdc", "--surface2": "#e2e5c6",
-    "--border": "#d7d0ac", "--border2": "#bfbd8e",
-    "--text": "#6b6552", "--text-dim": "#a89f88", "--text-hi": "#332f22",
-    "--radius-btn": "999px",
-    // Карточки на Главной/тир-листе — скругление и мягкая тень вместо
-    // резких уголков-скобок из классической темы.
-    "--card-radius": "22px",
-    "--card-border": "none",
-    "--card-shadow": "0 12px 30px -14px rgba(60,50,20,.35)",
-    "--card-shadow-hover": "0 18px 38px -14px rgba(60,50,20,.42)",
-    "--card-corner-display": "none",
-    "--card-img-filter": "none",
-    "--card-img-filter-hover": "none",
-    // Бейджи (тип/дата в углах карточек) — были тёмными как в классической
-    // теме и сливались с обложками; здесь — авокадовые полупрозрачные,
-    // с тёмным текстом, читаемым на светлом фоне.
-    "--badge-bg": "rgba(139,166,102,.55)",
-    "--badge-text": "#2c2a1c",
-    "--badge-text-dim": "#2c2a1c",
-    "--badge-border": "rgba(139,166,102,.6)",
-    "--badge-accent-border": "rgba(139,166,102,.6)",
-  },
+  classic:  { label: "Классический" },
+  midnight: { label: "Полночный индиго" },
+  graphite: { label: "Тёплый графит" },
+  emerald:  { label: "Глубокий изумруд" },
+  soft:     { label: "Мягкий ботанический", defaultAccent: "#6b7f4a" },
 };
+
+// Для выпадающих списков и сеток выбора: [{ id, label }]
+function themeOptions() {
+  return Object.entries(THEME_PRESETS).map(([id, t]) => ({ id, label: t.label }));
+}
 
 const DEFAULT_ACCENT = "#8b1a1a"; // текущий --red по умолчанию
 
@@ -132,14 +96,17 @@ async function applyTheme() {
     // нет файла/сети — просто остаёмся на теме и подписях по умолчанию
   }
 
-  const preset = THEME_PRESETS[settings.theme] || null;
-  const accent = accentVariants(settings.customAccent || preset?.defaultAccent || DEFAULT_ACCENT);
-  const vars = { ...(preset || {}), ...accent };
+  // Тема — это один атрибут на <html>; всё остальное делает themes.css.
+  const skin = THEME_PRESETS[settings.theme] ? settings.theme : "classic";
+  document.documentElement.setAttribute("data-skin", skin);
 
-  document.documentElement.setAttribute("data-skin", preset?.skin || "classic");
-
-  const declarations = Object.entries(vars)
-    .filter(([key]) => key.startsWith("--"))
+  // Акцент задаётся отдельно от темы и всегда идёт последним, чтобы
+  // перебить значение из блока темы. Стиль добавляется в конец <head>,
+  // то есть после themes.css — при равной специфичности выигрывает он.
+  const accent = accentVariants(
+    settings.customAccent || THEME_PRESETS[skin]?.defaultAccent || DEFAULT_ACCENT
+  );
+  const declarations = Object.entries(accent)
     .map(([key, value]) => `${key}: ${value};`)
     .join(" ");
 
