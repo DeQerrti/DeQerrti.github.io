@@ -9,6 +9,9 @@
 <script src="/js/utils.js?v=12"></script>
 <script src="/js/theme.js?v=12"></script>
 <script src="/js/config.js?v=12"></script>
+<script src="/js/api.js?v=12"></script>
+<script src="/js/cards.js?v=12"></script>
+<script src="/js/passports.js?v=12"></script>
 <style>
   body { display: flex; }
 
@@ -42,8 +45,37 @@
   .side-tab:hover { color: var(--text); background: var(--surface2); }
   .side-tab.active { color: var(--text-hi); border-left-color: var(--red); background: var(--surface2); }
 
-  #main { flex: 1; max-width: 680px; padding: 40px 32px; }
+  /* min-width: 0 — иначе колонка не даёт себе стать уже содержимого,
+     и на узком экране за край уезжает вся страница, а не отдельный
+     широкий блок внутри. */
+  #main { flex: 1; min-width: 0; max-width: 680px; padding: 40px 32px; }
   h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin: 0 0 24px; }
+
+  /* Телефон. Сайдбар в 220px тут съедал больше половины ширины, и на
+     содержимое оставалось около сотни пикселей — уезжали все панели
+     без исключения. Кладём меню сверху отдельной прокручиваемой
+     полосой, как вкладки на главной. */
+  @media (max-width: 720px) {
+    #app { flex-direction: column; }
+    #sidebar {
+      width: auto; height: auto; position: static;
+      border-right: none; border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      display: flex; align-items: center;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    #sidebar::-webkit-scrollbar { display: none; }
+    #sidebar a.back {
+      margin: 0 8px 0 12px; white-space: nowrap; flex-shrink: 0;
+    }
+    .side-tab {
+      width: auto; white-space: nowrap; flex-shrink: 0;
+      padding: 8px 14px;
+      border-left: none; border-bottom: 2px solid transparent;
+    }
+    .side-tab.active { border-left-color: transparent; border-bottom-color: var(--red); }
+    #main { max-width: none; padding: 24px 16px 64px; }
+  }
   .panel { display: none; }
   .panel.active { display: block; }
   .panel-intro { color: var(--text-dim); font-size: .85rem; margin-bottom: 20px; }
@@ -196,6 +228,7 @@
     <button class="side-tab" data-panel="grades">Оценки и статусы</button>
     <button class="side-tab" data-panel="collections">Тир-листы</button>
     <button class="side-tab" data-panel="labels">Подписи</button>
+    <button class="side-tab" data-panel="passports">Паспорта</button>
     <a href="/backup-history" class="back" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">История версий</a>
   </nav>
 
@@ -336,6 +369,10 @@
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-labels"></div>
     </div>
+
+    <div class="panel" id="panel-passports">
+      <div id="passportsPanel"><p class="panel-intro">Загружаем…</p></div>
+    </div>
   </main>
 </div>
 
@@ -352,6 +389,9 @@
       document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
       btn.classList.add("active");
       document.getElementById(`panel-${btn.dataset.panel}`).classList.add("active");
+      // Паспорта грузятся при первом открытии панели, а не вместе со
+      // страницей: они тянут reviews.json целиком, а заходят сюда редко.
+      if (btn.dataset.panel === "passports") loadPassports();
     });
   });
 
@@ -827,7 +867,6 @@
     { id: "reviews", def: "Отзывы" },
     { id: "stats", def: "Статистика" },
     { id: "tierlist", def: "Тир-лист" },
-    { id: "compare", def: "Сравнение" },
   ];
   const TAB_DEFS_BY_ID = Object.fromEntries(TAB_DEFS.map(t => [t.id, t]));
   let tabLabels = {};
