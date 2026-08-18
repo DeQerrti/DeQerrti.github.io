@@ -3,7 +3,9 @@
   "customAccent": "#b31e1e",
   "customTags": {},
   "customCategories": {},
-  "categoryColors": {},
+  "categoryColors": {
+    "visual": "#8e1a1a"
+  },
   "customTypes": {},
   "hiddenTypes": [],
   "customTypePlural": {},
