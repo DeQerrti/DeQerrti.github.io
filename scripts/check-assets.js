@@ -24,6 +24,7 @@ const errors = [];
 const warnings = [];
 
 const htmlFiles = readdirSync(ROOT).filter((f) => f.endsWith(".html"));
+const cssFiles = readdirSync(ROOT).filter((f) => f.endsWith(".css"));
 
 // href="..." и src="..." — берём только собственные пути.
 // Внешние (http…, //…), data: и якоря нас не касаются.
@@ -59,6 +60,25 @@ for (const page of htmlFiles) {
   }
 }
 
+// То же самое для url(…) в стилях: тема «Мягкий ботанический» тянет
+// картинки украшений из /decor, и опечатка в пути там ничего не ломает
+// заметно — украшение просто не появляется. Такое молчаливое исчезновение
+// как раз и надо ловить здесь.
+const CSS_REF = /url\("([^"]+)"\)/g;
+
+for (const sheet of cssFiles) {
+  const css = readFileSync(join(ROOT, sheet), "utf8");
+  for (const [, raw] of css.matchAll(CSS_REF)) {
+    if (!raw.startsWith("/") || raw.startsWith("//")) continue;
+    const rel = decodeURIComponent(raw.split("?")[0].slice(1));
+    if (!existsSync(join(ROOT, rel))) {
+      errors.push(`${sheet}: ссылка ведёт в никуда — ${raw}`);
+      continue;
+    }
+    checked++;
+  }
+}
+
 // Один и тот же файл с разными ?v= на разных страницах — забытая правка
 for (const [path, byVersion] of versioned) {
   if (byVersion.size < 2) continue;
@@ -77,5 +97,6 @@ if (errors.length) {
 }
 
 console.log(
-  `Ссылки в порядке: ${htmlFiles.length} страниц, ${checked} ссылок на свои файлы — все файлы на месте.`
+  `Ссылки в порядке: ${htmlFiles.length} страниц, ${cssFiles.length} стилей, ` +
+    `${checked} ссылок на свои файлы — все файлы на месте.`
 );

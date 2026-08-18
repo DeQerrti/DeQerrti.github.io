@@ -58,6 +58,11 @@
 /covers-backup/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=604800
 
+# Картинки украшений темы — меняются редко, но под теми же именами,
+# поэтому режим тот же, что у обложек.
+/decor/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=604800
+
 # Иконки меняются ещё реже
 /icons/*
   Cache-Control: public, max-age=2592000, immutable
@@ -80,6 +85,11 @@
   Cache-Control: no-cache
 
 /admin.css
+  Cache-Control: no-cache
+
+# themes.css сюда забыли добавить, когда темы выносили в отдельный файл,
+# — а он ровно такой же: разметка и палитра должны приезжать вместе.
+/themes.css
   Cache-Control: no-cache
 
 /js/*

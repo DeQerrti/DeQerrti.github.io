@@ -564,3 +564,61 @@ html[data-skin="brutal"] h2 {
   background: var(--red);
   color: #fff;
 }
+
+/* ══ УКРАШЕНИЯ «МЯГКОГО БОТАНИЧЕСКОГО» ═══════════
+   Лианы по обоим краям экрана: тема ботаническая, а поля на широких
+   мониторах оставались пустыми.
+
+   Рисунок подключён как mask-image, а не background-image, — тогда цвет
+   ему задаёт CSS, и лианы следуют за палитрой темы, а не остаются
+   намертво зелёными, если человек перекрасит её под себя.
+
+   /decor/vine.svg нарисован так, чтобы стыковаться сам с собой по
+   вертикали: на обоих концах отрезка стебель выходит в одной точке и
+   под одним углом, поэтому repeat-y не даёт шва.
+
+   Чистая декорация: pointer-events: none и отдельный слой под
+   контентом. */
+[data-skin="soft"] body::before,
+[data-skin="soft"] body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 0;
+  opacity: 0.4;
+  pointer-events: none;
+  background-color: var(--border2);
+  mask-image: url("/decor/vine.svg");
+  -webkit-mask-image: url("/decor/vine.svg");
+  mask-size: 100px 400px;
+  -webkit-mask-size: 100px 400px;
+  mask-repeat: repeat-y;
+  -webkit-mask-repeat: repeat-y;
+}
+[data-skin="soft"] body::before {
+  left: 0;
+}
+[data-skin="soft"] body::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+/* Контент должен лежать поверх украшений. Навигации здесь нет
+   намеренно: у неё уже z-index 100 ради position: sticky, и если
+   опустить её до единицы, main начнёт проезжать поверх при скролле. */
+[data-skin="soft"] header,
+[data-skin="soft"] main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Лианы живут в пустых полях. Как только поля кончились — они наезжают
+   на контент, поэтому ниже этой ширины их нет. */
+@media (max-width: 1400px) {
+  [data-skin="soft"] body::before,
+  [data-skin="soft"] body::after {
+    display: none;
+  }
+}
