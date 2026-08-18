@@ -569,6 +569,314 @@ html[data-skin="brutal"] h2 {
   color: #fff;
 }
 
+/* ══ НЕОМОРФИЗМ ══════════════════════════════════
+   Элемент и подложка — один и тот же цвет; объём держится только на
+   двух мягких тенях (светлая сверху-слева, тёмная снизу-справа).
+   Отсюда правило темы: рамок нигде нет вообще, а не «тоньше» или
+   «жирнее», как в остальных темах — линию здесь заменяет тень.
+
+   Активное/нажатое состояние — не заливка и не обводка, а тень
+   внутрь (inset): элемент выглядит вдавленным в подложку. Это и есть
+   единственный язык взаимодействия темы, поэтому там, где в других
+   темах меняется фон или граница (активная вкладка, выбранный фильтр,
+   тег), здесь меняется знак тени.
+
+   --neo-light/--neo-dark ниже — общие цвета обеих теней, вынесены
+   переменными, чтобы не повторять rgba() в каждом правиле. */
+[data-skin="neomorphism"] {
+  color-scheme: light;
+
+  --bg: #e6e7ee;
+  --bg2: #dcdee6;
+  /* Сюрфейс равен фону — в этом весь приём: контраст даёт не цвет,
+     а тень. См. запрет цветного surface в комментарии выше. */
+  --surface: #e6e7ee;
+  --surface2: #dcdee6;
+  /* Не буквальный transparent: настройки палитры кладут это значение
+     в <input type="color">, а он «прозрачное» не понимает и тихо
+     подставляет чёрный — при следующем сохранении палитры это стало бы
+     настоящей чёрной рамкой. Вместо этого — цвет самой подложки: рамка
+     не видна, но остаётся настоящим цветом. */
+  --border: #e6e7ee;
+  --border2: #dcdee6;
+  --text: #4a4d5e;
+  --text-dim: #8b8fa3;
+  --text-hi: #2b2d3d;
+
+  --neo-light: rgba(255, 255, 255, 0.75);
+  --neo-dark: rgba(163, 177, 198, 0.55);
+
+  /* Визуальный язык */
+  --radius-btn: 999px;
+  --card-radius: 24px;
+  --card-border: none;
+  --card-shadow: 8px 8px 16px var(--neo-dark), -8px -8px 16px var(--neo-light);
+  --card-shadow-hover: 11px 11px 22px var(--neo-dark), -11px -11px 22px var(--neo-light);
+  --card-corner-display: none;
+  --card-img-filter: saturate(0.98);
+  --card-img-filter-hover: saturate(1.06);
+
+  /* Бейджи на обложках: своей тени на произвольной картинке не видно,
+     поэтому здесь — не рельеф, а лёгкое затемнённое стекло. */
+  --badge-bg: rgba(43, 45, 61, 0.72);
+  --badge-text: #f4f5f9;
+  --badge-text-dim: #d7d9e3;
+  --badge-border: transparent;
+  --badge-accent-border: transparent;
+
+  --tint: rgba(74, 77, 94, 0.05);
+  --tint-hi: rgba(74, 77, 94, 0.09);
+  --tint-line: rgba(74, 77, 94, 0.14);
+  --tint-line-hi: rgba(74, 77, 94, 0.24);
+
+  --scrim: rgba(43, 45, 61, 0.5);
+  --poster-scrim: rgba(43, 45, 61, 0.55);
+  --nav-bg: rgba(230, 231, 238, 0.92);
+  --shadow: rgba(163, 177, 198, 0.55);
+  --shadow-soft: rgba(163, 177, 198, 0.32);
+
+  --ok: #4a8f6b;
+  --ok-wash: rgba(74, 143, 107, 0.12);
+  --ok-fill: rgba(74, 143, 107, 0.22);
+  --ok-line: rgba(74, 143, 107, 0.4);
+  --err: #c1546a;
+}
+
+/* Заголовки: курсивный засечковый шрифт базовой темы читается как
+   «изящный», а не «мягкая пластиковая панель» — здесь везде гротеск,
+   как в остальном интерфейсе темы. */
+[data-skin="neomorphism"] .logo,
+[data-skin="neomorphism"] .section-title,
+[data-skin="neomorphism"] .modal-title,
+[data-skin="neomorphism"] .tab-btn,
+[data-skin="neomorphism"] .btn-save,
+[data-skin="neomorphism"] .card-title,
+[data-skin="neomorphism"] .review-title {
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+}
+
+/* ── Шапка и навигация ── */
+[data-skin="neomorphism"] header {
+  border-bottom: none;
+  box-shadow: 0 6px 16px -8px var(--neo-dark);
+}
+[data-skin="neomorphism"] header::after {
+  display: none;
+}
+[data-skin="neomorphism"] nav {
+  border-bottom: none;
+}
+[data-skin="neomorphism"] .tab-btn {
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-btn);
+  margin: 0.5rem 0.2rem;
+  padding: 0.55rem 1.2rem;
+}
+[data-skin="neomorphism"] .tab-btn.active {
+  color: var(--text-hi);
+  background: var(--surface);
+  box-shadow:
+    inset 3px 3px 6px var(--neo-dark),
+    inset -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] .tab-btn.active::before {
+  display: none;
+}
+
+/* ── Заголовки разделов ── */
+[data-skin="neomorphism"] .section-title::before,
+[data-skin="neomorphism"] .section-title::after {
+  display: none;
+}
+[data-skin="neomorphism"] .year-divider::before,
+[data-skin="neomorphism"] .year-divider::after {
+  background: linear-gradient(90deg, transparent, var(--bg2));
+}
+
+/* ── Бейджи на обложках ── */
+[data-skin="neomorphism"] .type-tag,
+[data-skin="neomorphism"] .watch-badge {
+  top: 0.5rem;
+  border-radius: var(--radius-btn);
+  border: none;
+  backdrop-filter: blur(6px);
+}
+[data-skin="neomorphism"] .type-tag {
+  right: 0.5rem;
+}
+[data-skin="neomorphism"] .watch-badge {
+  left: 0.5rem;
+}
+
+/* ── Карточки отзывов ── */
+[data-skin="neomorphism"] .review-card {
+  border: none;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+[data-skin="neomorphism"] .review-card-wrap:hover .review-card {
+  box-shadow: var(--card-shadow-hover);
+}
+[data-skin="neomorphism"] .review-card img {
+  border-radius: 16px;
+}
+
+/* ── Панель фильтров и поиск ──
+   Поле поиска — единственное место, где элемент осмысленно «вдавлен»
+   с самого начала, а не только при фокусе: так его сразу видно как
+   ввод, а не как ещё одну кнопку. */
+[data-skin="neomorphism"] .rv-filters {
+  border: none;
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+}
+[data-skin="neomorphism"] .rv-search-input {
+  border: none;
+  box-shadow:
+    inset 3px 3px 6px var(--neo-dark),
+    inset -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] .rv-filter-btn,
+[data-skin="neomorphism"] .admin-add-btn,
+[data-skin="neomorphism"] .rtag,
+[data-skin="neomorphism"] .grade-chip,
+[data-skin="neomorphism"] .review-source-link {
+  border: none;
+  border-radius: var(--radius-btn);
+  background: var(--surface);
+  box-shadow:
+    3px 3px 6px var(--neo-dark),
+    -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] .rv-filter-btn.active {
+  color: var(--text-hi);
+  box-shadow:
+    inset 3px 3px 6px var(--neo-dark),
+    inset -3px -3px 6px var(--neo-light);
+}
+
+/* ── Статистика и тир-лист ── */
+[data-skin="neomorphism"] .stat-counters {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="neomorphism"] .stat-counter {
+  border-right-color: var(--bg2);
+}
+[data-skin="neomorphism"] .tl-filter,
+[data-skin="neomorphism"] .tl-mode-btn {
+  border: none;
+  border-radius: var(--radius-btn);
+  background: var(--surface);
+  box-shadow:
+    3px 3px 6px var(--neo-dark),
+    -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] .tl-filter.active,
+[data-skin="neomorphism"] .tl-mode-btn.active {
+  color: var(--text-hi);
+  box-shadow:
+    inset 3px 3px 6px var(--neo-dark),
+    inset -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] .tl-row,
+[data-skin="neomorphism"] .tl-editor-row {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+[data-skin="neomorphism"] .tl-label,
+[data-skin="neomorphism"] .tl-editor-label {
+  border-right-color: var(--bg2);
+}
+[data-skin="neomorphism"] .tl-poster,
+[data-skin="neomorphism"] .tl-char-poster {
+  border-radius: 14px;
+}
+
+/* ── Поля и кнопки в админке ── */
+[data-skin="neomorphism"] input,
+[data-skin="neomorphism"] select,
+[data-skin="neomorphism"] textarea {
+  background: var(--surface);
+  border: none;
+  border-radius: 14px;
+  box-shadow:
+    inset 3px 3px 6px var(--neo-dark),
+    inset -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] input[type="color"] {
+  border-radius: 10px;
+  box-shadow: none;
+  border: none;
+}
+[data-skin="neomorphism"] .btn,
+[data-skin="neomorphism"] .btn-new,
+[data-skin="neomorphism"] .src-add-btn,
+[data-skin="neomorphism"] .src-type-btn,
+[data-skin="neomorphism"] .tl-mode-add-btn,
+[data-skin="neomorphism"] .theme-option,
+[data-skin="neomorphism"] .icon-btn,
+[data-skin="neomorphism"] .file-tab,
+[data-skin="neomorphism"] .tag-toggle {
+  border: none;
+  border-radius: var(--radius-btn);
+  background: var(--surface);
+  box-shadow:
+    4px 4px 8px var(--neo-dark),
+    -4px -4px 8px var(--neo-light);
+}
+[data-skin="neomorphism"] .theme-option.selected,
+[data-skin="neomorphism"] .tag-toggle.active {
+  color: var(--text-hi);
+  box-shadow:
+    inset 3px 3px 6px var(--neo-dark),
+    inset -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] .fav-toggle.on {
+  color: var(--red);
+  box-shadow:
+    inset 3px 3px 6px var(--neo-dark),
+    inset -3px -3px 6px var(--neo-light);
+}
+[data-skin="neomorphism"] .sec-body,
+[data-skin="neomorphism"] .modal,
+[data-skin="neomorphism"] .review-modal-panel {
+  border: none;
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+}
+
+/* Главная кнопка сохранения — залита акцентом, но остаётся «мягкой»:
+   цветная версия тех же двух теней, а не жёсткая тень брутализма. */
+[data-skin="neomorphism"] .btn-save {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-btn);
+  box-shadow:
+    5px 5px 10px var(--neo-dark),
+    -3px -3px 8px var(--neo-light);
+}
+[data-skin="neomorphism"] .btn-save:hover {
+  background: var(--red-hi);
+}
+[data-skin="neomorphism"] .btn-save:active {
+  box-shadow:
+    inset 3px 3px 6px rgba(0, 0, 0, 0.25),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+}
+[data-skin="neomorphism"] .btn-save::before,
+[data-skin="neomorphism"] .btn-save::after {
+  display: none;
+}
+
 /* ══ УКРАШЕНИЯ «МЯГКОГО БОТАНИЧЕСКОГО» ═══════════
    Лианы по обоим краям экрана: тема ботаническая, а поля на широких
    мониторах оставались пустыми.
