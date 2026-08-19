@@ -70,3 +70,19 @@ function imgFallbackAttrs(primarySrc, backupSrc, placeholder) {
   if (placeholder) parts.push(`data-placeholder="${esc(placeholder)}"`);
   return parts.join(" ");
 }
+
+// ── Склонение числительных ─────────────────────
+// plural(162, ["тайтл", "тайтла", "тайтлов"]) → "тайтла"
+// plural(11,  ["тайтл", "тайтла", "тайтлов"]) → "тайтлов"
+//
+// Лежит здесь, а не в stats.js, где появился впервые: русское «1 записей»
+// вылезает всюду, где есть счётчик, а stats.js подключают только те
+// страницы, которым нужна статистика.
+function plural(n, [one, few, many]) {
+  const abs = Math.abs(n) % 100;
+  const rem = abs % 10;
+  if (abs >= 11 && abs <= 19) return many;
+  if (rem === 1)               return one;
+  if (rem >= 2 && rem <= 4)   return few;
+  return many;
+}

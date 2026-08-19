@@ -6,14 +6,14 @@
 <link rel="stylesheet" href="/style.css?v=13">
 <link rel="stylesheet" href="/admin.css?v=12">
 <link rel="stylesheet" href="/themes.css?v=12">
-<script src="/js/utils.js?v=12"></script>
+<script src="/js/utils.js?v=13"></script>
 <script src="/js/theme.js?v=13"></script>
-<script src="/js/config.js?v=13"></script>
+<script src="/js/config.js?v=14"></script>
 <script src="/js/api.js?v=12"></script>
 <script src="/js/cards.js?v=12"></script>
 <script src="/js/passports.js?v=13"></script>
-<script src="/js/import-formats.js?v=13"></script>
-<script src="/js/import.js?v=15"></script>
+<script src="/js/import-formats.js?v=14"></script>
+<script src="/js/import.js?v=16"></script>
 <style>
   body { display: flex; }
 
@@ -1071,13 +1071,6 @@
     return reviewsForCount.filter(r => r.status === key).length;
   }
 
-  function pluralRecords(n) {
-    const d10 = n % 10, d100 = n % 100;
-    if (d10 === 1 && d100 !== 11) return "запись";
-    if (d10 >= 2 && d10 <= 4 && (d100 < 12 || d100 > 14)) return "записи";
-    return "записей";
-  }
-
   // Удалить статус, которым что-то помечено, — не поломка, но записи
   // пропадут со вкладки, и человек об этом должен узнать до, а не после.
   // Половина базы вполне может лежать в «Отложено».
@@ -1092,7 +1085,7 @@
       // Не смогли посчитать — спросим без числа, но удалять не мешаем.
     }
     const warn = used
-      ? `\n\nВ этом статусе ${used} ${pluralRecords(used)}. Они останутся в данных, но пропадут со вкладки «Статусы», пока им не поставить другой статус.`
+      ? `\n\nВ этом статусе ${used} ${plural(used, ["запись", "записи", "записей"])}. Они останутся в данных, но пропадут со вкладки «Статусы», пока им не поставить другой статус.`
       : "";
 
     if (!confirm(`Удалить раздел «${label}»?${warn}`)) return;
@@ -1164,11 +1157,11 @@
   let rawSettings = {};
 
   async function loadCurrentSettings() {
-    let settings = {};
-    try {
-      const res = await fetch("/site-settings.json");
-      if (res.ok) settings = await res.json();
-    } catch {}
+    // Через currentSiteSettings (js/config.js), а не напрямую из
+    // выложенного файла: сохранение отсюда отправляет весь объект целиком,
+    // и прочитанная копия, отставшая на одну выкладку, стёрла бы всё, что
+    // изменилось за это время в другой вкладке или с телефона.
+    const settings = await currentSiteSettings();
     rawSettings = settings;
 
     selectedTheme = settings.theme || "classic";
