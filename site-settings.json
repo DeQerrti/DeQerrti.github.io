@@ -1,5 +1,5 @@
 {
-  "theme": "doodle-dark",
+  "theme": "neomorphism-dark",
   "customTags": {},
   "customCategories": {},
   "categoryColors": {},
@@ -96,6 +96,12 @@
     "statuses": {
       "archive": "Архив"
     },
+    "sections": {
+      "tierTitles": "Тайтлы",
+      "favTitles": "Тайтлы",
+      "favCharacters": "Персонажи",
+      "favPersons": "Персоны"
+    },
     "types": {
       "anime": "Аниме",
       "manga": "Манга",
@@ -129,5 +135,9 @@
     "doodle-dark": {
       "accent": "#1b3174"
     }
-  }
+  },
+  "hiddenTierModes": [],
+  "hiddenFavSections": [],
+  "removedFavSections": [],
+  "favCollections": []
 }
