@@ -11,10 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <script src="/js/utils.js?v=12"></script>
-<script src="/js/theme.js?v=12"></script>
-<script src="/js/config.js?v=12"></script>
+<script src="/js/theme.js?v=13"></script>
+<script src="/js/config.js?v=13"></script>
 <script src="/js/external-ids.js?v=12"></script>
-<link rel="stylesheet" href="/style.css?v=12">
+<link rel="stylesheet" href="/style.css?v=13">
 <link rel="stylesheet" href="/admin.css?v=12">
 <link rel="stylesheet" href="/themes.css?v=12">
 <style>
@@ -257,6 +257,11 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
 .tm-danger { color: var(--err); }
 .tm-danger:hover { color: #e8a4a4; }
 
+.danger-zone { margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .7rem; }
+.danger-hint { font-family: 'DM Sans', sans-serif; font-size: .68rem;
+  color: var(--text-dim); flex: 1; min-width: 12rem; }
+
 .tm-color-row { display: flex; align-items: center; gap: .9rem; }
 .tm-color-row input[type=color] { width: 64px; height: 42px; padding: .2rem; cursor: pointer; }
 .tm-note { font-family: 'DM Sans', sans-serif; font-size: .68rem; color: var(--text-dim); }
@@ -416,7 +421,7 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
         </div>
         <div class="hint">Или загрузи файл — сожмётся и сконвертируется в WebP автоматически.</div>
         <div class="cover-upload-row">
-          <label class="file-btn">
+          <label class="btn btn-ghost file-btn">
             <input type="file" id="f-cover-upload" accept="image/*" onchange="updateFileBtnName(this)">
             <span>Выбрать файл</span>
           </label>
@@ -525,6 +530,13 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
   <div class="divider"></div>
   <button class="btn-save" id="btn-save" onclick="saveReview()">Сохранить отзыв</button>
   <div class="status-msg" id="status"></div>
+
+  <!-- Удаление: только в режиме правки. Ссылкой, а не кнопкой, и внизу —
+       чтобы не оказаться под пальцем рядом с «Сохранить». -->
+  <div class="danger-zone" id="danger-zone" hidden>
+    <button type="button" class="tm-link tm-danger" onclick="deleteReview()">Удалить этот отзыв</button>
+    <span class="danger-hint">Запись пропадёт из отзывов, «Любимого» и тир-листа. Вернуть можно через «Историю версий».</span>
+  </div>
 
 </main>
 
@@ -1073,7 +1085,7 @@ function tmSyncCatForm() {
   document.getElementById("tm-cat-cancel").hidden = !editing;
   // Встроенную категорию удалить нельзя: на ней висят встроенные теги
   // из config.js, и после удаления они остались бы без категории.
-  document.getElementById("tm-cat-del").hidden = !editing || BUILTIN_CAT_KEYS.has(tmCatEdit);
+  document.getElementById("tm-cat-del").hidden = !editing;
   document.getElementById("tm-cat-nocolor").hidden = !tmCatColorSet;
   document.getElementById("tm-cat-colornote").hidden = tmCatColorSet;
   tmSyncTitle();
@@ -1154,9 +1166,12 @@ async function submitCategory() {
   }
 }
 
+// Встроенную категорию, как и встроенный тег, нельзя вырезать из
+// config.js — поэтому её удаление складывается в hiddenCategories, а
+// оттуда применяется при загрузке настроек.
 async function deleteCategory() {
   const key = tmCatEdit;
-  if (!key || BUILTIN_CAT_KEYS.has(key)) return;
+  if (!key) return;
 
   const used = Object.values(TAGS_MAP).filter(info => info.cat === key).length;
   if (used) {
@@ -1174,6 +1189,14 @@ async function deleteCategory() {
     await patchSiteSettings((settings) => {
       if (settings.customCategories) delete settings.customCategories[key];
       if (settings.categoryColors)   delete settings.categoryColors[key];
+      const hidden = new Set(settings.hiddenCategories || []);
+      if (BUILTIN_CAT_KEYS.has(key)) hidden.add(key);
+      settings.hiddenCategories = [...hidden];
+      // Переименование встроенной категории живёт в labels.categories —
+      // после удаления оно осталось бы висеть мусором.
+      if (settings.labels && settings.labels.categories) {
+        delete settings.labels.categories[key];
+      }
     });
     delete CAT_LABELS[key];
     delete CAT_COLORS[key];
@@ -1740,6 +1763,7 @@ function resetToNew() {
   editingId = null;
   editingIds = {};
   document.getElementById("edit-banner").style.display = "none";
+  document.getElementById("danger-zone").hidden = true;
   document.getElementById("page-subtitle").textContent = "Добавить отзыв";
   document.getElementById("btn-save").textContent = "Сохранить отзыв";
   history.replaceState(null, "", "add.html");
@@ -1801,8 +1825,43 @@ async function initPage() {
     document.getElementById("edit-title-hint").textContent = review.title;
     document.getElementById("page-subtitle").textContent = "Редактировать отзыв";
     document.getElementById("btn-save").textContent = "Сохранить изменения";
+    // Удаляем строго по номеру записи. У совсем старых записей номера
+    // может не оказаться — тогда кнопки просто нет: удалять по названию
+    // нельзя, под одним названием лежат разные записи.
+    document.getElementById("danger-zone").hidden = typeof review.id !== "number";
   } catch (e) {
     setStatus("err", "Не удалось загрузить отзыв: " + e.message);
+  }
+}
+
+// ── удаление ───────────────────────────────────
+// Спрашиваем один раз, но по-человечески: с названием записи, чтобы было
+// видно, что удаляется именно то. Обещание про «Историю версий» настоящее —
+// reviews.json там отслеживается и откатывается целиком.
+async function deleteReview() {
+  if (typeof editingId !== "number") return;
+
+  const title = document.getElementById("f-title").value.trim() || "эту запись";
+  if (!confirm(`Удалить «${title}»?\n\nЗапись пропадёт из отзывов, «Любимого» и тир-листа.\nВернуть её можно будет только откатом в «Истории версий».`)) return;
+
+  setStatus("", "Удаляем…");
+  try {
+    const res = await fetch("/api/delete-review", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingId }),
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) throw new Error(data.error || `Сервер ответил ${res.status}`);
+
+    setStatus("ok", `«${data.title}» удалена. Сайт обновится в течение минуты.`);
+    // Форма после удаления показывает то, чего уже нет, — уводим на главную.
+    document.getElementById("danger-zone").hidden = true;
+    document.getElementById("btn-save").disabled = true;
+    setTimeout(() => { location.href = "/"; }, 1800);
+  } catch (e) {
+    setStatus("err", "Не удалось удалить: " + e.message);
   }
 }
 
@@ -2049,6 +2108,6 @@ async function saveReview() {
 initPage();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=12"></script>
+<script src="/js/backup.js?v=12"></script>
 </body>
 </html>

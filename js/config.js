@@ -447,7 +447,8 @@ const CAT_LABELS = {
 };
 
 // Ключи встроенных категорий — по той же причине, что и BUILTIN_TAG_NAMES:
-// их можно переименовать и покрасить, но не удалить.
+// вырезать встроенную категорию из этого файла нельзя, поэтому её
+// удаление живёт в hiddenCategories, а переименование — в labels.
 const BUILTIN_CAT_KEYS = new Set(Object.keys(CAT_LABELS));
 
 // Заполняется только для пользовательских категорий (у встроенных цвета нет —
@@ -517,6 +518,12 @@ document.addEventListener("site-labels-ready", () => {
   const customCategories = window.SITE_CUSTOM_CATEGORIES || {};
   for (const [key, label] of Object.entries(customCategories)) {
     CAT_LABELS[key] = label;
+  }
+  // Удалённые категории — после customCategories: свою категорию удаляют
+  // прямо из объекта, встроенную вырезать неоткуда, и она приходит сюда.
+  for (const key of window.SITE_HIDDEN_CATEGORIES || []) {
+    delete CAT_LABELS[key];
+    delete CAT_COLORS[key];
   }
   const categoryColors = window.SITE_CATEGORY_COLORS || {};
   for (const [key, color] of Object.entries(categoryColors)) {

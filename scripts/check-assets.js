@@ -37,6 +37,15 @@ for (const page of htmlFiles) {
   const html = readFileSync(join(ROOT, page), "utf8");
 
   for (const [, raw] of html.matchAll(REF)) {
+    // Ссылка на свой же файл, но записанная относительно страницы
+    // (src="js/theme.js" вместо "/js/theme.js"). Работает она одинаково,
+    // но мимо проверки ниже проходит незамеченной — и однажды так и
+    // случилось: у index.html версии ?v= у половины скриптов тихо
+    // отстали от остальных страниц, потому что сюда они не попадали.
+    if (/^(?:js|icons)\//.test(raw) || /^[\w-]+\.(?:css|js)(?:\?|$)/.test(raw)) {
+      errors.push(`${page}: ссылка на свой файл без ведущего слеша — ${raw}`);
+      continue;
+    }
     if (!raw.startsWith("/") || raw.startsWith("//")) continue;
 
     const [path, query] = raw.split("?");
