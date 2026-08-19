@@ -44,6 +44,7 @@ const sharedBrowserGlobals = [
   "coverFallbackAttrs",
   "createStatusFromImport",
   "csvToObjects",
+  "currentSiteSettings",
   "DEFAULT_ACCENT",
   "DEFAULT_LABELS",
   "DEFAULT_STATUS_BUCKETS",

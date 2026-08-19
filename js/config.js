@@ -160,14 +160,36 @@ function guessRussianPlural(word) {
 // site-settings.json, даёт мутатору поправить нужный кусок и отправляет
 // файл целиком обратно. mutator(settings) должен мутировать объект
 // на месте (или вернуть новый — оба варианта поддерживаются).
-async function patchSiteSettings(mutator) {
-  let settings = {};
+// Свежие настройки для правки.
+//
+// Читать выложенный site-settings.json здесь нельзя: он обновляется через
+// сборку и раскладку, то есть отстаёт на десятки секунд после каждого
+// сохранения. Две правки подряд — и вторая читала старый файл, а
+// отправляла его целиком поверх свежего, стирая первую. Молча: sha на
+// сервере перечитывается перед записью и всегда верный, неверно
+// содержимое.
+//
+// /api/site-settings отдаёт то, что лежит в репозитории сию секунду.
+// Запасной путь оставлен на случай, если эндпоинта нет (старая выкладка):
+// лучше вернуться к прежнему поведению, чем не сохранить ничего.
+async function currentSiteSettings() {
   try {
-    const res = await fetch("site-settings.json", { cache: "no-store" });
-    if (res.ok) settings = await res.json();
+    const res = await fetch("/api/site-settings", { credentials: "include", cache: "no-store" });
+    if (res.ok) return await res.json();
+  } catch {
+    // сеть отвалилась — пробуем выложенную копию ниже
+  }
+  try {
+    const res = await fetch("/site-settings.json", { cache: "no-store" });
+    if (res.ok) return await res.json();
   } catch {
     // нет файла/сети — работаем с пустым объектом, как при первом сохранении
   }
+  return {};
+}
+
+async function patchSiteSettings(mutator) {
+  let settings = await currentSiteSettings();
 
   settings = mutator(settings) || settings;
 
