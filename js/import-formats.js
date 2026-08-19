@@ -100,7 +100,7 @@ const MAL_TYPE_MAP = {
   music: "anime",
   manga: "manga", manhwa: "manhwa", manhua: "manhua",
   novel: "novel", lightnovel: "novel",
-  oneshot: "manga", doujinshi: "manga",
+  oneshot: "manga", doujinshi: "manga", doujin: "manga",
 };
 
 function normalizeMalStatus(raw) {
