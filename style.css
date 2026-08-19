@@ -367,24 +367,30 @@ select option { background: var(--bg2); }
    (это системный текст, не CSS-элемент). Поэтому вместо попытки
    перекрасить нативный виджет — прячем его и рисуем свою кнопку поверх
    через <label>, с собственной подписью выбранного файла. */
-.file-btn {
+/* Кнопка выбора файла.
+   Раньше здесь лежала полная копия внешнего вида кнопки — свои цвета,
+   рамка, скругление. Из-за этого она не участвовала в темах: тему знают
+   .btn и .btn-save, а про .file-btn в themes.css сказано было только для
+   брутализма. Рядом с обычной кнопкой она везде выглядела чужой.
+
+   Теперь внешний вид берётся у .btn/.btn-ghost, как у любой другой
+   кнопки, а здесь остаётся только то, чего у кнопки нет: спрятать сам
+   <input type="file"> и заставить <label> раскладываться как кнопка. */
+/* Селектор .btn.file-btn, а не просто .file-btn: кнопка выбора файла —
+   это <label>, а на страницах-редакторах есть правила вида `.field label`
+   для подписей полей. Они специфичнее одного класса и перебивали бы и
+   размер шрифта, и display: block вместо flex. Так и было на chars-edit:
+   кнопка выходила мельче соседней. */
+.btn.file-btn {
   display: inline-flex;
   align-items: center;
   gap: .7rem;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 2px;
-  padding: .55rem 1.1rem;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 0;
+  /* Совпадает с .btn выше — здесь только чтобы перебить подпись поля. */
   font-size: .72rem;
-  font-weight: 500;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--text);
-  transition: all .15s;
 }
-.file-btn:hover { border-color: var(--red-dim); color: var(--text-hi); }
 .file-btn input[type="file"] {
   position: absolute;
   width: 1px; height: 1px;

@@ -231,6 +231,7 @@ const sharedBrowserGlobals = [
   "TYPE_LABELS",
   "TYPE_PLURAL",
   "unitForms",
+  "visibleTierCollections",
   "updateFileBtnName",
   // подключаются с CDN по требованию
   "html2canvas",

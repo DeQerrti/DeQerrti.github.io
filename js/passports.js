@@ -255,7 +255,7 @@ function passportIntroHtml() {
       Всё считается прямо в браузере, никуда не отправляется.
     </p>
     <div class="pp-actions">
-      <label class="pp-file-btn">
+      <label class="btn btn-ghost file-btn">
         <input type="file" id="pp-file" accept="application/json,.json">
         <span>Загрузить чужой паспорт</span>
       </label>
@@ -500,22 +500,6 @@ function bindPassports() {
 function passportStyles() {
   return `<style>
     .pp-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: .5rem; }
-    .pp-file-btn {
-      font-family: 'DM Sans', sans-serif;
-      font-size: .68rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 2px;
-      padding: .5rem 1rem;
-      cursor: pointer;
-      transition: color .2s, border-color .2s;
-    }
-    .pp-file-btn:hover { color: var(--text-hi); border-color: var(--red-dim); }
-    .pp-file-btn input { display: none; }
-
     .pp-loaded {
       font-family: 'DM Sans', sans-serif;
       font-size: .76rem;

@@ -14,7 +14,7 @@
 <script src="/js/theme.js?v=13"></script>
 <script src="/js/config.js?v=13"></script>
 <script src="/js/external-ids.js?v=12"></script>
-<link rel="stylesheet" href="/style.css?v=12">
+<link rel="stylesheet" href="/style.css?v=13">
 <link rel="stylesheet" href="/admin.css?v=12">
 <link rel="stylesheet" href="/themes.css?v=12">
 <style>
@@ -421,7 +421,7 @@ button.icon-btn:hover { color: var(--text-hi); border-color: var(--red); backgro
         </div>
         <div class="hint">Или загрузи файл — сожмётся и сконвертируется в WebP автоматически.</div>
         <div class="cover-upload-row">
-          <label class="file-btn">
+          <label class="btn btn-ghost file-btn">
             <input type="file" id="f-cover-upload" accept="image/*" onchange="updateFileBtnName(this)">
             <span>Выбрать файл</span>
           </label>
@@ -2108,6 +2108,6 @@ async function saveReview() {
 initPage();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="js/backup.js?v=12"></script>
+<script src="/js/backup.js?v=12"></script>
 </body>
 </html>

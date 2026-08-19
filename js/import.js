@@ -194,7 +194,7 @@ function importFileHtml() {
     </p>
     ${importKeysHtml()}
     <div class="imp-actions">
-      <label class="imp-file-btn">
+      <label class="btn btn-ghost file-btn">
         <input type="file" id="imp-file" accept=".xml,.csv,application/xml,text/xml,text/csv">
         <span>Выбрать файл выгрузки</span>
       </label>
@@ -801,17 +801,6 @@ function bindImportKeys() {
 function importStyles() {
   return `<style>
     .imp-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: 1.2rem 0 .6rem; }
-    .imp-file-btn {
-      font-family: 'DM Sans', sans-serif;
-      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--text-dim); background: var(--surface);
-      border: 1px solid var(--border2); border-radius: 2px;
-      padding: .5rem 1rem; cursor: pointer;
-      transition: color .2s, border-color .2s;
-    }
-    .imp-file-btn:hover { color: var(--text-hi); border-color: var(--red-dim); }
-    .imp-file-btn input { display: none; }
-
     .imp-summary {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));

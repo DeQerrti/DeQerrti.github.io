@@ -38,7 +38,17 @@ const tlState = {
 // "Персонажи", остальное настраивается в /settings-edit.
 function activeTierCollections() {
   const configured = window.SITE_TIER_COLLECTIONS;
-  return (configured && configured.length) ? configured : [{ id: "characters", label: "Персонажи" }];
+  // Именно Array.isArray, а не проверка длины: пустой список означает,
+  // что все коллекции удалили, и подставлять взамен встроенную нельзя —
+  // она бы возвращалась сама после каждого удаления.
+  return Array.isArray(configured) ? configured : [{ id: "characters", label: "Персонажи" }];
+}
+
+// Коллекции, у которых снята галочка в настройках, в переключатель не
+// попадают. Список для подписей и файлов остаётся полным: скрытая
+// коллекция всё ещё может оказаться текущим режимом.
+function visibleTierCollections() {
+  return activeTierCollections().filter(c => isTierModeVisible(c.id));
 }
 
 function collectionFileFor(id) {
@@ -79,12 +89,12 @@ async function submitNewCollection() {
   statusEl.className = "status-msg";
   try {
     await patchSiteSettings((settings) => {
-      settings.tierCollections = settings.tierCollections && settings.tierCollections.length
+      settings.tierCollections = Array.isArray(settings.tierCollections)
         ? settings.tierCollections
-        : activeTierCollections(); // сохраняем встроенную "Персонажи", если своих ещё не было
+        : activeTierCollections(); // сохраняем встроенную "Персонажи", если настроек ещё не было
       settings.tierCollections.push(newCollection);
     });
-    window.SITE_TIER_COLLECTIONS = (window.SITE_TIER_COLLECTIONS && window.SITE_TIER_COLLECTIONS.length
+    window.SITE_TIER_COLLECTIONS = (Array.isArray(window.SITE_TIER_COLLECTIONS)
       ? window.SITE_TIER_COLLECTIONS
       : activeTierCollections()).concat([newCollection]);
     closeCollectionModal();
@@ -154,7 +164,7 @@ function tlRender() {
 }
 
 function tlModeToggleHtml() {
-  const collectionBtns = activeTierCollections().map(c =>
+  const collectionBtns = visibleTierCollections().map(c =>
     `<button class="tl-mode-btn${tlState.mode === c.id ? " active" : ""}" data-mode="${esc(c.id)}">${esc(c.label)}</button>`
   ).join("");
   const addBtn = isAdmin()
@@ -174,10 +184,10 @@ function tlModeToggleHtml() {
 // как раз он — переключаемся на первую доступную коллекцию, иначе
 // вкладка откроется на кнопке, которой нет.
 function tlEnsureVisibleMode() {
-  if (tlState.mode === "titles" && !isTierModeVisible("titles")) {
-    const first = activeTierCollections()[0];
-    if (first) tlState.mode = first.id;
-  }
+  if (isTierModeVisible(tlState.mode)) return;
+  const first = visibleTierCollections()[0];
+  if (first) tlState.mode = first.id;
+  else if (isTierModeVisible("titles")) tlState.mode = "titles";
 }
 
 // ══ РЕЖИМ ТАЙТЛОВ ═════════════════════════════
