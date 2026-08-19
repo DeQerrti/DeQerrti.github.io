@@ -186,6 +186,7 @@ async function applyTheme() {
   window.SITE_CUSTOM_TYPE_PLURAL = settings.customTypePlural || {};
   window.SITE_CUSTOM_SOURCES = settings.customSources || {};
   window.SITE_CUSTOM_CATEGORIES = settings.customCategories || {};
+  window.SITE_HIDDEN_CATEGORIES = settings.hiddenCategories || [];
   window.SITE_CATEGORY_COLORS = settings.categoryColors || {};
   window.SITE_GRADE_SCALE = settings.gradeScale || null;
   window.SITE_STATUS_BUCKETS = settings.statusBuckets || null;
@@ -268,7 +269,7 @@ function applyTabPreferences(settings) {
 // Читать через siteLabel(группа, ключ, запасное значение) — если ключа
 // в настройках нет, вернётся значение отсюда.
 const DEFAULT_LABELS = {
-  nav: { now: "Главная", favorites: "Любимое", reviews: "Отзывы", stats: "Статистика", tierlist: "Тир-лист" },
+  nav: { now: "Статусы", favorites: "Любимое", reviews: "Отзывы", stats: "Статистика", tierlist: "Тир-лист" },
   statuses: { current: "В процессе", onhold: "Отложено", planning: "Планирую", archive: "Архив" },
 
   // Шапка сайта. Само название — бренд и здесь не настраивается.

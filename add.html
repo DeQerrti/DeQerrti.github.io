@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <script src="/js/utils.js?v=12"></script>
-<script src="/js/theme.js?v=12"></script>
-<script src="/js/config.js?v=12"></script>
+<script src="/js/theme.js?v=13"></script>
+<script src="/js/config.js?v=13"></script>
 <script src="/js/external-ids.js?v=12"></script>
 <link rel="stylesheet" href="/style.css?v=12">
 <link rel="stylesheet" href="/admin.css?v=12">
@@ -1085,7 +1085,7 @@ function tmSyncCatForm() {
   document.getElementById("tm-cat-cancel").hidden = !editing;
   // Встроенную категорию удалить нельзя: на ней висят встроенные теги
   // из config.js, и после удаления они остались бы без категории.
-  document.getElementById("tm-cat-del").hidden = !editing || BUILTIN_CAT_KEYS.has(tmCatEdit);
+  document.getElementById("tm-cat-del").hidden = !editing;
   document.getElementById("tm-cat-nocolor").hidden = !tmCatColorSet;
   document.getElementById("tm-cat-colornote").hidden = tmCatColorSet;
   tmSyncTitle();
@@ -1166,9 +1166,12 @@ async function submitCategory() {
   }
 }
 
+// Встроенную категорию, как и встроенный тег, нельзя вырезать из
+// config.js — поэтому её удаление складывается в hiddenCategories, а
+// оттуда применяется при загрузке настроек.
 async function deleteCategory() {
   const key = tmCatEdit;
-  if (!key || BUILTIN_CAT_KEYS.has(key)) return;
+  if (!key) return;
 
   const used = Object.values(TAGS_MAP).filter(info => info.cat === key).length;
   if (used) {
@@ -1186,6 +1189,14 @@ async function deleteCategory() {
     await patchSiteSettings((settings) => {
       if (settings.customCategories) delete settings.customCategories[key];
       if (settings.categoryColors)   delete settings.categoryColors[key];
+      const hidden = new Set(settings.hiddenCategories || []);
+      if (BUILTIN_CAT_KEYS.has(key)) hidden.add(key);
+      settings.hiddenCategories = [...hidden];
+      // Переименование встроенной категории живёт в labels.categories —
+      // после удаления оно осталось бы висеть мусором.
+      if (settings.labels && settings.labels.categories) {
+        delete settings.labels.categories[key];
+      }
     });
     delete CAT_LABELS[key];
     delete CAT_COLORS[key];

@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="/admin.css?v=12">
 <link rel="stylesheet" href="/themes.css?v=12">
 <script src="/js/utils.js?v=12"></script>
-<script src="/js/theme.js?v=12"></script>
-<script src="/js/config.js?v=12"></script>
+<script src="/js/theme.js?v=13"></script>
+<script src="/js/config.js?v=13"></script>
 <script src="/js/api.js?v=12"></script>
 <script src="/js/cards.js?v=12"></script>
 <script src="/js/passports.js?v=12"></script>
@@ -158,6 +158,12 @@
   .list-row .name { flex: 1; font-size: .88rem; }
   .list-row .tag-note { color: var(--text-dim); font-size: .78rem; }
 
+  .fav-restore { display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin-top: 10px; font-size: .78rem; color: var(--text-dim); }
+  .fav-restore-btn { background: none; border: 1px dashed var(--border2); color: var(--text-dim);
+    border-radius: 4px; padding: 3px 9px; font-size: .78rem; cursor: pointer; font-family: inherit; }
+  .fav-restore-btn:hover { color: var(--text-hi); border-color: var(--text-dim); }
+
   .tab-row {
     display: flex; align-items: center; gap: 10px;
     padding: 8px 0; border-bottom: 1px solid var(--border);
@@ -239,11 +245,9 @@
     <h1>Настройки сайта</h1>
 
     <div class="panel active" id="panel-appearance">
-      <p class="panel-intro">Тема задаёт не только цвета, но и форму: скругления, рамки, тени, вид навигации.</p>
       <div class="theme-grid" id="themeGrid"></div>
 
       <h2 class="section-h">Палитра</h2>
-      <p class="panel-intro">Весь сайт собран из десяти цветов ниже — подсветки, тени и рамки считаются от них, отдельно их задавать не нужно. Правки видно сразу, но применятся они только после «Сохранить». У каждой темы своя палитра: подогнал одну — на другой она останется прежней.</p>
       <div id="paletteList"></div>
       <div class="pal-foot">
         <button class="btn-save" onclick="saveSettings()">Сохранить</button>
@@ -258,8 +262,7 @@
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
       <div class="status-msg" id="status-tabs"></div>
 
-      <h2 class="section-h">Статусы (вкладка «Главная»)</h2>
-      <p class="panel-intro">Галочка — показывать секцию. Карандаш — переименовать. "Архив" особый — от него зависит статистика, его нельзя удалить, только скрыть или переименовать.</p>
+      <h2 class="section-h">Разделы вкладки «Статусы»</h2>
       <div id="statusesList"></div>
       <div class="row" style="margin-top:14px;">
         <div><label>Новый статус</label><input type="text" id="newStatusName" placeholder="Например: Брошено"></div>
@@ -268,17 +271,10 @@
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
 
       <h2 class="section-h">Разделы вкладки «Любимое»</h2>
-      <p class="panel-intro">Галочка — показывать раздел. Карандаш — переименовать.</p>
       <div id="favSectionsList"></div>
-
-      <p class="panel-intro" style="margin-top:18px;">
-        Помимо Тайтлов/Персонажей/Персон можно завести свой раздел — например,
-        "Места" или "Пейринги". Новые записи для него добавляются там же, где
-        персонажи и персоны — на странице /favorites-edit.
-      </p>
       <div id="favCollectionsList"></div>
       <div class="row" style="margin-top:14px;">
-        <div><label>Новый раздел</label><input type="text" id="newFavCollectionName" placeholder="Например: Места"></div>
+        <div><label>Новый раздел</label><input type="text" id="newFavCollectionName" placeholder="Например: Пейринги"></div>
       </div>
       <button class="btn btn-ghost" onclick="addFavCollection()">Добавить раздел</button>
       <button class="btn-save" onclick="saveSettings()">Сохранить</button>
@@ -554,9 +550,14 @@
   // ── Разделы вкладки «Любимое» ──────────────────
   // Три встроенных раздела: у "Тайтлы" свой источник (reviews.json,
   // флаг favorite), у "Персонажи"/"Персоны" — favorites.json по type.
-  // Их нельзя удалить (данные не самостоятельные), только скрыть и
-  // переименовать — список ниже фиксированный. Свои разделы поверх
-  // этих трёх заводятся отдельно, ниже (favCollections).
+  // Список фиксированный: завести четвёртый встроенный неоткуда, свои
+  // разделы заводятся ниже (favCollections).
+  //
+  // Удалить встроенный раздел можно, но "удалить" здесь значит убрать
+  // его с сайта и из этого списка — сами записи в favorites.json лежат
+  // и никуда не деваются. Раз строку из списка убирает не кнопка
+  // "скрыть", вернуть её иначе как отсюда было бы нечем — поэтому
+  // удалённые показываются отдельной строкой со стрелкой возврата.
   const FAV_SECTIONS = [
     { key: "favTitles", def: "Тайтлы" },
     { key: "favCharacters", def: "Персонажи" },
@@ -564,10 +565,11 @@
   ];
   let favSectionLabels = {};
   let hiddenFavSectionsState = new Set();
+  let removedFavSections = new Set();
 
   function renderFavSectionsList() {
     const container = document.getElementById("favSectionsList");
-    container.innerHTML = FAV_SECTIONS.map(s => {
+    const rows = FAV_SECTIONS.filter(s => !removedFavSections.has(s.key)).map(s => {
       const label = favSectionLabels[s.key] || s.def;
       return `
       <div class="tab-row" id="favsecrow-${s.key}">
@@ -576,8 +578,34 @@
         <span class="tab-name" id="favsecname-${s.key}">${esc(label)}</span>
         <input type="text" id="favsecinput-${s.key}" value="${esc(label)}">
         <button class="icon-btn" title="Переименовать" onclick="toggleFavSecEdit('${s.key}')">✎</button>
+        <button class="icon-btn" title="Удалить" onclick="removeFavSection('${s.key}')">✕</button>
       </div>`;
     }).join("");
+
+    const gone = FAV_SECTIONS.filter(s => removedFavSections.has(s.key));
+    const restore = gone.length ? `
+      <div class="fav-restore">
+        Удалённые разделы:
+        ${gone.map(s => `<button type="button" class="fav-restore-btn"
+            onclick="restoreFavSection('${s.key}')">${esc(favSectionLabels[s.key] || s.def)} ↺</button>`).join("")}
+      </div>` : "";
+
+    container.innerHTML = rows + restore;
+  }
+
+  function removeFavSection(key) {
+    const def = FAV_SECTIONS.find(s => s.key === key);
+    const label = favSectionLabels[key] || def.def;
+    if (!confirm(`Удалить раздел «${label}»?\n\nЗаписи останутся в данных, но перестанут показываться. Вернуть раздел можно здесь же.`)) return;
+    removedFavSections.add(key);
+    hiddenFavSectionsState.add(key);
+    renderFavSectionsList();
+  }
+
+  function restoreFavSection(key) {
+    removedFavSections.delete(key);
+    hiddenFavSectionsState.delete(key);
+    renderFavSectionsList();
   }
 
   function toggleFavSecEdit(key) {
@@ -870,7 +898,7 @@
   }
 
   const TAB_DEFS = [
-    { id: "now", def: "Главная" },
+    { id: "now", def: "Статусы" },
     { id: "favorites", def: "Любимое" },
     { id: "reviews", def: "Отзывы" },
     { id: "stats", def: "Статистика" },
@@ -979,7 +1007,7 @@
         <span class="tab-name" id="statusname-${b.key}">${b.label}</span>
         <input type="text" id="statusinput-${b.key}" value="${b.label}">
         <button class="icon-btn" title="Переименовать" onclick="toggleStatusEdit('${b.key}')">✎</button>
-        ${b.removable !== false ? `<button class="icon-btn" title="Удалить" onclick="removeStatusBucket('${b.key}')">✕</button>` : ""}
+        ${b.key !== "archive" ? `<button class="icon-btn" title="Удалить" onclick="removeStatusBucket('${b.key}')">✕</button>` : ""}
       </div>
     `).join("");
   }
@@ -1011,7 +1039,43 @@
     renderStatusesList();
   }
 
-  function removeStatusBucket(key) {
+  // reviews.json тянем только когда он действительно нужен — в момент
+  // удаления статуса. Настройки открывают часто, а файл на четверть
+  // мегабайта; грузить его на каждый заход ради одной цифры незачем.
+  let reviewsForCount = null;
+  async function countReviewsByStatus(key) {
+    if (!reviewsForCount) {
+      const res = await fetch("/reviews.json?_=" + Date.now());
+      reviewsForCount = await res.json();
+    }
+    return reviewsForCount.filter(r => r.status === key).length;
+  }
+
+  function pluralRecords(n) {
+    const d10 = n % 10, d100 = n % 100;
+    if (d10 === 1 && d100 !== 11) return "запись";
+    if (d10 >= 2 && d10 <= 4 && (d100 < 12 || d100 > 14)) return "записи";
+    return "записей";
+  }
+
+  // Удалить статус, которым что-то помечено, — не поломка, но записи
+  // пропадут со вкладки, и человек об этом должен узнать до, а не после.
+  // Половина базы вполне может лежать в «Отложено».
+  async function removeStatusBucket(key) {
+    const bucket = statusBuckets.find(b => b.key === key);
+    const label = bucket ? bucket.label : key;
+
+    let used = 0;
+    try {
+      used = await countReviewsByStatus(key);
+    } catch {
+      // Не смогли посчитать — спросим без числа, но удалять не мешаем.
+    }
+    const warn = used
+      ? `\n\nВ этом статусе ${used} ${pluralRecords(used)}. Они останутся в данных, но пропадут со вкладки «Статусы», пока им не поставить другой статус.`
+      : "";
+
+    if (!confirm(`Удалить раздел «${label}»?${warn}`)) return;
     statusBuckets = statusBuckets.filter(b => b.key !== key);
     hiddenStatusesState.delete(key);
     renderStatusesList();
@@ -1125,6 +1189,7 @@
       favPersons: (labels.sections && labels.sections.favPersons) || "Персоны",
     };
     hiddenFavSectionsState = new Set(settings.hiddenFavSections || []);
+    removedFavSections = new Set(settings.removedFavSections || []);
     renderFavSectionsList();
 
     favCollections = settings.favCollections
@@ -1406,6 +1471,7 @@
       tierCollections,
       hiddenTierModes: [...hiddenTierModesState],
       hiddenFavSections: [...hiddenFavSectionsState],
+      removedFavSections: [...removedFavSections],
       favCollections,
       labels: {
         // Сначала то, что настроено на вкладке «Подписи», затем поля
