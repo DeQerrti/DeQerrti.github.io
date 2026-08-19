@@ -142,10 +142,10 @@ const IMPORT_SOURCES = [
   {
     what: "Аниме и манга",
     who: "AniList",
-    file: "XML",
-    how: "Своей кнопки «выгрузить» у AniList нет — список достают сторонним " +
-         "конвертером в формат MyAnimeList (ищи «AniList to MAL XML export»). " +
-         "Получившийся XML мы принимаем как любой другой.",
+    file: "по нику",
+    how: "Файл не нужен и выгружать ничего не надо: открытый список AniList " +
+         "отдаёт кому угодно, и мы просто спросим его по нику. Поле для ника " +
+         "ниже. Обложки приезжают сразу вместе со списком.",
   },
   {
     what: "Книги",
@@ -199,7 +199,20 @@ function importFileHtml() {
         <span>Выбрать файл выгрузки</span>
       </label>
     </div>
-    <div class="status-msg" id="imp-status"></div>`;
+    <div class="status-msg" id="imp-status"></div>
+
+    <h2 class="section-h">Или по нику с AniList</h2>
+    <p class="imp-note">
+      Ник тот же, что в адресе профиля: anilist.co/user/<strong>ник</strong>.
+      Список должен быть открыт — если в настройках профиля он закрыт, снаружи
+      его не видно.
+    </p>
+    <div class="imp-actions">
+      <input type="text" id="imp-anilist-user" placeholder="ник на AniList"
+             autocomplete="off" spellcheck="false">
+      <button class="btn btn-ghost" id="imp-anilist-go" type="button">Забрать список</button>
+    </div>
+    <div class="status-msg" id="imp-anilist-status"></div>`;
 }
 
 // ── Ключи сервисов ─────────────────────────────
@@ -369,9 +382,9 @@ function importMapHtml() {
   const hasKey = !!tmdbKey();
 
   return `
-    <p class="imp-source-line">Узнан формат: <strong>${esc(importData.source)}</strong></p>
+    <p class="imp-source-line">${importData.byName ? "Список" : "Узнан формат"}: <strong>${esc(importData.source)}</strong></p>
     <div class="imp-summary">
-      ${impStat(importData.items.length, "в выгрузке")}
+      ${impStat(importData.items.length, importData.byName ? "в списке" : "в выгрузке")}
       ${impStat(fresh.length, "новых")}
       ${impStat(existing.length, "уже есть")}
       ${impStat(scored, "с оценкой")}
@@ -388,7 +401,7 @@ function importMapHtml() {
       ${importKeysHtml()}` : ""}
 
     <h2 class="section-h">Статусы</h2>
-    <p class="panel-intro">Слева то, что стоит в выгрузке, справа — куда это ляжет у тебя.</p>
+    <p class="panel-intro">Слева то, что стоит ${importData.byName ? "в списке" : "в выгрузке"}, справа — куда это ляжет у тебя.</p>
     ${statusRows}
 
     <h2 class="section-h">Оценки</h2>
@@ -401,7 +414,7 @@ function importMapHtml() {
 
     <h2 class="section-h">Что уже есть в паспорте</h2>
     <div class="imp-row imp-row-plain">
-      <label><input type="checkbox" id="imp-skip" ${importSkipExisting ? "checked" : ""}> Не трогать ${existing.length} записей, которые уже заведены</label>
+      <label><input type="checkbox" id="imp-skip" ${importSkipExisting ? "checked" : ""}> Не трогать ${existing.length} ${plural(existing.length, ["запись", "записи", "записей"])}, которые уже заведены</label>
     </div>
     <p class="panel-intro">
       Снятая галочка перезапишет у них статус и оценку значениями из выгрузки.
@@ -586,6 +599,77 @@ async function fetchAnilistMeta(malIds, onProgress) {
   return byMal;
 }
 
+// ── Список с AniList по нику ───────────────────
+// Ключа не нужно: открытый список отдаётся кому угодно. Запроса ровно
+// два — на аниме и на мангу; MediaListCollection не разбит на страницы и
+// приезжает целиком (у него свой потолок в 11 тысяч записей, до которого
+// живому человеку далеко).
+
+const ANILIST_LIST_QUERY = `
+  query ($userName: String, $type: MediaType) {
+    MediaListCollection(userName: $userName, type: $type) {
+      lists {
+        isCustomList
+        entries {
+          status
+          score(format: POINT_10)
+          repeat
+          startedAt { year month day }
+          completedAt { year month day }
+          media {
+            id
+            idMal
+            type
+            format
+            countryOfOrigin
+            title { romaji english native }
+            startDate { year }
+            coverImage { large }
+          }
+        }
+      }
+    }
+  }`;
+
+async function fetchAnilistUserList(userName, onProgress) {
+  const collections = [];
+  const types = ["ANIME", "MANGA"];
+
+  for (const type of types) {
+    onProgress?.(type);
+    let res;
+    try {
+      res = await fetch(IMPORT_ANILIST_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ query: ANILIST_LIST_QUERY, variables: { userName, type } }),
+      });
+    } catch {
+      throw new Error("Не получилось достучаться до AniList. Проверь интернет и попробуй ещё раз.");
+    }
+
+    if (res.status === 429) {
+      throw new Error("AniList просит подождать — слишком много запросов подряд. Попробуй через минуту.");
+    }
+
+    const body = await res.json().catch(() => null);
+    const message = body?.errors?.[0]?.message;
+
+    if (message && /not found/i.test(message)) {
+      throw new Error(`AniList не знает пользователя «${userName}». Ник нужен тот, что в адресе профиля.`);
+    }
+    if (message && /private/i.test(message)) {
+      throw new Error(`Список у «${userName}» закрыт настройками профиля — снаружи его не видно.`);
+    }
+    if (message) throw new Error(`AniList ответил: ${message}`);
+    if (!res.ok) throw new Error(`AniList ответил ${res.status}. Попробуй ещё раз через минуту.`);
+
+    collections.push(body?.data?.MediaListCollection);
+  }
+
+  return collections;
+}
+
 // ── Перенос ────────────────────────────────────
 
 async function runImport() {
@@ -609,7 +693,10 @@ async function runImport() {
 
   // Обложки. Аниме и манга — у AniList по номеру MAL, книгам хватит
   // прямой ссылки по ISBN, фильмы — у TMDB и только если есть ключ.
-  const malIds = selected.map((i) => i.ids?.mal).filter(Boolean);
+  //
+  // У списка, взятого с AniList по нику, обложка уже своя — за ней в
+  // AniList ходить незачем, и такие записи в запрос не попадают.
+  const malIds = selected.filter((i) => !i.cover).map((i) => i.ids?.mal).filter(Boolean);
   let meta = new Map();
   if (malIds.length) {
     meta = await fetchAnilistMeta(malIds, (done, total) => {
@@ -633,6 +720,7 @@ async function runImport() {
     if (film?.id) ids.tmdb = film.id;
 
     const cover =
+      item.cover ||
       extra?.coverImage?.large ||
       (film?.poster_path ? tmdbPoster(film.poster_path) : null) ||
       (ids.isbn13 ? openLibraryCover(ids.isbn13) : null);
@@ -680,6 +768,7 @@ async function runImport() {
 
 function bindImport() {
   bindImportKeys();
+  bindAnilistUser();
 
   document.getElementById("imp-file")?.addEventListener("change", async (e) => {
     const file = e.target.files?.[0];
@@ -688,16 +777,7 @@ function bindImport() {
     status.className = "status-msg";
     status.textContent = "Читаем файл…";
     try {
-      const parsed = parseImportFile(await file.text(), file.name);
-      // Перечитываем свои отзывы перед разбором: после предыдущего
-      // импорта кэш сброшен, а без него «уже есть» посчиталось бы
-      // нулём и вторая пачка приехала бы дублями.
-      await fetchReviews();
-      importData = parsed;
-      importStatusMap = defaultStatusMap();
-      importScoreMap = defaultScoreMap();
-      importStep = "map";
-      renderImport();
+      await startMapping(parseImportFile(await file.text(), file.name));
     } catch (err) {
       status.className = "status-msg err";
       status.textContent = err.message;
@@ -755,6 +835,61 @@ function bindImport() {
   });
 }
 
+// Разобранный список — из файла ли, из сети ли — дальше идёт одним путём.
+async function startMapping(parsed) {
+  // Перечитываем свои отзывы перед разбором: после предыдущего импорта
+  // кэш сброшен, а без него «уже есть» посчиталось бы нулём и вторая
+  // пачка приехала бы дублями.
+  await fetchReviews();
+  importData = parsed;
+  importStatusMap = defaultStatusMap();
+  importScoreMap = defaultScoreMap();
+  importStep = "map";
+  renderImport();
+}
+
+function bindAnilistUser() {
+  const input = document.getElementById("imp-anilist-user");
+  const btn = document.getElementById("imp-anilist-go");
+  const status = document.getElementById("imp-anilist-status");
+  if (!input || !btn) return;
+
+  const go = async () => {
+    const userName = input.value.trim().replace(/^@/, "");
+    if (!userName) { input.focus(); return; }
+    if (importBusy) return;
+    importBusy = true;
+    btn.disabled = true;
+    status.className = "status-msg";
+    status.textContent = "Спрашиваем AniList…";
+    try {
+      const collections = await fetchAnilistUserList(userName, (type) => {
+        status.textContent = type === "ANIME" ? "Забираем аниме…" : "Забираем мангу…";
+      });
+      const parsed = parseAnilistLists(collections);
+      parsed.source = `AniList — ${userName}`;
+      parsed.byName = true; // не файл: экран соответствий говорит об этом иначе
+      if (!parsed.items.length) {
+        throw new Error(`У «${userName}» в списке ничего нет — ни аниме, ни манги.`);
+      }
+      await startMapping(parsed);
+    } catch (err) {
+      status.className = "status-msg err";
+      status.textContent = err.message;
+    } finally {
+      importBusy = false;
+      btn.disabled = false;
+    }
+  };
+
+  btn.addEventListener("click", go);
+  input.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    go();
+  });
+}
+
 function bindImportKeys() {
   // Раскрытый блок должен пережить перерисовку: её вызывает и сохранение
   // ключа, и появление статуса, а схлопывающийся на глазах блок читается
@@ -801,6 +936,7 @@ function bindImportKeys() {
 function importStyles() {
   return `<style>
     .imp-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: 1.2rem 0 .6rem; }
+    .imp-actions input[type="text"] { width: auto; flex: 1; min-width: 11rem; }
     .imp-summary {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));

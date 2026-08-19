@@ -236,6 +236,88 @@ function parseLetterboxd(rows) {
   return { source: "Letterboxd", scaleMin: 0.5, scaleMax: 5, items, skipped };
 }
 
+// ── AniList (ответ API, а не файл) ─────────────
+// Единственный источник, который приходит не файлом: список у AniList
+// открытый и спрашивается по нику, без ключа. Разбор всё равно живёт
+// здесь, рядом с остальными: наружу отдаётся ровно та же запись, и
+// мастеру всё равно, приехала она из файла или из сети.
+
+const ANILIST_STATUS_MAP = {
+  CURRENT: "watching",
+  REPEATING: "watching", // пересмотр — это всё-таки «смотрю»
+  PLANNING: "plantowatch",
+  COMPLETED: "completed",
+  DROPPED: "dropped",
+  PAUSED: "onhold",
+};
+
+// У AniList нет отдельных типов для манхвы и маньхуа — есть страна
+// происхождения, и по ней они различаются надёжнее, чем у MyAnimeList,
+// где тип проставляют руками и часто забывают.
+function anilistType(media) {
+  if (media.type === "ANIME") return "anime";
+  if ((media.format || "").toUpperCase() === "NOVEL") return "novel";
+  const country = (media.countryOfOrigin || "").toUpperCase();
+  if (country === "KR") return "manhwa";
+  if (country === "CN" || country === "TW") return "manhua";
+  return "manga";
+}
+
+// Дата у AniList разложена на части, и любая из них может быть пустой.
+// Неполную дату отбрасываем целиком: «2021-00-00» хуже, чем ничего.
+function anilistDate(d) {
+  if (!d || !d.year || !d.month || !d.day) return null;
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.year}-${pad(d.month)}-${pad(d.day)}`;
+}
+
+// collections — по одному ответу MediaListCollection на аниме и мангу.
+function parseAnilistLists(collections) {
+  const items = [];
+  const seen = new Set();
+  let skipped = 0;
+
+  for (const collection of collections) {
+    for (const list of collection?.lists || []) {
+      // Свои списки AniList отдаёт вперемешку с обычными, и одна и та же
+      // запись лежит сразу в двух: в статусном и в своём. Берём только
+      // статусные — иначе половина списка приехала бы дважды.
+      if (list.isCustomList) continue;
+
+      for (const entry of list.entries || []) {
+        const media = entry.media;
+        const title = media?.title?.romaji || media?.title?.english || media?.title?.native;
+        if (!media || !title) { skipped++; continue; }
+        if (seen.has(media.id)) continue;
+        seen.add(media.id);
+
+        const ids = {};
+        if (media.id) ids.anilist = media.id;
+        if (media.idMal) ids.mal = media.idMal;
+
+        items.push({
+          title,
+          type: anilistType(media),
+          status: ANILIST_STATUS_MAP[entry.status] || null,
+          score: Number(entry.score) || 0,
+          rewatch: Number(entry.repeat) || 0,
+          dateStart: anilistDate(entry.startedAt),
+          dateEnd: anilistDate(entry.completedAt),
+          year: media.startDate?.year ? String(media.startDate.year) : null,
+          // Обложка приезжает вместе со списком — в отличие от файла,
+          // после которого за ней приходится ходить отдельным запросом.
+          cover: media.coverImage?.large || null,
+          ids: Object.keys(ids).length ? ids : undefined,
+        });
+      }
+    }
+  }
+  // Оценку просим у AniList в десятибалльном виде — как у MyAnimeList,
+  // чтобы экран соответствий выглядел одинаково. У кого стоит стобалльная
+  // шкала, тому AniList округлит сам.
+  return { source: "AniList", scaleMin: 1, scaleMax: 10, items, skipped };
+}
+
 // ── Определение формата ────────────────────────
 // По набору заголовков: они у сервисов достаточно своеобразные, чтобы
 // не спутать. Если не узнали — честно говорим об этом, а не пытаемся

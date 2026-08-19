@@ -214,17 +214,8 @@ function renderTitleOfYear(list, year) {
 }
 
 // ── Счётчики ───────────────────────────────────
-// Склонение числительных по форме слова.
-// plural(162, ["тайтл", "тайтла", "тайтлов"]) → "тайтла"
-// plural(11,  ["тайтл", "тайтла", "тайтлов"]) → "тайтлов"
-function plural(n, [one, few, many]) {
-  const abs = Math.abs(n) % 100;
-  const rem = abs % 10;
-  if (abs >= 11 && abs <= 19) return many;
-  if (rem === 1)               return one;
-  if (rem >= 2 && rem <= 4)   return few;
-  return many;
-}
+// plural() живёт в js/utils.js: он понадобился и настройкам, и импорту,
+// а stats.js подключают не все страницы.
 
 function renderCounters(counts, total, sectionTitle = null, totalLabel = null) {
   sectionTitle = sectionTitle ?? siteLabel("stats", "total", "Всего");
